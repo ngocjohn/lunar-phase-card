@@ -1,0 +1,15 @@
+/node_modules/
+/.rpt2_cache/
+package-lock.json
+/dev
+/dist
+dist/
+.vscode
+src/utils/testdata.ts
+all-keys.asc
+all-secret-keys.asc
+scripts/
+lunar-phase-card.code-workspace
+src/test/
+.env
+.DS_Store

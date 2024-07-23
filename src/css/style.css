@@ -1,0 +1,293 @@
+:host {
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Open Sans',
+    'Helvetica Neue',
+    sans-serif;
+}
+*:focus {
+  outline: none;
+}
+
+ha-card {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: var(--card-background-color);
+  letter-spacing: 0.5px;
+  padding: 16px;
+  --swiper-pagination-bullet-inactive-color: var(--secondary-text-color);
+}
+
+ha-card.--background {
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-image: var(--lunar-background-image);
+  transition: all 0.5s ease;
+  --primary-text-color: #e1e1e1;
+  --swiper-theme-color: var(--primary-text-color);
+}
+
+.lunar-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+}
+
+.lunar-card-header.flexend {
+  justify-content: flex-end;
+}
+
+h1 {
+  color: var(--ha-card-header-color, --primary-text-color);
+  font-family: var(--ha-card-header-font-family, inherit);
+  font-size: var(--ha-card-header-font-size, 24px);
+  letter-spacing: -0.012em;
+  line-height: 48px;
+  display: block;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  font-weight: 400;
+  text-transform: capitalize;
+}
+.btn-calendar {
+  display: block;
+  color: var(--disabled-text-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-calendar:hover {
+  color: var(--primary-text-color);
+  opacity: 1;
+}
+
+.click-shrink {
+  transition: transform 0.1s;
+}
+
+.click-shrink:active {
+  transform: scale(0.9);
+}
+
+.lunar-card-content {
+  display: flex;
+  padding: 0;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.lunar-card-content.flex-col {
+  flex-direction: column;
+  gap: 0;
+}
+.moon-image {
+  display: block;
+  width: 100%;
+  max-width: 130px;
+  max-height: 130px;
+  transition: transform 0.5s;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.moon-image > img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  user-select: none;
+  filter: grayscale(1) drop-shadow(0 0px 1rem black);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.slide-animation {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.moon-data {
+  width: 100%;
+}
+.moon-data-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--divider-color);
+  padding-block: 0.25rem;
+}
+
+.moon-data-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.moon-data-item > span.label {
+  display: block;
+  color: var(--primary-text-color);
+  width: 50%;
+}
+
+.moon-data-item > .value {
+  display: flex;
+  color: var(--primary-text-color);
+  font-weight: 600;
+  width: 50%;
+  justify-content: space-between;
+}
+.value > span {
+  font-weight: 400;
+  font-size: smaller;
+}
+
+/* SWIPER */
+lunar-base-data {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+section {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+.swiper-container {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.swiper-wrapper {
+  margin-bottom: 1rem;
+}
+.swiper-slide {
+  display: block;
+  width: fit-content;
+}
+
+.swiper-pagination {
+  position: relative !important;
+}
+.swiper-pagination-bullet {
+  background-color: var(--swiper-theme-color);
+  transition: all 0.3s ease-in-out !important;
+}
+.swiper-pagination-bullet-active {
+  width: 12px !important;
+  border-radius: 0.5rem !important;
+  opacity: 0.7;
+}
+
+/* CALENDAR */
+.calendar-wrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1rem;
+  --calendar-background-color: #ffffff1f;
+}
+.date-input-wrapper {
+  display: flex;
+  width: 100%;
+  position: relative;
+  justify-content: space-around;
+  align-items: baseline;
+  gap: 1rem;
+}
+.date-input-label {
+  display: block;
+  color: var(--primary-text-color);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.date-input {
+  display: block;
+  width: fit-content;
+  padding: 0.5rem;
+  border: 1px solid var(--divider-color);
+  border-radius: 0.5rem;
+  color: var(--primary-text-color);
+  background-color: var(--calendar-background-color);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+.date-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+button.date-input-btn {
+  cursor: pointer;
+  background-color: var(--calendar-background-color);
+  border: 1px solid var(--divider-color);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: var(--primary-text-color);
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+button.date-input-btn:hover {
+  background-color: var(--primary-color);
+  color: var(--primary-background-color);
+}
+
+/* COMPACT VIEW */
+
+.btn-calendar.compact {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.compact-view {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.moon-fraction {
+  font-size: 1.2rem;
+  font-weight: inherit;
+  color: var(--primary-text-color);
+  letter-spacing: inherit;
+}
+
+.compact-view-items {
+  margin-top: 1rem;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  --mdc-icon-size: 17px;
+}
+
+.compact-item .value {
+  color: var(--secondary-text-color);
+}
