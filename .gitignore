@@ -13,3 +13,4 @@ lunar-phase-card.code-workspace
 src/test/
 .env
 .DS_Store
+swiper-bundle.css
