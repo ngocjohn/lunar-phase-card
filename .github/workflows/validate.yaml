@@ -1,0 +1,19 @@
+name: HACS
+
+on:
+  push:
+    paths:
+      - 'dist/**'
+  release:
+    types: [published]
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  validate-hacs:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: HACS validation
+        uses: hacs/action@main
+        with:
+          category: plugin
