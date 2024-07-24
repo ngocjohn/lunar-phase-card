@@ -24,8 +24,19 @@ ha-card {
   height: auto;
   background-color: var(--card-background-color);
   letter-spacing: 0.5px;
-  padding: 16px;
+  padding: 1rem;
   --swiper-pagination-bullet-inactive-color: var(--secondary-text-color);
+}
+
+@media screen and (max-width: 800px) {
+  ha-card {
+    font-size: 1.2vh !important;
+  }
+  .moon-image {
+    width: 100%;
+    max-width: 100px !important;
+    max-height: 100px !important;
+  }
 }
 
 ha-card.--background {
@@ -42,7 +53,7 @@ ha-card.--background {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 16px;
+  padding: 0.5rem 0px 1.5rem;
 }
 
 .lunar-card-header.flexend {
@@ -52,9 +63,6 @@ ha-card.--background {
 h1 {
   color: var(--ha-card-header-color, --primary-text-color);
   font-family: var(--ha-card-header-font-family, inherit);
-  font-size: var(--ha-card-header-font-size, 24px);
-  letter-spacing: -0.012em;
-  line-height: 48px;
   display: block;
   margin-block-start: 0px;
   margin-block-end: 0px;
@@ -274,10 +282,10 @@ button.date-input-btn:hover {
 }
 
 .moon-fraction {
-  font-size: 1.2rem;
   font-weight: inherit;
   color: var(--primary-text-color);
-  letter-spacing: inherit;
+  letter-spacing: 1.5px;
+  line-height: 24px;
 }
 
 .compact-view-items {

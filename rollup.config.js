@@ -76,7 +76,7 @@ export default [
     output: {
       file: dev ? './dev/lunar-phase-card-dev.js' : './dist/lunar-phase-card.js',
       format: 'es',
-      sourcemap: true,
+      sourcemap: dev,
       inlineDynamicImports: true,
       banner: custombanner,
     },

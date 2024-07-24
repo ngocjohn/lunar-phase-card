@@ -1,7 +1,7 @@
 import { description, repository } from './package.json';
 
 export function logCardInfo(version) {
-  const line1 = '   lunar-phase-card';
+  const line1 = '   🌘 LUNAR PHASE CARD';
   const line2 = `   ${version}`;
   const length = Math.max(line1.length, line2.length) + 3;
   const pad = (text, length) => text + ' '.repeat(length - text.length);

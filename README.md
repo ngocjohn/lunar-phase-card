@@ -1,6 +1,12 @@
+<a name="readme-top"></a>
+
 # 🌘 Lunar Phase Card
 
-This is a Lovelace custom card for Home Assistant that provides detailed information about the current phase of the moon. This card leverages precise astronomical calculations to deliver accurate lunar data, making it a valuable addition for those interested in astronomy, astrology, or just tracking the moon's phases.
+<img src="assets/header.gif" style="border-radius: 8px" />
+
+##
+
+<p style="text-align: justify;">This is a Lovelace custom card for Home Assistant that provides detailed information about the current phase of the moon. This card leverages precise astronomical calculations to deliver accurate lunar data, making it a valuable addition for those interested in astronomy, astrology, or just tracking the moon's phases.</p>
 
 ## Features
 
@@ -8,19 +14,100 @@ This is a Lovelace custom card for Home Assistant that provides detailed informa
 - **Detailed Lunar Information:** Provides additional details about the lunar cycle.
 - **Customizable:** Easily customizable to fit your dashboard's theme.
 - **Responsive Design:** Works well on both desktop and mobile devices.
-- **Lightweight:** Optimized for performance with minimal impact on your Home Assistant setup.
 - **Custom Latitude and Longitude Configuration:** Offers the possibility to configure custom latitude and longitude for precise lunar data.
 - **Specific Date Lunar Information:** Option to display the moon information for a specific date.
 
-### Screenshots
+### Default & Compact view
 
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-  <div style="flex: 1 1 calc(50% - 10px); margin-bottom: 10px;">
-    Default & Compact view
-    <img src="assets/lunar-cards.png" alt="Default & Compact view" style="width: 100%;">
-  </div>
-  <div style="flex: 1 1 calc(50% - 10px); margin-bottom: 10px;">
-    Calendar Options
-    <img src="assets/lunar-animation.gif" alt="Calendar Options" style="width: 100%;">
-  </div>
+<div style="display: flex; justify-content: space-between; gap: 0.5rem;">
+  <div style="width="48%"><img src="assets/lunar-default.png" alt="Lunar Phase Cards" ></div>
+  <div style="width="48%"><img src="assets/lunar-compact.png" alt="Lunar Phase Calendar"></div>
 </div>
+
+## Table of contents
+
+<details>
+    <summary>Table of contents</summary>
+
+- [Overview](#Lunar-Phase-Card)
+- [Features](#features)
+- [Installation](#installation)
+  - [HACS Installation](#hacs-installation)
+  - [Manual Installation](#manual-installation)
+- [Configuration](#configuration)
+  - [Using the Home Assistant UI](#using-the-home-assistant-ui)
+- [Contribution](#contribution)
+
+</details>
+
+## Installation
+
+### [HACS](https://hacs.xyz) (Home Assistant Community Store)
+
+1. Go to HACS page on your Home Assistant instance
+2. Add this repository via HACS Custom repositories [How to add Custom Repositories](https://hacs.xyz/docs/faq/custom_repositories/)
+
+```
+https://github.com/ngocjohn/lunar-phase-card
+```
+
+3. Select `Lovelace`
+1. Press add icon and search for `Lunar Phase Card`
+1. Select Lunar Phase Card repo and install
+1. Force refresh the Home Assistant page `Ctrl` + `F5` / `Shift` + `⌘` + `R`
+1. Add lunar-phase-card to your page
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ngocjohn&repository=lunar-phase-card&category=plugin)
+
+### Manual
+
+<details>
+  <summary>Click to expand installation instructions</summary>
+
+1. Download the [lunar-phase-card.js](https://github.com/ngocjohn/lunar-phase-card/releases/latest).
+2. Place the downloaded file on your Home Assistant machine in the `config/www` folder (when there is no `www` folder in the folder where your `configuration.yaml` file is, create it and place the file there).
+3. In Home Assistant go to `Configuration->Lovelace Dashboards->Resources` (When there is no `resources` tag on the `Lovelace Dashboard` page, enable advanced mode in your account settings, and retry this step).
+4. Add a new resource:
+   - Url = `/local/lunar-phase-card.js`
+   - Resource type = `module`
+5. Force refresh the Home Assistant page `Ctrl` + `F5` / `Shift` + `⌘` + `R`.
+6. Add lunar-phase-card to your page.
+
+</details>
+
+## Configuration
+
+<p style="text-align: justify;">Basic options can be configured in the GUI editor. To configure the Lunar Phase Card, you can use the following parameters in your Lovelace configuration:</p>
+
+| Name              | Type    | Requirement | Description                                                           |
+| ----------------- | ------- | ----------- | --------------------------------------------------------------------- |
+| `type`            | string  | Required    | The type of the card. For this card, use `custom:lunar-phase-card`.   |
+| `entity`          | string  | Optional    | The entity_id from Lunar Phase custom component `sensor.*_moon_phase` |
+| `use_default`     | boolean | Optional    | Whether to use default settings. Defaults to `true`.                  |
+| `show_background` | boolean | Optional    | Whether to show the background image. Defaults to `false`.            |
+| `compact_view`    | boolean | Optional    | Whether to display the card in a compact view. Defaults to `false`.   |
+| `latitude`        | number  | Optional    | The latitude for which to calculate the lunar phase.                  |
+| `longitude`       | number  | Optional    | The longitude for which to calculate the lunar phase.                 |
+
+> [!NOTE]
+> The `entity` parameter is not required. It refers to the entity ID from the Lunar Card Custom component, which can be installed [here](https://github.com/ngocjohn/lunar-phase). If the `entity` is not defined, the card will use the default latitude and longitude from the system configuration.
+
+### Example Configuration
+
+Here's an example configuration for the Lunar Phase Card:
+
+```yaml
+type: custom:lunar-phase-card
+entity: sensor.prague_moon_phase
+use_default: false
+show_background: true
+compact_view: false
+```
+
+##
+
+&copy; 2024 Viet Ngoc
+
+[https://github.com/ngocjohn/](https://github.com/ngocjohn/)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>

@@ -356,7 +356,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   public getCardSize(): number {
-    return 5;
+    return 4;
   }
 }
 
