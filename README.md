@@ -1,5 +1,5 @@
 <a name="readme-top"></a>
-[![Validate](https://github.com/ngocjohn/lunar-phase-cardd/actions/workflows/validate.yaml/badge.svg)](https://github.com/ngocjohn/lunar-phase-cardd/actions/workflows/validate.yaml) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/ngocjohn/lunar-phase-cardd/total?style=flat&logo=homeassistantcommunitystore&logoSize=auto&label=Downloads&color=%2318BCF2) ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/ngocjohn/lunar-phase-cardd/latest/total?style=flat&logo=homeassistantcommunitystore&logoSize=auto)
+[![HACS](https://github.com/ngocjohn/lunar-phase-card/actions/workflows/validate.yaml/badge.svg)](https://github.com/ngocjohn/lunar-phase-card/actions/workflows/validate.yaml) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/ngocjohn/lunar-phase-card/total?style=flat&logo=homeassistantcommunitystore&logoSize=auto&label=Downloads&color=%2318BCF2) ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/ngocjohn/lunar-phase-card/latest/total?style=flat&logo=homeassistantcommunitystore&logoSize=auto)
 
 # 🌘 Lunar Phase Card
 
