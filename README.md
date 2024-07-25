@@ -21,8 +21,8 @@
 ### Default & Compact view
 
 <div style="display: flex; justify-content: space-between; gap: 0.5rem;">
-  <div style="width="48%"><img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-default.png" alt="Lunar Phase Cards" ></div>
-  <div style="width="48%"><img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact.png" alt="Lunar Phase Calendar"></div>
+  <img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-default.png" alt="Lunar Phase Cards" width="48%" >
+  <img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact.png" alt="Lunar Phase Calendar" width="48%" >
 </div>
 
 ## Table of contents
