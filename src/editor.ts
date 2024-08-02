@@ -1,4 +1,4 @@
-import { LitElement, html, TemplateResult, css, CSSResultGroup } from 'lit';
+import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 
 // Custom card helpers
@@ -15,9 +15,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   public setConfig(config: LunarPhaseCardConfig): void {
     this._config = config;
-    if (this._config.entity) {
-      this._config.use_default = false;
-    }
   }
 
   get _entity(): string {
@@ -34,6 +31,21 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   get _compact_view(): boolean {
     return this._config?.compact_view || false;
+  }
+
+  get _latitude(): number {
+    return this._config?.latitude || 0;
+  }
+
+  get _longitude(): number {
+    return this._config?.longitude || 0;
+  }
+
+  protected shouldUpdate(changedProps: PropertyValues): boolean {
+    if (!this._config || !this.hass) {
+      return false;
+    }
+    return super.shouldUpdate(changedProps);
   }
 
   protected render(): TemplateResult {
@@ -67,26 +79,27 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private renderSwitches(): TemplateResult {
+    const defaultDisabled = this._config?.entity || (this._config?.latitude && this._config?.longitude) ? true : false;
     return html`
       <div class="switches">
         <ha-formfield .label=${`Compact view`}>
           <ha-switch
-            .checked=${this._compact_view !== false}
+            .checked=${this._compact_view}
             .configValue=${'compact_view'}
             @change=${this._valueChanged}
           ></ha-switch>
         </ha-formfield>
         <ha-formfield .label=${`Default latitude & longitude`}>
           <ha-switch
-            .disabled=${this._config?.entity !== undefined}
-            .checked=${this._use_default !== false}
+            .disabled=${defaultDisabled}
+            .checked=${this._use_default}
             .configValue=${'use_default'}
             @change=${this._valueChanged}
           ></ha-switch>
         </ha-formfield>
         <ha-formfield .label=${`Show background`}>
           <ha-switch
-            .checked=${this._show_background !== false}
+            .checked=${this._show_background}
             .configValue=${'show_background'}
             @change=${this._valueChanged}
           ></ha-switch>
@@ -101,13 +114,13 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         .label=${'Latitude'}
         .configValue=${'latitude'}
         .value=${this._config?.latitude || ''}
-        @value-changed=${this._valueChanged}
+        @input=${this._valueChanged}
       ></ha-textfield>
       <ha-textfield
         .label=${'Longitude'}
         .configValue=${'longitude'}
         .value=${this._config?.longitude || ''}
-        @value-changed=${this._valueChanged}
+        @input=${this._valueChanged}
       ></ha-textfield>
     `;
     return this.panelTemplate('Latitude & Longitude', 'Set custom latitude and longitude', 'mdi:map-marker', content);
@@ -130,23 +143,43 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       return;
     }
     const target = ev.target;
-    if (this[`_${target.configValue}`] === target.value) {
+    const configValue = target.configValue;
+
+    if (this[`_${configValue}`] === target.value) {
       return;
     }
-    if (target.configValue) {
-      if (target.value === '') {
-        const tmpConfig = { ...this._config };
-        delete tmpConfig[target.configValue];
-        this._config = tmpConfig;
-      } else {
-        this._config = {
-          ...this._config,
-          [target.configValue]: target.checked !== undefined ? target.checked : target.value,
-        };
-      }
+
+    let newValue: any;
+
+    if (['latitude', 'longitude'].includes(configValue)) {
+      newValue = Number(target.value);
+      this._config = {
+        ...this._config,
+        [configValue]: newValue,
+      };
+    } else if (newValue && newValue.length === 0) {
+      // Check for an empty array
+      const tmpConfig = { ...this._config };
+      delete tmpConfig[configValue];
+      this._config = tmpConfig;
+    } else {
+      newValue = target.checked !== undefined ? target.checked : target.value;
+      this._config = {
+        ...this._config,
+        [configValue]: newValue,
+      };
     }
+
+    if (newValue && newValue.length === 0) {
+      // Check for an empty array
+      const tmpConfig = { ...this._config };
+      delete tmpConfig[configValue];
+      this._config = tmpConfig;
+    }
+    console.log('value changed', this._config);
     fireEvent(this, 'config-changed', { config: this._config });
   }
+
   static styles: CSSResultGroup = css`
     .card-config {
       width: 100%;

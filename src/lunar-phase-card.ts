@@ -5,7 +5,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 import SunCalc from 'suncalc3';
-import { LovelaceCardEditor, hasConfigOrEntityChanged } from 'custom-card-helpers';
+import { LovelaceCardEditor, hasConfigOrEntityChanged, fireEvent } from 'custom-card-helpers';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
 import { formatRelativeTime, formatTimeToHHMM } from './utils/helpers';
 import { BACKGROUND } from './const';
@@ -26,8 +26,8 @@ export class LunarPhaseCard extends LitElement {
 
   @state() private _activeCard: string = '' || 'base';
   @state() private _baseMoonData: Record<string, any> = {};
-  @state() private latitude = 0;
-  @state() private longitude = 0;
+  @property({ type: Number }) private latitude: number = 0;
+  @property({ type: Number }) private longitude: number = 0;
   @state() private selectedDate: string | undefined;
 
   public static getStubConfig = (): Record<string, unknown> => {
@@ -49,7 +49,6 @@ export class LunarPhaseCard extends LitElement {
   protected firstUpdated(changedProps: PropertyValues) {
     super.firstUpdated(changedProps);
     this._setBackgroundCss();
-    this.getLatLong();
     this.fetchBaseMoonData();
   }
 
@@ -58,26 +57,37 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private getLatLong(): { latitude: number; longitude: number } {
-    if (this.config.latitude && this.config.longitude) {
-      // console.log('using config');
+    if (this.config.latitude !== undefined && this.config.longitude !== undefined) {
       this.latitude = this.config.latitude;
       this.longitude = this.config.longitude;
-    } else if (this.config.entity) {
+      this.config.use_default = false; // Changed to assignment
+    } else if (!this.config.latitude && !this.config.longitude) {
+      const { latitude, longitude } = this.hass.config;
+      this.latitude = latitude;
+      this.longitude = longitude;
+      this.config.use_default = true; // Changed to assignment
+    }
+
+    if (this.config.entity) {
+      this.config.use_default = false; // Changed to assignment
+
       const entity = this.hass.states[this.config.entity];
       if (entity) {
-        const { latitude, longitude } = entity.attributes.location;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        // console.log('using entity', latitude, longitude);
+        this.latitude = entity.attributes.location.latitude;
+        this.longitude = entity.attributes.location.longitude;
       }
-    } else if (this.config.use_default) {
-      // console.log('using default');
-      this.latitude = this.hass.config.latitude;
-      this.longitude = this.hass.config.longitude;
     }
+
+    // Ensure the state updates and reflects in the UI
+    this.requestUpdate();
+
     return { latitude: this.latitude, longitude: this.longitude };
   }
 
+  toggleUseDefault() {
+    this.config.use_default = !this.config.use_default;
+    fireEvent(this, 'config-changed', { config: this.config });
+  }
   get _showBackground(): boolean {
     return this.config.show_background || false;
   }
@@ -124,6 +134,9 @@ export class LunarPhaseCard extends LitElement {
     if (changedProps.has('_activeCard') && this._activeCard === 'base') {
       this.selectedDate = undefined;
       this.fetchBaseMoonData();
+    }
+    if (changedProps.has('config')) {
+      this.getLatLong();
     }
   }
 
