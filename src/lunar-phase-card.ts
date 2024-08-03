@@ -158,7 +158,8 @@ export class LunarPhaseCard extends LitElement {
     if (!this.hass || !this.config) {
       return html``;
     }
-    const isCalendar = this._activeCard === 'calendar';
+    const isCalendar = this._activeCard === 'calendar' || window.matchMedia('(max-width: 600px)').matches;
+
     return html`
       <ha-card class=${this._computeClasses()}>
         ${this.renderHeader()}
@@ -263,8 +264,8 @@ export class LunarPhaseCard extends LitElement {
     const dateInput = html`<div class="date-input-wrapper">
       <input type="date" class="date-input" .value=${this.selectedDate} @input=${this._handleDateChange} />
       <button @click=${() => this.updateDate('today')} class="date-input-btn click-shrink">Today</button>
-      <button @click=${() => this.updateDate('prev')} class="date-input-btn click-shrink">Previous day</button>
-      <button @click=${() => this.updateDate('next')} class="date-input-btn click-shrink">Next day</button>
+      <button @click=${() => this.updateDate('prev')} class="date-input-btn click-shrink"><</button>
+      <button @click=${() => this.updateDate('next')} class="date-input-btn click-shrink">></button>
     </div>`;
 
     return html`

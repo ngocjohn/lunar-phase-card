@@ -29,9 +29,6 @@ ha-card {
 }
 
 @media screen and (max-width: 800px) {
-  ha-card {
-    font-size: 1.2vh !important;
-  }
   .moon-image {
     width: 100%;
     max-width: 100px !important;
@@ -222,8 +219,9 @@ section {
   width: 100%;
   position: relative;
   justify-content: space-around;
-  align-items: baseline;
+  align-items: normal;
   gap: 1rem;
+  text-wrap: nowrap;
 }
 .date-input-label {
   display: block;
