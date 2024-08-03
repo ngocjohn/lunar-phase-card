@@ -52,8 +52,9 @@ export class LunarPhaseCard extends LitElement {
     this.fetchBaseMoonData();
   }
 
-  private async fetchBaseMoonData() {
+  private fetchBaseMoonData() {
     this._baseMoonData = this._getBaseMoonData();
+    this.requestUpdate();
   }
 
   private getLatLong(): { latitude: number; longitude: number } {
@@ -84,16 +85,13 @@ export class LunarPhaseCard extends LitElement {
     return { latitude: this.latitude, longitude: this.longitude };
   }
 
-  toggleUseDefault() {
-    this.config.use_default = !this.config.use_default;
-    fireEvent(this, 'config-changed', { config: this.config });
-  }
   get _showBackground(): boolean {
     return this.config.show_background || false;
   }
 
   get _today(): Date {
-    return new Date();
+    const date = new Date();
+    return date;
   }
 
   get _moonIllumination() {
@@ -120,6 +118,7 @@ export class LunarPhaseCard extends LitElement {
     if (process.env.ROLLUP_WATCH === 'true') {
       window.LunarCard = this;
     }
+    this.fetchBaseMoonData();
   }
 
   disconnectedCallback(): void {
@@ -253,8 +252,16 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderCalendar(): TemplateResult | void {
+    // Initialize selectedDate to today if it is not already set
+    if (!this.selectedDate) {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+      const day = String(today.getDate()).padStart(2, '0');
+      this.selectedDate = `${year}-${month}-${day}`;
+    }
     const dateInput = html`<div class="date-input-wrapper">
-      <input type="date" class="date-input" .value=${this.selectedDate || ''} @input=${this._handleDateChange} />
+      <input type="date" class="date-input" .value=${this.selectedDate} @input=${this._handleDateChange} />
       <button @click=${() => this.updateDate('today')} class="date-input-btn click-shrink">Today</button>
       <button @click=${() => this.updateDate('prev')} class="date-input-btn click-shrink">Previous day</button>
       <button @click=${() => this.updateDate('next')} class="date-input-btn click-shrink">Next day</button>
@@ -276,7 +283,6 @@ export class LunarPhaseCard extends LitElement {
       date.setDate(this._today.getDate());
     }
     this.selectedDate = date.toISOString().split('T')[0];
-    console.log('update date', this.selectedDate);
     this.fetchBaseMoonData();
   }
 
