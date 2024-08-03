@@ -1,8 +1,8 @@
 import { description, repository } from './package.json';
 
 export function logCardInfo(version) {
-  const line1 = '   🌘 LUNAR PHASE CARD';
-  const line2 = `   ${version}`;
+  const line1 = `   🌒 LUNAR-PHASE-CARD 🌃 ${version} 🔭`;
+  const line2 = `   `;
   const length = Math.max(line1.length, line2.length) + 3;
   const pad = (text, length) => text + ' '.repeat(length - text.length);
   const repo = repository.url;
@@ -11,8 +11,8 @@ export function logCardInfo(version) {
   return `
     console.groupCollapsed(
       "%c${pad(line1, length)}\\n%c${pad(line2, length)}",
-      'color: orange; font-weight: bold; background: black',
-      'color: white; font-weight: bold; background: dimgray'
+      'color: cyan; font-weight: bold; background: transparent',
+      'font-weight: bold; background: dimgray',
     );
     console.info('${description}');
     console.info('Github: ${repo}');
