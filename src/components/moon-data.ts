@@ -54,8 +54,8 @@ export class LunarBaseData extends LitElement {
                 <div class="moon-data-item">
                   <span class="label">${data.label}</span>
                   <div class="value">
+                    ${data.secondValue ? html`<span class="second-value">(${data.secondValue}) </span>` : ''}
                     ${data.value} ${data.unit}
-                    ${data.secondValue ? html`<span class="second-value">(${data.secondValue})</span>` : ''}
                   </div>
                 </div>
               `,

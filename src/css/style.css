@@ -26,19 +26,20 @@ ha-card {
   letter-spacing: 0.5px;
   padding: 1rem;
   --swiper-pagination-bullet-inactive-color: var(--secondary-text-color);
+  --swiper-pagination-bottom: 0;
 }
 
-@media screen and (max-width: 800px) {
+/* @media screen and (max-width: 800px) {
   .moon-image {
     width: 100%;
     max-width: 100px !important;
     max-height: 100px !important;
   }
-}
+} */
 
 ha-card.--background {
   background-size: cover;
-  background-position: top center;
+  background-position: bottom;
   background-repeat: no-repeat;
   background-image: var(--lunar-background-image);
   transition: all 0.5s ease;
@@ -50,7 +51,7 @@ ha-card.--background {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0px 1.5rem;
+  padding: 8px 0 14px 6px;
 }
 
 .lunar-card-header.flexend {
@@ -95,13 +96,12 @@ h1 {
 
 .lunar-card-content.flex-col {
   flex-direction: column;
-  gap: 0;
+  gap: 8px;
 }
 .moon-image {
   display: block;
   width: 100%;
-  max-width: 130px;
-  max-height: 130px;
+  max-width: calc(25% - 1px);
   transition: transform 0.5s;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -110,10 +110,15 @@ h1 {
 
 .moon-image > img {
   width: 100%;
-  height: auto;
-  object-fit: cover;
-  user-select: none;
-  filter: grayscale(1) drop-shadow(0 0px 1rem black);
+  height: 100%;
+  transform: rotate(0deg); /* Initial state */
+  filter: grayscale(1) brightness(1);
+}
+
+.moon-image img.rotatable {
+  transform-origin: center center;
+  will-change: transform;
+  transition: transform 0.5s ease; /* Smooth rotation */
 }
 
 @keyframes fadeIn {
@@ -157,12 +162,13 @@ h1 {
   display: flex;
   color: var(--primary-text-color);
   font-weight: 600;
-  width: 50%;
-  justify-content: space-between;
+  width: 60%;
+  justify-content: flex-end;
 }
 .value > span {
   font-weight: 400;
   font-size: smaller;
+  padding-right: 2px;
 }
 
 /* SWIPER */
@@ -184,10 +190,12 @@ section {
   width: 100%;
   height: 100%;
   display: block;
+  backdrop-filter: blur(4px);
 }
-.swiper-wrapper {
+/* .swiper-wrapper {
   margin-bottom: 1rem;
-}
+} */
+
 .swiper-slide {
   display: block;
   width: fit-content;

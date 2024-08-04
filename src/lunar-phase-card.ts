@@ -5,11 +5,14 @@ import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 
 import SunCalc from 'suncalc3';
-import { LovelaceCardEditor, hasConfigOrEntityChanged, fireEvent } from 'custom-card-helpers';
+import { LovelaceCardEditor, hasConfigOrEntityChanged } from 'custom-card-helpers';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
 import { formatRelativeTime, formatTimeToHHMM } from './utils/helpers';
 import { BACKGROUND } from './const';
 import { MOON_IMAGES } from './const';
+
+// import { TESTIMAGES } from './const';
+
 import style from './css/style.css';
 
 import './components/moon-data';
@@ -26,9 +29,14 @@ export class LunarPhaseCard extends LitElement {
 
   @state() private _activeCard: string = '' || 'base';
   @state() private _baseMoonData: Record<string, any> = {};
-  @property({ type: Number }) private latitude: number = 0;
-  @property({ type: Number }) private longitude: number = 0;
+  @state() private latitude: number = 0;
+  @state() private longitude: number = 0;
   @state() private selectedDate: string | undefined;
+  @state() private _moonImageDataToday: { moonImage: string; moonPhaseName: string; rotateDeg: number } = {
+    moonImage: '',
+    moonPhaseName: '',
+    rotateDeg: 0,
+  };
 
   public static getStubConfig = (): Record<string, unknown> => {
     return {
@@ -46,10 +54,35 @@ export class LunarPhaseCard extends LitElement {
     };
   }
 
+  private getGridRowSize(): number {
+    const isCompact = this.config.compact_view;
+    const isCalendar = this._activeCard === 'calendar';
+    let gridRowSize = 2; // 1 = 56px + gutter 8px
+    if (!isCompact) gridRowSize += 2;
+    if (isCalendar) gridRowSize += 6;
+    return gridRowSize;
+  }
+
+  public getLayoutOptions() {
+    const gridRowSize = this.getGridRowSize();
+    return {
+      grid_min_rows: gridRowSize,
+      grid_max_rows: 8,
+      grid_columns: 4,
+      grid_min_columns: 4,
+    };
+  }
+
+  public getCardSize(): number {
+    return this.getGridRowSize();
+  }
+
   protected firstUpdated(changedProps: PropertyValues) {
     super.firstUpdated(changedProps);
     this._setBackgroundCss();
     this.fetchBaseMoonData();
+    this._getImageMoonDataToday();
+    this.getLatLong();
   }
 
   private fetchBaseMoonData() {
@@ -79,9 +112,6 @@ export class LunarPhaseCard extends LitElement {
       }
     }
 
-    // Ensure the state updates and reflects in the UI
-    this.requestUpdate();
-
     return { latitude: this.latitude, longitude: this.longitude };
   }
 
@@ -89,8 +119,8 @@ export class LunarPhaseCard extends LitElement {
     return this.config.show_background || false;
   }
 
-  get _today(): Date {
-    const date = new Date();
+  get _today() {
+    const date = Date.now();
     return date;
   }
 
@@ -113,12 +143,22 @@ export class LunarPhaseCard extends LitElement {
     return this._moonIllumination.phase.name;
   }
 
+  get _moonImageData(): { moonImage: string; moonPhaseName: string; rotateDeg: number } {
+    return this._getMoonImageData();
+  }
+
   connectedCallback(): void {
     super.connectedCallback();
     if (process.env.ROLLUP_WATCH === 'true') {
       window.LunarCard = this;
     }
+    this._setBackgroundCss();
     this.fetchBaseMoonData();
+  }
+
+  private _getImageMoonDataToday() {
+    console.log('Getting moon image data');
+    this._moonImageDataToday = this._getMoonImageData();
   }
 
   disconnectedCallback(): void {
@@ -133,6 +173,7 @@ export class LunarPhaseCard extends LitElement {
     if (changedProps.has('_activeCard') && this._activeCard === 'base') {
       this.selectedDate = undefined;
       this.fetchBaseMoonData();
+      console.log('Updated');
     }
     if (changedProps.has('config')) {
       this.getLatLong();
@@ -143,22 +184,17 @@ export class LunarPhaseCard extends LitElement {
     if (changedProps.has('hass') || changedProps.has('config')) {
       return true;
     }
-    if (changedProps.has('_activeCard')) {
+    if (changedProps.has('_activeCard') && this._activeCard === 'calendar') {
       return true;
     }
-
-    if (changedProps.has('selectedDate') || changedProps.has('_baseMoonData')) {
-      return true;
-    }
-
-    return hasConfigOrEntityChanged(this, changedProps, true);
+    return hasConfigOrEntityChanged(this, changedProps, false);
   }
 
   protected render(): TemplateResult {
     if (!this.hass || !this.config) {
       return html``;
     }
-    const isCalendar = this._activeCard === 'calendar' || window.matchMedia('(max-width: 600px)').matches;
+    const isCalendar = this._activeCard === 'calendar';
 
     return html`
       <ha-card class=${this._computeClasses()}>
@@ -198,13 +234,18 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderMoonImage(): TemplateResult {
-    const moonImageData = this._getMoonImageData();
+    const isCalendar = this._activeCard === 'calendar';
+    const marginSize = isCalendar ? '' : '2rem';
+    const moonSize = isCalendar ? 'max-width: calc(30% - 1px)' : 'max-width: calc(25% - 1px)';
+    const { moonImage, rotateDeg } = this._baseMoonData.moonImage;
+
     const style = {
-      transform: `rotate(${moonImageData.rotateDeg}deg)`,
-      marginBottom: `${this.config.compact_view ? '' : '2rem'}`,
+      marginBottom: marginSize,
+      maxWidth: moonSize,
     };
-    return html` <div class="moon-image slide-animation " style=${styleMap(style)}>
-      <img src=${moonImageData.moonImage} alt="${moonImageData.moonPhaseName}" />
+
+    return html` <div class="moon-image" style="${styleMap(style)}">
+      <img src=${moonImage} class="rotatable" style="transform: rotate(${rotateDeg}deg)" />
     </div>`;
   }
 
@@ -218,11 +259,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderCompactView(): TemplateResult {
-    const { moonFraction, moonRise, moonSet, moonAge } = this._baseMoonData || {};
-
-    if (!moonFraction || !moonRise || !moonSet || !moonAge) {
-      return html`<div>Loading...</div>`;
-    }
+    const { moonFraction, moonRise, moonSet, moonAge } = this._baseMoonData;
 
     return html`
       <div @click=${this.togglePage} class="btn-calendar compact click-shrink">
@@ -233,8 +270,8 @@ export class LunarPhaseCard extends LitElement {
         <div class="moon-fraction">${moonFraction.value} ${moonFraction.unit} Illuminated</div>
         <div class="compact-view-items">
           ${this.renderCompactItem('mdi:progress-clock', moonAge.value, moonAge.unit, moonAge.label)}
-          ${this.renderCompactItem('mdi:weather-sunset-up', moonRise.value, '', moonRise.label)}
-          ${this.renderCompactItem('mdi:weather-sunset-down', moonSet.value, '', moonSet.label)}
+          ${this.renderCompactItem('mdi:weather-moonset-up', moonRise.value, '', moonRise.label)}
+          ${this.renderCompactItem('mdi:weather-moonset', moonSet.value, '', moonSet.label)}
         </div>
       </div>
     `;
@@ -253,6 +290,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderCalendar(): TemplateResult | void {
+    if (this._activeCard === 'base') return;
     // Initialize selectedDate to today if it is not already set
     if (!this.selectedDate) {
       const today = new Date();
@@ -261,10 +299,11 @@ export class LunarPhaseCard extends LitElement {
       const day = String(today.getDate()).padStart(2, '0');
       this.selectedDate = `${year}-${month}-${day}`;
     }
+
     const dateInput = html`<div class="date-input-wrapper">
-      <input type="date" class="date-input" .value=${this.selectedDate} @input=${this._handleDateChange} />
-      <button @click=${() => this.updateDate('today')} class="date-input-btn click-shrink">Today</button>
       <button @click=${() => this.updateDate('prev')} class="date-input-btn click-shrink"><</button>
+
+      <input type="date" class="date-input" .value=${this.selectedDate} @input=${this._handleDateChange} />
       <button @click=${() => this.updateDate('next')} class="date-input-btn click-shrink">></button>
     </div>`;
 
@@ -274,14 +313,12 @@ export class LunarPhaseCard extends LitElement {
     `;
   }
 
-  private updateDate(action?: 'next' | 'prev' | 'today') {
+  private updateDate(action?: 'next' | 'prev') {
     const date = new Date(this.selectedDate || this._today);
     if (action === 'next') {
       date.setDate(date.getDate() + 1);
     } else if (action === 'prev') {
       date.setDate(date.getDate() - 1);
-    } else {
-      date.setDate(this._today.getDate());
     }
     this.selectedDate = date.toISOString().split('T')[0];
     this.fetchBaseMoonData();
@@ -311,16 +348,28 @@ export class LunarPhaseCard extends LitElement {
     const { rise, set, highest } = this._moonTimes as any;
     const { phaseValue, fraction } = this._moonIllumination;
     const { fullMoon, newMoon } = this._moonIllumination.next;
+    const parallacticAngle = this._moonPosition.parallacticAngle;
+    // const parallacticAngleDeg = this._moonPosition.parallacticAngleDegrees;
     const phaseName = this._moonIllumination.phase.name;
     const { distance, azimuthDegrees, altitudeDegrees } = this._moonPosition;
+    const phaseIndex = Math.round(phaseValue * 16) % 16;
+
+    const rotateDeg = parallacticAngle ? 180 - (parallacticAngle * 180) / Math.PI : 0;
 
     const formatDate = (date: string) => new Date(date).toISOString();
+
     const createMoonDataItem = (label: string, value: string, secondValue: string = '', unit: string = '') => ({
       label,
       value,
       secondValue,
       unit,
     });
+    const createMoonImageData = (moonImage: string, moonPhaseName: string, rotateDeg: number) => ({
+      moonImage,
+      moonPhaseName,
+      rotateDeg,
+    });
+
     return {
       moonFraction: createMoonDataItem('Illumination', (fraction * 100).toFixed(2), '', '%'),
       moonAge: createMoonDataItem('Moon Age', (phaseValue * 29.5).toFixed(2), '', 'days'),
@@ -337,25 +386,36 @@ export class LunarPhaseCard extends LitElement {
         '',
       ),
       distance: createMoonDataItem('Distance', distance.toFixed(2), '', 'km'),
-      azimuthDegress: createMoonDataItem('Moon Azimuth', azimuthDegrees.toFixed(2), '', '°'),
-      altitudeDegrees: createMoonDataItem('Moon Altitude', altitudeDegrees.toFixed(2), '', '°'),
-      nextFullMoon: createMoonDataItem('Next Full Moon', new Date(fullMoon.date).toDateString(), '', ''),
-      nextNewMoon: createMoonDataItem('Next New Moon', new Date(newMoon.date).toDateString(), '', ''),
+      azimuthDegress: createMoonDataItem('Azimuth', azimuthDegrees.toFixed(2), '', '°'),
+      altitudeDegrees: createMoonDataItem('Altitude', altitudeDegrees.toFixed(2), '', '°'),
+      nextFullMoon: createMoonDataItem(
+        'Full Moon',
+        new Date(fullMoon.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+        '',
+        '',
+      ),
+      nextNewMoon: createMoonDataItem(
+        'New Moon',
+        new Date(newMoon.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+        '',
+        '',
+      ),
       phaseName: createMoonDataItem('Phase Name', phaseName, '', ''),
+      moonImage: createMoonImageData(MOON_IMAGES[phaseIndex], phaseName, rotateDeg),
     };
   }
 
-  private _getMoonIllumination(date: Date) {
+  private _getMoonIllumination(date) {
     const moonIllumination = SunCalc.getMoonIllumination(date);
     return moonIllumination;
   }
 
-  private _getMoonPosition(date: Date, latitude: number, longitude: number) {
+  private _getMoonPosition(date, latitude: number, longitude: number) {
     const moonPosition = SunCalc.getMoonPosition(date, latitude, longitude);
     return moonPosition;
   }
 
-  private _getMoonTimes = (date: Date, latitude: number, longitude: number) => {
+  private _getMoonTimes = (date, latitude: number, longitude: number) => {
     const moonTimes = SunCalc.getMoonTimes(date, latitude, longitude);
     return moonTimes;
   };
@@ -374,16 +434,13 @@ export class LunarPhaseCard extends LitElement {
   public static get styles(): CSSResultGroup {
     return [style];
   }
-
-  public getCardSize(): number {
-    return 4;
-  }
 }
 
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
   type: 'lunar-phase-card',
   name: 'Lunar Phase Card',
+  preview: true,
   description: 'A custom card to display the current lunar phase.',
 });
 

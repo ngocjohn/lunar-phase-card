@@ -45,8 +45,8 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   type: 'custom:lunar-phase-card',
   entity: '',
   use_default: true,
-  show_background: false,
-  compact_view: false,
+  show_background: true,
+  compact_view: true,
 };
 
 export interface LunarPhaseData {
