@@ -1,6 +1,7 @@
 import { version } from '../package.json';
 
 export const CARD_VERSION = version;
+export const BASE_REFRESH_INTERVAL = 30 * 1000; // 30 seconds
 
 import moon_phase_0 from './images/moon_phase_0.png';
 import moon_phase_1 from './images/moon_phase_1.png';

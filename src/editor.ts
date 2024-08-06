@@ -13,6 +13,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   @property({ attribute: false }) public hass!: HomeAssistant;
 
   @state() private _config?: LunarPhaseCardConfig;
+  @property({ type: String }) selectedOption: string = 'url';
 
   public setConfig(config: LunarPhaseCardConfig): void {
     this._config = config;
@@ -42,6 +43,16 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     return this._config?.longitude || 0;
   }
 
+  get _custom_background(): string {
+    return this._config?.custom_background || '';
+  }
+  connectedCallback(): void {
+    super.connectedCallback();
+  }
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+  }
+
   protected shouldUpdate(changedProps: PropertyValues): boolean {
     if (!this._config || !this.hass) {
       return false;
@@ -54,7 +65,10 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       return html``;
     }
     const entities = Object.keys(this.hass.states)
-      .filter((entity) => entity.startsWith('sensor') && entity.endsWith('_moon_phase'))
+      .filter(
+        (entity) =>
+          entity.startsWith('sensor') && entity.endsWith('_moon_phase') && !entity.endsWith('_next_moon_phase'),
+      )
       .sort();
 
     return html`
@@ -70,14 +84,114 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         >
           <mwc-list-item value=""></mwc-list-item>
           ${entities.map((entity) => {
-            return html`<mwc-list-item .value=${entity}>${entity}</mwc-list-item>`;
+            const friendlyName = this.hass.states[entity].attributes.friendly_name;
+            const displayName = `${friendlyName ? `${friendlyName} (${entity})` : entity} `;
+            return html`<mwc-list-item .value=${entity}> ${displayName}</mwc-list-item>`;
           })}
         </ha-select>
-        ${this.renderCustomLatLon()} ${this.renderSwitches()}
+        ${this.renderImageUpload()} ${this.renderCustomLatLon()} ${this.renderSwitches()}
       </div>
       <div class="version">Version: ${CARD_VERSION}</div>
     `;
   }
+
+  private renderImageUpload(): TemplateResult {
+    const textFormInput = html`
+      <div class="custom-background-wrapper">
+        <ha-textfield
+          .label=${'Custom Background'}
+          .configValue=${'custom_background'}
+          .value=${this._custom_background}
+          @input=${this._valueChanged}
+        ></ha-textfield>
+        ${!this._custom_background
+          ? html`
+              <label for="file-upload" class="file-upload">
+                Choose file<input
+                  type="file"
+                  id="file-upload"
+                  class="file-input"
+                  @change=${this._handleFilePicked.bind(this)}
+                  accept="image/*"
+                />
+              </label>
+            `
+          : html`
+              <div class="right-icon">
+                <ha-icon icon="mdi:delete" @click=${this.handleRemoveBackground}></ha-icon>
+              </div>
+            `}
+      </div>
+    `;
+
+    return this.panelTemplate('Custom Background', 'Set a custom background image', 'mdi:image', textFormInput);
+  }
+
+  private async _handleFilePicked(ev: Event): Promise<void> {
+    const input = ev.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+
+    const file = input.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('/api/image/upload', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${this.hass.auth.data.access_token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
+      }
+
+      const data = await response.json();
+      console.log('Upload response:', data); // Debugging line to check the response structure
+      const imageId = data.id; // Adjust this line to match the correct field in the response
+      const imageName = data.name; // Adjust this line to match the correct field in the response
+
+      if (!imageId) {
+        console.error('Response structure:', data); // Log the response structure for debugging
+        throw new Error('Image ID is missing in the response');
+      }
+
+      const imageUrl = `/api/image/serve/${imageId}/original`;
+      console.log('Uploaded image URL:', imageUrl);
+
+      // Add the new image URL to the list of image links
+      if (this._config) {
+        this._config = { ...this._config, custom_background: imageUrl };
+        fireEvent(this, 'config-changed', { config: this._config });
+        this.requestUpdate();
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  }
+
+  private handleRemoveBackground(): void {
+    if (this._config) {
+      this._config = { ...this._config, custom_background: undefined };
+      fireEvent(this, 'config-changed', { config: this._config });
+      this.requestUpdate();
+    }
+  }
+  // private _removeImage(index: number): void {
+  //   if (this._config) {
+  //     const backgroundImages = this._background_images;
+  //     backgroundImages.splice(index, 1);
+  //     this.imageNames.splice(index, 1); // Remove the corresponding image name
+  //     this._config = { ...this._config, background_images: backgroundImages };
+  //     console.log('background_images removed', this._config);
+  //     fireEvent(this, 'config-changed', { config: this._config });
+  //     this.requestUpdate();
+  //   }
+  // }
 
   private renderSwitches(): TemplateResult {
     const defaultDisabled = this._config?.entity || (this._config?.latitude && this._config?.longitude) ? true : false;
@@ -110,14 +224,19 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private renderCustomLatLon(): TemplateResult {
+    const disabled = this._config?.entity ? true : false;
+    const note = "If entity is set, latitude and longitude won't be used.";
     const content = html`
+      <ha-alert alert-type="info">${note}</ha-alert>
       <ha-textfield
+        .disabled=${disabled}
         .label=${'Latitude'}
         .configValue=${'latitude'}
         .value=${this._config?.latitude || ''}
         @input=${this._valueChanged}
       ></ha-textfield>
       <ha-textfield
+        .disabled=${disabled}
         .label=${'Longitude'}
         .configValue=${'longitude'}
         .value=${this._config?.longitude || ''}
@@ -201,7 +320,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     }
     ha-select,
     ha-textfield {
-      margin-bottom: 16px;
       display: block;
       width: 100%;
     }
@@ -218,7 +336,29 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     }
     .right-icon {
       padding-inline: 0.5rem;
+      cursor: pointer;
     }
+    .custom-background-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      text-wrap: nowrap;
+    }
+    .file-input {
+      display: none;
+    }
+    .file-upload {
+      cursor: pointer;
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--divider-color);
+      border-radius: 8px;
+      color: var(--primary-text-color);
+    }
+    .file-upload:hover {
+      background-color: var(--primary-color);
+    }
+
     .version {
       margin-top: 1rem;
       color: var(--secondary-text-color);
