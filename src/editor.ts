@@ -3,12 +3,13 @@ import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues }
 import { customElement, property, state } from 'lit/decorators';
 
 // Custom card helpers
-import { fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
+import { fireEvent, LovelaceCardEditor, hasConfigOrEntityChanged } from 'custom-card-helpers';
 
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig } from './types';
 import { languageOptions, localize } from './localize/localize';
 import { loadHaComponents } from './utils/loader';
 import { CARD_VERSION } from './const';
+import editorcss from './css/editor.css';
 
 @customElement('lunar-phase-card-editor')
 export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEditor {
@@ -17,24 +18,39 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   @state() private _config?: LunarPhaseCardConfig;
   @property({ type: String }) selectedOption: string = 'url';
 
+  @state() private _newLatitude: number | string = '';
+  @state() private _newLongitude: number | string = '';
+
+  private _systemLanguage = localStorage.getItem('selectedLanguage') || 'en';
+
   public setConfig(config: LunarPhaseCardConfig): void {
     this._config = config;
   }
 
-  private get selectedLanguage(): string {
-    return this._config?.selected_language || localStorage.getItem('selectedLanguage') || 'en';
+  protected firstUpdated(changedProps: PropertyValues): void {
+    super.firstUpdated(changedProps);
+    this._handleFirstUpdate();
   }
+
+  private _handleFirstUpdate(): void {
+    if (!this._config || !this.hass) {
+      return;
+    }
+    if (this._config.use_default) {
+      this._config.entity = '';
+      this._config.latitude = this.hass.config.latitude;
+      this._config.longitude = this.hass.config.longitude;
+      fireEvent(this, 'config-changed', { config: this._config });
+    }
+  }
+
+  private get selectedLanguage(): string {
+    return this._config?.selected_language || 'en';
+  }
+
   private localize = (string: string, search = '', replace = ''): string => {
     return localize(string, this.selectedLanguage, search, replace);
   };
-
-  get _entity(): string {
-    return this._config?.entity || '';
-  }
-
-  get _use_default(): boolean {
-    return this._config?.use_default || true;
-  }
 
   get _show_background(): boolean {
     return this._config?.show_background || false;
@@ -42,14 +58,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   get _compact_view(): boolean {
     return this._config?.compact_view || false;
-  }
-
-  get _latitude(): number {
-    return this._config?.latitude || 0;
-  }
-
-  get _longitude(): number {
-    return this._config?.longitude || 0;
   }
 
   get _custom_background(): string {
@@ -64,52 +72,198 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     super.disconnectedCallback();
   }
 
-  protected shouldUpdate(changedProps: PropertyValues): boolean {
-    if (!this._config || !this.hass) {
-      return false;
-    }
-    return super.shouldUpdate(changedProps);
-  }
-
   protected render(): TemplateResult {
     if (!this.hass) {
       return html``;
     }
-    const entities = Object.keys(this.hass.states)
-      .filter(
-        (entity) =>
-          entity.startsWith('sensor') && entity.endsWith('_moon_phase') && !entity.endsWith('_next_moon_phase'),
-      )
-      .sort();
 
     return html`
-      <div class="card-config">
-        <ha-entity-picker
-          .hass=${this.hass}
-          .value=${this._entity}
-          .required=${false}
-          .configValue=${'entity'}
-          @value-changed=${this._valueChanged}
-          allow-custom-entity
-          .includeEntities=${entities}
-        ></ha-entity-picker>
-
-        ${this.renderImageUpload()} ${this.renderCustomLatLon()} ${this.renderSwitches()}
-      </div>
+      <div class="card-config">${this._renderBaseConfigSelector()} ${this.renderViewConfiguration()}</div>
       <div class="version">Version: ${CARD_VERSION}</div>
     `;
   }
 
-  private renderImageUpload(): TemplateResult {
-    const sysLang = localStorage.getItem('selectedLanguage') || 'en';
-    const langOpts = [
-      { key: sysLang, name: 'System', nativeName: 'System' },
-      ...languageOptions.sort((a, b) => a.name.localeCompare(b.name)),
-    ];
+  private _handleRadioChange(ev): void {
+    if (!this._config || !this.hass) {
+      return;
+    }
+    const target = ev.target;
+    const configValue = target.value;
 
+    if (this._config[configValue] === true) {
+      return;
+    }
+
+    const updates: Partial<LunarPhaseCardConfig> = {};
+    const radiosOptions = this._getBaseConfigSelector().options.map((item) => item.key);
+    radiosOptions.forEach((item) => {
+      if (item === configValue) {
+        updates[item] = true;
+      } else {
+        updates[item] = false;
+      }
+    });
+
+    if (configValue === 'use_custom') {
+      updates.entity = '';
+    }
+    if (configValue === 'use_entity') {
+      this._newLatitude = '';
+      this._newLongitude = '';
+    }
+
+    if (configValue === 'use_default') {
+      updates.entity = '';
+      updates.latitude = this.hass.config.latitude;
+      updates.longitude = this.hass.config.longitude;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      this._config = { ...this._config, ...updates };
+      console.log('updates', updates);
+      fireEvent(this, 'config-changed', { config: this._config });
+    }
+  }
+
+  private _renderBaseConfigSelector(): TemplateResult {
+    const radiosOptions = this._getBaseConfigSelector().options;
+
+    const radios = radiosOptions.map((item) => {
+      return html`
+        <ha-formfield .label=${item.label}>
+          <ha-radio
+            .checked=${this._config ? this._config[item.key] : false}
+            .value=${item.key}
+            @change=${this._handleRadioChange}
+          ></ha-radio>
+        </ha-formfield>
+      `;
+    });
+
+    const customLatLongForms = html`
+      <ha-textfield
+        .label=${this.localize('editor.placeHolder.latitude')}
+        .configValue=${'latitude'}
+        .value=${this._newLatitude}
+        @input=${this._customLatLongChanged}
+      ></ha-textfield>
+      <ha-textfield
+        .label=${this.localize('editor.placeHolder.longitude')}
+        .configValue=${'longitude'}
+        .value=${this._newLongitude}
+        @input=${this._customLatLongChanged}
+      ></ha-textfield>
+    `;
+
+    const contentWrapp = html`
+      <div class="radios-btn">${radios}</div>
+      <div class="base-config-selector">
+        ${this._config?.use_default ? this._renderUseDefault() : ''}
+        ${this._config?.use_custom ? customLatLongForms : ''}
+        ${this._config?.use_entity ? this._renderEntityPicker() : ''}
+      </div>
+    `;
+    return this.panelTemplate('baseConfig', 'baseConfig', 'mdi:cog', contentWrapp);
+  }
+
+  private _renderUseDefault(): TemplateResult {
+    const latitude = this._config?.latitude || this.hass.config.latitude;
+    const longitude = this._config?.longitude || this.hass.config.longitude;
+    const content = html`
+      <ha-textfield .disabled=${true} .label=${'Latitude'} .configValue=${'latitude'} .value=${latitude}></ha-textfield>
+      <ha-textfield
+        .disabled=${true}
+        .label=${'Longitude'}
+        .configValue=${'longitude'}
+        .value=${longitude}
+      ></ha-textfield>
+    `;
+    return content;
+  }
+
+  private _renderEntityPicker(): TemplateResult {
+    const entities = Object.keys(this.hass.states)
+      .filter((entity) => entity.startsWith('sensor') && entity.endsWith('_moon_phase'))
+      .filter((entity) => entity.startsWith('sensor') && !entity.endsWith('next_moon_phase'))
+      .sort();
+    const entityPicker = html`
+      <ha-entity-picker
+        .hass=${this.hass}
+        .value=${this._config?.entity}
+        .configValue=${'entity'}
+        @value-changed=${this._entityChanged}
+        .label=${'Entity'}
+        .required=${false}
+        .includeEntities=${entities}
+        allow-custom-entity
+      ></ha-entity-picker>
+    `;
+    const entitySelected = this._config?.entity ? true : false;
+    const entityLatLong = this._getEntityLatLong();
+    const entityContent = entityLatLong.map((item) => {
+      return html` <ha-textfield .disabled=${true} .label=${item.label} .value=${item.value}></ha-textfield> `;
+    });
+
+    const content = html` ${entityPicker} ${entitySelected ? entityContent : ''} `;
+    return content;
+  }
+
+  private _getEntityLatLong(): { label: string; value: number | string }[] {
+    if (!this._config?.entity) {
+      return [];
+    }
+
+    const entity = this.hass.states[this._config.entity];
+    if (!entity || !entity.attributes) {
+      return [];
+    }
+
+    return [
+      {
+        label: 'City',
+        value: entity.attributes.location.name,
+      },
+      {
+        label: 'Latitude',
+        value: entity.attributes.location.latitude,
+      },
+      {
+        label: 'Longitude',
+        value: entity.attributes.location.longitude,
+      },
+    ];
+  }
+
+  private renderViewConfiguration(): TemplateResult {
+    const langOpts = [...languageOptions.sort((a, b) => a.name.localeCompare(b.name))];
+
+    const viewOptions = html`
+      <div class="switches">
+        <ha-formfield .label=${this.localize('editor.compactView')}>
+          <ha-checkbox
+            .checked=${this._compact_view}
+            .configValue=${'compact_view'}
+            @change=${this._valueChanged}
+          ></ha-checkbox>
+        </ha-formfield>
+        <ha-formfield .label=${this.localize('editor.showBackground')}>
+          <ha-checkbox
+            .checked=${this._show_background}
+            .configValue=${'show_background'}
+            @change=${this._valueChanged}
+          ></ha-checkbox>
+        </ha-formfield>
+        <ha-formfield .label=${this.localize('editor.timeFormat')}>
+          <ha-checkbox
+            .checked=${this._config?.['12hr_format'] !== false}
+            .configValue=${'12hr_format'}
+            @change=${this._valueChanged}
+          ></ha-checkbox>
+      </div>
+    `;
     const languageSelect = html`
       <ha-select
-        .label=${this.hass.localize('ui.panel.profile.language.dropdown_label') || 'Language'}
+        .label=${this.localize('editor.placeHolder.language')}
         .value=${this.selectedLanguage}
         .configValue=${'selected_language'}
         @selected=${this._valueChanged}
@@ -125,22 +279,23 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     const textFormInput = html`
       <div class="custom-background-wrapper">
         <ha-textfield
-          .label=${'Custom Background'}
+          .label=${this.localize('editor.placeHolder.customBackground')}
           .configValue=${'custom_background'}
           .value=${this._custom_background}
           @input=${this._valueChanged}
         ></ha-textfield>
         ${!this._custom_background
           ? html`
-              <label for="file-upload" class="file-upload">
-                Choose file<input
-                  type="file"
-                  id="file-upload"
-                  class="file-input"
-                  @change=${this._handleFilePicked.bind(this)}
-                  accept="image/*"
-                />
-              </label>
+              <ha-button @click=${() => this.shadowRoot?.getElementById('file-upload-new')?.click()}>
+                Upload
+              </ha-button>
+              <input
+                type="file"
+                id="file-upload-new"
+                class="file-input"
+                @change=${this._handleFilePicked.bind(this)}
+                accept="image/*"
+              />
             `
           : html`
               <div class="right-icon">
@@ -149,8 +304,23 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
             `}
       </div>
     `;
-    const content = html` ${languageSelect} ${textFormInput} `;
-    return this.panelTemplate('background', 'background', 'mdi:image', content);
+    const content = html` ${viewOptions} ${languageSelect} ${textFormInput} `;
+    return this.panelTemplate('viewConfig', 'viewConfig', 'mdi:image', content);
+  }
+
+  private panelTemplate(title: string, secondary: string, icon: string, content: TemplateResult): TemplateResult {
+    const localTitle = this.localize(`editor.${title}.title`);
+    const localDesc = this.localize(`editor.${secondary}.description`);
+    return html`
+      <div class="panel-container">
+        <ha-expansion-panel .expanded=${true} .outlined=${true} .header=${localTitle} .secondary=${localDesc}>
+          <div class="right-icon" slot="icons">
+            <ha-icon icon=${icon}></ha-icon>
+          </div>
+          <div class="card-config">${content}</div>
+        </ha-expansion-panel>
+      </div>
+    `;
   }
 
   private async _handleFilePicked(ev: Event): Promise<void> {
@@ -207,73 +377,68 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     }
   }
 
-  private renderSwitches(): TemplateResult {
-    const defaultDisabled = this._config?.entity || (this._config?.latitude && this._config?.longitude) ? true : false;
-    return html`
-      <div class="switches">
-        <ha-formfield .label=${this.localize('editor.compactView')}>
-          <ha-switch
-            .checked=${this._compact_view}
-            .configValue=${'compact_view'}
-            @change=${this._valueChanged}
-          ></ha-switch>
-        </ha-formfield>
-        <ha-formfield .label=${this.localize('editor.defaultLatLong')}>
-          <ha-switch
-            .disabled=${defaultDisabled}
-            .checked=${this._use_default}
-            .configValue=${'use_default'}
-            @change=${this._valueChanged}
-          ></ha-switch>
-        </ha-formfield>
-        <ha-formfield .label=${this.localize('editor.showBackground')}>
-          <ha-switch
-            .checked=${this._show_background}
-            .configValue=${'show_background'}
-            @change=${this._valueChanged}
-          ></ha-switch>
-        </ha-formfield>
-      </div>
-    `;
+  private _getBaseConfigSelector(): any {
+    return {
+      options: [
+        {
+          key: 'use_default',
+          label: this.localize('editor.optionsConfig.useDefault'),
+        },
+        {
+          key: 'use_custom',
+          label: this.localize('editor.optionsConfig.useCustom'),
+        },
+        {
+          key: 'use_entity',
+          label: this.localize('editor.optionsConfig.useEntity'),
+        },
+      ],
+    };
   }
 
-  private renderCustomLatLon(): TemplateResult {
-    const disabled = this._config?.entity ? true : false;
-    const note = "If entity is set, latitude and longitude won't be used.";
-    const content = html`
-      <ha-alert alert-type="info">${note}</ha-alert>
-      <ha-textfield
-        .disabled=${disabled}
-        .label=${'Latitude'}
-        .configValue=${'latitude'}
-        .value=${this._config?.latitude || ''}
-        @input=${this._valueChanged}
-      ></ha-textfield>
-      <ha-textfield
-        .disabled=${disabled}
-        .label=${'Longitude'}
-        .configValue=${'longitude'}
-        .value=${this._config?.longitude || ''}
-        @input=${this._valueChanged}
-      ></ha-textfield>
-    `;
-    return this.panelTemplate('customLatLong', 'customLatLong', 'mdi:map-marker', content);
+  private _entityChanged(ev): void {
+    if (!this._config || !this.hass) {
+      return;
+    }
+    const entity = ev.detail.value;
+    if (this._config.entity === entity) {
+      return;
+    }
+    const location = this.hass.states[entity].attributes.location;
+    const latitude = location.latitude;
+    const longitude = location.longitude;
+
+    const updates: Partial<LunarPhaseCardConfig> = { entity, latitude, longitude };
+    this._config = { ...this._config, ...updates };
+    fireEvent(this, 'config-changed', { config: this._config });
   }
 
-  private panelTemplate(title: string, secondary: string, icon: string, content: TemplateResult): TemplateResult {
-    const localTitle = this.localize(`editor.${title}.title`);
-    const localDesc = this.localize(`editor.${secondary}.description`);
-    return html`
-      <div class="panel-container">
-        <ha-expansion-panel .expanded=${false} .outlined=${true} .header=${localTitle} .secondary=${localDesc}>
-          <div class="right-icon" slot="icons">
-            <ha-icon icon=${icon}></ha-icon>
-          </div>
-          <div class="card-config">${content}</div>
-        </ha-expansion-panel>
-      </div>
-    `;
+  private _customLatLongChanged(ev): void {
+    if (!this._config || !this.hass) {
+      return;
+    }
+    const target = ev.target;
+    const configValue = target.configValue;
+
+    if (this[`${configValue}`] === target.value) {
+      return;
+    }
+
+    if (configValue === 'latitude') {
+      this._newLatitude = target.value;
+    }
+    if (configValue === 'longitude') {
+      this._newLongitude = target.value;
+    }
+
+    this._config = {
+      ...this._config,
+      [configValue]: parseFloat(target.value),
+    };
+    console.log(configValue, target.value);
+    fireEvent(this, 'config-changed', { config: this._config });
   }
+
   private _valueChanged(ev): void {
     if (!this._config || !this.hass) {
       return;
@@ -281,13 +446,13 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     const target = ev.target;
     const configValue = target.configValue;
 
-    if (this[`_${configValue}`] === target.value) {
+    if (this[`${configValue}`] === target.value) {
       return;
     }
 
     let newValue: any;
 
-    if (['latitude', 'longitude'].includes(configValue)) {
+    if (['custom_latitude', 'custom_longitude'].includes(configValue)) {
       newValue = Number(target.value);
       this._config = {
         ...this._config,
@@ -312,75 +477,14 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       delete tmpConfig[configValue];
       this._config = tmpConfig;
     }
-    console.log('value changed', this._config);
     fireEvent(this, 'config-changed', { config: this._config });
   }
 
-  static styles: CSSResultGroup = css`
-    .card-config {
-      width: 100%;
-      margin-block: 0.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .switches {
-      margin: 0.5rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-gap: 1rem;
-    }
-    ha-select {
-      --mdc-menu-max-height: 200px;
-    }
-    ha-select,
-    ha-textfield {
-      display: block;
-      width: 100%;
-    }
-    ha-formfield {
-      padding-bottom: 8px;
-      width: 100%;
-    }
-    ha-switch {
-      --mdc-theme-secondary: var(--switch-checked-color);
-    }
-
-    ha-expansion-panel .container {
-      padding: 0px 1rem !important;
-    }
-    .right-icon {
-      padding-inline: 0.5rem;
-      cursor: pointer;
-    }
-    .custom-background-wrapper {
-      display: inline-flex;
-      align-items: center;
-      gap: 1rem;
-      text-wrap: nowrap;
-    }
-    .file-input {
-      display: none;
-    }
-    .file-upload {
-      cursor: pointer;
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--divider-color);
-      border-radius: 8px;
-      color: var(--primary-text-color);
-    }
-    .file-upload:hover {
-      background-color: var(--primary-color);
-    }
-
-    .version {
-      margin-top: 1rem;
-      color: var(--secondary-text-color);
-      text-align: start;
-    }
-  `;
+  static get styles(): CSSResultGroup {
+    return css`
+      ${editorcss}
+    `;
+  }
 }
 
 declare global {

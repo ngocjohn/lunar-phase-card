@@ -35,8 +35,11 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   type: string;
   entity?: string;
   use_default?: boolean;
+  use_custom?: boolean;
+  use_entity?: boolean;
   show_background?: boolean;
   compact_view?: boolean;
+  '12hr_format'?: boolean;
   custom_background?: string;
   selected_language?: string | null;
   latitude: number;
@@ -47,8 +50,11 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   type: 'custom:lunar-phase-card',
   entity: '',
   use_default: true,
+  use_custom: false,
+  use_entity: false,
   show_background: true,
   compact_view: true,
+  '12hr_format': false,
 };
 
 export interface LunarPhaseData {

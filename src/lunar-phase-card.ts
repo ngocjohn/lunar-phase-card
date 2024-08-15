@@ -11,7 +11,7 @@ import { formatRelativeTime, formatTimeToHHMM, formatDate } from './utils/helper
 import { BACKGROUND } from './const';
 import { MOON_IMAGES } from './const';
 import { BASE_REFRESH_INTERVAL } from './const';
-
+import { localize } from './localize/localize';
 import style from './css/style.css';
 
 import './components/moon-data';
@@ -28,8 +28,6 @@ export class LunarPhaseCard extends LitElement {
 
   @state() private _activeCard: string = 'base';
   @state() private _baseMoonData: Record<string, any> = {};
-  @state() private latitude: number = 0;
-  @state() private longitude: number = 0;
   @state() private selectedDate: Date | undefined;
   @state() private _connected: boolean = false;
   @state() private _refreshInterval: number | undefined;
@@ -75,8 +73,8 @@ export class LunarPhaseCard extends LitElement {
 
   protected firstUpdated(changedProps: PropertyValues) {
     super.firstUpdated(changedProps);
+    this.fetchBaseMoonData();
     this._setBackgroundCss();
-    this.getLatLong();
   }
 
   connectedCallback(): void {
@@ -85,7 +83,6 @@ export class LunarPhaseCard extends LitElement {
       window.LunarCard = this;
     }
     this._connected = true;
-    this.fetchBaseMoonData();
     this.startRefreshInterval();
   }
 
@@ -109,40 +106,26 @@ export class LunarPhaseCard extends LitElement {
         this.clearRefreshInterval();
       }
     }
-    if (changedProps.has('config')) {
-      this.getLatLong();
-      this.fetchBaseMoonData();
-    }
   }
 
-  private fetchBaseMoonData() {
-    this._baseMoonData = this._getBaseMoonData();
+  private get selectedLanguage(): string {
+    return this.config?.selected_language || localStorage.getItem('selectedLanguage') || 'en';
   }
 
-  private getLatLong(): { latitude: number; longitude: number } {
-    if (this.config.latitude !== undefined && this.config.longitude !== undefined) {
-      this.latitude = this.config.latitude;
-      this.longitude = this.config.longitude;
-      this.config.use_default = false; // Changed to assignment
-    }
-    if (!this.config.latitude && !this.config.longitude) {
-      const { latitude, longitude } = this.hass.config;
-      this.latitude = latitude;
-      this.longitude = longitude;
-      this.config.use_default = true; // Changed to assignment
-    }
+  private get latitude(): number {
+    return this.config.latitude;
+  }
 
-    if (this.config.entity) {
-      this.config.use_default = false; // Changed to assignment
+  private get longitude(): number {
+    return this.config.longitude;
+  }
 
-      const entity = this.hass.states[this.config.entity];
-      if (entity) {
-        this.latitude = entity.attributes.location.latitude;
-        this.longitude = entity.attributes.location.longitude;
-      }
-    }
+  private localize = (string: string, search = '', replace = ''): string => {
+    return localize(string, this.selectedLanguage, search, replace);
+  };
 
-    return { latitude: this.latitude, longitude: this.longitude };
+  private async fetchBaseMoonData(): Promise<void> {
+    this._baseMoonData = await this._getBaseMoonData();
   }
 
   get _isCalendar(): boolean {
@@ -174,7 +157,8 @@ export class LunarPhaseCard extends LitElement {
   }
 
   get _moonPhaseName(): string {
-    return this._moonIllumination.phase.name;
+    const phaseId = this._moonIllumination.phase.id;
+    return this.localize(`card.phase.${phaseId}`);
   }
 
   private startRefreshInterval() {
@@ -205,7 +189,7 @@ export class LunarPhaseCard extends LitElement {
       return true;
     }
 
-    return hasConfigOrEntityChanged(this, changedProps, false);
+    return hasConfigOrEntityChanged(this, changedProps, true);
   }
 
   protected render(): TemplateResult {
@@ -250,9 +234,12 @@ export class LunarPhaseCard extends LitElement {
     `;
   }
 
-  private renderMoonImage(): TemplateResult {
+  private renderMoonImage(): TemplateResult | void {
     const moonSize = this._isCalendar ? 'calc(30% - 1px)' : 'calc(25% - 1px)';
-    const { moonImage, rotateDeg } = this._baseMoonData.moonImage;
+    const moonImageObj = this._baseMoonData.moonImage;
+    if (!moonImageObj) return;
+    const moonPic = moonImageObj.moonPic;
+    const rotateDeg = moonImageObj.rotateDeg;
 
     const style = {
       maxWidth: moonSize,
@@ -260,7 +247,7 @@ export class LunarPhaseCard extends LitElement {
     };
 
     return html` <div class="moon-image" style="${styleMap(style)}">
-      <img src=${moonImage} class="rotatable" />
+      <img src=${moonPic} class="rotatable" />
     </div>`;
   }
 
@@ -273,8 +260,10 @@ export class LunarPhaseCard extends LitElement {
     `;
   }
 
-  private renderCompactView(): TemplateResult {
-    const { moonFraction, moonRise, moonSet, moonAge } = this._baseMoonData;
+  private renderCompactView(): TemplateResult | void {
+    const { moonFraction, moonAge, moonRise, moonSet } = this._baseMoonData;
+    if (!moonFraction || !moonAge || !moonRise || !moonSet) return;
+
     const renderCompactItem = (icon: string, value: string, unit: string, label: string): TemplateResult => {
       return html`
         <div class="compact-item">
@@ -348,13 +337,13 @@ export class LunarPhaseCard extends LitElement {
     this._activeCard = this._activeCard === 'base' ? 'calendar' : 'base';
   }
 
-  private _getBaseMoonData() {
-    const { rise, set, highest } = this._moonTimes;
+  private async _getBaseMoonData(): Promise<any> {
+    const { rise, set, highest } = await this._moonTimes;
     const { phaseValue, fraction } = this._moonIllumination;
     const { fullMoon, newMoon } = this._moonIllumination.next;
     const parallacticAngle = this._moonPosition.parallacticAngle;
-    // const parallacticAngleDeg = this._moonPosition.parallacticAngleDegrees;
-    const phaseName = this._moonIllumination.phase.name;
+    const phaseId = this._moonIllumination.phase.id;
+    const phaseName = this.localize(`card.phase.${phaseId}`);
     const { distance, azimuthDegrees, altitudeDegrees } = this._moonPosition;
     const phaseIndex = Math.round(phaseValue * 16) % 16;
 
@@ -363,48 +352,72 @@ export class LunarPhaseCard extends LitElement {
     const formatDate = (date: string) => new Date(date).toISOString();
 
     const createMoonDataItem = (label: string, value: string, secondValue: string = '', unit: string = '') => ({
-      label,
+      label: this.localize(`card.${label}`),
       value,
       secondValue,
       unit,
     });
-    const createMoonImageData = (moonImage: string, moonPhaseName: string, rotateDeg: number) => ({
-      moonImage,
+
+    const createMoonImageData = (moonPic: string, moonPhaseName: string, rotateDeg: number) => ({
+      moonPic,
       moonPhaseName,
       rotateDeg,
     });
 
+    const localizeRelativeTime = (date: string) => {
+      const relativeTime = formatRelativeTime(formatDate(date));
+      return relativeTime.value
+        ? this.localize(relativeTime.key, '{0}', relativeTime.value)
+        : this.localize(relativeTime.key);
+    };
+    const timeFormat = this.config?.['12hr_format'] || false;
     return {
-      moonFraction: createMoonDataItem('Illumination', (fraction * 100).toFixed(2), '', '%'),
-      moonAge: createMoonDataItem('Moon Age', (phaseValue * 29.5).toFixed(2), '', 'days'),
-      moonRise: createMoonDataItem(
-        'Moonrise',
-        formatTimeToHHMM(formatDate(rise)),
-        formatRelativeTime(formatDate(rise)),
+      moonFraction: createMoonDataItem('illumination', (fraction * 100).toFixed(2), '', '%'),
+      moonAge: createMoonDataItem(
+        'moonAge',
+        (phaseValue * 29.5).toFixed(2),
+        '',
+        this.localize('card.relativeTime.days'),
       ),
-      moonSet: createMoonDataItem('Moonset', formatTimeToHHMM(formatDate(set)), formatRelativeTime(formatDate(set))),
+      moonRise: createMoonDataItem(
+        'moonRise',
+        formatTimeToHHMM(formatDate(rise), this.selectedLanguage, timeFormat),
+        localizeRelativeTime(rise),
+      ),
+      moonSet: createMoonDataItem(
+        'moonSet',
+        formatTimeToHHMM(formatDate(set), this.selectedLanguage, timeFormat),
+        localizeRelativeTime(set),
+      ),
       moonHighest: createMoonDataItem(
-        'Moon Highest',
-        formatTimeToHHMM(formatDate(highest || '')),
-        formatRelativeTime(formatDate(highest || '')),
+        'moonHigh',
+        formatTimeToHHMM(formatDate(highest || ''), this.selectedLanguage, timeFormat),
+        localizeRelativeTime(highest || ''),
         '',
       ),
-      distance: createMoonDataItem('Distance', distance.toFixed(2), '', 'km'),
-      azimuthDegress: createMoonDataItem('Azimuth', azimuthDegrees.toFixed(2), '', '°'),
-      altitudeDegrees: createMoonDataItem('Altitude', altitudeDegrees.toFixed(2), '', '°'),
+      distance: createMoonDataItem('distance', distance.toFixed(2), '', 'km'),
+      azimuthDegress: createMoonDataItem('azimuth', azimuthDegrees.toFixed(2), '', '°'),
+      altitudeDegrees: createMoonDataItem('altitude', altitudeDegrees.toFixed(2), '', '°'),
       nextFullMoon: createMoonDataItem(
-        'Full Moon',
-        new Date(fullMoon.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+        'fullMoon',
+        new Date(fullMoon.date).toLocaleDateString(this.selectedLanguage, {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+        }),
         '',
         '',
       ),
       nextNewMoon: createMoonDataItem(
-        'New Moon',
-        new Date(newMoon.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+        'newMoon',
+        new Date(newMoon.date).toLocaleDateString(this.selectedLanguage, {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+        }),
         '',
         '',
       ),
-      phaseName: createMoonDataItem('Phase Name', phaseName, '', ''),
       moonImage: createMoonImageData(MOON_IMAGES[phaseIndex], phaseName, rotateDeg),
     };
   }
