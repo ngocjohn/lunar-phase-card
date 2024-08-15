@@ -1,0 +1,63 @@
+.card-config {
+  width: 100%;
+  margin-block: 0.5rem;
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+}
+
+.switches {
+  display: flex;
+}
+
+ha-select,
+ha-textfield {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+ha-formfield {
+  padding-bottom: 8px;
+  width: 100%;
+}
+
+ha-expansion-panel .container {
+  padding: 0px 1rem !important;
+}
+
+.right-icon {
+  padding-inline: 0.5rem;
+  cursor: pointer;
+}
+.custom-background-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  text-wrap: nowrap;
+}
+.file-input {
+  display: none;
+}
+.file-upload {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--divider-color);
+  border-radius: 8px;
+  color: var(--primary-text-color);
+}
+.file-upload:hover {
+  background-color: var(--primary-color);
+}
+.radios-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.version {
+  margin-top: 1rem;
+  color: var(--secondary-text-color);
+  text-align: start;
+}

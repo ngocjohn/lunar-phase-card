@@ -155,7 +155,8 @@ h1 {
 .moon-data-item > span.label {
   display: block;
   color: var(--primary-text-color);
-  width: 50%;
+  width: auto;
+  text-wrap: nowrap;
 }
 
 .moon-data-item > .value {
@@ -163,12 +164,14 @@ h1 {
   color: var(--primary-text-color);
   font-weight: 600;
   width: 60%;
+  text-wrap: nowrap !important;
   justify-content: flex-end;
 }
 .value > span {
   font-weight: 400;
   font-size: smaller;
   padding-right: 2px;
+  text-wrap: nowrap;
 }
 
 /* SWIPER */
