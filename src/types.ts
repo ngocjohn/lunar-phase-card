@@ -38,6 +38,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   show_background?: boolean;
   compact_view?: boolean;
   custom_background?: string;
+  selected_language?: string | null;
   latitude: number;
   longitude: number;
 }
