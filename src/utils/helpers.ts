@@ -18,7 +18,7 @@ export function formatMoonTime(dateString: string): string {
   }
 }
 
-export function formatRelativeTime(dateString: string): string {
+export function formatRelativeTime(dateString: string): { key: string; value?: string } {
   const date = new Date(dateString);
   const now = new Date();
 
@@ -30,26 +30,29 @@ export function formatRelativeTime(dateString: string): string {
     if (hoursDifference === 0) {
       const minutesDifference = Math.round(timeDifference / (1000 * 60));
       if (minutesDifference === 0) {
-        return 'just now';
+        return { key: 'card.relativeTime.justNow' };
       } else if (minutesDifference > 0) {
-        return `in ${minutesDifference} minutes`;
+        return { key: 'card.relativeTime.inMinutes', value: minutesDifference.toString() };
       } else {
-        return `${Math.abs(minutesDifference)} minutes ago`;
+        return { key: 'card.relativeTime.minutesAgo', value: Math.abs(minutesDifference).toString() };
       }
     } else if (hoursDifference > 0) {
-      return `in ${hoursDifference} hours`;
+      return { key: 'card.relativeTime.inHours', value: hoursDifference.toString() };
     } else {
-      return `${Math.abs(hoursDifference)} hours ago`;
+      return { key: 'card.relativeTime.hoursAgo', value: Math.abs(hoursDifference).toString() };
     }
   } else {
-    // Render normal date format
-    return '';
+    // Handle longer timespans if necessary, otherwise return an empty key
+    return { key: '' };
   }
 }
 
-export function formatTimeToHHMM(dateString: string): string {
+export function formatTimeToHHMM(dateString: string, lang: string, timeFormat: boolean): string {
+  if (!dateString || dateString === '') {
+    return '';
+  }
   const date = new Date(dateString);
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return date.toLocaleTimeString(lang, { hour: '2-digit', minute: '2-digit', hour12: timeFormat });
 }
 
 export function formatDate(date: Date): string {
