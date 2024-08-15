@@ -17,6 +17,19 @@
 - **Responsive Design:** Works well on both desktop and mobile devices.
 - **Custom Latitude and Longitude Configuration:** Offers the possibility to configure custom latitude and longitude for precise lunar data.
 - **Specific Date Lunar Information:** Option to display the moon information for a specific date.
+- **Multilingual Support**: The card includes various translations, making it accessible in multiple languages.
+
+### Supported Localization
+
+<details>
+  <summary>The following languages are supported in this project</summary>
+
+| Language Code | Language (Native Name) |
+| ------------- | ---------------------- |
+| `cs.json`     | Čeština                |
+| `en.json`     | English                |
+
+</details>
 
 ### Default & Compact view
 
@@ -76,17 +89,28 @@ https://github.com/ngocjohn/lunar-phase-card
 
 ## Configuration
 
-<p style="text-align: justify;">Basic options can be configured in the GUI editor. To configure the Lunar Phase Card, you can use the following parameters in your Lovelace configuration:</p>
+<p style="text-align: justify;">All options can be configured in the GUI editor. To configure the Lunar Phase Card, you can use the following parameters in your Lovelace configuration:</p>
 
-| Name              | Type    | Requirement | Description                                                           |
-| ----------------- | ------- | ----------- | --------------------------------------------------------------------- |
-| `type`            | string  | Required    | The type of the card. For this card, use `custom:lunar-phase-card`.   |
-| `entity`          | string  | Optional    | The entity_id from Lunar Phase custom component `sensor.*_moon_phase` |
-| `use_default`     | boolean | Optional    | Whether to use default settings. Defaults to `true`.                  |
-| `show_background` | boolean | Optional    | Whether to show the background image. Defaults to `false`.            |
-| `compact_view`    | boolean | Optional    | Whether to display the card in a compact view. Defaults to `false`.   |
-| `latitude`        | number  | Optional    | The latitude for which to calculate the lunar phase.                  |
-| `longitude`       | number  | Optional    | The longitude for which to calculate the lunar phase.                 |
+<p align="center">
+  <a href="./assets/card-ui-editor.gif">
+    <img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/ui-editor.gif" alt="Card UI Editor">
+  </a>
+</p>
+
+| Name                | Type    | Requirement | Description                                                           |
+| ------------------- | ------- | ----------- | --------------------------------------------------------------------- |
+| `type`              | string  | Required    | The type of the card. For this card, use `custom:lunar-phase-card`.   |
+| `entity`            | string  | Optional    | The entity_id from Lunar Phase custom component `sensor.*_moon_phase` |
+| `use_system`        | boolean | Optional    | Whether to use default settings. Defaults to `true`.                  |
+| `use_entity`        | boolean | Optional    | Whether to use entity settings. Defaults to `false`.                  |
+| `use_custom`        | boolean | Optional    | Whether to use custom settings. Defaults to `false`.                  |
+| `show_background`   | boolean | Optional    | Whether to show the background image. Defaults to `false`.            |
+| `compact_view`      | boolean | Optional    | Whether to display the card in a compact view. Defaults to `false`.   |
+| `12hr_format`       | boolean | Optional    | Whether to display time in 12-hour format. Defaults to `false`.       |
+| `custom_background` | string  | Optional    | URL of a custom background image for the card.                        |
+| `selected_language` | string  | Optional    | ISO code of the language to be used. Defaults to system or `en`.      |
+| `latitude`          | number  | Optional    | The latitude for which to calculate the lunar phase.                  |
+| `longitude`         | number  | Optional    | The longitude for which to calculate the lunar phase.                 |
 
 > [!NOTE]
 > The `entity` parameter is not required. It refers to the entity ID from the Lunar Card Custom component, which can be installed [here](https://github.com/ngocjohn/lunar-phase). If the `entity` is not defined, the card will use the default latitude and longitude from the system configuration.
@@ -97,10 +121,17 @@ Here's an example configuration for the Lunar Phase Card:
 
 ```yaml
 type: custom:lunar-phase-card
-entity: sensor.prague_moon_phase
-use_default: false
+entity: sensor.your_moon_phase_sensor
+use_system: true
+use_entity: false
+use_custom: false
 show_background: true
-compact_view: false
+compact_view: true
+12hr_format: false
+custom_background: '/local/images/moon_background.jpg'
+selected_language: 'en'
+latitude: 48.8566
+longitude: 2.3522
 ```
 
 ##
