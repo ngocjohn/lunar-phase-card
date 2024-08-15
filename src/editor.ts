@@ -3,7 +3,7 @@ import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues }
 import { customElement, property, state } from 'lit/decorators';
 
 // Custom card helpers
-import { fireEvent, LovelaceCardEditor, hasConfigOrEntityChanged } from 'custom-card-helpers';
+import { fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
 
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig } from './types';
 import { languageOptions, localize } from './localize/localize';

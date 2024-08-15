@@ -134,7 +134,11 @@ latitude: 48.8566
 longitude: 2.3522
 ```
 
-##
+## Contribution Guidelines
+
+We welcome contributions and are grateful for your support in improving this project. If you'd like to contribute, please follow our [Contribution Guidelines](docs/CONTRIBUTING.md) to get started.
+
+---
 
 &copy; 2024 Viet Ngoc
 
