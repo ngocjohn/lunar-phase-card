@@ -1,0 +1,40 @@
+{
+    "name": "Czech",
+    "nativeName": "Čeština",
+    "card": {
+        "phase": {
+            "first_quarter": "První čtvrť",
+            "full_moon": "Úplněk",
+            "last_quarter": "Poslední čtvrť",
+            "new_moon": "Novoluní",
+            "waning_crescent": "Ubývající srpek",
+            "waning_gibbous": "Ubývající měsíc",
+            "waxing_crescent": "Dorůstající srpek",
+            "waxing_gibbous": "Dorůstající měsíc"
+        },
+        "illumination": "Osvětlení",
+        "illuminated": "Osvětleno",
+        "moonRise": "Východ",
+        "moonSet": "Západ",
+        "moonHigh": "Měsíc vysoko",
+        "moonAge": "Věk Měsíce",
+        "distance": "Vzdálenost",
+        "azimuth": "Azimut",
+        "altitude": "Výška",
+        "fullMoon": "Úplněk",
+        "newMoon": "Novoluní"
+    },
+    "editor": {
+        "background": {
+            "title": "Vlastní pozadí a jazyk",
+            "description": "Nastavte vlastní pozadí a jazyk pro kartu"
+        },
+        "customLatLong": {
+            "title": "Vlastní zeměpisná šířka a délka",
+            "description": "Nastavte vlastní zeměpisnou šířku a délku pro kartu"
+        },
+        "compactView": "Kompaktní zobrazení",
+        "showBackground": "Zobrazit pozadí",
+        "defaultLatLong": "Výchozí zeměpisná šířka a délka"
+    }
+}

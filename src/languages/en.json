@@ -1,0 +1,40 @@
+{
+    "name": "English",
+    "nativeName": "English",
+    "card": {
+        "phase": {
+            "first_quarter": "First quarter",
+            "full_moon": "Full moon",
+            "last_quarter": "Last quarter",
+            "new_moon": "New moon",
+            "waning_crescent": "Waning crescent",
+            "waning_gibbous": "Waning gibbous",
+            "waxing_crescent": "Waxing crescent",
+            "waxing_gibbous": "Waxing gibbous"
+        },
+        "illumination": "Illumination",
+        "illuminated": "Illuminated",
+        "moonRise": "Moonrise",
+        "moonSet": "Moonset",
+        "moonHigh": "Moon high",
+        "moonAge": "Moon age",
+        "distance": "Distance",
+        "azimuth": "Azimuth",
+        "altitude": "Altitude",
+        "fullMoon": "Full moon",
+        "newMoon": "New moon"
+    },
+    "editor": {
+        "background": {
+            "title": "Custom background and Language",
+            "description": "Set a custom background and Language for card"
+        },
+        "customLatLong": {
+            "title": "Custom latitude and longitude",
+            "description": "Set a custom latitude and longitude for card"
+        },
+        "compactView": "Compact view",
+        "showBackground": "Show background",
+        "defaultLatLong": "Default latitude and longitude"
+    }
+}
