@@ -3,38 +3,57 @@
     "nativeName": "English",
     "card": {
         "phase": {
-            "first_quarter": "First quarter",
-            "full_moon": "Full moon",
-            "last_quarter": "Last quarter",
-            "new_moon": "New moon",
-            "waning_crescent": "Waning crescent",
-            "waning_gibbous": "Waning gibbous",
-            "waxing_crescent": "Waxing crescent",
-            "waxing_gibbous": "Waxing gibbous"
+            "firstQuarterMoon": "First quarter",
+            "fullMoon": "Full moon",
+            "thirdQuarterMoon": "Last quarter",
+            "newMoon": "New moon",
+            "waxingCrescentMoon": "Waxing crescent",
+            "waxingGibbousMoon": "Waxing gibbous",
+            "waningCrescentMoon": "Waning crescent",
+            "waningGibbousMoon": "Waning gibbous"
         },
         "illumination": "Illumination",
         "illuminated": "Illuminated",
         "moonRise": "Moonrise",
         "moonSet": "Moonset",
-        "moonHigh": "Moon high",
+        "moonHigh": "Moon highest",
         "moonAge": "Moon age",
         "distance": "Distance",
         "azimuth": "Azimuth",
         "altitude": "Altitude",
         "fullMoon": "Full moon",
-        "newMoon": "New moon"
+        "newMoon": "New moon",
+        "relativeTime": {
+            "days": "days",
+            "justNow": "just now",
+            "minutesAgo": "{0} minutes ago",
+            "hoursAgo": "{0} hours ago",
+            "inMinutes": "in {0} minutes",
+            "inHours": "in {0} hours"
+        }
     },
     "editor": {
-        "background": {
-            "title": "Custom background and Language",
-            "description": "Set a custom background and Language for card"
+        "viewConfig": {
+            "title": "Language and view mode",
+            "description": "Set a configuration for language and background"
         },
-        "customLatLong": {
-            "title": "Custom latitude and longitude",
-            "description": "Set a custom latitude and longitude for card"
+        "baseConfig": {
+            "title": "Latitude and Longitude",
+            "description": "Set a configuration for latitude and longitude"
+        },
+        "optionsConfig": {
+            "useDefault": "Use system",
+            "useEntity": "Use entity",
+            "useCustom": "Use custom"
         },
         "compactView": "Compact view",
         "showBackground": "Show background",
-        "defaultLatLong": "Default latitude and longitude"
+        "timeFormat": "12-hour time format",
+        "placeHolder": {
+            "latitude": "Enter latitude",
+            "longitude": "Enter longitude",
+            "customBackground": "URL or path to image",
+            "language": "Select language"
+        }
     }
 }

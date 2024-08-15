@@ -3,16 +3,16 @@
     "nativeName": "Čeština",
     "card": {
         "phase": {
-            "first_quarter": "První čtvrť",
-            "full_moon": "Úplněk",
-            "last_quarter": "Poslední čtvrť",
-            "new_moon": "Novoluní",
-            "waning_crescent": "Ubývající srpek",
-            "waning_gibbous": "Ubývající měsíc",
-            "waxing_crescent": "Dorůstající srpek",
-            "waxing_gibbous": "Dorůstající měsíc"
+            "firstQuarterMoon": "První čtvrť",
+            "fullMoon": "Úplněk",
+            "thirdQuarterMoon": "Poslední čtvrť",
+            "newMoon": "Novoluní",
+            "waxingCrescentMoon": "Ubývající srpek",
+            "waxingGibbousMoon": "Dorůstající měsíc",
+            "waningCrescentMoon": "Ubývající srpek",
+            "waningGibbousMoon": "Ubývající měsíc"
         },
-        "illumination": "Osvětlení",
+        "illumination": "Osvětlená plocha",
         "illuminated": "Osvětleno",
         "moonRise": "Východ",
         "moonSet": "Západ",
@@ -22,19 +22,38 @@
         "azimuth": "Azimut",
         "altitude": "Výška",
         "fullMoon": "Úplněk",
-        "newMoon": "Novoluní"
+        "newMoon": "Novoluní",
+        "relativeTime": {
+            "days": "dny",
+            "justNow": "právě teď",
+            "minutesAgo": "před {0} minutami",
+            "hoursAgo": "před {0} hodinami",
+            "inMinutes": "za {0} minut",
+            "inHours": "za {0} hodin"
+        }
     },
     "editor": {
-        "background": {
-            "title": "Vlastní pozadí a jazyk",
-            "description": "Nastavte vlastní pozadí a jazyk pro kartu"
+        "viewConfig": {
+            "title": "Jazyk a zobrazení",
+            "description": "Nastavte konfiguraci pro jazyk a pozadí"
         },
-        "customLatLong": {
-            "title": "Vlastní zeměpisná šířka a délka",
-            "description": "Nastavte vlastní zeměpisnou šířku a délku pro kartu"
+        "baseConfig": {
+            "title": "Zeměpisná šířka a délka",
+            "description": "Nastavte konfiguraci pro zeměpisnou šířku a délku"
+        },
+        "optionsConfig": {
+            "useDefault": "Použít výchozí",
+            "useEntity": "Použít entitu",
+            "useCustom": "Použít vlastní"
         },
         "compactView": "Kompaktní zobrazení",
         "showBackground": "Zobrazit pozadí",
-        "defaultLatLong": "Výchozí zeměpisná šířka a délka"
+        "timeFormat": "12-hodinový formát času",
+        "placeHolder": {
+            "latitude": "Zadejte zeměpisnou šířku",
+            "longitude": "Zadejte zeměpisnou délku",
+            "customBackground": "URL nebo cesta k obrázku",
+            "language": "Vyberte jazyk"
+        }
     }
 }
