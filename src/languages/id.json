@@ -25,7 +25,7 @@
         "newMoon": "Bulan baru berikutnya",
         "relativeTime": {
             "days": "hari",
-            "justNow": "pada saat ini",
+            "justNow": "baru saja",
             "minutesAgo": "{0} menit yang lalu",
             "hoursAgo": "{0} jam yang lalu",
             "inMinutes": "dalam {0} menit",
