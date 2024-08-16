@@ -7,10 +7,10 @@
             "fullMoon": "Fuldmåne",
             "thirdQuarterMoon": "Aftagende måne",
             "newMoon": "Nymåne",
-            "waxingCrescentMoon": "Waxing crescent",
-            "waxingGibbousMoon": "Waxing gibbous",
-            "waningCrescentMoon": "Waning crescent",
-            "waningGibbousMoon": "Waning gibbous"
+            "waxingCrescentMoon": "Tiltagende halvmåne",
+            "waxingGibbousMoon": "Tiltagende måne",
+            "waningCrescentMoon": "Aftagende halvmåne",
+            "waningGibbousMoon": "Aftagende måne"
         },
         "illumination": "Belysning",
         "illuminated": "Oplyst",
