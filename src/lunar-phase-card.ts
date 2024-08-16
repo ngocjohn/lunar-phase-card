@@ -282,7 +282,7 @@ export class LunarPhaseCard extends LitElement {
       </div>
       <div class="compact-view">
         <div class="moon-phase-name"><h1>${this._moonPhaseName}</h1></div>
-        <div class="moon-fraction">${moonFraction.value} ${moonFraction.unit} Illuminated</div>
+        <div class="moon-fraction">${moonFraction.value} ${moonFraction.unit} ${this.localize('card.illuminated')}</div>
         <div class="compact-view-items">
           ${renderCompactItem('mdi:progress-clock', moonAge.value, moonAge.unit, moonAge.label)}
           ${renderCompactItem('mdi:weather-moonset-up', moonRise.value, '', moonRise.label)}
