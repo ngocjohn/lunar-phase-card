@@ -101,7 +101,7 @@ https://github.com/ngocjohn/lunar-phase-card
 | ------------------- | ------- | ----------- | --------------------------------------------------------------------- |
 | `type`              | string  | Required    | The type of the card. For this card, use `custom:lunar-phase-card`.   |
 | `entity`            | string  | Optional    | The entity_id from Lunar Phase custom component `sensor.*_moon_phase` |
-| `use_system`        | boolean | Optional    | Whether to use default settings. Defaults to `true`.                  |
+| `use_default`       | boolean | Optional    | Whether to use default settings. Defaults to `true`.                  |
 | `use_entity`        | boolean | Optional    | Whether to use entity settings. Defaults to `false`.                  |
 | `use_custom`        | boolean | Optional    | Whether to use custom settings. Defaults to `false`.                  |
 | `show_background`   | boolean | Optional    | Whether to show the background image. Defaults to `false`.            |
