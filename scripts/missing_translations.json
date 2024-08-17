@@ -1,1 +1,8 @@
-{}
+{
+    "id.json": [
+        {
+            "key": "card.illuminated",
+            "value": "Illuminated"
+        }
+    ]
+}
