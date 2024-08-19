@@ -1,0 +1,59 @@
+{
+    "name": "Danish",
+    "nativeName": "Dansk",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Tiltagende Måne",
+            "fullMoon": "Fuldmåne",
+            "thirdQuarterMoon": "Aftagende måne",
+            "newMoon": "Nymåne",
+            "waxingCrescentMoon": "Tiltagende halvmåne",
+            "waxingGibbousMoon": "Tiltagende måne",
+            "waningCrescentMoon": "Aftagende halvmåne",
+            "waningGibbousMoon": "Aftagende måne"
+        },
+        "illumination": "Belysning",
+        "illuminated": "Oplyst",
+        "moonRise": "Måneopgang",
+        "moonSet": "Månenedgang",
+        "moonHigh": "Månen højest",
+        "moonAge": "Månealderen",
+        "distance": "Afstand",
+        "azimuth": "Azimuth",
+        "altitude": "Højde",
+        "fullMoon": "Fuldmåne",
+        "newMoon": "Nymåne",
+        "relativeTime": {
+            "days": "dage",
+            "justNow": "lige nu",
+            "minutesAgo": "{0} minutter siden",
+            "hoursAgo": "{0} timer siden",
+            "inMinutes": "in {0} minutter",
+            "inHours": "in {0} timer"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "Sprog og visningstilstand",
+            "description": "Indstil en konfiguration for sprog og baggrund"
+        },
+        "baseConfig": {
+            "title": "Bredde og længdegrad",
+            "description": "Indstil en konfiguration for breddegrad og længdegrad"
+        },
+        "optionsConfig": {
+            "useDefault": "Brug systemet",
+            "useEntity": "Brug enhed",
+            "useCustom": "Brug brugerdefineret"
+        },
+        "compactView": "Kompakt udsigt",
+        "showBackground": "Vis baggrund",
+        "timeFormat": "12-timers tidsformat",
+        "placeHolder": {
+            "latitude": "Indtast breddegrad",
+            "longitude": "Indtast længdegrad",
+            "customBackground": "URL eller sti til billede",
+            "language": "Vælg sprog"
+        }
+    }
+}
