@@ -1,0 +1,59 @@
+{
+    "name": "Português BR",
+    "nativeName": "Português",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Primeiro quarto",
+            "fullMoon": "Lua cheia",
+            "thirdQuarterMoon": "Último quarto",
+            "newMoon": "Lua nova",
+            "waxingCrescentMoon": "Lua crescente crescente",
+            "waxingGibbousMoon": "Lua crescente convexa",
+            "waningCrescentMoon": "Lua minguante crescente",
+            "waningGibbousMoon": "Lua minguante convexa"
+        },
+        "illumination": "Iluminação",
+        "illuminated": "Iluminada",
+        "moonRise": "Nascer da lua",
+        "moonSet": "Pôr da lua",
+        "moonHigh": "Lua mais alta",
+        "moonAge": "Idade da lua",
+        "distance": "Distância",
+        "azimuth": "Azimute",
+        "altitude": "Altitude",
+        "fullMoon": "Lua chei",
+        "newMoon": "Lua nova",
+        "relativeTime": {
+            "days": "dias",
+            "justNow": "agora mesmo",
+            "minutesAgo": "há {0} minutos",
+            "hoursAgo": "há {0} horas",
+            "inMinutes": "em {0} minutos",
+            "inHours": "em {0} horas"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "Idioma e modo de visualização",
+            "description": "Definir uma configuração para idioma e plano de fundo"
+        },
+        "baseConfig": {
+            "title": "Latitude e Longitude",
+            "description": "Definir uma configuração para latitude e longitude"
+        },
+        "optionsConfig": {
+            "useDefault": "Usar sistema",
+            "useEntity": "Usar entidade",
+            "useCustom": "Usar personalizado"
+        },
+        "compactView": "Visualização compacta",
+        "showBackground": "Mostrar plano de fundo",
+        "timeFormat": "Formato de 12 horas",
+        "placeHolder": {
+            "latitude": "Inserir latitude",
+            "longitude": "Inserir longitude",
+            "customBackground": "URL ou caminho para a imagem",
+            "language": "Selecionar idioma"
+        }
+    }
+}
