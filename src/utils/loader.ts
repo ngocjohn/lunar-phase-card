@@ -1,3 +1,5 @@
+import { REPOSITORY } from '../const';
+
 // Hack to load ha-components needed for editor
 export const loadHaComponents = () => {
   if (!customElements.get('ha-form')) {
@@ -23,3 +25,21 @@ export const loadCustomElement = async <T = any>(name: string) => {
   await customElements.whenDefined(name);
   return customElements.get(name) as T;
 };
+
+export async function fetchLatestReleaseTag() {
+  const apiUrl = `https://api.github.com/repos/${REPOSITORY}/releases/latest`;
+
+  try {
+    const response = await fetch(apiUrl);
+    if (response.ok) {
+      const data = await response.json();
+      const releaseTag = data.tag_name;
+      console.log('Latest release tag:', releaseTag);
+      return releaseTag;
+    } else {
+      console.error('Failed to fetch the latest release tag:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error fetching the latest release tag:', error);
+  }
+}
