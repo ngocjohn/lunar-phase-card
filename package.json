@@ -13,7 +13,8 @@
   "author": "Viet Ngoc",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ngocjohn/lunar-phase-card"
+    "url": "https://github.com/ngocjohn/lunar-phase-card",
+    "repo": "ngocjohn/lunar-phase-card"
   },
   "module": "lunar-phase-card.js",
   "license": "MIT",
