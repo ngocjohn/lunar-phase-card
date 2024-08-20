@@ -1,6 +1,7 @@
-import { version } from '../package.json';
+import { version, repository } from '../package.json';
 
-export const CARD_VERSION = version;
+export const REPOSITORY = repository.repo;
+export const CARD_VERSION = `v${version}`;
 export const BASE_REFRESH_INTERVAL = 30 * 1000; // 30 seconds
 
 import moon_phase_0 from './images/moon_phase_0.png';
