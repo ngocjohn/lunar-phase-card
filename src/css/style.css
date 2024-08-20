@@ -12,6 +12,7 @@
     'Helvetica Neue',
     sans-serif;
 }
+
 *:focus {
   outline: none;
 }
@@ -52,10 +53,15 @@ ha-card.--background {
   justify-content: space-between;
   align-items: center;
   padding: 8px 0 14px 6px;
+  width: 100%;
 }
 
 .lunar-card-header.flexend {
   justify-content: flex-end;
+}
+
+.lunar-card-header.compact {
+  padding: 0;
 }
 
 h1 {
@@ -66,13 +72,16 @@ h1 {
   margin-block-end: 0px;
   font-weight: 400;
   text-transform: capitalize;
+  font-size: x-large;
 }
+
 .btn-calendar {
   display: block;
   color: var(--disabled-text-color);
   cursor: pointer;
   transition: all 0.3s ease;
 }
+
 .btn-calendar:hover {
   color: var(--primary-text-color);
   opacity: 1;
@@ -98,6 +107,7 @@ h1 {
   flex-direction: column;
   gap: 8px;
 }
+
 .moon-image {
   display: block;
   width: 100%;
@@ -108,23 +118,26 @@ h1 {
   user-select: none;
 }
 
-.moon-image > img {
+.moon-image>img {
   width: 100%;
   height: 100%;
-  transform: rotate(0deg); /* Initial state */
+  transform: rotate(0deg);
+  /* Initial state */
   filter: grayscale(1) brightness(1);
 }
 
 .moon-image img.rotatable {
   transform-origin: center center;
   will-change: transform;
-  transition: transform 0.5s ease; /* Smooth rotation */
+  transition: transform 0.5s ease;
+  /* Smooth rotation */
 }
 
 @keyframes fadeIn {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -137,6 +150,7 @@ h1 {
 .moon-data {
   width: 100%;
 }
+
 .moon-data-item {
   display: flex;
   flex-direction: row;
@@ -152,14 +166,14 @@ h1 {
   padding-bottom: 0;
 }
 
-.moon-data-item > span.label {
+.moon-data-item>span.label {
   display: block;
   color: var(--primary-text-color);
   width: auto;
   text-wrap: nowrap;
 }
 
-.moon-data-item > .value {
+.moon-data-item>.value {
   display: flex;
   color: var(--primary-text-color);
   font-weight: 600;
@@ -167,7 +181,8 @@ h1 {
   text-wrap: nowrap !important;
   justify-content: flex-end;
 }
-.value > span {
+
+.value>span {
   font-weight: 400;
   font-size: smaller;
   padding-right: 2px;
@@ -189,12 +204,14 @@ section {
   height: auto;
   overflow: hidden;
 }
+
 .swiper-container {
   width: 100%;
   height: 100%;
   display: block;
   backdrop-filter: blur(4px);
 }
+
 /* .swiper-wrapper {
   margin-bottom: 1rem;
 } */
@@ -207,10 +224,12 @@ section {
 .swiper-pagination {
   position: relative !important;
 }
+
 .swiper-pagination-bullet {
   background-color: var(--swiper-theme-color);
   transition: all 0.3s ease-in-out !important;
 }
+
 .swiper-pagination-bullet-active {
   width: 12px !important;
   border-radius: 0.5rem !important;
@@ -225,6 +244,7 @@ section {
   gap: 1rem;
   --calendar-background-color: #ffffff1f;
 }
+
 .date-input-wrapper {
   display: flex;
   width: 100%;
@@ -234,6 +254,7 @@ section {
   gap: 1rem;
   text-wrap: nowrap;
 }
+
 .date-input-label {
   display: block;
   color: var(--primary-text-color);
@@ -241,6 +262,7 @@ section {
   font-weight: 600;
   margin-bottom: 8px;
 }
+
 .date-input {
   display: block;
   width: fit-content;
@@ -256,6 +278,7 @@ section {
   appearance: none;
   cursor: pointer;
 }
+
 .date-input:focus {
   border-color: var(--primary-color);
   outline: none;
@@ -271,6 +294,7 @@ button.date-input-btn {
   transition: all 0.3s ease;
   font-weight: 600;
 }
+
 button.date-input-btn:hover {
   background-color: var(--primary-color);
   color: var(--primary-background-color);
@@ -283,6 +307,7 @@ button.date-input-btn:hover {
   top: 1rem;
   right: 1rem;
 }
+
 .compact-view {
   display: flex;
   width: 100%;
@@ -303,6 +328,18 @@ button.date-input-btn:hover {
   width: 100%;
   justify-content: space-between;
   --mdc-icon-size: 17px;
+}
+
+.compact-item {
+  display: flex;
+  width: calc(100% / 3);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.compact-item .icon-value {
+  text-wrap: nowrap;
 }
 
 .compact-item .value {
