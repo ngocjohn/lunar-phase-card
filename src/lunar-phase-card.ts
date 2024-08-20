@@ -284,13 +284,6 @@ export class LunarPhaseCard extends LitElement {
       `;
     };
 
-    const headerNameBtn = html` <div class="lunar-card-header">
-      <h1>${this._moonPhaseName}</h1>
-      <div @click=${() => this.togglePage()} class="btn-calendar click-shrink">
-        <ha-icon icon="mdi:calendar-search"></ha-icon>
-      </div>
-    </div>`;
-    const phaseName = html`<div class="moon-phase-name">${this._moonPhaseName}</div>`;
     return html`
       <div class="compact-view">
         ${this.renderHeader()}
