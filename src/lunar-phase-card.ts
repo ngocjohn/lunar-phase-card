@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup } from 'lit';
+import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -32,9 +32,13 @@ export class LunarPhaseCard extends LitElement {
   @state() private _connected: boolean = false;
   @state() private _refreshInterval: number | undefined;
 
-  public static getStubConfig = (): Record<string, unknown> => {
+  public static getStubConfig = (hass: HomeAssistant): Record<string, unknown> => {
+    const defaultLatitude = hass.config.latitude || 0;
+    const defaultLongitude = hass.config.longitude || 0;
     return {
       ...defaultConfig,
+      latitude: defaultLatitude,
+      longitude: defaultLongitude,
     };
   };
 
@@ -73,8 +77,13 @@ export class LunarPhaseCard extends LitElement {
 
   protected firstUpdated(changedProps: PropertyValues) {
     super.firstUpdated(changedProps);
-    this.fetchBaseMoonData();
     this._setBackgroundCss();
+    // Initialize Swiper only if the parent element does not have the class 'preview'
+    if (this.parentElement && !this.parentElement.classList.contains('preview')) {
+      setTimeout(() => {
+        this.fetchBaseMoonData();
+      }, 300);
+    }
   }
 
   connectedCallback(): void {
@@ -196,10 +205,10 @@ export class LunarPhaseCard extends LitElement {
     if (!this.hass || !this.config) {
       return html``;
     }
-
+    const compactView = this.config.compact_view;
     return html`
       <ha-card class=${this._computeClasses()}>
-        ${this.renderHeader()}
+        ${!compactView ? this.renderHeader() : this._activeCard === 'calendar' ? this.renderHeader() : nothing}
         <div class="lunar-card-content ${this._isCalendar ? 'flex-col' : ''}">
         ${this.renderPage(this._activeCard)}
       </ha-card>
@@ -222,10 +231,9 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderHeader(): TemplateResult | void {
-    if (this.config.compact_view && this._activeCard === 'base') return;
-
+    const compactView = this.config.compact_view && this._activeCard === 'base';
     return html`
-      <div class="lunar-card-header">
+      <div class="lunar-card-header ${compactView ? 'compact' : ''}">
         <h1>${this._moonPhaseName}</h1>
         <div @click=${() => this.togglePage()} class="btn-calendar click-shrink">
           <ha-icon icon="mdi:calendar-search"></ha-icon>
@@ -276,12 +284,17 @@ export class LunarPhaseCard extends LitElement {
       `;
     };
 
-    return html`
-      <div @click=${this.togglePage} class="btn-calendar compact click-shrink">
+    const headerNameBtn = html` <div class="lunar-card-header">
+      <h1>${this._moonPhaseName}</h1>
+      <div @click=${() => this.togglePage()} class="btn-calendar click-shrink">
         <ha-icon icon="mdi:calendar-search"></ha-icon>
       </div>
+    </div>`;
+    const phaseName = html`<div class="moon-phase-name">${this._moonPhaseName}</div>`;
+    return html`
       <div class="compact-view">
-        <div class="moon-phase-name"><h1>${this._moonPhaseName}</h1></div>
+        ${this.renderHeader()}
+
         <div class="moon-fraction">${moonFraction.value} ${moonFraction.unit} ${this.localize('card.illuminated')}</div>
         <div class="compact-view-items">
           ${renderCompactItem('mdi:progress-clock', moonAge.value, moonAge.unit, moonAge.label)}
