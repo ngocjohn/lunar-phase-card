@@ -53,6 +53,7 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   use_custom: false,
   use_entity: false,
   show_background: true,
+  selected_language: 'en',
   compact_view: true,
   '12hr_format': false,
 };

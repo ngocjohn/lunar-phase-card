@@ -51,8 +51,10 @@ export function formatTimeToHHMM(dateString: string, lang: string, timeFormat: b
   if (!dateString || dateString === '') {
     return '';
   }
+  // console.log(dateString, lang, timeFormat);
+  const newLang = lang || 'en-US';
   const date = new Date(dateString);
-  return date.toLocaleTimeString(lang, { hour: '2-digit', minute: '2-digit', hour12: timeFormat });
+  return date.toLocaleTimeString(newLang, { hour: '2-digit', minute: '2-digit', hour12: timeFormat });
 }
 
 export function formatDate(date: Date): string {
