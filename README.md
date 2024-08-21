@@ -26,8 +26,13 @@
 
 | Language Code | Language (Native Name) |
 | ------------- | ---------------------- |
+| `ca.json`     | Català                 |
 | `cs.json`     | Čeština                |
+| `da.json`     | Dansk                  |
+| `de.json`     | Deutsch                |
 | `en.json`     | English                |
+| `id.json`     | Bahasa Indonesia       |
+| `pt.json`     | Português (Brasil)     |
 
 </details>
 
