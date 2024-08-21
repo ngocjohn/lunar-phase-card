@@ -3,7 +3,7 @@
 
 # 🌘 Lunar Phase Card
 
-<img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/header.gif" style="border-radius: 8px" />
+<a href="#"><img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/header.gif" style="border-radius: 8px" /></a>
 
 ##
 
