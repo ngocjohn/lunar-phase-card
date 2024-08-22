@@ -31,6 +31,7 @@
 | `da.json`     | Dansk                  |
 | `de.json`     | Deutsch                |
 | `en.json`     | English                |
+| `fr.json`     | Français               |
 | `id.json`     | Bahasa Indonesia       |
 | `pt.json`     | Português (Brasil)     |
 
