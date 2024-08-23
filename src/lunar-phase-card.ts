@@ -77,12 +77,15 @@ export class LunarPhaseCard extends LitElement {
 
   protected firstUpdated(changedProps: PropertyValues) {
     super.firstUpdated(changedProps);
-    this._setBackgroundCss();
     // Initialize Swiper only if the parent element does not have the class 'preview'
     if (this.parentElement && !this.parentElement.classList.contains('preview')) {
       setTimeout(() => {
         this.fetchBaseMoonData();
       }, 300);
+    }
+    this._setBackgroundCss();
+    if (this.config.font_customize) {
+      this._setCustomVars();
     }
   }
 
@@ -447,10 +450,14 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private _setBackgroundCss() {
-    const fontOptions = this.config.font_customize;
     const background = this.config.custom_background || BACKGROUND;
+    this.style.setProperty('--lunar-background-image', `url(${background})`);
+  }
+
+  private _setCustomVars() {
+    const fontOptions = this.config.font_customize;
+    if (!fontOptions) return;
     const varCss = {
-      '--lunar-background-image': `url(${background})`,
       '--lunar-card-header-font-size': fontOptions.header_font_size,
       '--lunar-card-header-text-transform': fontOptions.header_font_style,
       '--lunar-card-header-font-color': fontOptions.header_font_color,
