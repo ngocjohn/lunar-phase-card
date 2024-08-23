@@ -46,6 +46,26 @@
             "useEntity": "Fer servir l'entitat",
             "useCustom": "Personalitza"
         },
+        "fontOptions": {
+            "title": "",
+            "description": "",
+            "hideLabel": "",
+            "headerFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "labelFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "headerFontSize": "",
+            "headerFontColor": "",
+            "headerFontStyle": "",
+            "labelFontSize": "",
+            "labelFontColor": "",
+            "labelFontStyle": "",
+            "valueFontSize": ""
+        },
         "compactView": "Vista compacta",
         "showBackground": "Mostra el fons",
         "timeFormat": "Format del temps de 12 hores",

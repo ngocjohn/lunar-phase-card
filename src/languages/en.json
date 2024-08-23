@@ -46,6 +46,55 @@
             "useEntity": "Use entity",
             "useCustom": "Use custom"
         },
+        "fontOptions": {
+            "title": "Font customization",
+            "description": "Set a configuration for font size and color",
+            "hideLabel": "Hide label",
+            "headerFontConfig": {
+                "title": "Header font",
+                "description": "Set a configuration for header font"
+            },
+            "labelFontConfig": {
+                "title": "Label font",
+                "description": "Set a configuration for label font"
+            },
+            "headerFontSize": "Header font size",
+            "headerFontColor": "Header font color",
+            "headerFontStyle": "Header font style",
+            "labelFontSize": "Label font size",
+            "labelFontColor": "Label font color",
+            "labelFontStyle": "Label font style",
+            "valueFontSize": "Value font size",
+            "fontSize": "Font size",
+            "fontColor": "Font color",
+            "fontTextTransform": "Text transform",
+            "textTransformOptions": {
+                "none": "None",
+                "capitalize": "Capitalize",
+                "uppercase": "Uppercase",
+                "lowercase": "Lowercase"
+            },
+            "fontSizes": {
+                "auto": "Auto",
+                "small": "Small",
+                "medium": "Medium",
+                "large": "Large",
+                "x-large": "X-Large",
+                "xx-large": "XX-Large"
+            },
+            "fontStyles": {
+                "none": "None",
+                "capitalize": "Capitalize",
+                "uppercase": "Uppercase",
+                "lowercase": "Lowercase"
+            },
+            "header_font_size": "Header font size",
+            "header_font_color": "Header font color",
+            "header_font_style": "Header font style",
+            "label_font_size": "Label font size",
+            "label_font_color": "Label font color",
+            "label_font_style": "Label font style"
+        },
         "compactView": "Compact view",
         "showBackground": "Show background",
         "timeFormat": "12-hour time format",

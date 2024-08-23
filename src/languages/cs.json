@@ -46,6 +46,26 @@
             "useEntity": "Použít entitu",
             "useCustom": "Použít vlastní"
         },
+        "fontOptions": {
+            "title": "",
+            "description": "",
+            "hideLabel": "",
+            "headerFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "labelFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "headerFontSize": "",
+            "headerFontColor": "",
+            "headerFontStyle": "",
+            "labelFontSize": "",
+            "labelFontColor": "",
+            "labelFontStyle": "",
+            "valueFontSize": ""
+        },
         "compactView": "Kompaktní zobrazení",
         "showBackground": "Zobrazit pozadí",
         "timeFormat": "12-hodinový formát času",
