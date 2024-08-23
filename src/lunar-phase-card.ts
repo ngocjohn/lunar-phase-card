@@ -96,9 +96,6 @@ export class LunarPhaseCard extends LitElement {
   }
 
   disconnectedCallback(): void {
-    if (process.env.ROLLUP_WATCH === 'true' && window.LunarCard === this) {
-      window.LunarCard = undefined;
-    }
     this.clearRefreshInterval();
     this._connected = false;
     super.disconnectedCallback();
@@ -450,8 +447,20 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private _setBackgroundCss() {
+    const fontOptions = this.config.font_customize;
     const background = this.config.custom_background || BACKGROUND;
-    this.style.setProperty('--lunar-background-image', `url(${background})`);
+    const varCss = {
+      '--lunar-background-image': `url(${background})`,
+      '--lunar-card-header-font-size': fontOptions.header_font_size,
+      '--lunar-card-header-text-transform': fontOptions.header_font_style,
+      '--lunar-card-header-font-color': fontOptions.header_font_color,
+      '--lunar-card-label-font-size': fontOptions.label_font_size,
+      '--lunar-card-label-text-transform': fontOptions.label_font_style,
+      '--lunar-card-label-font-color': fontOptions.label_font_color,
+    };
+    Object.entries(varCss).forEach(([key, value]) => {
+      this.style.setProperty(key, value);
+    });
   }
 
   // https://lit.dev/docs/components/styles/
@@ -470,7 +479,7 @@ export class LunarPhaseCard extends LitElement {
 
 declare global {
   interface Window {
-    LunarCard: LunarPhaseCard | undefined;
+    LunarCard: LunarPhaseCard;
   }
   interface HTMLElementTagNameMap {
     'lunar-phase-card': LunarPhaseCard;

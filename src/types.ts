@@ -71,7 +71,7 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   compact_view: true,
   '12hr_format': false,
   font_customize: {
-    header_font_size: 'auto',
+    header_font_size: 'x-large',
     header_font_style: 'capitalize',
     header_font_color: '',
     label_font_size: 'auto',

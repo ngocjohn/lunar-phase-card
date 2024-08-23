@@ -26,7 +26,7 @@ ha-select {
   grid-gap: 8px;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   margin-bottom: 8px;
-  align-items: baseline;
+  align-items: center;
 }
 
 .font-config-type {
