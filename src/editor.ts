@@ -5,13 +5,13 @@ import { customElement, property, state } from 'lit/decorators';
 // Custom card helpers
 import { fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
 
-import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig } from './types';
+import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, FontCustomStyles } from './types';
 
 import { languageOptions, localize } from './localize/localize';
 import { loadHaComponents, fetchLatestReleaseTag } from './utils/loader';
 import { compareVersions } from './utils/helpers';
 
-import { CARD_VERSION } from './const';
+import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES } from './const';
 import editorcss from './css/editor.css';
 
 @customElement('lunar-phase-card-editor')
@@ -77,6 +77,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     super.disconnectedCallback();
   }
 
+  /* --------------------------------- RENDERS -------------------------------- */
+
   protected render(): TemplateResult {
     if (!this.hass) {
       return html``;
@@ -84,57 +86,19 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
     return html`
       ${this._renderToast()}
-      <div class="card-config">${this._renderBaseConfigSelector()} ${this.renderViewConfiguration()}</div>
+      <div class="card-config">${this._renderBaseConfigSelector()} ${this._renderViewConfiguration()}
+      ${this._renderFontConfiguration()}</div>
+      </div>
       <div class="version">
         <span
-          >${CARD_VERSION === this._latestRelease
-            ? CARD_VERSION
-            : html`version: ${CARD_VERSION} -> <span class="update">${this._latestRelease}</span>`}</span
+          >${
+            CARD_VERSION === this._latestRelease
+              ? CARD_VERSION
+              : html`version: ${CARD_VERSION} -> <span class="update">${this._latestRelease}</span>`
+          }</span
         >
       </div>
     `;
-  }
-
-  private _handleRadioChange(ev): void {
-    if (!this._config || !this.hass) {
-      return;
-    }
-    const target = ev.target;
-    const configValue = target.value;
-
-    if (this._config[configValue] === true) {
-      return;
-    }
-
-    const updates: Partial<LunarPhaseCardConfig> = {};
-    const radiosOptions = this._getBaseConfigSelector().options.map((item) => item.key);
-    radiosOptions.forEach((item) => {
-      if (item === configValue) {
-        updates[item] = true;
-      } else {
-        updates[item] = false;
-      }
-    });
-
-    if (configValue === 'use_custom') {
-      updates.entity = '';
-    }
-    if (configValue === 'use_entity') {
-      this._newLatitude = '';
-      this._newLongitude = '';
-    }
-
-    if (configValue === 'use_default') {
-      updates.entity = '';
-      updates.latitude = this.hass.config.latitude;
-      updates.longitude = this.hass.config.longitude;
-    }
-
-    if (Object.keys(updates).length > 0) {
-      this._config = { ...this._config, ...updates };
-      console.log('updates', updates);
-      fireEvent(this, 'config-changed', { config: this._config });
-    }
   }
 
   private _renderBaseConfigSelector(): TemplateResult {
@@ -220,72 +184,35 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     return content;
   }
 
-  private _getEntityLatLong(): { label: string; value: number | string }[] {
-    if (!this._config?.entity) {
-      return [];
-    }
-
-    const entity = this.hass.states[this._config.entity];
-    if (!entity || !entity.attributes) {
-      return [];
-    }
-
-    return [
-      {
-        label: 'City',
-        value: entity.attributes.location.name,
-      },
-      {
-        label: 'Latitude',
-        value: entity.attributes.location.latitude,
-      },
-      {
-        label: 'Longitude',
-        value: entity.attributes.location.longitude,
-      },
-    ];
-  }
-
-  private renderViewConfiguration(): TemplateResult {
+  private _renderViewConfiguration(): TemplateResult {
     const langOpts = [...languageOptions.sort((a, b) => a.name.localeCompare(b.name))];
+    // Map langOpts to the format expected by _haComboBox
+    const itemsLang = langOpts.map((lang) => ({
+      value: lang.key,
+      label: `${lang.name} (${lang.nativeName})`,
+    }));
+
+    const viewItemMap = [
+      { label: 'compactView', configValue: 'compact_view' },
+      { label: 'showBackground', configValue: 'show_background' },
+      { label: 'timeFormat', configValue: '12hr_format' },
+    ];
 
     const viewOptions = html`
       <div class="switches">
-        <ha-formfield .label=${this.localize('editor.compactView')}>
-          <ha-checkbox
-            .checked=${this._compact_view}
-            .configValue=${'compact_view'}
-            @change=${this._valueChanged}
-          ></ha-checkbox>
-        </ha-formfield>
-        <ha-formfield .label=${this.localize('editor.showBackground')}>
-          <ha-checkbox
-            .checked=${this._show_background}
-            .configValue=${'show_background'}
-            @change=${this._valueChanged}
-          ></ha-checkbox>
-        </ha-formfield>
-        <ha-formfield .label=${this.localize('editor.timeFormat')}>
-          <ha-checkbox
-            .checked=${this._config?.['12hr_format'] !== false}
-            .configValue=${'12hr_format'}
-            @change=${this._valueChanged}
-          ></ha-checkbox>
+        ${viewItemMap.map((item) => this._tempCheckBox(item.label, item.configValue, item.configValue))}
       </div>
     `;
-    const languageSelect = html`
-      <ha-select
-        .label=${this.localize('editor.placeHolder.language')}
-        .value=${this.selectedLanguage}
-        .configValue=${'selected_language'}
-        @selected=${this._valueChanged}
-        @closed=${(ev: Event) => ev.stopPropagation()}
-      >
-        ${langOpts.map(
-          (lang) =>
-            html`<mwc-list-item value=${lang.key}>${lang.nativeName ? lang.nativeName : lang.name}</mwc-list-item> `,
-        )}
-      </ha-select>
+
+    // Create the ha-combo-box using the _haComboBox method
+    const langComboBox = html`
+      ${this._haComboBox(
+        itemsLang, // Passing the mapped language options
+        'placeHolder.language', // Localization key for the label
+        this._config?.selected_language || '', // Currently selected language
+        'selected_language', // Config value key
+        false, // Allow custom value
+      )}
     `;
 
     const textFormInput = html`
@@ -293,8 +220,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         <ha-textfield
           .label=${this.localize('editor.placeHolder.customBackground')}
           .configValue=${'custom_background'}
-          .value=${this._custom_background}
-          @input=${this._valueChanged}
+          .value=${this._config?.custom_background || ''}
+          @change=${this._handleValueChange}
         ></ha-textfield>
         ${!this._custom_background
           ? html`
@@ -316,8 +243,65 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
             `}
       </div>
     `;
-    const content = html` ${viewOptions} ${languageSelect} ${textFormInput} `;
+    const content = html` ${viewOptions} ${langComboBox} ${textFormInput} `;
     return this.panelTemplate('viewConfig', 'viewConfig', 'mdi:image', content);
+  }
+
+  private _renderFontConfiguration(): TemplateResult {
+    const _fontPrefix = 'fontOptions';
+
+    // Helper function for localization
+    const localizeKey = (key: string) => this.localize(`editor.${_fontPrefix}.${key}`);
+
+    const createFontConfigRow = (prefix: 'header' | 'label') => {
+      // Function to generate the ha-combo-box elements
+      const createComboBox = (type: 'size' | 'style' | 'color', allowCustomValue = true) => {
+        const configKey = `${prefix}_font_${type}`;
+        const items =
+          type === 'color'
+            ? FONTCOLORS.map((color) => ({ value: color, label: color }))
+            : type === 'size'
+              ? FONTSIZES.map((size) => ({ value: size, label: size }))
+              : FONTSTYLES.map((style) => ({ value: style, label: style }));
+
+        return this._haComboBox(
+          items,
+          `${_fontPrefix}.${prefix}Font${type.charAt(0).toUpperCase() + type.slice(1)}`,
+          this._config?.font_customize[configKey] || (type === 'size' ? 'auto' : type === 'style' ? 'none' : ''),
+          configKey,
+          allowCustomValue,
+        );
+      };
+
+      return html` ${createComboBox('size')} ${createComboBox('style', false)} ${createComboBox('color')} `;
+    };
+
+    const hideLabelCompactView = this._config?.compact_view
+      ? this._tempCheckBox('fontOptions.hideLabel', 'font_customize.hide_label', 'hide_label')
+      : '';
+
+    return this.panelTemplate(
+      'fontOptions',
+      'fontOptions',
+      'mdi:format-font',
+      html`
+        <div class="font-config-wrapper">
+          <div class="font-config-type">
+            <span class="title">${localizeKey('headerFontConfig.title')}</span>
+            <span class="desc">${localizeKey('headerFontConfig.description')}</span>
+          </div>
+          <div class="font-config-content">${createFontConfigRow('header')}</div>
+        </div>
+
+        <div class="font-config-wrapper">
+          <div class="font-config-type">
+            <span class="title">${localizeKey('labelFontConfig.title')}</span>
+            <span class="desc">${localizeKey('labelFontConfig.description')}</span>
+          </div>
+          <div class="font-config-content">${createFontConfigRow('label')} ${hideLabelCompactView}</div>
+        </div>
+      `,
+    );
   }
 
   private panelTemplate(title: string, secondary: string, icon: string, content: TemplateResult): TemplateResult {
@@ -325,7 +309,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     const localDesc = this.localize(`editor.${secondary}.description`);
     return html`
       <div class="panel-container">
-        <ha-expansion-panel .expanded=${true} .outlined=${true} .header=${localTitle} .secondary=${localDesc}>
+        <ha-expansion-panel .expanded=${false} .outlined=${true} .header=${localTitle} .secondary=${localDesc}>
           <div class="right-icon" slot="icons">
             <ha-icon icon=${icon}></ha-icon>
           </div>
@@ -365,6 +349,146 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         </ha-alert>
       </div>
     `;
+  }
+
+  /* ---------------------------- RENDER TEMPLATES ---------------------------- */
+
+  private _haComboBox = (
+    items: { value: string; label: string }[],
+    labelKey: string,
+    valueKey: string,
+    configValue: string,
+    allowCustomValue = true,
+  ): TemplateResult => {
+    return html`
+      <ha-combo-box
+        item-value-path="value"
+        item-label-path="label"
+        .items=${items}
+        .label=${this.localize(`editor.${labelKey}`)}
+        .value=${valueKey}
+        .configValue=${configValue}
+        .allowCustomValue=${allowCustomValue}
+        @value-changed=${this._handleValueChange}
+      ></ha-combo-box>
+    `;
+  };
+
+  private _tempCheckBox = (labelKey: string, checkedValue, configValueKey: string): TemplateResult => {
+    return html` <ha-formfield .label=${this.localize(`editor.${labelKey}`)}>
+      <ha-checkbox
+        .checked=${this._config?.[checkedValue] !== false}
+        .configValue=${configValueKey}
+        @change=${this._handleValueChange}
+      ></ha-checkbox>
+    </ha-formfield>`;
+  };
+
+  /* ----------------------------- HANDLER METHODS ---------------------------- */
+
+  private _handleValueChange(ev) {
+    if (!this._config || !this.hass) {
+      return;
+    }
+
+    const target = ev.target as any;
+    const configValue = target?.configValue;
+
+    // Safely access the value, add a fallback to an empty string if undefined
+    const value = target?.checked !== undefined ? target.checked : ev.detail?.value;
+
+    // If value or configValue is undefined, return early
+    if (value === undefined || configValue === undefined) {
+      return;
+    }
+
+    const updates: Partial<LunarPhaseCardConfig> = {};
+
+    // Check if the configValue is a key of FontCustomStyles
+    if (configValue in this._config.font_customize) {
+      const key = configValue as keyof FontCustomStyles;
+      updates.font_customize = {
+        ...this._config.font_customize,
+        [key]: value,
+      };
+    } else {
+      // Update the main configuration object
+      updates[configValue] = value;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      console.log('updates:', configValue, value);
+      this._config = { ...this._config, ...updates };
+      fireEvent(this, 'config-changed', { config: this._config });
+    }
+  }
+
+  private _getEntityLatLong(): { label: string; value: number | string }[] {
+    if (!this._config?.entity) {
+      return [];
+    }
+
+    const entity = this.hass.states[this._config.entity];
+    if (!entity || !entity.attributes) {
+      return [];
+    }
+
+    return [
+      {
+        label: 'City',
+        value: entity.attributes.location.name,
+      },
+      {
+        label: 'Latitude',
+        value: entity.attributes.location.latitude,
+      },
+      {
+        label: 'Longitude',
+        value: entity.attributes.location.longitude,
+      },
+    ];
+  }
+
+  private _handleRadioChange(ev): void {
+    if (!this._config || !this.hass) {
+      return;
+    }
+    const target = ev.target;
+    const configValue = target.value;
+
+    if (this._config[configValue] === true) {
+      return;
+    }
+
+    const updates: Partial<LunarPhaseCardConfig> = {};
+    const radiosOptions = this._getBaseConfigSelector().options.map((item) => item.key);
+    radiosOptions.forEach((item) => {
+      if (item === configValue) {
+        updates[item] = true;
+      } else {
+        updates[item] = false;
+      }
+    });
+
+    if (configValue === 'use_custom') {
+      updates.entity = '';
+    }
+    if (configValue === 'use_entity') {
+      this._newLatitude = '';
+      this._newLongitude = '';
+    }
+
+    if (configValue === 'use_default') {
+      updates.entity = '';
+      updates.latitude = this.hass.config.latitude;
+      updates.longitude = this.hass.config.longitude;
+    }
+
+    if (Object.keys(updates).length > 0) {
+      this._config = { ...this._config, ...updates };
+      console.log('updates', updates);
+      fireEvent(this, 'config-changed', { config: this._config });
+    }
   }
 
   private _handleAlertDismissed(): void {
@@ -493,47 +617,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       [configValue]: parseFloat(target.value),
     };
     console.log(configValue, target.value);
-    fireEvent(this, 'config-changed', { config: this._config });
-  }
-
-  private _valueChanged(ev): void {
-    if (!this._config || !this.hass) {
-      return;
-    }
-    const target = ev.target;
-    const configValue = target.configValue;
-
-    if (this[`${configValue}`] === target.value) {
-      return;
-    }
-
-    let newValue: any;
-
-    if (['custom_latitude', 'custom_longitude'].includes(configValue)) {
-      newValue = Number(target.value);
-      this._config = {
-        ...this._config,
-        [configValue]: newValue,
-      };
-    } else if (newValue && newValue.length === 0) {
-      // Check for an empty array
-      const tmpConfig = { ...this._config };
-      delete tmpConfig[configValue];
-      this._config = tmpConfig;
-    } else {
-      newValue = target.checked !== undefined ? target.checked : target.value;
-      this._config = {
-        ...this._config,
-        [configValue]: newValue,
-      };
-    }
-
-    if (newValue && newValue.length === 0) {
-      // Check for an empty array
-      const tmpConfig = { ...this._config };
-      delete tmpConfig[configValue];
-      this._config = tmpConfig;
-    }
     fireEvent(this, 'config-changed', { config: this._config });
   }
 

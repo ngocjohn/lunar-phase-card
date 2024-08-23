@@ -10,20 +10,40 @@
   display: flex;
 }
 
-ha-select,
 ha-textfield {
   display: block;
   width: 100%;
+}
+
+
+ha-select {
+  width: 100%;
+}
+
+
+.font-config-content {
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   margin-bottom: 8px;
+  align-items: baseline;
 }
 
-ha-formfield {
-  padding-bottom: 8px;
-  width: max-content;
+.font-config-type {
+  color: var(--secondary-text-color);
+  display: flex;
+  padding: 8px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-ha-expansion-panel .container {
-  padding: 0px 1rem !important;
+.font-config-type .title {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.font-config-type .desc {
+  font-weight: 400;
 }
 
 .right-icon {
