@@ -1,4 +1,5 @@
 import { version, repository } from '../package.json';
+import { FontSizeOptions, FontTextTransformOptions, FontCustomStyles } from './types';
 
 export const REPOSITORY = repository.repo;
 export const CARD_VERSION = `v${version}`;
@@ -41,4 +42,21 @@ export const MOON_IMAGES = [
   moon_phase_13,
   moon_phase_14,
   moon_phase_15,
+];
+
+export const FONTSIZES: FontSizeOptions[] = ['auto', 'small', 'medium', 'large', 'x-large', 'xx-large'];
+export const FONTSTYLES: FontTextTransformOptions[] = ['none', 'capitalize', 'uppercase', 'lowercase'];
+
+export const FONTCOLORS: string[] = [
+  'white',
+  'black',
+  'red',
+  'green',
+  'blue',
+  'yellow',
+  'orange',
+  'purple',
+  'pink',
+  'brown',
+  'gray',
 ];
