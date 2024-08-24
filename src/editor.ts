@@ -149,6 +149,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       })}
     </div> `;
   }
+
   private _renderEntityPicker(): TemplateResult {
     // Filter entities with moon_phase
     const entities = Object.keys(this.hass.states)
@@ -214,7 +215,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       ${this._haComboBox(
         itemsLang, // Passing the mapped language options
         'placeHolder.language', // Localization key for the label
-        this._config?.selected_language || '', // Currently selected language
+        this._config?.selected_language || this._systemLanguage, // Currently selected language
         'selected_language', // Config value key
         false, // Allow custom value
       )}
@@ -312,63 +313,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       `,
     );
   }
-
-  // private _renderFontConfiguration(): TemplateResult {
-  //   const _fontPrefix = 'fontOptions';
-
-  //   // Helper function for localization
-  //   const localizeKey = (key: string) => this.localize(`editor.${_fontPrefix}.${key}`);
-
-  //   const createFontConfigRow = (prefix: 'header' | 'label') => {
-  //     // Function to generate the ha-combo-box elements
-  //     const createComboBox = (type: 'size' | 'style' | 'color', allowCustomValue = true) => {
-  //       const configKey = `${prefix}_font_${type}`;
-  //       const items =
-  //         type === 'color'
-  //           ? FONTCOLORS.map((color) => ({ value: color, label: color }))
-  //           : type === 'size'
-  //             ? FONTSIZES.map((size) => ({ value: size, label: size }))
-  //             : FONTSTYLES.map((style) => ({ value: style, label: style }));
-
-  //       return this._haComboBox(
-  //         items,
-  //         `${_fontPrefix}.${prefix}Font${type.charAt(0).toUpperCase() + type.slice(1)}`,
-  //         this._config.font_customize[configKey] || (type === 'size' ? 'auto' : type === 'style' ? 'none' : ''),
-  //         configKey,
-  //         allowCustomValue,
-  //       );
-  //     };
-
-  //     return html` ${createComboBox('size')} ${createComboBox('style', false)} ${createComboBox('color')} `;
-  //   };
-
-  //   const hideLabelCompactView = this._config?.compact_view
-  //     ? this._tempCheckBox('fontOptions.hideLabel', 'font_customize.hide_label', 'hide_label')
-  //     : '';
-
-  //   return this.panelTemplate(
-  //     'fontOptions',
-  //     'fontOptions',
-  //     'mdi:format-font',
-  //     html`
-  //       <div class="font-config-wrapper">
-  //         <div class="font-config-type">
-  //           <span class="title">${localizeKey('headerFontConfig.title')}</span>
-  //           <span class="desc">${localizeKey('headerFontConfig.description')}</span>
-  //         </div>
-  //         <div class="font-config-content">${createFontConfigRow('header')}</div>
-  //       </div>
-
-  //       <div class="font-config-wrapper">
-  //         <div class="font-config-type">
-  //           <span class="title">${localizeKey('labelFontConfig.title')}</span>
-  //           <span class="desc">${localizeKey('labelFontConfig.description')}</span>
-  //         </div>
-  //         <div class="font-config-content">${createFontConfigRow('label')} ${hideLabelCompactView}</div>
-  //       </div>
-  //     `,
-  //   );
-  // }
 
   private panelTemplate(
     title: string,

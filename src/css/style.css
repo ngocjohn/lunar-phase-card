@@ -95,6 +95,7 @@ h1 {
   align-items: center;
   gap: 1.5rem;
   font-size: var(--lunar-card-label-font-size, 14px);
+  text-transform: var(--lunar-card-label-text-transform, none);
 }
 
 .lunar-card-content.flex-col {
