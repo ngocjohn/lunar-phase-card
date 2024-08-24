@@ -64,36 +64,7 @@
             "labelFontSize": "Label font size",
             "labelFontColor": "Label font color",
             "labelFontStyle": "Label font style",
-            "valueFontSize": "Value font size",
-            "fontSize": "Font size",
-            "fontColor": "Font color",
-            "fontTextTransform": "Text transform",
-            "textTransformOptions": {
-                "none": "None",
-                "capitalize": "Capitalize",
-                "uppercase": "Uppercase",
-                "lowercase": "Lowercase"
-            },
-            "fontSizes": {
-                "auto": "Auto",
-                "small": "Small",
-                "medium": "Medium",
-                "large": "Large",
-                "x-large": "X-Large",
-                "xx-large": "XX-Large"
-            },
-            "fontStyles": {
-                "none": "None",
-                "capitalize": "Capitalize",
-                "uppercase": "Uppercase",
-                "lowercase": "Lowercase"
-            },
-            "header_font_size": "Header font size",
-            "header_font_color": "Header font color",
-            "header_font_style": "Header font style",
-            "label_font_size": "Label font size",
-            "label_font_color": "Label font color",
-            "label_font_style": "Label font style"
+            "valueFontSize": "Value font size"
         },
         "compactView": "Compact view",
         "showBackground": "Show background",

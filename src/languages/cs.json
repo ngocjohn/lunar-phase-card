@@ -47,24 +47,24 @@
             "useCustom": "Použít vlastní"
         },
         "fontOptions": {
-            "title": "",
-            "description": "",
-            "hideLabel": "",
+            "title": "Stylizace textu",
+            "description": "Nastavte stylizaci textu",
+            "hideLabel": "Skrýt popisek",
             "headerFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Nadpis",
+                "description": "Nastavte stylizaci nadpisu"
             },
             "labelFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Popisek",
+                "description": "Nastavte stylizaci popisku"
             },
-            "headerFontSize": "",
-            "headerFontColor": "",
-            "headerFontStyle": "",
-            "labelFontSize": "",
-            "labelFontColor": "",
-            "labelFontStyle": "",
-            "valueFontSize": ""
+            "headerFontSize": "Velikost písma nadpisu",
+            "headerFontColor": "Barva písma nadpisu",
+            "headerFontStyle": "Styl písma nadpisu",
+            "labelFontSize": "Velikost písma popisku",
+            "labelFontColor": "Barva písma popisku",
+            "labelFontStyle": "Styl písma popisku",
+            "valueFontSize": "Velikost písma hodnoty"
         },
         "compactView": "Kompaktní zobrazení",
         "showBackground": "Zobrazit pozadí",
