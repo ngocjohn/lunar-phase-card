@@ -46,6 +46,26 @@
             "useEntity": "Usar entidade",
             "useCustom": "Usar personalizado"
         },
+        "fontOptions": {
+            "title": "",
+            "description": "",
+            "hideLabel": "",
+            "headerFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "labelFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "headerFontSize": "",
+            "headerFontColor": "",
+            "headerFontStyle": "",
+            "labelFontSize": "",
+            "labelFontColor": "",
+            "labelFontStyle": "",
+            "valueFontSize": ""
+        },
         "compactView": "Visualização compacta",
         "showBackground": "Mostrar plano de fundo",
         "timeFormat": "Formato de 12 horas",

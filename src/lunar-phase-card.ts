@@ -77,12 +77,15 @@ export class LunarPhaseCard extends LitElement {
 
   protected firstUpdated(changedProps: PropertyValues) {
     super.firstUpdated(changedProps);
-    this._setBackgroundCss();
     // Initialize Swiper only if the parent element does not have the class 'preview'
     if (this.parentElement && !this.parentElement.classList.contains('preview')) {
       setTimeout(() => {
         this.fetchBaseMoonData();
       }, 300);
+    }
+    this._setBackgroundCss();
+    if (this.config.font_customize) {
+      this._setCustomVars();
     }
   }
 
@@ -96,9 +99,6 @@ export class LunarPhaseCard extends LitElement {
   }
 
   disconnectedCallback(): void {
-    if (process.env.ROLLUP_WATCH === 'true' && window.LunarCard === this) {
-      window.LunarCard = undefined;
-    }
     this.clearRefreshInterval();
     this._connected = false;
     super.disconnectedCallback();
@@ -279,7 +279,7 @@ export class LunarPhaseCard extends LitElement {
             <ha-icon icon=${icon}></ha-icon>
             <span class="label">${value} ${unit}</span>
           </div>
-          <span class="value">${label}</span>
+          ${!this.config.font_customize.hide_label ? html` <span class="value">${label}</span>` : nothing}
         </div>
       `;
     };
@@ -454,6 +454,22 @@ export class LunarPhaseCard extends LitElement {
     this.style.setProperty('--lunar-background-image', `url(${background})`);
   }
 
+  private _setCustomVars() {
+    const fontOptions = this.config.font_customize;
+    if (!fontOptions) return;
+    const varCss = {
+      '--lunar-card-header-font-size': fontOptions.header_font_size,
+      '--lunar-card-header-text-transform': fontOptions.header_font_style,
+      '--lunar-card-header-font-color': fontOptions.header_font_color,
+      '--lunar-card-label-font-size': fontOptions.label_font_size,
+      '--lunar-card-label-text-transform': fontOptions.label_font_style,
+      '--lunar-card-label-font-color': fontOptions.label_font_color,
+    };
+    Object.entries(varCss).forEach(([key, value]) => {
+      this.style.setProperty(key, value);
+    });
+  }
+
   // https://lit.dev/docs/components/styles/
   public static get styles(): CSSResultGroup {
     return [style];
@@ -470,7 +486,7 @@ export class LunarPhaseCard extends LitElement {
 
 declare global {
   interface Window {
-    LunarCard: LunarPhaseCard | undefined;
+    LunarCard: LunarPhaseCard;
   }
   interface HTMLElementTagNameMap {
     'lunar-phase-card': LunarPhaseCard;

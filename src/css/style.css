@@ -1,16 +1,12 @@
 :host {
-  font-family:
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Open Sans',
-    'Helvetica Neue',
-    sans-serif;
+  --swiper-pagination-bullet-inactive-color: var(--secondary-text-color);
+  --swiper-pagination-bottom: 0;
+  --lunar-card-padding: 12px;
+  --lunar-card-header-font-color: var(--lunar-card-header-font-color, #212121);
+  --lunar-card-label-font-color: var(--lunar-card-label-font-color, #212121);
+  --lunar-card-header-text-transform: capitalize;
+  --lunar-card-header-font-size: x-large;
+  --lunar-card-label-font-size: 14px;
 }
 
 *:focus {
@@ -25,18 +21,10 @@ ha-card {
   height: auto;
   background-color: var(--card-background-color);
   letter-spacing: 0.5px;
-  padding: 1rem;
-  --swiper-pagination-bullet-inactive-color: var(--secondary-text-color);
-  --swiper-pagination-bottom: 0;
+  padding: var(--lunar-card-padding, 12px);
+  --primary-text-color: var(--lunar-card-label-font-color, #212121);
+  --swiper-theme-color: var(--primary-text-color);
 }
-
-/* @media screen and (max-width: 800px) {
-  .moon-image {
-    width: 100%;
-    max-width: 100px !important;
-    max-height: 100px !important;
-  }
-} */
 
 ha-card.--background {
   background-size: cover;
@@ -44,8 +32,9 @@ ha-card.--background {
   background-repeat: no-repeat;
   background-image: var(--lunar-background-image);
   transition: all 0.5s ease;
-  --primary-text-color: #e1e1e1;
+  --primary-text-color: var(--lunar-card-label-font-color, #e1e1e1);
   --swiper-theme-color: var(--primary-text-color);
+
 }
 
 .lunar-card-header {
@@ -64,27 +53,31 @@ ha-card.--background {
   padding: 0;
 }
 
+ha-card.--background h1 {
+  color: var(--lunar-card-header-font-color, #e1e1e1);
+}
+
 h1 {
-  color: var(--ha-card-header-color, --primary-text-color);
+  color: var(--lunar-card-header-font-color, var(--primary-text-color));
   font-family: var(--ha-card-header-font-family, inherit);
   display: block;
   margin-block-start: 0px;
   margin-block-end: 0px;
   font-weight: 400;
-  text-transform: capitalize;
-  font-size: x-large;
+  text-transform: var(--lunar-card-header-text-transform, capitalize);
+  font-size: var(--lunar-card-header-font-size, x-large);
 }
 
 .btn-calendar {
   display: block;
-  color: var(--disabled-text-color);
+  color: var(--lunar-card-label-font-color);
   cursor: pointer;
-  transition: all 0.3s ease;
+  opacity: 0.4;
 }
 
 .btn-calendar:hover {
-  color: var(--primary-text-color);
-  opacity: 1;
+  color: var(--lunar-card-label-font-color);
+  opacity: 0.8;
 }
 
 .click-shrink {
@@ -101,6 +94,8 @@ h1 {
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
+  font-size: var(--lunar-card-label-font-size, 14px);
+  text-transform: var(--lunar-card-label-text-transform, none);
 }
 
 .lunar-card-content.flex-col {
@@ -343,5 +338,6 @@ button.date-input-btn:hover {
 }
 
 .compact-item .value {
-  color: var(--secondary-text-color);
+  color: var(--lunar-card-label-font-color);
+  opacity: 0.8;
 }
