@@ -47,24 +47,24 @@
             "useCustom": "Custom"
         },
         "fontOptions": {
-            "title": "",
-            "description": "",
-            "hideLabel": "",
+            "title": "Modification polices",
+            "description": "Configuration de la taille et couleur des polices",
+            "hideLabel": "Cacher label",
             "headerFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Police titre",
+                "description": "Configuration de la police du titre"
             },
             "labelFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Police label",
+                "description": "Configuration de la police du label"
             },
-            "headerFontSize": "",
-            "headerFontColor": "",
-            "headerFontStyle": "",
-            "labelFontSize": "",
-            "labelFontColor": "",
-            "labelFontStyle": "",
-            "valueFontSize": ""
+            "headerFontSize": "Taille police titre",
+            "headerFontColor": "Couleur police titre",
+            "headerFontStyle": "Style police titre",
+            "labelFontSize": "Taille police label",
+            "labelFontColor": "Couleur police label",
+            "labelFontStyle": "Style police label",
+            "valueFontSize": "Valeur taille police"
         },
         "compactView": "Affichage compact",
         "showBackground": "Afficher fond d'écran",
