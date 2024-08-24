@@ -1,5 +1,5 @@
 import { version, repository } from '../package.json';
-import { FontSizeOptions, FontTextTransformOptions, FontCustomStyles } from './types';
+import { FontSizeOptions, FontTextTransformOptions } from './types';
 
 export const REPOSITORY = repository.repo;
 export const CARD_VERSION = `v${version}`;
