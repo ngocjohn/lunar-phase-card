@@ -25,7 +25,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   private _systemLanguage = this.hass?.language;
 
   public async setConfig(config: LunarPhaseCardConfig): Promise<void> {
-    this._config = this._config ? config : deepMerge(InitializeDefaultConfig(), config);
+    this._config = deepMerge(InitializeDefaultConfig(), config);
   }
 
   protected firstUpdated(changedProps: PropertyValues): void {
@@ -393,7 +393,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   private _tempCheckBox = (labelKey: string, checkedValue, configValueKey: string): TemplateResult => {
     return html` <ha-formfield .label=${this.localize(`editor.${labelKey}`)}>
       <ha-checkbox
-        .checked=${this._config?.[checkedValue] !== false}
+        .checked=${this._config?.[checkedValue]}
         .configValue=${configValueKey}
         @change=${this._handleValueChange}
       ></ha-checkbox>

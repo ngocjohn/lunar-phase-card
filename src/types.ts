@@ -41,7 +41,7 @@ export interface FontCustomStyles {
   label_font_size: FontSizeOptions;
   label_font_style: FontTextTransformOptions;
   label_font_color: string;
-  hide_label: boolean;
+  hide_label?: boolean;
 }
 
 export interface LunarPhaseCardConfig extends LovelaceCardConfig {

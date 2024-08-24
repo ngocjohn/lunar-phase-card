@@ -279,7 +279,7 @@ export class LunarPhaseCard extends LitElement {
             <ha-icon icon=${icon}></ha-icon>
             <span class="label">${value} ${unit}</span>
           </div>
-          ${!this.config.font_customize.hide_label ? html` <span class="value">${label}</span>` : nothing}
+          ${this.config?.font_customize.hide_label ? html`` : html` <span class="value">${label}</span>`}
         </div>
       `;
     };
