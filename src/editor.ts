@@ -30,19 +30,30 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   protected firstUpdated(changedProps: PropertyValues): void {
     super.firstUpdated(changedProps);
-
-    if (this._compareVersions() !== 0) {
-      const toast = this.shadowRoot?.getElementById('toast') as HTMLElement;
-      const version = this.shadowRoot?.querySelector('.version') as HTMLElement;
-      version.style.visibility = 'hidden';
-      toast.classList.add('show');
-    }
   }
 
   private get selectedLanguage(): string {
     return this._config?.selected_language || 'en';
   }
 
+  protected update(changedProperties: PropertyValues): void {
+    super.update(changedProperties);
+    if (changedProperties.has('_latestRelease') && this._latestRelease !== '') {
+      const compareVersionsResult = this._compareVersions();
+      const toast = this.shadowRoot?.getElementById('toast') as HTMLElement;
+      const version = this.shadowRoot?.querySelector('.version') as HTMLElement;
+      if (toast || version) {
+        if (compareVersionsResult !== 0) {
+          toast.classList.add('show');
+          version.style.display = 'none';
+        } else {
+          version.style.display = 'flex';
+        }
+      }
+    }
+
+    this._systemLanguage = this.hass?.language;
+  }
   private localize = (string: string, search = '', replace = ''): string => {
     return localize(string, this.selectedLanguage, search, replace);
   };
@@ -78,7 +89,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         <span
           >${
             CARD_VERSION === this._latestRelease
-              ? CARD_VERSION
+              ? html`version: ${CARD_VERSION}`
               : html`version: ${CARD_VERSION} -> <span class="update">${this._latestRelease}</span>`
           }</span
         >
@@ -521,7 +532,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   private _handleAlertDismissed(): void {
     const toast = this.shadowRoot?.getElementById('toast') as HTMLElement;
     const version = this.shadowRoot?.querySelector('.version') as HTMLElement;
-    if (toast) {
+    if (toast || version) {
       toast.classList.remove('show');
       version.style.visibility = 'visible';
     }

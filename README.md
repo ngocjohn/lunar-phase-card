@@ -34,6 +34,7 @@
 | `fr.json`     | Français               |
 | `id.json`     | Bahasa Indonesia       |
 | `pt.json`     | Português (Brasil)     |
+| `sk.json`     | Slovak                 |
 
 </details>
 

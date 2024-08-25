@@ -82,7 +82,6 @@ ha-select {
 }
 
 .version {
-  margin-top: 2rem;
   color: var(--secondary-text-color);
   justify-content: space-around;
   align-items: stretch;
