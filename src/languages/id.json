@@ -47,24 +47,24 @@
             "useCustom": "Gunakan pengaturan khusus"
         },
         "fontOptions": {
-            "title": "",
-            "description": "",
-            "hideLabel": "",
+            "title": "Konfigurasi jenis huruf",
+            "description": "Tetapkan konfigurasi untuk ukuran dan warna huruf",
+            "hideLabel": "Sembunyikan label",
             "headerFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Jenis huruf pada judul",
+                "description": "Tetapkan konfigurasi untuk huruf pada judul"
             },
             "labelFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Jenis huruf pada label",
+                "description": "Tetapkan konfigurasi untuk huruf pada label"
             },
-            "headerFontSize": "",
-            "headerFontColor": "",
-            "headerFontStyle": "",
-            "labelFontSize": "",
-            "labelFontColor": "",
-            "labelFontStyle": "",
-            "valueFontSize": ""
+            "headerFontSize": "Ukuran huruf pada judul",
+            "headerFontColor": "Warna huruf pada judul",
+            "headerFontStyle": "Gaya huruf pada judul",
+            "labelFontSize": "Ukuran huruf pada label",
+            "labelFontColor": "Warna huruf pada label",
+            "labelFontStyle": "Gaya huruf pada label",
+            "valueFontSize": "Ukuran angka dari nilai yang ditampil"
         },
         "compactView": "Tampilan kompak",
         "showBackground": "Tampilkan gambar latar belakang",
