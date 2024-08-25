@@ -35,10 +35,12 @@ export class LunarPhaseCard extends LitElement {
   public static getStubConfig = (hass: HomeAssistant): Record<string, unknown> => {
     const defaultLatitude = hass.config.latitude || 0;
     const defaultLongitude = hass.config.longitude || 0;
+    const lang = hass.language;
     return {
       ...defaultConfig,
       latitude: defaultLatitude,
       longitude: defaultLongitude,
+      selected_language: lang,
     };
   };
 

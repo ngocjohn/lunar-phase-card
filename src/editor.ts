@@ -191,11 +191,17 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private _renderViewConfiguration(): TemplateResult {
-    const langOpts = [...languageOptions.sort((a, b) => a.name.localeCompare(b.name))];
+    const syslang = this.hass?.language;
+
+    const langOpts = [
+      { key: 'system', nativeName: 'System' },
+      ...languageOptions.sort((a, b) => a.name.localeCompare(b.name)),
+    ];
+
     // Map langOpts to the format expected by _haComboBox
     const itemsLang = langOpts.map((lang) => ({
       value: lang.key,
-      label: `${lang.name} (${lang.nativeName})`,
+      label: lang.nativeName,
     }));
 
     const viewItemMap = [
@@ -215,7 +221,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       ${this._haComboBox(
         itemsLang, // Passing the mapped language options
         'placeHolder.language', // Localization key for the label
-        this._config?.selected_language || this._systemLanguage, // Currently selected language
+        this._config?.selected_language || '', // Currently selected language
         'selected_language', // Config value key
         false, // Allow custom value
       )}
@@ -437,6 +443,12 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         ...this._config.font_customize,
         [key]: updatedValue,
       };
+    } else if (configValue === 'selected_language') {
+      if (value === 'system' || value === undefined) {
+        updates.selected_language = this.hass?.language;
+      } else {
+        updates.selected_language = value;
+      }
     } else {
       // Update the main configuration object
       updates[configValue] = value;
