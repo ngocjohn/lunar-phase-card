@@ -47,24 +47,24 @@
             "useCustom": "Brug brugerdefineret"
         },
         "fontOptions": {
-            "title": "",
-            "description": "",
-            "hideLabel": "",
+            "title": "Fonttilpasning",
+            "description": "Indstil en konfiguration for skriftstørrelse og farve",
+            "hideLabel": "Skjul etiket",
             "headerFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Header font",
+                "description": "Indstil en konfiguration for header font"
             },
             "labelFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Etiket skrifttype",
+                "description": "Indstil en konfiguration for etiket skrifttype"
             },
-            "headerFontSize": "",
-            "headerFontColor": "",
-            "headerFontStyle": "",
-            "labelFontSize": "",
-            "labelFontColor": "",
-            "labelFontStyle": "",
-            "valueFontSize": ""
+            "headerFontSize": "Header skriftstørrelse",
+            "headerFontColor": "Header skriftfarve",
+            "headerFontStyle": "Header skrifttype",
+            "labelFontSize": "Etiket skriftstørrelse",
+            "labelFontColor": "Etiket skriftfarve",
+            "labelFontStyle": "Etiket skrifttype",
+            "valueFontSize": "Værdi skriftstørrelse"
         },
         "compactView": "Kompakt udsigt",
         "showBackground": "Vis baggrund",
