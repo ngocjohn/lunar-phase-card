@@ -46,6 +46,26 @@
             "useEntity": "Brug enhed",
             "useCustom": "Brug brugerdefineret"
         },
+        "fontOptions": {
+            "title": "",
+            "description": "",
+            "hideLabel": "",
+            "headerFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "labelFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "headerFontSize": "",
+            "headerFontColor": "",
+            "headerFontStyle": "",
+            "labelFontSize": "",
+            "labelFontColor": "",
+            "labelFontStyle": "",
+            "valueFontSize": ""
+        },
         "compactView": "Kompakt udsigt",
         "showBackground": "Vis baggrund",
         "timeFormat": "12-timers tidsformat",

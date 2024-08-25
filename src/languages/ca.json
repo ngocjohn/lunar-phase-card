@@ -1,0 +1,79 @@
+{
+    "name": "Catalan",
+    "nativeName": "Català",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Quart creixent",
+            "fullMoon": "Lluna plena",
+            "thirdQuarterMoon": "Quart minvant",
+            "newMoon": "Lluna nova",
+            "waxingCrescentMoon": "Lluna creixent",
+            "waxingGibbousMoon": "Gibosa creixent",
+            "waningCrescentMoon": "Lluna minvant",
+            "waningGibbousMoon": "Gibosa minvant"
+        },
+        "illumination": "Il·luminació",
+        "illuminated": "Il·luminada",
+        "moonRise": "Sortida de la lluna",
+        "moonSet": "Posta de la lluna",
+        "moonHigh": "Punt més alt de la lluna",
+        "moonAge": "Edat de la lluna",
+        "distance": "Distància",
+        "azimuth": "Azimut",
+        "altitude": "Elevació",
+        "fullMoon": "Lluna plena",
+        "newMoon": "Lluna nova",
+        "relativeTime": {
+            "days": "dies",
+            "justNow": "ara",
+            "minutesAgo": "fa {0} minuts",
+            "hoursAgo": "fa {0} hores",
+            "inMinutes": "d'aquí a {0} minuts",
+            "inHours": "d'aqui a {0} hores"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "Llenguatge i mode de vista",
+            "description": "Fixa una configuració per l'idioma i el fons"
+        },
+        "baseConfig": {
+            "title": "Latitud i longitud",
+            "description": "Fixa una configuració per la latitud i la longitud"
+        },
+        "optionsConfig": {
+            "useDefault": "Fer servir el sistema",
+            "useEntity": "Fer servir l'entitat",
+            "useCustom": "Personalitza"
+        },
+        "fontOptions": {
+            "title": "",
+            "description": "",
+            "hideLabel": "",
+            "headerFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "labelFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "headerFontSize": "",
+            "headerFontColor": "",
+            "headerFontStyle": "",
+            "labelFontSize": "",
+            "labelFontColor": "",
+            "labelFontStyle": "",
+            "valueFontSize": ""
+        },
+        "compactView": "Vista compacta",
+        "showBackground": "Mostra el fons",
+        "timeFormat": "Format del temps de 12 hores",
+        "placeHolder": {
+            "latitude": "Entra la latitud",
+            "longitude": "Entra la longitud",
+            "customBackground": "URL o camí a la imatge del fons",
+            "language": "Selecciona l'idioma"
+        }
+    }
+}

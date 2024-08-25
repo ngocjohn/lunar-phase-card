@@ -46,6 +46,26 @@
             "useEntity": "Use entity",
             "useCustom": "Use custom"
         },
+        "fontOptions": {
+            "title": "Font customization",
+            "description": "Set a configuration for font size and color",
+            "hideLabel": "Hide label",
+            "headerFontConfig": {
+                "title": "Header font",
+                "description": "Set a configuration for header font"
+            },
+            "labelFontConfig": {
+                "title": "Label font",
+                "description": "Set a configuration for label font"
+            },
+            "headerFontSize": "Header font size",
+            "headerFontColor": "Header font color",
+            "headerFontStyle": "Header font style",
+            "labelFontSize": "Label font size",
+            "labelFontColor": "Label font color",
+            "labelFontStyle": "Label font style",
+            "valueFontSize": "Value font size"
+        },
         "compactView": "Compact view",
         "showBackground": "Show background",
         "timeFormat": "12-hour time format",

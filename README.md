@@ -3,7 +3,7 @@
 
 # 🌘 Lunar Phase Card
 
-<img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/header.gif" style="border-radius: 8px" />
+<a href="#"><img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/header.gif" style="border-radius: 8px" /></a>
 
 ##
 
@@ -26,8 +26,14 @@
 
 | Language Code | Language (Native Name) |
 | ------------- | ---------------------- |
+| `ca.json`     | Català                 |
 | `cs.json`     | Čeština                |
+| `da.json`     | Dansk                  |
+| `de.json`     | Deutsch                |
 | `en.json`     | English                |
+| `fr.json`     | Français               |
+| `id.json`     | Bahasa Indonesia       |
+| `pt.json`     | Português (Brasil)     |
 
 </details>
 

@@ -46,6 +46,26 @@
             "useEntity": "Gunakan entitas",
             "useCustom": "Gunakan pengaturan khusus"
         },
+        "fontOptions": {
+            "title": "",
+            "description": "",
+            "hideLabel": "",
+            "headerFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "labelFontConfig": {
+                "title": "",
+                "description": ""
+            },
+            "headerFontSize": "",
+            "headerFontColor": "",
+            "headerFontStyle": "",
+            "labelFontSize": "",
+            "labelFontColor": "",
+            "labelFontStyle": "",
+            "valueFontSize": ""
+        },
         "compactView": "Tampilan kompak",
         "showBackground": "Tampilkan gambar latar belakang",
         "timeFormat": "Format waktu 12 jam",

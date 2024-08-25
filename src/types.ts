@@ -31,6 +31,19 @@ export type HomeAssistantExtended = HomeAssistant & {
   formatEntityAttributeValue: (entityId: string, attribute: string) => string;
 };
 
+export type FontSizeOptions = 'auto' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
+export type FontTextTransformOptions = 'none' | 'capitalize' | 'uppercase' | 'lowercase';
+
+export interface FontCustomStyles {
+  header_font_size: FontSizeOptions;
+  header_font_style: FontTextTransformOptions;
+  header_font_color: string;
+  label_font_size: FontSizeOptions;
+  label_font_style: FontTextTransformOptions;
+  label_font_color: string;
+  hide_label?: boolean;
+}
+
 export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   type: string;
   entity?: string;
@@ -44,6 +57,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   selected_language?: string | null;
   latitude: number;
   longitude: number;
+  font_customize: FontCustomStyles;
 }
 
 export const defaultConfig: Partial<LunarPhaseCardConfig> = {
@@ -53,8 +67,18 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   use_custom: false,
   use_entity: false,
   show_background: true,
+  selected_language: 'en',
   compact_view: true,
   '12hr_format': false,
+  font_customize: {
+    header_font_size: 'x-large',
+    header_font_style: 'capitalize',
+    header_font_color: '',
+    label_font_size: 'auto',
+    label_font_style: 'none',
+    label_font_color: '',
+    hide_label: false,
+  },
 };
 
 export interface LunarPhaseData {

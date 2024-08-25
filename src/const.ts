@@ -1,6 +1,8 @@
-import { version } from '../package.json';
+import { version, repository } from '../package.json';
+import { FontSizeOptions, FontTextTransformOptions } from './types';
 
-export const CARD_VERSION = version;
+export const REPOSITORY = repository.repo;
+export const CARD_VERSION = `v${version}`;
 export const BASE_REFRESH_INTERVAL = 30 * 1000; // 30 seconds
 
 import moon_phase_0 from './images/moon_phase_0.png';
@@ -40,4 +42,21 @@ export const MOON_IMAGES = [
   moon_phase_13,
   moon_phase_14,
   moon_phase_15,
+];
+
+export const FONTSIZES: FontSizeOptions[] = ['auto', 'small', 'medium', 'large', 'x-large', 'xx-large'];
+export const FONTSTYLES: FontTextTransformOptions[] = ['none', 'capitalize', 'uppercase', 'lowercase'];
+
+export const FONTCOLORS: string[] = [
+  'white',
+  'black',
+  'red',
+  'green',
+  'blue',
+  'yellow',
+  'orange',
+  'purple',
+  'pink',
+  'brown',
+  'gray',
 ];
