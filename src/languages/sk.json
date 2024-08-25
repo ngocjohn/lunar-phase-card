@@ -64,7 +64,7 @@
             "labelFontSize": "Veľkosť písma štítku",
             "labelFontColor": "Farba písma štítku",
             "labelFontStyle": "Štýl písma štítku",
-            "valueFontSize": ""
+            "valueFontSize": "Veľkosť písma hodnoty"
         },
         "compactView": "Kompaktný pohľad",
         "showBackground": "Zobraziť pozadie",
