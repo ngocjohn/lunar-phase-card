@@ -35,11 +35,11 @@
     "editor": {
         "viewConfig": {
             "title": "Llenguatge i mode de vista",
-            "description": "Fixa una configuració per l'idioma i el fons"
+            "description": "Estableix una configuració per l'idioma i el fons"
         },
         "baseConfig": {
             "title": "Latitud i longitud",
-            "description": "Fixa una configuració per la latitud i la longitud"
+            "description": "Estableix una configuració per la latitud i la longitud"
         },
         "optionsConfig": {
             "useDefault": "Fer servir el sistema",
@@ -47,24 +47,24 @@
             "useCustom": "Personalitza"
         },
         "fontOptions": {
-            "title": "",
-            "description": "",
-            "hideLabel": "",
+            "title": "Personalització de la font",
+            "description": "Estableix una configuració per a la mida i el color de la font",
+            "hideLabel": "Amaga l'etiqueta",
             "headerFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Font de la capçalera",
+                "description": "Estableix una configuració per a la font de la capçalera"
             },
             "labelFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Font de l'etiqueta",
+                "description": "Estableix una configuració per a la font de l'etiqueta"
             },
-            "headerFontSize": "",
-            "headerFontColor": "",
-            "headerFontStyle": "",
-            "labelFontSize": "",
-            "labelFontColor": "",
-            "labelFontStyle": "",
-            "valueFontSize": ""
+            "headerFontSize": "Mida de la font de capçalera",
+            "headerFontColor": "Color de la font de capçalera",
+            "headerFontStyle": "Estil de la font de capçalera",
+            "labelFontSize": "Mida de la font de l'etiqueta",
+            "labelFontColor": "Color de la font de l'etiqueta",
+            "labelFontStyle": "Estil de la font de l'etiqueta",
+            "valueFontSize": "Mida de la font del valor"
         },
         "compactView": "Vista compacta",
         "showBackground": "Mostra el fons",
