@@ -47,24 +47,24 @@
             "useCustom": "Usar personalizado"
         },
         "fontOptions": {
-            "title": "",
-            "description": "",
-            "hideLabel": "",
+            "title": "Estilização de texto",
+            "description": "Definir estilização de texto",
+            "hideLabel": "Ocultar rótulo",
             "headerFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Título",
+                "description": "Definir estilização de título"
             },
             "labelFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Rótulo",
+                "description": "Definir estilização de rótulo"
             },
-            "headerFontSize": "",
-            "headerFontColor": "",
-            "headerFontStyle": "",
-            "labelFontSize": "",
-            "labelFontColor": "",
-            "labelFontStyle": "",
-            "valueFontSize": ""
+            "headerFontSize": "Tamanho da fonte do título",
+            "headerFontColor": "Cor da fonte do título",
+            "headerFontStyle": "Estilo da fonte do título",
+            "labelFontSize": "Tamanho da fonte do rótulo",
+            "labelFontColor": "Cor da fonte do rótulo",
+            "labelFontStyle": "Estilo da fonte do rótulo",
+            "valueFontSize": "Tamanho da fonte do valor"
         },
         "compactView": "Visualização compacta",
         "showBackground": "Mostrar plano de fundo",
