@@ -3,7 +3,6 @@ const path = require('path');
 const JSON5 = require('json5');
 
 const baseFilePath = path.resolve(__dirname, '../src/localize/string.json');
-const languagesFolder = path.resolve(__dirname, '../src/languages');
 const baseData = JSON5.parse(fs.readFileSync(baseFilePath, 'utf8'));
 
 const getDiff = (base, target, prefix = '') => {
@@ -33,19 +32,19 @@ const getDiff = (base, target, prefix = '') => {
   return [missingKeys, emptyKeys, extraKeys];
 };
 
-const langFiles = fs.readdirSync(languagesFolder).filter((file) => file.endsWith('.json'));
+const langFiles = process.argv.slice(2);
 
 let hasIssues = false;
 let report = '';
 
 for (const file of langFiles) {
-  const langFilePath = path.join(languagesFolder, file);
+  const langFilePath = path.resolve(__dirname, '..', file);
   const langData = JSON5.parse(fs.readFileSync(langFilePath, 'utf8'));
 
   const [missingKeys, emptyKeys, extraKeys] = getDiff(baseData, langData);
 
   if (missingKeys.length > 0 || emptyKeys.length > 0 || extraKeys.length > 0) {
-    report += `### Issues in \`${file}\`:\n`;
+    report += `### Issues in \`${path.basename(file)}\`:\n`;
 
     if (missingKeys.length > 0) {
       hasIssues = true;
@@ -71,6 +70,6 @@ for (const file of langFiles) {
 
 if (hasIssues) {
   fs.writeFileSync(path.join(__dirname, 'diff-report.md'), report);
+  // Write to the GITHUB_ENV file to set the hasIssues variable
+  fs.appendFileSync(process.env.GITHUB_ENV, `hasIssues=true\n`);
 }
-
-console.log(`::set-output name=hasIssues::${hasIssues}`);

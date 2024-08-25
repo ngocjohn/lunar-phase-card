@@ -16,7 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       hasIssues: false
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -33,9 +32,15 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v34
 
+      - name: Filter changed localization files
+        id: filtered-files
+        run: |
+          filtered_files=$(echo ${{ steps.changed-files.outputs.all_changed_files }} | jq -r '.[] | select(startswith("src/languages/") and endswith(".json"))' | tr '\n' ' ')
+          echo "filtered_files=$filtered_files" >> $GITHUB_ENV
+
       - name: Run localization check
         id: check-localization
-        run: node scripts/check-localization.js ${{ steps.changed-files.outputs.all_changed_files }}
+        run: node scripts/check-localization.js $filtered_files
 
       - name: Check if diff-report.md exists
         id: check-diff-report
