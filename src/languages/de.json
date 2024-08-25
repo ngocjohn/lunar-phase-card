@@ -47,24 +47,24 @@
             "useCustom": "Benutzerdefinierte Einstellungen verwenden "
         },
         "fontOptions": {
-            "title": "",
-            "description": "",
-            "hideLabel": "",
+            "title": "Schriftartanpassungen",
+            "description": "Schriftgröße und -farbe festlegen",
+            "hideLabel": "Beschriftung ausblenden",
             "headerFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Schriftart der Überschrift",
+                "description": "Schriftartkonfiguration der Überschrift"
             },
             "labelFontConfig": {
-                "title": "",
-                "description": ""
+                "title": "Schriftart des Labels",
+                "description": "Schriftartkonfiguration des Labels"
             },
-            "headerFontSize": "",
-            "headerFontColor": "",
-            "headerFontStyle": "",
-            "labelFontSize": "",
-            "labelFontColor": "",
-            "labelFontStyle": "",
-            "valueFontSize": ""
+            "headerFontSize": "Schriftgröße der Überschrift",
+            "headerFontColor": "Schriftfarbe der Überschrift",
+            "headerFontStyle": "Schriftstil der Überschrift",
+            "labelFontSize": "Schriftgröße des Labels",
+            "labelFontColor": "Schriftfarbe des Labels",
+            "labelFontStyle": "Schriftstil des Labels",
+            "valueFontSize": "Schriftgröße der ausgegebenen Werte"
         },
         "compactView": "Kompakte Ansicht",
         "showBackground": "Hintergrund anzeigen",
