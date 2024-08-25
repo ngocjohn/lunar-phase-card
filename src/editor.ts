@@ -191,8 +191,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private _renderViewConfiguration(): TemplateResult {
-    const syslang = this.hass?.language;
-
     const langOpts = [
       { key: 'system', nativeName: 'System' },
       ...languageOptions.sort((a, b) => a.name.localeCompare(b.name)),
