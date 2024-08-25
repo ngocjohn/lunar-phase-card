@@ -46,6 +46,26 @@
             "useEntity": "Entität verwenden",
             "useCustom": "Benutzerdefinierte Einstellungen verwenden "
         },
+        "fontOptions": {
+            "title": "Schriftartanpassungen",
+            "description": "Schriftgröße und -farbe festlegen",
+            "hideLabel": "Beschriftung ausblenden",
+            "headerFontConfig": {
+                "title": "Schriftart der Überschrift",
+                "description": "Schriftartkonfiguration der Überschrift"
+            },
+            "labelFontConfig": {
+                "title": "Schriftart des Labels",
+                "description": "Schriftartkonfiguration des Labels"
+            },
+            "headerFontSize": "Schriftgröße der Überschrift",
+            "headerFontColor": "Schriftfarbe der Überschrift",
+            "headerFontStyle": "Schriftstil der Überschrift",
+            "labelFontSize": "Schriftgröße des Labels",
+            "labelFontColor": "Schriftfarbe des Labels",
+            "labelFontStyle": "Schriftstil des Labels",
+            "valueFontSize": "Schriftgröße der ausgegebenen Werte"
+        },
         "compactView": "Kompakte Ansicht",
         "showBackground": "Hintergrund anzeigen",
         "timeFormat": "12-Stunden-Zeitformat",
