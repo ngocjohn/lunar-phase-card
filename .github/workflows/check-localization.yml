@@ -35,7 +35,7 @@ jobs:
       - name: Filter changed localization files
         id: filtered-files
         run: |
-          filtered_files=$(echo ${{ steps.changed-files.outputs.all_changed_files }} | jq -r '.[] | select(startswith("src/languages/") and endswith(".json"))' | tr '\n' ' ')
+          filtered_files=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n' | grep '^src/languages/.*\.json$' || true)
           echo "filtered_files=$filtered_files" >> $GITHUB_ENV
 
       - name: Run localization check
