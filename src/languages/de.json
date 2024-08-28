@@ -3,29 +3,29 @@
     "nativeName": "Deutsch",
     "card": {
         "phase": {
-            "firstQuarterMoon": "Erster Viertelmond",
-            "fullMoon": "Vollmond",
-            "thirdQuarterMoon": "Dreiviertelmond",
             "newMoon": "Neumond",
-            "waxingCrescentMoon": "Zunehmender Halbmond",
-            "waxingGibbousMoon": "Zunehmender Dreiviertelmond",
+            "waxingCrescentMoon": "Zunehmende Sichel",
+            "firstQuarterMoon": "Erstes Viertel",
+            "waxingGibbousMoon": "Zunehmender Halbmond",
+            "fullMoon": "Vollmond",
             "waningCrescentMoon": "Abnehmender Halbmond",
-            "waningGibbousMoon": "Abnehmender Dreiviertelmond"
+            "thirdQuarterMoon": "Letztes Viertel",
+            "waningGibbousMoon": "Abnehmende Sichel"
         },
-        "illumination": "Mondbeleuchtung",
+        "illumination": "Beleuchtung",
         "illuminated": "beleuchtet",
-        "moonRise": "Mondaufgang",
-        "moonSet": "Monduntergang",
-        "moonHigh": "Mond am höchsten",
-        "moonAge": "Mondalter",
+        "moonRise": "Aufgang",
+        "moonSet": "Untergang",
+        "moonHigh": "Kulmination",
+        "moonAge": "Alter",
         "distance": "Entfernung",
-        "azimuth": "Astronomischer Azimut",
-        "altitude": "Mondhöhe",
+        "azimuth": "Azimut",
+        "altitude": "Höhe",
         "fullMoon": "Nächster Vollmond",
         "newMoon": "Nächster Neumond",
         "relativeTime": {
             "days": "Tage",
-            "justNow": "gegenwärtig",
+            "justNow": "jetzt",
             "minutesAgo": "vor {0} Minuten",
             "hoursAgo": "vor {0} Stunden",
             "inMinutes": "in {0} Minuten",
@@ -72,7 +72,7 @@
         "placeHolder": {
             "latitude": "Breitengrad eingeben",
             "longitude": "Längengrad eingeben",
-            "customBackground": "URL oder Pfad zum Bild",
+            "customBackground": "URL oder Pfad zum Hintergrundbild",
             "language": "Sprachauswahl"
         }
     }
