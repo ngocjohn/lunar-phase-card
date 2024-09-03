@@ -1,0 +1,79 @@
+{
+    "name": "Italian",
+    "nativeName": "Italiano",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Primo Quarto",
+            "fullMoon": "Luna piena",
+            "thirdQuarterMoon": "Ultimo Quarto",
+            "newMoon": "Luna nuova",
+            "waxingCrescentMoon": "Luna crescente",
+            "waxingGibbousMoon": "Gibbosa crescente",
+            "waningCrescentMoon": "Luna calante",
+            "waningGibbousMoon": "Gibbosa calante"
+        },
+        "illumination": "Illuminazione",
+        "illuminated": "Illuminata",
+        "moonRise": "Sorgere",
+        "moonSet": "Tramonto",
+        "moonHigh": "Luna all'altezza massima",
+        "moonAge": "Età della Luna",
+        "distance": "Distanza",
+        "azimuth": "Azimut",
+        "altitude": "Altitudine",
+        "fullMoon": "Luna piena",
+        "newMoon": "Luna nuova",
+        "relativeTime": {
+            "days": "giorni",
+            "justNow": "adesso",
+            "minutesAgo": "{0} minuti fa",
+            "hoursAgo": "{0} ore fa",
+            "inMinutes": "tra {0} minuti",
+            "inHours": "tra {0} ore"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "Lingua e visualizzazione",
+            "description": "Imposta una configurazione per lingua e sfondo"
+        },
+        "baseConfig": {
+            "title": "Latitudine e Longitudine",
+            "description": "Imposta una configurazione per Latitudine e Longitudine"
+        },
+        "optionsConfig": {
+            "useDefault": "Sistema",
+            "useEntity": "Entità",
+            "useCustom": "Personalizzata"
+        },
+        "fontOptions": {
+            "title": "Personalizzazione carattere",
+            "description": "Imposta una configurazione per dimensione e colore carattere",
+            "hideLabel": "Nascondi etichetta",
+            "headerFontConfig": {
+                "title": "Carattere intestazione",
+                "description": "Imposta una configurazione per carattere intestazione"
+            },
+            "labelFontConfig": {
+                "title": "Carattere etichetta",
+                "description": "Imposta una configurazione per carattere etichetta"
+            },
+            "headerFontSize": "Dimensione carattere intestazione",
+            "headerFontColor": "Colore carattere intestazione",
+            "headerFontStyle": "Stile carattere intestazione",
+            "labelFontSize": "Dimensione carattere etichetta",
+            "labelFontColor": "Colore carattere etichetta",
+            "labelFontStyle": "Stile carattere etichetta",
+            "valueFontSize": "Valore dimensione carattere"
+        },
+        "compactView": "Visualizzazione compatta",
+        "showBackground": "Mostra sfondo",
+        "timeFormat": "Formato a 12 ore",
+        "placeHolder": {
+            "latitude": "Inserisci Latitudine",
+            "longitude": "Inserisci Longitudine",
+            "customBackground": "URL o percorso dell'immagine",
+            "language": "Seleziona lingua"
+        }
+    }
+}
