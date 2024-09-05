@@ -3,13 +3,13 @@
     "nativeName": "Deutsch",
     "card": {
         "phase": {
+            "firstQuarterMoon": "Erstes Viertel",
+            "fullMoon": "Vollmond",
+            "thirdQuarterMoon": "Letztes Viertel",
             "newMoon": "Neumond",
             "waxingCrescentMoon": "Zunehmende Sichel",
-            "firstQuarterMoon": "Erstes Viertel",
             "waxingGibbousMoon": "Zunehmender Halbmond",
-            "fullMoon": "Vollmond",
             "waningCrescentMoon": "Abnehmender Halbmond",
-            "thirdQuarterMoon": "Letztes Viertel",
             "waningGibbousMoon": "Abnehmende Sichel"
         },
         "illumination": "Beleuchtung",
