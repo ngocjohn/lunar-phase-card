@@ -19,22 +19,25 @@
 - **Specific Date Lunar Information:** Option to display the moon information for a specific date.
 - **Multilingual Support**: The card includes various translations, making it accessible in multiple languages.
 
+
 ### Supported Localization
 
 <details>
   <summary>The following languages are supported in this project</summary>
 
-| Language Code | Language (Native Name) |
-| ------------- | ---------------------- |
-| `ca.json`     | Català                 |
-| `cs.json`     | Čeština                |
-| `da.json`     | Dansk                  |
-| `de.json`     | Deutsch                |
-| `en.json`     | English                |
-| `fr.json`     | Français               |
-| `id.json`     | Bahasa Indonesia       |
-| `pt.json`     | Português (Brasil)     |
-| `sk.json`     | Slovak                 |
+| Language Code | Name                   | Native Name					  |
+| ------------- | ---------------------- | ---------------------- |
+| `ca`     | Catalan          | Català          |
+| `cs`     | Czech          | Čeština          |
+| `da`     | Danish          | Dansk          |
+| `de`     | German          | Deutsch          |
+| `en`     | English          | English          |
+| `fr`     | French          | Français          |
+| `id`     | Indonesian          | Bahasa Indonesia          |
+| `it`     | Italian          | Italiano          |
+| `pt`     | Portuguese          | Português (Brasil)          |
+| `ru`     | Русский          | Русский          |
+| `sk`     | Slovak          | Slovenčina          |
 
 </details>
 
