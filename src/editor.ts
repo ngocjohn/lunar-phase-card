@@ -79,7 +79,14 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     if (!this.hass) {
       return html``;
     }
-
+    const root = document.querySelector('body > home-assistant')?.shadowRoot;
+    const dialog = root?.querySelector('hui-dialog-edit-card')?.shadowRoot;
+    const previewElement = dialog?.querySelector('ha-dialog > div.content > div.element-preview') as HTMLElement;
+    // Change the default preview element to be sticky
+    if (previewElement && previewElement.style.position !== 'sticky') {
+      previewElement.style.position = 'sticky';
+      previewElement.style.top = '0';
+    }
     return html`
       ${this._renderToast()}
       <div class="card-config">${this._renderBaseConfigSelector()} ${this._renderViewConfiguration()}
