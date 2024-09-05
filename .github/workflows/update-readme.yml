@@ -21,14 +21,12 @@ jobs:
       - name: Update README.md
         run: node scripts/update-readme.js
 
-      - name: Commit changes
+      - name: Push changes
         run: |
           git config --local user.name "GitHub Actions"
           git config --local user.email "actions@github.com"
           git add README.md
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update README.md with supported localization"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          git commit -m "Update README.md" || echo "No changes to commit"
+          git push origin HEAD:${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
