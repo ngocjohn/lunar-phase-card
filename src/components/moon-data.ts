@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, CSSResultGroup } from 'lit';
-import { customElement, property, state } from 'lit/decorators';
-import swipercss from '../css/swiper-bundle.css';
+import { customElement, property } from 'lit/decorators';
+import swipercss from '../css/swiper.css';
 import style from '../css/style.css';
 import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
@@ -58,7 +58,7 @@ export class LunarBaseData extends LitElement {
                     ${data.value} ${data.unit}
                   </div>
                 </div>
-              `,
+              `
             )}
         </div>
       </div>
