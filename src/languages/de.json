@@ -73,7 +73,8 @@
             "latitude": "Breitengrad eingeben",
             "longitude": "Längengrad eingeben",
             "customBackground": "URL oder Pfad zum Hintergrundbild",
-            "language": "Sprachauswahl"
+            "language": "Sprachauswahl",
+            "moonPosition": "Mondposition auf der Karte auswählen"
         }
     }
 }

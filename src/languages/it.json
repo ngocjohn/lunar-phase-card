@@ -73,7 +73,8 @@
             "latitude": "Inserisci Latitudine",
             "longitude": "Inserisci Longitudine",
             "customBackground": "URL o percorso dell'immagine",
-            "language": "Seleziona lingua"
+            "language": "Seleziona lingua",
+            "moonPosition": "Seleziona la posizione della luna sulla carta"
         }
     }
 }

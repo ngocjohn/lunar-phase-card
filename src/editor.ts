@@ -8,7 +8,7 @@ import { fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, FontCustomStyles, defaultConfig } from './types';
 
 import { languageOptions, localize } from './localize/localize';
-import { loadHaComponents, fetchLatestReleaseTag } from './utils/loader';
+import { loadHaComponents, fetchLatestReleaseTag, stickyPreview } from './utils/loader';
 import { compareVersions } from './utils/helpers';
 import { deepMerge, InitializeDefaultConfig } from './utils/ha-helper';
 
@@ -21,6 +21,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   @state() private _config!: LunarPhaseCardConfig;
   @state() private _latestRelease = '';
+  @state() private _activeTabIndex: number = 0;
 
   private _systemLanguage = this.hass?.language;
 
@@ -61,6 +62,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   connectedCallback() {
     super.connectedCallback();
     void loadHaComponents();
+    void stickyPreview();
     void fetchLatestReleaseTag().then((releaseTag) => {
       this._latestRelease = releaseTag;
     });
@@ -79,29 +81,30 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     if (!this.hass) {
       return html``;
     }
-    const root = document.querySelector('body > home-assistant')?.shadowRoot;
-    const dialog = root?.querySelector('hui-dialog-edit-card')?.shadowRoot;
-    const previewElement = dialog?.querySelector('ha-dialog > div.content > div.element-preview') as HTMLElement;
-    // Change the default preview element to be sticky
-    if (previewElement && previewElement.style.position !== 'sticky') {
-      previewElement.style.position = 'sticky';
-      previewElement.style.top = '0';
-    }
-    return html`
-      ${this._renderToast()}
-      <div class="card-config">${this._renderBaseConfigSelector()} ${this._renderViewConfiguration()}
-      ${this._renderFontConfiguration()}</div>
-      </div>
-      <div class="version">
-        <span
-          >${
-            CARD_VERSION === this._latestRelease
-              ? html`version: ${CARD_VERSION}`
-              : html`version: ${CARD_VERSION} -> <span class="update">${this._latestRelease}</span>`
-          }</span
-        >
-      </div>
-    `;
+
+    const tabsConfig = [
+      {
+        key: 'baseConfig',
+        label: 'Lat & Long',
+        content: this._renderBaseConfigSelector(),
+      },
+      {
+        key: 'viewConfig',
+        label: 'View',
+        content: this._renderViewConfiguration(),
+      },
+      {
+        key: 'fontOptions',
+        label: 'Font',
+        content: this._renderFontConfiguration(),
+      },
+    ];
+
+    return this.TabBar({
+      activeTabIndex: this._activeTabIndex,
+      onTabChange: (index) => (this._activeTabIndex = index),
+      tabs: tabsConfig,
+    });
   }
 
   private _renderBaseConfigSelector(): TemplateResult {
@@ -132,7 +135,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       </div>
     `;
 
-    return this.panelTemplate('baseConfig', 'baseConfig', 'mdi:cog', contentWrapp, true);
+    return this.contentTemplate('baseConfig', 'baseConfig', 'mdi:cog', contentWrapp);
   }
 
   private _renderUseDefault(): TemplateResult {
@@ -176,7 +179,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
     // Filter entities with latitude and longitude
     const entitiesWithLatLong = Object.keys(this.hass.states).filter(
-      (entity) => this.hass.states[entity].attributes.latitude && this.hass.states[entity].attributes.longitude,
+      (entity) => this.hass.states[entity].attributes.latitude && this.hass.states[entity].attributes.longitude
     );
 
     const combinedEntities = [...entities, 'separator', ...entitiesWithLatLong];
@@ -210,14 +213,14 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   private _renderViewConfiguration(): TemplateResult {
     const langOpts = [
-      { key: 'system', nativeName: 'System' },
+      { key: 'system', name: 'System', nativeName: this._systemLanguage },
       ...languageOptions.sort((a, b) => a.name.localeCompare(b.name)),
     ];
 
     // Map langOpts to the format expected by _haComboBox
     const itemsLang = langOpts.map((lang) => ({
       value: lang.key,
-      label: lang.nativeName,
+      label: `${lang.name} (${lang.nativeName})`,
     }));
 
     const viewItemMap = [
@@ -239,9 +242,20 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         'placeHolder.language', // Localization key for the label
         this._config?.selected_language || '', // Currently selected language
         'selected_language', // Config value key
-        false, // Allow custom value
+        false // Allow custom value
       )}
     `;
+
+    const moonPositon = this._haComboBox(
+      [
+        { value: 'left', label: 'Left' },
+        { value: 'right', label: 'Right' },
+      ],
+      'placeHolder.moonPosition',
+      this._config?.moon_position || 'left',
+      'moon_position',
+      false
+    );
 
     const textFormInput = html`
       <div class="custom-background-wrapper">
@@ -271,8 +285,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
             `}
       </div>
     `;
-    const content = html` ${viewOptions} ${langComboBox} ${textFormInput} `;
-    return this.panelTemplate('viewConfig', 'viewConfig', 'mdi:image', content);
+    const content = html` ${viewOptions} ${langComboBox} ${moonPositon} ${textFormInput} `;
+    return this.contentTemplate('viewConfig', 'viewConfig', 'mdi:image', content);
   }
 
   private _renderFontConfiguration(): TemplateResult {
@@ -301,7 +315,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
           `${_fontPrefix}.${prefix}Font${type.charAt(0).toUpperCase() + type.slice(1)}`,
           fontCustomize[configKey] || (type === 'size' ? 'auto' : type === 'style' ? 'none' : ''),
           configKey,
-          allowCustomValue,
+          allowCustomValue
         );
       };
 
@@ -312,7 +326,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       ? this._tempCheckBox('fontOptions.hideLabel', 'font_customize.hide_label', 'hide_label')
       : '';
 
-    return this.panelTemplate(
+    return this.contentTemplate(
       'fontOptions',
       'fontOptions',
       'mdi:format-font',
@@ -332,27 +346,51 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
           </div>
           <div class="font-config-content">${createFontConfigRow('label')} ${hideLabelCompactView}</div>
         </div>
-      `,
+      `
     );
   }
 
-  private panelTemplate(
-    title: string,
-    secondary: string,
-    icon: string,
-    content: TemplateResult,
-    expanded: boolean = false,
-  ): TemplateResult {
+  private TabBar = ({
+    activeTabIndex,
+    onTabChange,
+    tabs,
+  }: {
+    activeTabIndex: number;
+    onTabChange: (index: number) => void;
+    tabs: { content: TemplateResult; icon?: string; key: string; label: string; stacked?: boolean }[];
+  }): TemplateResult => {
+    return html`
+      <mwc-tab-bar class="vic-tabbar" @MDCTabBar:activated=${(e: Event) => onTabChange((e.target as any).activeIndex)}>
+        ${tabs.map(
+          (tab) => html`<mwc-tab label=${tab.label} icon=${tab.icon || ''} ?stacked=${tab.stacked || false}></mwc-tab>`
+        )}
+      </mwc-tab-bar>
+
+      <div>${tabs[activeTabIndex]?.content || html`<div>No content available</div>`}</div>
+      <div class="version">
+        <span
+          >${CARD_VERSION === this._latestRelease
+            ? html`version: ${CARD_VERSION}`
+            : html`version: ${CARD_VERSION} -> <span class="update">${this._latestRelease}</span>`}</span
+        >
+      </div>
+      ${this._renderToast()}
+    `;
+  };
+
+  private contentTemplate(title: string, secondary: string, icon: string, content: TemplateResult): TemplateResult {
     const localTitle = this.localize(`editor.${title}.title`);
     const localDesc = this.localize(`editor.${secondary}.description`);
     return html`
-      <div class="panel-container">
-        <ha-expansion-panel .expanded=${expanded} .outlined=${true} .header=${localTitle} .secondary=${localDesc}>
-          <div class="right-icon" slot="icons">
-            <ha-icon icon=${icon}></ha-icon>
+      <div class="card-config">
+        <div class="header-container">
+          <div class="header-title">
+            <div>${localTitle}</div>
+            <span class="secondary">${localDesc}</span>
           </div>
-          <div class="card-config">${content}</div>
-        </ha-expansion-panel>
+          <ha-icon icon=${icon}></ha-icon>
+        </div>
+        ${content}
       </div>
     `;
   }
@@ -396,7 +434,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     labelKey: string,
     valueKey: string,
     configValue: string,
-    allowCustomValue = true,
+    allowCustomValue = true
   ): TemplateResult => {
     return html`
       <ha-combo-box

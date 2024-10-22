@@ -73,7 +73,8 @@
             "latitude": "Zadejte zeměpisnou šířku",
             "longitude": "Zadejte zeměpisnou délku",
             "customBackground": "URL nebo cesta k obrázku",
-            "language": "Vyberte jazyk"
+            "language": "Vyberte jazyk",
+            "moonPosition": "Vyberte polohu Měsíce na kartě"
         }
     }
 }

@@ -28,7 +28,7 @@ export class LunarBaseData extends LitElement {
       centeredSlides: true,
       grabCursor: true,
       roundLengths: true,
-      spaceBetween: 16,
+      spaceBetween: 12,
       keyboard: {
         enabled: true,
         onlyInViewport: true,

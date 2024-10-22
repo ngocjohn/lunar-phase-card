@@ -1,12 +1,17 @@
-import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig } from '../types';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { LunarPhaseCardConfig } from '../types';
 
 export function deepMerge(target: any, source: any): any {
   for (const key of Object.keys(source)) {
     if (source[key] instanceof Object && key in target) {
-      Object.assign(source[key], deepMerge(target[key], source[key]));
+      // Recursively merge nested objects
+      target[key] = deepMerge(target[key], source[key]);
+    } else {
+      // Assign the value from source if it isn't an object or doesn't exist in target
+      target[key] = source[key];
     }
   }
-  return { ...target, ...source };
+  return target;
 }
 
 export function InitializeDefaultConfig(): Record<string, unknown> {

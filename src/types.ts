@@ -54,7 +54,8 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   compact_view?: boolean;
   '12hr_format'?: boolean;
   custom_background?: string;
-  selected_language?: string | null;
+  selected_language: string;
+  moon_position?: 'left' | 'right';
   latitude: number;
   longitude: number;
   font_customize: FontCustomStyles;
