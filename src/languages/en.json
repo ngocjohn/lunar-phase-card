@@ -73,7 +73,8 @@
             "latitude": "Enter latitude",
             "longitude": "Enter longitude",
             "customBackground": "URL or path to image",
-            "language": "Select language"
+            "language": "Select language",
+            "moonPosition": "Select moon position on card"
         }
     }
 }

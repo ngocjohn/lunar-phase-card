@@ -45,6 +45,7 @@ ha-card.--background {
   width: 100%;
 }
 
+
 .lunar-card-header.flexend {
   justify-content: flex-end;
 }
@@ -93,9 +94,13 @@ h1 {
   padding: 0;
   justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.5rem;
   font-size: var(--lunar-card-label-font-size, 14px);
   text-transform: var(--lunar-card-label-text-transform, none);
+}
+
+.lunar-card-content[moon-reverse] {
+  flex-direction: row-reverse;
 }
 
 .lunar-card-content.flex-col {
@@ -144,16 +149,22 @@ h1 {
 
 .moon-data {
   width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding-inline: 0.5rem;
 }
 
 .moon-data-item {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
   border-bottom: 1px solid var(--divider-color);
-  padding-block: 0.25rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  width: 100%;
+  flex: 1 1 0%;
 }
 
 .moon-data-item:last-child {
@@ -162,19 +173,19 @@ h1 {
 }
 
 .moon-data-item>span.label {
-  display: block;
+  display: flex;
   color: var(--primary-text-color);
-  width: auto;
+  width: fit-content;
   text-wrap: nowrap;
+  flex: 0;
 }
 
 .moon-data-item>.value {
   display: flex;
   color: var(--primary-text-color);
   font-weight: 600;
-  width: 60%;
+  width: auto;
   text-wrap: nowrap !important;
-  justify-content: flex-end;
 }
 
 .value>span {

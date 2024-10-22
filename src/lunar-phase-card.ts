@@ -207,12 +207,14 @@ export class LunarPhaseCard extends LitElement {
     if (!this.hass || !this.config) {
       return html``;
     }
+    const moonReverse = this.config.moon_position === 'right';
     const compactView = this.config.compact_view;
     return html`
       <ha-card class=${this._computeClasses()}>
         ${!compactView ? this.renderHeader() : this._activeCard === 'calendar' ? this.renderHeader() : nothing}
-        <div class="lunar-card-content ${this._isCalendar ? 'flex-col' : ''}">
-        ${this.renderPage(this._activeCard)}
+        <div class="lunar-card-content ${this._isCalendar ? 'flex-col' : ''}" ?moon-reverse=${moonReverse}>
+          ${this.renderPage(this._activeCard)}
+        </div>
       </ha-card>
     `;
   }
@@ -385,23 +387,23 @@ export class LunarPhaseCard extends LitElement {
         'moonAge',
         (phaseValue * 29.5).toFixed(2),
         '',
-        this.localize('card.relativeTime.days'),
+        this.localize('card.relativeTime.days')
       ),
       moonRise: createMoonDataItem(
         'moonRise',
         formatTimeToHHMM(formatDate(rise), this.selectedLanguage, timeFormat),
-        localizeRelativeTime(rise),
+        localizeRelativeTime(rise)
       ),
       moonSet: createMoonDataItem(
         'moonSet',
         formatTimeToHHMM(formatDate(set), this.selectedLanguage, timeFormat),
-        localizeRelativeTime(set),
+        localizeRelativeTime(set)
       ),
       moonHighest: createMoonDataItem(
         'moonHigh',
         formatTimeToHHMM(formatDate(highest || ''), this.selectedLanguage, timeFormat),
         localizeRelativeTime(highest || ''),
-        '',
+        ''
       ),
       distance: createMoonDataItem('distance', distance.toFixed(2), '', 'km'),
       azimuthDegress: createMoonDataItem('azimuth', azimuthDegrees.toFixed(2), '', '°'),
@@ -414,7 +416,7 @@ export class LunarPhaseCard extends LitElement {
           day: 'numeric',
         }),
         '',
-        '',
+        ''
       ),
       nextNewMoon: createMoonDataItem(
         'newMoon',
@@ -424,7 +426,7 @@ export class LunarPhaseCard extends LitElement {
           day: 'numeric',
         }),
         '',
-        '',
+        ''
       ),
       moonImage: createMoonImageData(MOON_IMAGES[phaseIndex], phaseName, rotateDeg),
     };

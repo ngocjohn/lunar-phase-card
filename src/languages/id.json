@@ -73,7 +73,8 @@
             "latitude": "Masukkan garis lintang",
             "longitude": "Masukkan garis bujur",
             "customBackground": "URL atau lokasi penyimpanan gambar",
-            "language": "Pilih bahasa"
+            "language": "Pilih bahasa",
+            "moonPosition": "Pilih posisi bulan pada kartu"
         }
     }
 }

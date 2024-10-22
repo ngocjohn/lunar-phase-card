@@ -73,7 +73,8 @@
             "latitude": "Indtast breddegrad",
             "longitude": "Indtast længdegrad",
             "customBackground": "URL eller sti til billede",
-            "language": "Vælg sprog"
+            "language": "Vælg sprog",
+            "moonPosition": "Vælg måneposition på kortet"
         }
     }
 }

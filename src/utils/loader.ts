@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { REPOSITORY } from '../const';
 
 // Hack to load ha-components needed for editor
@@ -18,12 +19,23 @@ export const loadHaComponents = () => {
 };
 
 export const loadCustomElement = async <T = any>(name: string) => {
-  let Component = customElements.get(name) as T;
+  const Component = customElements.get(name) as T;
   if (Component) {
     return Component;
   }
   await customElements.whenDefined(name);
   return customElements.get(name) as T;
+};
+
+export const stickyPreview = () => {
+  // Change the default preview element to be sticky
+  const root = document.querySelector('body > home-assistant')?.shadowRoot;
+  const dialog = root?.querySelector('hui-dialog-edit-card')?.shadowRoot;
+  const previewElement = dialog?.querySelector('ha-dialog > div.content > div.element-preview') as HTMLElement;
+  if (previewElement && previewElement.style.position !== 'sticky') {
+    previewElement.style.position = 'sticky';
+    previewElement.style.top = '0';
+  }
 };
 
 export async function fetchLatestReleaseTag() {

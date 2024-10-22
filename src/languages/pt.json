@@ -73,7 +73,8 @@
             "latitude": "Inserir latitude",
             "longitude": "Inserir longitude",
             "customBackground": "URL ou caminho para a imagem",
-            "language": "Selecionar idioma"
+            "language": "Selecionar idioma",
+            "moonPosition": "Selecione a posição da lua no cartão"
         }
     }
 }

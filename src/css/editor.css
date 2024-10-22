@@ -1,9 +1,37 @@
 .card-config {
   width: 100%;
-  margin-block: 0.5rem;
   display: flex;
   gap: 12px;
   flex-direction: column;
+  border: 1px solid var(--divider-color, rgba(0, 0, 0, 0.87));
+  justify-content: space-evenly;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 8px;
+}
+
+.header-container {
+  flex: 1 1 0%;
+  display: flex;
+  border-bottom: inherit;
+  min-height: 48px;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+  font-weight: 500;
+  outline: 0px;
+}
+
+.header-title {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-title>span.secondary {
+  display: block;
+  color: var(--secondary-text-color);
+  font-size: 12px;
 }
 
 .switches {
@@ -25,7 +53,6 @@ ha-select {
   display: grid;
   grid-gap: 8px;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  margin-bottom: 8px;
   align-items: center;
 }
 
