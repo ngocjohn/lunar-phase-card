@@ -1,0 +1,79 @@
+{
+    "name": "Nederlands",
+    "nativeName": "Dutch",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Eerste kwartier",
+            "fullMoon": "Volle maan",
+            "thirdQuarterMoon": "Laatste kwartier",
+            "newMoon": "Nieuwe maan",
+            "waxingCrescentMoon": "Afnemende halve maan",
+            "waxingGibbousMoon": "Afnemende maan",
+            "waningCrescentMoon": "Wassende halve maan",
+            "waningGibbousMoon": "Wassende maan"
+        },
+        "illumination": "Verlichting ",
+        "illuminated": " Verlicht ",
+        "moonRise": " Maanopkomst",
+        "moonSet": "Maanondergang",
+        "moonHigh": "Hoogste punt",
+        "moonAge": "Leeftijd",
+        "distance": "Afstand",
+        "azimuth": "Azimut",
+        "altitude": " Hoogte ",
+        "fullMoon": "Volle Maan",
+        "newMoon": "Nieuwe maan",
+        "relativeTime": {
+            "days": "dagen",
+            "justNow": "nu",
+            "minutesAgo": "{0} minute geleden",
+            "hoursAgo": "{0} uren geleden",
+            "inMinutes": "in {0} minuten",
+            "inHours": "in {0} uur"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "Taal en weergave",
+            "description": "Configureer taal en achtergrond"
+        },
+        "baseConfig": {
+            "title": " Breedtegraad en lengtegraad",
+            "description": "Configuratie voor breedte- en lengtegraad"
+        },
+        "optionsConfig": {
+            "useDefault": " Gebruik systeem",
+            "useEntity": "Gebruik entity",
+            "useCustom": " Gebruik aangepast "
+        },
+        "fontOptions": {
+            "title": " Aanpassing van lettertypen ",
+            "description": "Configureer lettergrootte en kleur",
+            "hideLabel": " Label verbergen",
+            "headerFontConfig": {
+                "title": " Koptekst lettertype",
+                "description": "Stel koptekst lettertype in"
+            },
+            "labelFontConfig": {
+                "title": "Label lettertype",
+                "description": "Stel lettertype labels in"
+            },
+            "headerFontSize": "Header font grootte",
+            "headerFontColor": "Header font kleur",
+            "headerFontStyle": "Header font stijl",
+            "labelFontSize": "Label font grootte",
+            "labelFontColor": "Label font kleur",
+            "labelFontStyle": "Label font stijl",
+            "valueFontSize": "Waarde font grootte"
+        },
+        "compactView": "Compacte weergave",
+        "showBackground": "toon achtergrond",
+        "timeFormat": "12-uur formaat",
+        "placeHolder": {
+            "latitude": "Enter breedtegraad",
+            "longitude": "Enter lengtegraad",
+            "customBackground": "URL of path naar afbeelding",
+            "language": "Seleceer taal"
+        }
+    }
+}
