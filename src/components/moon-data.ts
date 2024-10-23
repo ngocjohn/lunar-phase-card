@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import swipercss from '../css/swiper-bundle.css';
-import style from '../css/style.css';
+
 import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
 import { MoonData, MoonDataItem } from '../types';
 import { Moon } from '../utils/moon';
+
+import swipercss from '../css/swiper-bundle.css';
+import style from '../css/style.css';
 
 @customElement('lunar-base-data')
 export class LunarBaseData extends LitElement {
@@ -93,7 +95,7 @@ export class LunarBaseData extends LitElement {
   }
 
   // https://lit.dev/docs/components/styles/
-  public static get styles(): CSSResultGroup {
+  static get styles(): CSSResultGroup {
     return [swipercss, style];
   }
 }
