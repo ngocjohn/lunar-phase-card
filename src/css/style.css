@@ -43,6 +43,19 @@ ha-card.__background {
 
 }
 
+ha-card.__flex-col .lunar-card-content {
+  flex-direction: column;
+  gap: 8px;
+}
+
+ha-card.__reverse .lunar-card-content {
+  flex-direction: row-reverse;
+}
+
+ha-card.__compact-header .lunar-card-header {
+  padding: 0;
+}
+
 .lunar-card-header {
   display: flex;
   justify-content: space-between;
@@ -56,9 +69,7 @@ ha-card.__background {
   justify-content: flex-end;
 }
 
-.lunar-card-header.compact {
-  padding: 0;
-}
+
 
 ha-card.--background h1 {
   color: var(--lunar-card-header-font-color, #e1e1e1);
@@ -105,14 +116,7 @@ h1 {
   text-transform: var(--lunar-card-label-text-transform, none);
 }
 
-.lunar-card-content[moon-reverse] {
-  flex-direction: row-reverse;
-}
 
-.lunar-card-content.flex-col {
-  flex-direction: column;
-  gap: 8px;
-}
 
 .moon-image {
   display: block;

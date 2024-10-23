@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
-
-import { LovelaceCardEditor, hasConfigOrEntityChanged } from 'custom-card-helpers';
+import { when } from 'lit-html/directives/when.js';
+import { LovelaceCardEditor } from 'custom-card-helpers';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
-import { formatDate } from './utils/helpers';
-import { BACKGROUND } from './const';
-import { BASE_REFRESH_INTERVAL } from './const';
+import { BASE_REFRESH_INTERVAL, BACKGROUND } from './const';
 import { localize } from './localize/localize';
-import style from './css/style.css';
 
 import { Moon } from './utils/moon';
 import './components/moon-data';
+import { LunarBaseData } from './components/moon-data';
+import style from './css/style.css';
 
 @customElement('lunar-phase-card')
 export class LunarPhaseCard extends LitElement {
@@ -25,17 +24,17 @@ export class LunarPhaseCard extends LitElement {
   @property({ attribute: false })
   set hass(hass: HomeAssistant) {
     this._hass = hass;
-    this.moon = new Moon(this._date, this.location, this.selectedLanguage, this.config);
   }
 
-  @state() private _hass!: HomeAssistant;
-  @state() private config!: LunarPhaseCardConfig;
-  @state() moon!: Moon;
+  @state() _hass!: HomeAssistant;
+  @state() config!: LunarPhaseCardConfig;
+  @property({ type: Object }) protected moon!: Moon;
   @state() private _activeCard: string = 'base';
   @state() private selectedDate: Date | undefined;
   @state() _connected: boolean = false;
   @state() _refreshInterval: number | undefined;
 
+  @query('lunar-base-data') _data!: LunarBaseData;
   public static getStubConfig = (hass: HomeAssistant): Record<string, unknown> => {
     const defaultLatitude = hass.config.latitude || 0;
     const defaultLongitude = hass.config.longitude || 0;
@@ -81,16 +80,6 @@ export class LunarPhaseCard extends LitElement {
     return this.getGridRowSize();
   }
 
-  protected firstUpdated(changedProps: PropertyValues) {
-    super.firstUpdated(changedProps);
-    // Initialize Swiper only if the parent element does not have the class 'preview'
-    if (this.parentElement && !this.parentElement.classList.contains('preview')) {
-      setTimeout(() => {
-        this.fetchBaseMoonData();
-      }, 300);
-    }
-  }
-
   connectedCallback(): void {
     super.connectedCallback();
     if (process.env.ROLLUP_WATCH === 'true') {
@@ -106,17 +95,19 @@ export class LunarPhaseCard extends LitElement {
     super.disconnectedCallback();
   }
 
-  protected updated(changedProps: PropertyValues) {
-    super.updated(changedProps);
-    if (changedProps.has('_activeCard')) {
-      if (this._activeCard === 'base') {
+  protected shouldUpdate(changedProps: PropertyValues): boolean {
+    if (!this._connected) return false;
+    if (changedProps.has('_activeCard') && this._activeCard === 'calendar') {
+      console.log('shouldUpdate', this._activeCard);
+      this.clearRefreshInterval();
+    } else if (changedProps.has('_activeCard') && this._activeCard === 'base') {
+      console.log('shouldUpdate', this._activeCard);
+      if (this.selectedDate !== undefined) {
         this.selectedDate = undefined;
-        this.fetchBaseMoonData();
         this.startRefreshInterval();
-      } else {
-        this.clearRefreshInterval();
       }
     }
+    return changedProps.has('_activeCard') || (changedProps.has('selectedDate') && this.selectedDate !== undefined);
   }
 
   get hass(): HomeAssistant {
@@ -124,22 +115,12 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private get selectedLanguage(): string {
-    return this.config?.selected_language || localStorage.getItem('selectedLanguage') || 'en';
-  }
-
-  private get location(): { latitude: number; longitude: number } {
-    const { latitude, longitude } = this.config;
-    return { latitude, longitude };
+    return this.config?.selected_language || this._hass.language;
   }
 
   private localize = (string: string, search = '', replace = ''): string => {
     return localize(string, this.selectedLanguage, search, replace);
   };
-
-  private async fetchBaseMoonData(): Promise<void> {
-    // this._baseMoonData = await this._getBaseMoonData();
-    this.moon = new Moon(this._date, this.location, this.selectedLanguage, this.config);
-  }
 
   get _isCalendar(): boolean {
     return this._activeCard === 'calendar';
@@ -153,38 +134,18 @@ export class LunarPhaseCard extends LitElement {
     const date = this.selectedDate ? new Date(this.selectedDate) : new Date();
     return date;
   }
-  // get _today() {
-  //   const date = new Date();
-  //   return date;
-  // }
-
-  // get _moonIllumination(): SunCalc.IMoonIllumination {
-  //   return SunCalc.getMoonIllumination(this._date);
-  // }
-
-  // get _moonPosition(): SunCalc.IMoonPosition {
-  //   return SunCalc.getMoonPosition(this._date, this.location.latitude, this.location.longitude);
-  // }
-
-  // get _moonTimes(): SunCalc.IMoonTimes {
-  //   return SunCalc.getMoonTimes(this._date, this.location.latitude, this.location.longitude);
-  // }
-
-  // get _moonPhaseName(): string {
-  //   const phaseId = this._moonIllumination.phase.id;
-  //   return this.localize(`card.phase.${phaseId}`);
-  // }
 
   private startRefreshInterval() {
     // Clear any existing interval to avoid multiple intervals running
-    if (this._refreshInterval) {
+    if (this._refreshInterval !== undefined) {
       clearInterval(this._refreshInterval);
     }
 
     // Set up a new interval
     this._refreshInterval = window.setInterval(() => {
       if (this._activeCard === 'base') {
-        this.fetchBaseMoonData();
+        this.requestUpdate();
+        console.log('startRefreshInterval');
       } else {
         this.clearRefreshInterval();
       }
@@ -193,58 +154,40 @@ export class LunarPhaseCard extends LitElement {
 
   private clearRefreshInterval() {
     if (this._refreshInterval) {
+      console.log('clearRefreshInterval');
       clearInterval(this._refreshInterval);
       this._refreshInterval = undefined;
     }
   }
 
-  protected shouldUpdate(changedProps: PropertyValues): boolean {
-    if (changedProps.has('hass') || changedProps.has('config')) {
-      return true;
-    }
-
-    if (changedProps.has('moon') && this.moon) {
-      return true;
-    }
-
-    return hasConfigOrEntityChanged(this, changedProps, true);
-  }
-
-  protected render(): TemplateResult {
+  protected render() {
     if (!this._hass || !this.config) {
       return html``;
     }
-    const moonReverse = this.config.moon_position === 'right';
-    const compactView = this.config.compact_view;
+    this.createMoon();
+    const header = !this.config.compact_view || this._isCalendar ? this.renderHeader() : nothing;
+    const baseCard = html` ${this.renderMoonImage()} ${this.renderMoonData()} `;
     return html`
       <ha-card class=${this._computeClasses()} style=${this._computeStyles()}>
-        ${!compactView ? this.renderHeader() : this._activeCard === 'calendar' ? this.renderHeader() : nothing}
-        <div class="lunar-card-content ${this._isCalendar ? 'flex-col' : ''}" ?moon-reverse=${moonReverse}>
-          ${this.renderPage(this._activeCard)}
-        </div>
+        ${header}
+        <div class="lunar-card-content">${!this._isCalendar ? baseCard : this.renderCalendar()}</div>
       </ha-card>
     `;
   }
 
-  private renderPage(page: string): TemplateResult | void {
-    switch (page) {
-      case 'base':
-        return this.renderBaseCard();
-      case 'calendar':
-        return this.renderCalendar();
-      default:
-        return this.renderBaseCard();
-    }
-  }
-
-  private renderBaseCard(): TemplateResult | void {
-    return html` ${this.renderMoonImage()} ${this.renderMoonData()} `;
+  private createMoon() {
+    const initData = {
+      date: this._date,
+      lang: this.selectedLanguage,
+      config: this.config,
+    };
+    this.moon = new Moon(initData);
+    console.log('createMoon');
   }
 
   private renderHeader(): TemplateResult | void {
-    const compactView = this.config.compact_view && this._activeCard === 'base';
     return html`
-      <div class="lunar-card-header ${compactView ? 'compact' : ''}">
+      <div class="lunar-card-header">
         <h1>${this.moon?.phaseName}</h1>
         <div @click=${() => this.togglePage()} class="btn-calendar click-shrink">
           <ha-icon icon="mdi:calendar-search"></ha-icon>
@@ -254,14 +197,11 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderMoonImage(): TemplateResult | void {
-    const moonSize = this._isCalendar ? 'calc(30% - 1px)' : 'calc(25% - 1px)';
-    const moonImageObj = this.moon.moonImage;
-    if (!moonImageObj) return;
-    const moonPic = moonImageObj.moonPic;
-    const rotateDeg = moonImageObj.rotateDeg;
+    if (!this.moon) return;
+    const { moonPic, rotateDeg } = this.moon.moonImage;
 
     const style = {
-      maxWidth: moonSize,
+      maxWidth: this._isCalendar ? 'calc(30% - 1px)' : 'calc(25% - 1px)',
       transform: `rotate(${rotateDeg}deg)`,
     };
 
@@ -270,18 +210,30 @@ export class LunarPhaseCard extends LitElement {
     </div>`;
   }
 
-  private renderMoonData(): TemplateResult {
-    if (!this.moon) return html``;
+  private renderMoonData(): TemplateResult | void {
+    if (!this.moon) return;
     const compactView = this.config.compact_view && this._activeCard === 'base';
     return html`
-      ${compactView ? this.renderCompactView() : html`<lunar-base-data .moon=${this.moon}></lunar-base-data> `}
+      ${when(
+        compactView,
+        () => this.renderCompactView(),
+        () => html`<lunar-base-data .moon=${this.moon}></lunar-base-data>`
+      )}
     `;
   }
 
-  private renderCompactView(): TemplateResult {
-    const { moonFraction, moonAge, moonRise, moonSet } = this.moon.moonData;
+  private renderCompactView(): TemplateResult | typeof nothing {
+    if (!this.config.compact_view) return nothing;
+    const moonData = this.moon.moonData;
+    const items = {
+      moonAge: 'mdi:progress-clock',
+      moonRise: 'mdi:weather-moonset-up',
+      moonSet: 'mdi:weather-moonset',
+    };
 
-    const renderCompactItem = (icon: string, value: string, label: string): TemplateResult => {
+    const renderCompactItem = (key: string): TemplateResult => {
+      const { label, value } = moonData[key];
+      const icon = items[key];
       return html`
         <div class="compact-item">
           <div class="icon-value">
@@ -297,26 +249,19 @@ export class LunarPhaseCard extends LitElement {
       <div class="compact-view">
         ${this.renderHeader()}
 
-        <div class="moon-fraction">${moonFraction.value} ${this.localize('card.illuminated')}</div>
-        <div class="compact-view-items">
-          ${renderCompactItem('mdi:progress-clock', moonAge.value, moonAge.label)}
-          ${renderCompactItem('mdi:weather-moonset-up', moonRise.value, moonRise.label)}
-          ${renderCompactItem('mdi:weather-moonset', moonSet.value, moonSet.label)}
-        </div>
+        <div class="moon-fraction">${moonData.moonFraction.value} ${this.localize('card.illuminated')}</div>
+        <div class="compact-view-items">${Object.keys(items).map((key) => renderCompactItem(key))}</div>
       </div>
     `;
   }
 
   private renderCalendar(): TemplateResult | void {
-    if (this._activeCard === 'base') return;
     // Initialize selectedDate to today if it is not already set
-
-    const formattedDate = formatDate(this._date);
+    const initValue = this._date.toISOString().split('T')[0];
 
     const dateInput = html`<div class="date-input-wrapper">
       <button @click=${() => this.updateDate('prev')} class="date-input-btn click-shrink"><</button>
-
-      <input type="date" class="date-input" .value=${formattedDate} @input=${this._handleDateChange} />
+      <input type="date" class="date-input" .value=${initValue} @input=${this._handleDateChange} />
       <button @click=${() => this.updateDate('next')} class="date-input-btn click-shrink">></button>
     </div>`;
 
@@ -334,25 +279,29 @@ export class LunarPhaseCard extends LitElement {
       date.setDate(date.getDate() - 1);
     }
     this.selectedDate = date;
-    this.fetchBaseMoonData();
   }
 
   private _handleDateChange(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (!input.value) return;
+    if (!input.value) {
+      input.value = new Date().toISOString().split('T')[0];
+    }
     this.selectedDate = new Date(input.value);
-
-    this.fetchBaseMoonData();
-    // Handle the date change logic as needed
   }
 
   private togglePage(): void {
     this._activeCard = this._activeCard === 'base' ? 'calendar' : 'base';
+    console.log('togglePage', this._activeCard);
   }
 
   private _computeClasses() {
+    const reverse = this.config.moon_position === 'right';
+    const compactHeader = Boolean(this.config.compact_view && !this._isCalendar);
     return classMap({
       __background: this._showBackground,
+      '__flex-col': this._isCalendar,
+      __reverse: reverse && !this._isCalendar,
+      '__compact-header': compactHeader,
     });
   }
 

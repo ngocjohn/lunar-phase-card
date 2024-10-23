@@ -5,7 +5,7 @@ import swipercss from '../css/swiper-bundle.css';
 import style from '../css/style.css';
 import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
-import { MoonDataItem } from '../types';
+import { MoonData, MoonDataItem } from '../types';
 import { Moon } from '../utils/moon';
 
 @customElement('lunar-base-data')
@@ -42,53 +42,29 @@ export class LunarBaseData extends LitElement {
     });
   }
 
-  // protected updated(changedProps: PropertyValues): void {
-  //   super.updated(changedProps);
-  //   if (changedProps.has('moon') && this.moon) {
-  //     console.log('moonData', this.moon.moonData.moonRise);
-  //   }
-  // }
-
-  protected shouldUpdate(_changedProperties: PropertyValues): boolean {
-    if (_changedProperties.has('moon')) {
-      return true;
-    }
-    return false;
-  }
-
   render(): TemplateResult {
     // const newMoonData = this.baseMoonData;
     const newMoonData = this.moon.moonData;
-    const createPage = (start: number, end: number) => html`
-      <div class="swiper-slide">
-        <div class="moon-data">
-          ${Object.entries(newMoonData)
-            .slice(start, end)
-            .map(
-              ([, data]) => html`
-                <div class="moon-data-item">
-                  <span class="label">${data.label}</span>
-                  <div class="value">
-                    ${data.secondValue ? html`<span class="second-value">(${data.secondValue}) </span>` : ''}
-                    ${data.value}
-                  </div>
-                </div>
-              `
-            )}
+    const chunkedData = this._chunkObject(newMoonData, 5);
+    const dataContainer = Object.keys(chunkedData).map((key) => {
+      return html`
+        <div class="swiper-slide">
+          <div class="moon-data">${Object.keys(chunkedData[key]).map((key) => this.renderItem(key))}</div>
         </div>
-      </div>
-    `;
+      `;
+    });
+
     return html`
       <section id="swiper">
         <div class="swiper-container">
-          <div class="swiper-wrapper">${createPage(0, 5)} ${createPage(5, 10)}</div>
+          <div class="swiper-wrapper">${dataContainer}</div>
           <div class="swiper-pagination"></div>
         </div>
       </section>
     `;
   }
 
-  private _chunkObject = (obj: MoonDataItem, size: number): MoonDataItem => {
+  private _chunkObject = (obj: MoonData, size: number): MoonDataItem => {
     const keys = Object.keys(obj);
 
     return keys.reduce((chunked: MoonDataItem, key: string, index: number) => {
@@ -100,17 +76,17 @@ export class LunarBaseData extends LitElement {
 
       chunked[chunkIndex][key] = obj[key];
 
-      // console.log('chunked', obj[key]);
       return chunked;
     }, {} as MoonDataItem);
   };
 
-  private renderItem(item: MoonDataItem): TemplateResult {
+  private renderItem(key: string): TemplateResult {
+    const { label, value, secondValue } = this.moon.moonData[key];
     return html`
       <div class="moon-data-item">
-        <span class="label">${item.label}</span>
+        <span class="label">${label}</span>
         <div class="value">
-          ${item.secondValue ? html`<span class="second-value">(${item.secondValue}) </span>` : ''} ${item.value}
+          ${secondValue ? html`<span class="second-value">(${secondValue}) </span>` : ''} ${value}
         </div>
       </div>
     `;

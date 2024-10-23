@@ -82,66 +82,20 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   },
 };
 
-export interface LunarPhaseData {
-  illumination: Illumination;
-  zenithAngle: number;
-  azimuth: number;
-  altitude: number;
-  azimuthDegrees: number;
-  altitudeDegrees: number;
-  distance: number;
-  parallacticAngle: number;
-  parallacticAngleDegrees: number;
-}
-
-export interface Illumination {
-  fraction: number;
-  phase: Phase;
-  phaseValue: number;
-  angle: number;
-  next: NextPhases;
-}
-
-export interface Phase {
-  from: number;
-  to: number;
-  id: string;
-  emoji: string;
-  code: string;
-  name: string;
-  weight: number;
-  css: string;
-}
-
-export interface NextPhases {
-  value: number;
-  date: string;
-  type: string;
-  newMoon: PhaseDate;
-  fullMoon: PhaseDate;
-  firstQuarter: PhaseDate;
-  thirdQuarter: PhaseDate;
-}
-
-export interface PhaseDate {
-  value: number;
-  date: string;
-}
-
-export interface Location {
+export type Location = {
   latitude: number;
   longitude: number;
-}
+};
 
-export interface MoonDataItem {
+export type MoonDataItem = {
   label: string;
   value: string;
   secondValue?: string;
-}
-export interface MoonImage {
+};
+export type MoonImage = {
   moonPic: string;
   rotateDeg: number;
-}
+};
 
 export interface MoonData {
   moonFraction: MoonDataItem;

@@ -5,16 +5,16 @@ import { formatTimeToHHMM, formatRelativeTime } from './helpers';
 import { MOON_IMAGES } from '../const';
 
 export class Moon {
-  _date: Date;
-  lang: string;
-  location: Location;
-  config: LunarPhaseCardConfig;
+  readonly _date: Date;
+  readonly lang: string;
+  readonly location: Location;
+  readonly config: LunarPhaseCardConfig;
 
-  constructor(date: Date, location: Location, lang: string, config: LunarPhaseCardConfig) {
-    this._date = date;
-    this.lang = lang;
-    this.location = location;
-    this.config = config;
+  constructor(data: { date: Date; lang: string; config: LunarPhaseCardConfig }) {
+    this._date = data.date;
+    this.lang = data.lang;
+    this.config = data.config;
+    this.location = { latitude: data.config.latitude, longitude: data.config.longitude } as Location;
   }
 
   private localize = (string: string, search = '', replace = ''): string => {
