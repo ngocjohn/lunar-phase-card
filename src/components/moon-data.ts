@@ -7,13 +7,18 @@ import { Pagination } from 'swiper/modules';
 import { MoonData, MoonDataItem } from '../types';
 import { Moon } from '../utils/moon';
 
-import swipercss from '../css/swiper-bundle.css';
-import style from '../css/style.css';
+import mainStyles from '../css/style.css';
+import swiperStyleCss from '../css/swiperstyles.css';
 
 @customElement('lunar-base-data')
 export class LunarBaseData extends LitElement {
   @state() moon!: Moon;
   @state() swiper: Swiper | null = null;
+
+  // https://lit.dev/docs/components/styles/
+  static get styles(): CSSResultGroup {
+    return [swiperStyleCss, mainStyles];
+  }
 
   protected firstUpdated(changedProps: PropertyValues): void {
     super.firstUpdated(changedProps);
@@ -93,9 +98,10 @@ export class LunarBaseData extends LitElement {
       </div>
     `;
   }
+}
 
-  // https://lit.dev/docs/components/styles/
-  static get styles(): CSSResultGroup {
-    return [swipercss, style];
+declare global {
+  interface HTMLElementTagNameMap {
+    'lunar-base-data': LunarBaseData;
   }
 }
