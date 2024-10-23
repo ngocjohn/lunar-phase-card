@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { languages, languageOptions } from './languageImports';
 
 export { languageOptions };
