@@ -19,20 +19,22 @@
   "module": "lunar-phase-card.js",
   "license": "MIT",
   "dependencies": {
+    "@noim/suncalc3": "^2.0.5",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "apexcharts": "^3.50.0",
     "custom-card-helpers": "^1.7.2",
     "home-assistant-js-websocket": "^9.4.0",
-    "lit": "^3.1.4",
-    "suncalc3": "^2.0.5"
+    "lit": "^3.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.17.8",
     "@babel/plugin-proposal-decorators": "^7.17.8",
     "@babel/plugin-transform-class-properties": "^7.24.1",
+    "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-image": "^3.0.3",
     "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-terser": "^0.4.4",
     "@types/leaflet": "^1.9.12",
@@ -52,9 +54,7 @@
     "prettier": "^3.3.2",
     "rollup": "^2.70.1",
     "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-filesize": "^10.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-postcss-lit": "^2.1.0",
     "rollup-plugin-serve": "^1.1.1",
@@ -69,8 +69,8 @@
     "@lit/reactive-element": "1.2.1"
   },
   "scripts": {
-    "dev": "npm run update-lang && npm run import-lang && rollup -c --watch",
-    "build": "npm run lint && npm run rollup",
+    "dev": "rollup -c --watch",
+    "build": "npm run update-lang && npm run import-lang && npm run lint && npm run rollup",
     "lint": "eslint src/*.ts",
     "rollup": "rollup -c",
     "update-lang": "node scripts/update-languages",
