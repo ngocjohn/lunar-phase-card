@@ -20,6 +20,7 @@
 - **Multilingual Support**: The card includes various translations, making it accessible in multiple languages.
 
 
+
 ### Supported Localization
 
 <details>
@@ -35,6 +36,7 @@
 | `fr`     | French          | Français          |
 | `id`     | Indonesian          | Bahasa Indonesia          |
 | `it`     | Italian          | Italiano          |
+| `nl`     | Nederlands          | Dutch          |
 | `pt`     | Portuguese          | Português (Brasil)          |
 | `ru`     | Русский          | Русский          |
 | `sk`     | Slovak          | Slovenčina          |
