@@ -127,3 +127,31 @@ export interface PhaseDate {
   value: number;
   date: string;
 }
+
+export interface Location {
+  latitude: number;
+  longitude: number;
+}
+
+export interface MoonDataItem {
+  label: string;
+  value: string;
+  secondValue?: string;
+}
+export interface MoonImage {
+  moonPic: string;
+  rotateDeg: number;
+}
+
+export interface MoonData {
+  moonFraction: MoonDataItem;
+  moonAge: MoonDataItem;
+  moonRise: MoonDataItem;
+  moonSet: MoonDataItem;
+  moonHighest?: MoonDataItem;
+  distance: MoonDataItem;
+  azimuthDegress: MoonDataItem;
+  altitudeDegrees: MoonDataItem;
+  nextFullMoon: MoonDataItem;
+  nextNewMoon: MoonDataItem;
+}

@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LitElement, html, TemplateResult, CSSResultGroup } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import { LitElement, html, TemplateResult, CSSResultGroup, PropertyValues } from 'lit';
+import { customElement, state } from 'lit/decorators.js';
 import swipercss from '../css/swiper-bundle.css';
 import style from '../css/style.css';
 import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
+import { MoonDataItem } from '../types';
+import { Moon } from '../utils/moon';
 
 @customElement('lunar-base-data')
 export class LunarBaseData extends LitElement {
-  @property({ type: Object }) private baseMoonData: Record<string, any> = {};
+  @state() moon!: Moon;
+  @state() swiper: Swiper | null = null;
 
-  @property({ type: Object })
-  swiper: Swiper | null = null;
-
-  firstUpdated(): void {
-    if (!this.swiper) {
-      this.initSwiper();
-    }
+  protected firstUpdated(changedProps: PropertyValues): void {
+    super.firstUpdated(changedProps);
+    this.initSwiper();
+    // console.log('moonData', this.moon);
   }
 
   private initSwiper(): void {
@@ -42,12 +42,27 @@ export class LunarBaseData extends LitElement {
     });
   }
 
+  // protected updated(changedProps: PropertyValues): void {
+  //   super.updated(changedProps);
+  //   if (changedProps.has('moon') && this.moon) {
+  //     console.log('moonData', this.moon.moonData.moonRise);
+  //   }
+  // }
+
+  protected shouldUpdate(_changedProperties: PropertyValues): boolean {
+    if (_changedProperties.has('moon')) {
+      return true;
+    }
+    return false;
+  }
+
   render(): TemplateResult {
-    const moonData = this.baseMoonData;
+    // const newMoonData = this.baseMoonData;
+    const newMoonData = this.moon.moonData;
     const createPage = (start: number, end: number) => html`
       <div class="swiper-slide">
         <div class="moon-data">
-          ${Object.entries(moonData)
+          ${Object.entries(newMoonData)
             .slice(start, end)
             .map(
               ([, data]) => html`
@@ -55,7 +70,7 @@ export class LunarBaseData extends LitElement {
                   <span class="label">${data.label}</span>
                   <div class="value">
                     ${data.secondValue ? html`<span class="second-value">(${data.secondValue}) </span>` : ''}
-                    ${data.value} ${data.unit}
+                    ${data.value}
                   </div>
                 </div>
               `
@@ -70,6 +85,34 @@ export class LunarBaseData extends LitElement {
           <div class="swiper-pagination"></div>
         </div>
       </section>
+    `;
+  }
+
+  private _chunkObject = (obj: MoonDataItem, size: number): MoonDataItem => {
+    const keys = Object.keys(obj);
+
+    return keys.reduce((chunked: MoonDataItem, key: string, index: number) => {
+      const chunkIndex = Math.floor(index / size);
+
+      if (!chunked[chunkIndex]) {
+        chunked[chunkIndex] = {} as MoonDataItem;
+      }
+
+      chunked[chunkIndex][key] = obj[key];
+
+      // console.log('chunked', obj[key]);
+      return chunked;
+    }, {} as MoonDataItem);
+  };
+
+  private renderItem(item: MoonDataItem): TemplateResult {
+    return html`
+      <div class="moon-data-item">
+        <span class="label">${item.label}</span>
+        <div class="value">
+          ${item.secondValue ? html`<span class="second-value">(${item.secondValue}) </span>` : ''} ${item.value}
+        </div>
+      </div>
     `;
   }
 

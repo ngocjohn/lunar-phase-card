@@ -13,6 +13,12 @@
   outline: none;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 ha-card {
   position: relative;
   overflow: hidden;
@@ -26,7 +32,7 @@ ha-card {
   --swiper-theme-color: var(--primary-text-color);
 }
 
-ha-card.--background {
+ha-card.__background {
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
