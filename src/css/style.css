@@ -28,7 +28,6 @@ ha-card {
   background-color: var(--card-background-color);
   letter-spacing: 0.5px;
   padding: var(--lunar-card-padding, 12px);
-  --primary-text-color: var(--lunar-card-label-font-color, #212121);
   --swiper-theme-color: var(--primary-text-color);
 }
 
@@ -39,13 +38,12 @@ ha-card.__background {
   background-image: var(--lunar-background-image);
   transition: all 0.5s ease;
   --primary-text-color: var(--lunar-card-label-font-color, #e1e1e1);
-  --swiper-theme-color: var(--primary-text-color);
-
+  --swiper-theme-color: var(--lunar-card-label-font-color, #e1e1e1);
 }
 
 ha-card.__flex-col .lunar-card-content {
   flex-direction: column;
-  gap: 8px;
+  gap: 1rem;
 }
 
 ha-card.__reverse .lunar-card-content {
@@ -71,7 +69,7 @@ ha-card.__compact-header .lunar-card-header {
 
 
 
-ha-card.--background h1 {
+ha-card.__background h1 {
   color: var(--lunar-card-header-font-color, #e1e1e1);
 }
 
@@ -114,6 +112,7 @@ h1 {
   gap: 0.5rem;
   font-size: var(--lunar-card-label-font-size, 14px);
   text-transform: var(--lunar-card-label-text-transform, none);
+
 }
 
 
@@ -133,7 +132,7 @@ h1 {
   height: 100%;
   transform: rotate(0deg);
   /* Initial state */
-  filter: grayscale(1) brightness(1);
+  filter: grayscale(1) brightness(1) drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.45))
 }
 
 .moon-image img.rotatable {
