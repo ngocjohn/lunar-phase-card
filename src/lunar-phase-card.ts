@@ -3,7 +3,6 @@ import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothi
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
-import { when } from 'lit-html/directives/when.js';
 import { LovelaceCardEditor } from 'custom-card-helpers';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
 import { BASE_REFRESH_INTERVAL, BACKGROUND } from './const';
@@ -96,12 +95,11 @@ export class LunarPhaseCard extends LitElement {
   }
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
-    if (!this._connected) return false;
     if (changedProps.has('_activeCard') && this._activeCard === 'calendar') {
-      console.log('shouldUpdate', this._activeCard);
+      // console.log('shouldUpdate', this._activeCard);
       this.clearRefreshInterval();
     } else if (changedProps.has('_activeCard') && this._activeCard === 'base') {
-      console.log('shouldUpdate', this._activeCard);
+      // console.log('shouldUpdate', this._activeCard);
       if (this.selectedDate !== undefined) {
         this.selectedDate = undefined;
         this.startRefreshInterval();
@@ -145,7 +143,6 @@ export class LunarPhaseCard extends LitElement {
     this._refreshInterval = window.setInterval(() => {
       if (this._activeCard === 'base') {
         this.requestUpdate();
-        console.log('startRefreshInterval');
       } else {
         this.clearRefreshInterval();
       }
@@ -154,13 +151,12 @@ export class LunarPhaseCard extends LitElement {
 
   private clearRefreshInterval() {
     if (this._refreshInterval) {
-      console.log('clearRefreshInterval');
       clearInterval(this._refreshInterval);
       this._refreshInterval = undefined;
     }
   }
 
-  protected render() {
+  protected render(): TemplateResult {
     if (!this._hass || !this.config) {
       return html``;
     }
@@ -182,7 +178,7 @@ export class LunarPhaseCard extends LitElement {
       config: this.config,
     };
     this.moon = new Moon(initData);
-    console.log('createMoon');
+    // console.log('createMoon');
   }
 
   private renderHeader(): TemplateResult | void {
@@ -198,27 +194,23 @@ export class LunarPhaseCard extends LitElement {
 
   private renderMoonImage(): TemplateResult | void {
     if (!this.moon) return;
-    const { moonPic, rotateDeg } = this.moon.moonImage;
+    const { moonPic } = this.moon.moonImage;
 
     const style = {
-      maxWidth: this._isCalendar ? 'calc(30% - 1px)' : 'calc(25% - 1px)',
-      transform: `rotate(${rotateDeg}deg)`,
+      maxWidth: this._isCalendar ? 'calc(40% - 1px)' : 'calc(27% - 1px)',
+      maxHeight: `185px`,
+      // transform: `rotate(${rotateDeg}deg)`,
     };
 
-    return html` <div class="moon-image" style="${styleMap(style)}">
+    return html` <div class="moon-image" style=${styleMap(style)}>
       <img src=${moonPic} class="rotatable" />
     </div>`;
   }
 
-  private renderMoonData(): TemplateResult | void {
-    if (!this.moon) return;
+  private renderMoonData(): TemplateResult {
     const compactView = this.config.compact_view && this._activeCard === 'base';
     return html`
-      ${when(
-        compactView,
-        () => this.renderCompactView(),
-        () => html`<lunar-base-data .moon=${this.moon}></lunar-base-data>`
-      )}
+      ${compactView ? this.renderCompactView() : html`<lunar-base-data .moon=${this.moon}></lunar-base-data>`}
     `;
   }
 
@@ -318,7 +310,7 @@ export class LunarPhaseCard extends LitElement {
     };
     return styleMap({
       '--lunar-background-image': `url(${background})`,
-      ...(fontOptions ? varCss : {}),
+      ...varCss,
     });
   }
 

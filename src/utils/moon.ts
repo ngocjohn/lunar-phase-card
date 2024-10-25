@@ -59,12 +59,19 @@ export class Moon {
   };
 
   get moonImage(): MoonImage {
-    const phaseIndex = Math.round(this._moonData.illumination.phaseValue * 16) % 16;
-    const rotateDeg = this._moonData.parallacticAngle ? 180 - (this._moonData.parallacticAngle * 180) / Math.PI : 0;
+    const phaseIndex = Math.floor(this._moonData.illumination.phaseValue * 31) % 31;
+    const { zenithAngle, parallacticAngle } = this._moonData;
+    const rotateDeg = (zenithAngle - parallacticAngle) * (180 / Math.PI);
     return {
       moonPic: MOON_IMAGES[phaseIndex],
       rotateDeg: rotateDeg,
     };
+  }
+
+  _getMoonRotation() {
+    const { zenithAngle, parallacticAngle } = this._moonData;
+    const rotateDeg = (zenithAngle - parallacticAngle) * (180 / Math.PI);
+    return rotateDeg;
   }
 
   get moonData(): MoonData {
@@ -88,6 +95,7 @@ export class Moon {
       nextFullMoon: createItem('fullMoon', shortTime(fullMoon.value)),
       nextNewMoon: createItem('newMoon', shortTime(newMoon.value)),
     };
+
     return data;
   }
 }
