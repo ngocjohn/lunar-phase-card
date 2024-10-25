@@ -23,6 +23,7 @@
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "apexcharts": "^3.50.0",
+    "axios": "^1.7.7",
     "custom-card-helpers": "^1.7.2",
     "home-assistant-js-websocket": "^9.4.0",
     "lit": "^3.1.4"
@@ -55,13 +56,13 @@
     "rollup": "^2.70.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-filesize": "^10.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-postcss-lit": "^2.1.0",
     "rollup-plugin-serve": "^1.1.1",
     "rollup-plugin-typescript2": "^0.36.0",
     "swiper": "^11.1.4",
-    "typescript": "^5.4.5",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "typescript": "^5.4.5"
   },
   "resolutions": {
     "lit": "^2.1.2",

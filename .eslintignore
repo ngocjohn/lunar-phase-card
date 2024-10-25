@@ -1,2 +1,3 @@
 src/localize/*.ts
 src/localize/*.js
+scripts/*.js

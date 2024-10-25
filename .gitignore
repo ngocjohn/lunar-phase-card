@@ -9,7 +9,7 @@ src/utils/testdata.ts
 all-keys.asc
 all-secret-keys.asc
 lunar-phase-card.code-workspace
-src/test/
+test/
 .env
 .DS_Store
 swiper-bundle.css
