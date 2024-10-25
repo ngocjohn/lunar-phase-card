@@ -16,14 +16,15 @@ export class LunarBaseData extends LitElement {
   @state() swiper: Swiper | null = null;
 
   // https://lit.dev/docs/components/styles/
-  static get styles(): CSSResultGroup {
+  public static get styles(): CSSResultGroup {
     return [swiperStyleCss, mainStyles];
   }
 
   protected firstUpdated(changedProps: PropertyValues): void {
     super.firstUpdated(changedProps);
-    this.initSwiper();
-    // console.log('moonData', this.moon);
+    if (this.moon) {
+      this.initSwiper();
+    }
   }
 
   private initSwiper(): void {
@@ -49,7 +50,7 @@ export class LunarBaseData extends LitElement {
     });
   }
 
-  render(): TemplateResult {
+  protected render(): TemplateResult {
     // const newMoonData = this.baseMoonData;
     const newMoonData = this.moon.moonData;
     const chunkedData = this._chunkObject(newMoonData, 5);
@@ -95,6 +96,7 @@ export class LunarBaseData extends LitElement {
         <div class="value">
           ${secondValue ? html`<span class="second-value">(${secondValue}) </span>` : ''} ${value}
         </div>
+      </div>
       </div>
     `;
   }
