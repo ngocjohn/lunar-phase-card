@@ -9,6 +9,21 @@
 
 <p style="text-align: justify;">This is a Lovelace custom card for Home Assistant that provides detailed information about the current phase of the moon. This card leverages precise astronomical calculations to deliver accurate lunar data, making it a valuable addition for those interested in astronomy, astrology, or just tracking the moon's phases.</p>
 
+
+## Table of contents
+
+<details>
+    <summary>Table of contents</summary>
+
+- [Overview](#Lunar-Phase-Card)
+- [Features](#features)
+- [Installation](#installation)
+  - [HACS Installation](#hacs-installation)
+  - [Manual Installation](#manual-installation)
+- [Configuration](#configuration)
+
+</details>
+
 ## Features
 
 - **Current Lunar Phase Display:** Shows the current phase of the moon.
@@ -55,19 +70,6 @@
   <img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/moon-horizon.gif" alt="Lunar Phase Card">
 </div>
 
-## Table of contents
-
-<details>
-    <summary>Table of contents</summary>
-
-- [Overview](#Lunar-Phase-Card)
-- [Features](#features)
-- [Installation](#installation)
-  - [HACS Installation](#hacs-installation)
-  - [Manual Installation](#manual-installation)
-- [Configuration](#configuration)
-
-</details>
 
 ## Installation
 
