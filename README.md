@@ -60,15 +60,14 @@
 
 </details>
 
-### Default & Compact view
+### View options
 
-<div style="display: flex; justify-content: space-between; gap: 0.5rem;">
-  <img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-default.png" alt="Lunar Phase Cards" width="48%" >
-  <img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact.png" alt="Lunar Phase Calendar" width="48%" >
-</div>
-<div>
-  <img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/moon-horizon.gif" alt="Lunar Phase Card">
-</div>
+![Default card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-default-view.gif)
+![Calendar card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-calendar.gif)
+![Horizon card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-horizon-graph.gif)
+![Compact card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact-view.png)
+
+
 
 
 ## Installation
