@@ -2,8 +2,8 @@
   --swiper-pagination-bullet-inactive-color: var(--secondary-text-color);
   --swiper-pagination-bottom: 0;
   --lunar-card-padding: 12px;
-  --lunar-card-header-font-color: var(--lunar-card-header-font-color, #212121);
-  --lunar-card-label-font-color: var(--lunar-card-label-font-color, #212121);
+  /* --lunar-card-header-font-color: var(--primary-text-color);
+  --lunar-card-label-font-color: var(--primary-text-color); */
   --lunar-card-header-text-transform: capitalize;
   --lunar-card-header-font-size: x-large;
   --lunar-card-label-font-size: 14px;
@@ -28,7 +28,8 @@ ha-card {
   background-color: var(--card-background-color);
   letter-spacing: 0.5px;
   padding: var(--lunar-card-padding, 12px);
-  --swiper-theme-color: var(--primary-text-color);
+  --primary-text-color: var(--lunar-card-label-font-color, var(--primary-text-color));
+  --swiper-theme-color: var(--lunar-card-label-font-color, var(--primary-text-color));
 }
 
 ha-card.__background {
@@ -62,6 +63,10 @@ ha-card.__compact-header .lunar-card-header {
   width: 100%;
 }
 
+.lunar-card-header>.action-btns {
+  display: inline-flex;
+  gap: 0.5rem;
+}
 
 .lunar-card-header.flexend {
   justify-content: flex-end;
@@ -84,14 +89,15 @@ h1 {
   font-size: var(--lunar-card-header-font-size, x-large);
 }
 
-.btn-calendar {
+.btn-action {
   display: block;
   color: var(--lunar-card-label-font-color);
   cursor: pointer;
   opacity: 0.4;
 }
 
-.btn-calendar:hover {
+.btn-action[active],
+.btn-action:hover {
   color: var(--lunar-card-label-font-color);
   opacity: 0.8;
 }
@@ -107,12 +113,11 @@ h1 {
 .lunar-card-content {
   display: flex;
   padding: 0;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 0.5rem;
   font-size: var(--lunar-card-label-font-size, 14px);
   text-transform: var(--lunar-card-label-text-transform, none);
-
 }
 
 
@@ -120,11 +125,17 @@ h1 {
 .moon-image {
   display: block;
   width: 100%;
-  max-width: calc(25% - 1px);
+  max-width: 27%;
   transition: transform 0.5s;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+  max-height: 185px;
+  aspect-ratio: 1;
+}
+
+.moon-image[calendar] {
+  max-width: 35%;
 }
 
 .moon-image>img {
@@ -132,7 +143,7 @@ h1 {
   height: 100%;
   transform: rotate(0deg);
   /* Initial state */
-  filter: grayscale(1) brightness(1) drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.45))
+  filter: grayscale(1) brightness(1.2) drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.45))
 }
 
 .moon-image img.rotatable {
@@ -183,7 +194,7 @@ h1 {
 
 .moon-data-item>span.label {
   display: flex;
-  color: var(--primary-text-color);
+  color: var(--lunar-card-label-font-color);
   width: fit-content;
   text-wrap: nowrap;
   flex: 0;
@@ -191,7 +202,7 @@ h1 {
 
 .moon-data-item>.value {
   display: flex;
-  color: var(--primary-text-color);
+  color: var(--lunar-card-label-font-color);
   font-weight: 600;
   width: auto;
   text-wrap: nowrap !important;
@@ -272,7 +283,7 @@ section {
 
 .date-input-label {
   display: block;
-  color: var(--primary-text-color);
+  color: var(--lunar-card-label-font-color);
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 8px;
@@ -283,8 +294,8 @@ section {
   width: fit-content;
   padding: 0.5rem;
   border: 1px solid var(--divider-color);
-  border-radius: 0.5rem;
-  color: var(--primary-text-color);
+  border-radius: var(--ha-card-border-radius, 12px);
+  color: var(--lunar-card-label-font-color);
   background-color: var(--calendar-background-color);
   transition: all 0.3s ease;
   box-sizing: border-box;
@@ -303,8 +314,8 @@ button.date-input-btn {
   cursor: pointer;
   background-color: var(--calendar-background-color);
   border: 1px solid var(--divider-color);
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
+  border-radius: var(--ha-card-border-radius, 12px);
+  /* padding: 0.5rem 1rem; */
   color: var(--primary-text-color);
   transition: all 0.3s ease;
   font-weight: 600;
@@ -317,7 +328,7 @@ button.date-input-btn:hover {
 
 /* COMPACT VIEW */
 
-.btn-calendar.compact {
+.btn-action.compact {
   position: absolute;
   top: 1rem;
   right: 1rem;
@@ -332,7 +343,7 @@ button.date-input-btn:hover {
 
 .moon-fraction {
   font-weight: inherit;
-  color: var(--primary-text-color);
+  color: var(--lunar-card-label-font-color);
   letter-spacing: 1.5px;
   line-height: 24px;
 }

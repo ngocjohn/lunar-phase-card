@@ -2,7 +2,7 @@ import * as SunCalc from '@noim/suncalc3';
 import { localize } from '../localize/localize';
 import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location } from '../types';
 import { formatTimeToHHMM, formatRelativeTime } from './helpers';
-import { MOON_IMAGES } from '../const';
+import { MOON_IMAGES } from '../utils/moon-pic';
 
 export class Moon {
   readonly _date: Date;
@@ -98,4 +98,49 @@ export class Moon {
 
     return data;
   }
+  _getMoonTime = (today: Date): SunCalc.IMoonTimes => {
+    return SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
+  };
+
+  _getMoonTransit = (rise: Date, set: Date): { main: Date | null; invert: Date | null } => {
+    return SunCalc.moonTransit(rise, set, this.location.latitude, this.location.longitude);
+  };
+
+  _getAltituteData = (startTime: Date, endTime: Date, step: number) => {
+    const result: { [key: string]: number } = {};
+    for (let i = 0; i < step; i++) {
+      const time = new Date(startTime.getTime() + (endTime.getTime() - startTime.getTime()) * (i / step));
+      const position = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
+      result[time.toLocaleString()] = Number(position.altitudeDegrees.toFixed(2));
+    }
+    return result;
+  };
+
+  _getAltitudeToday = () => {
+    const today = new Date();
+    const startTime = new Date(today.setHours(0, 0, 0, 0));
+    const endTime = new Date(today.setHours(23, 59, 59, 999));
+    const step = 24;
+    const moonData = SunCalc.getMoonData(today, this.location.latitude, this.location.longitude);
+    const { zenithAngle, parallacticAngle } = moonData;
+    const rotateDeg = (zenithAngle - parallacticAngle) * (180 / Math.PI);
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const data: { [key: string]: any } = {};
+
+    data['time'] = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
+    const altitudeData = this._getAltituteData(startTime, endTime, step);
+    data['altitude'] = altitudeData;
+    data['moonPhase'] = SunCalc.getMoonIllumination(today);
+    data['moonPhase'] = {
+      ...data['moonPhase'],
+      emojiRotation: rotateDeg,
+    };
+
+    data['lang'] = {
+      rise: this.localize('card.moonRise'),
+      set: this.localize('card.moonSet'),
+    };
+    return data;
+  };
 }

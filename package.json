@@ -24,6 +24,7 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "apexcharts": "^3.50.0",
     "axios": "^1.7.7",
+    "chart.js": "^4.4.5",
     "custom-card-helpers": "^1.7.2",
     "home-assistant-js-websocket": "^9.4.0",
     "lit": "^3.1.4"
