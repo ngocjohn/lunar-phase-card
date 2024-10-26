@@ -118,6 +118,7 @@ export class Moon {
 
   _getAltitudeToday = () => {
     const today = new Date();
+
     const startTime = new Date(today.setHours(0, 0, 0, 0));
     const endTime = new Date(today.setHours(23, 59, 59, 999));
     const step = 24;
@@ -141,6 +142,7 @@ export class Moon {
       rise: this.localize('card.moonRise'),
       set: this.localize('card.moonSet'),
     };
+    console.log(data);
     return data;
   };
 }

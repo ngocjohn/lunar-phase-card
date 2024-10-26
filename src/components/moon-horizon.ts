@@ -87,6 +87,15 @@ export class MoonHorizon extends LitElement {
     const riseTime = new Date(todayData.time.rise);
     const riseTimePosition = this._getPosition(new Date(todayData.time.rise), altitudeData);
 
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
+    const showSetTime = setTime > todayStart && setTime < todayEnd;
+    const showRiseTime = riseTime > todayStart && riseTime < todayEnd;
+    console.log('showSetTime', showSetTime, 'showRiseTime', showRiseTime);
     // Suggested Y axis max and min values
     const sugestedYMax = Math.ceil(Math.max(...altitudeData) + 10);
     const sugestedYMin = Math.min(...altitudeData) - 10;
@@ -184,6 +193,7 @@ export class MoonHorizon extends LitElement {
           {
             id: 'setTimeMarker',
             afterDatasetsDraw(chart) {
+              if (!showSetTime) return;
               const {
                 ctx,
                 scales: { x, y },
@@ -213,6 +223,7 @@ export class MoonHorizon extends LitElement {
           {
             id: 'riseTimeMarker',
             afterDatasetsDraw(chart) {
+              if (!showRiseTime) return;
               const {
                 ctx,
                 scales: { x, y },
@@ -241,9 +252,6 @@ export class MoonHorizon extends LitElement {
           },
         ],
       });
-    }
-    if (this.moonChart) {
-      Chart.defaults.color = 'white';
     }
   }
 
