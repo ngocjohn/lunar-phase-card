@@ -63,7 +63,8 @@
     "rollup-plugin-serve": "^1.1.1",
     "rollup-plugin-typescript2": "^0.36.0",
     "swiper": "^11.1.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "typescript-plugin-css-modules": "^5.1.0"
   },
   "resolutions": {
     "lit": "^2.1.2",
@@ -72,7 +73,7 @@
     "@lit/reactive-element": "1.2.1"
   },
   "scripts": {
-    "dev": "rollup -c --watch",
+    "dev": "rollup -c --watch --bundleConfigAsCjs",
     "build": "npm run lint && npm run rollup",
     "lint": "eslint src/**/*.ts --fix --quiet",
     "rollup": "rollup -c",

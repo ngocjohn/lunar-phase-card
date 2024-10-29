@@ -82,10 +82,11 @@ export default [
     },
     plugins: [...plugins],
     moduleContext: {
-      // Set specific module contexts if needed
       'node_modules/@formatjs/intl-utils/lib/src/diff.js': 'window',
       'node_modules/@formatjs/intl-utils/lib/src/resolve-locale.js': 'window',
-      // Add other modules as needed
+    },
+    watch: {
+      exclude: 'node_modules/**',
     },
   },
 ];
