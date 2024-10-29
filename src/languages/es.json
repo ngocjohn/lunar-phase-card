@@ -1,0 +1,80 @@
+{
+    "name": "Spanish",
+    "nativeName": "English",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "First quarter",
+            "fullMoon": "Full moon",
+            "thirdQuarterMoon": "Last quarter",
+            "newMoon": "New moon",
+            "waxingCrescentMoon": "Waxing crescent",
+            "waxingGibbousMoon": "Waxing gibbous",
+            "waningCrescentMoon": "Waning crescent",
+            "waningGibbousMoon": "Waning gibbous"
+        },
+        "illumination": "Illumination",
+        "illuminated": "Illuminated",
+        "moonRise": "Moonrise",
+        "moonSet": "Moonset",
+        "moonHigh": "Moon highest",
+        "moonAge": "Moon age",
+        "distance": "Distance",
+        "azimuth": "Azimuth",
+        "altitude": "Altitude",
+        "fullMoon": "Full moon",
+        "newMoon": "New moon",
+        "relativeTime": {
+            "days": "days",
+            "justNow": "just now",
+            "minutesAgo": "{0} minutes ago",
+            "hoursAgo": "{0} hours ago",
+            "inMinutes": "in {0} minutes",
+            "inHours": "in {0} hours"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "Language and view mode",
+            "description": "Set a configuration for language and background"
+        },
+        "baseConfig": {
+            "title": "Latitude and Longitude",
+            "description": "Set a configuration for latitude and longitude"
+        },
+        "optionsConfig": {
+            "useDefault": "Use system",
+            "useEntity": "Use entity",
+            "useCustom": "Use custom"
+        },
+        "fontOptions": {
+            "title": "Font customization",
+            "description": "Set a configuration for font size and color",
+            "hideLabel": "Hide label",
+            "headerFontConfig": {
+                "title": "Header font",
+                "description": "Set a configuration for header font"
+            },
+            "labelFontConfig": {
+                "title": "Label font",
+                "description": "Set a configuration for label font"
+            },
+            "headerFontSize": "Header font size",
+            "headerFontColor": "Header font color",
+            "headerFontStyle": "Header font style",
+            "labelFontSize": "Label font size",
+            "labelFontColor": "Label font color",
+            "labelFontStyle": "Label font style",
+            "valueFontSize": "Value font size"
+        },
+        "compactView": "Compact view",
+        "showBackground": "Show background",
+        "timeFormat": "12-hour time format",
+        "placeHolder": {
+            "latitude": "Enter latitude",
+            "longitude": "Enter longitude",
+            "customBackground": "URL or path to image",
+            "language": "Select language",
+            "moonPosition": "Select moon position on card"
+        }
+    }
+}
