@@ -1,80 +1,80 @@
 {
     "name": "Spanish",
-    "nativeName": "English",
+    "nativeName": "Español",
     "card": {
         "phase": {
-            "firstQuarterMoon": "First quarter",
-            "fullMoon": "Full moon",
-            "thirdQuarterMoon": "Last quarter",
-            "newMoon": "New moon",
-            "waxingCrescentMoon": "Waxing crescent",
-            "waxingGibbousMoon": "Waxing gibbous",
-            "waningCrescentMoon": "Waning crescent",
-            "waningGibbousMoon": "Waning gibbous"
+            "firstQuarterMoon": "Cuarto creciente",
+            "fullMoon": "Luna llena",
+            "thirdQuarterMoon": "Cuarto menguante",
+            "newMoon": "Luna nueva",
+            "waxingCrescentMoon": "Luna creciente",
+            "waxingGibbousMoon": "Gibosa creciente",
+            "waningCrescentMoon": "Luna menguante",
+            "waningGibbousMoon": "Gibosa menguante"
         },
-        "illumination": "Illumination",
-        "illuminated": "Illuminated",
-        "moonRise": "Moonrise",
-        "moonSet": "Moonset",
-        "moonHigh": "Moon highest",
-        "moonAge": "Moon age",
-        "distance": "Distance",
-        "azimuth": "Azimuth",
-        "altitude": "Altitude",
-        "fullMoon": "Full moon",
-        "newMoon": "New moon",
+        "illumination": "Iluminación",
+        "illuminated": "Iluminada",
+        "moonRise": "Salida",
+        "moonSet": "Puesta",
+        "moonHigh": "Punto más alto",
+        "moonAge": "Día lunar",
+        "distance": "Distancia",
+        "azimuth": "Azimut",
+        "altitude": "Altitud",
+        "fullMoon": "Luna llena",
+        "newMoon": "Luna nueva",
         "relativeTime": {
-            "days": "days",
-            "justNow": "just now",
-            "minutesAgo": "{0} minutes ago",
-            "hoursAgo": "{0} hours ago",
-            "inMinutes": "in {0} minutes",
-            "inHours": "in {0} hours"
+            "days": "días",
+            "justNow": "justo ahora",
+            "minutesAgo": "hace {0} minutos",
+            "hoursAgo": "hace {0} horas",
+            "inMinutes": "en {0} minutos",
+            "inHours": "en {0} horas"
         }
     },
     "editor": {
         "viewConfig": {
-            "title": "Language and view mode",
-            "description": "Set a configuration for language and background"
+            "title": "Idioma y modo de vista",
+            "description": "Configurar idioma y fondo"
         },
         "baseConfig": {
-            "title": "Latitude and Longitude",
-            "description": "Set a configuration for latitude and longitude"
+            "title": "Latitud y Longitud",
+            "description": "Configurar latitud y longitud"
         },
         "optionsConfig": {
-            "useDefault": "Use system",
-            "useEntity": "Use entity",
-            "useCustom": "Use custom"
+            "useDefault": "Usar sistema",
+            "useEntity": "Usar entidad",
+            "useCustom": "Usar personalizado"
         },
         "fontOptions": {
-            "title": "Font customization",
-            "description": "Set a configuration for font size and color",
-            "hideLabel": "Hide label",
+            "title": "Personalizar fuente",
+            "description": "Configurar tamaño y color de fuente",
+            "hideLabel": "Ocultar etiqueta",
             "headerFontConfig": {
-                "title": "Header font",
-                "description": "Set a configuration for header font"
+                "title": "Fuente del encabezado",
+                "description": "Configurar fuente del encabezado"
             },
             "labelFontConfig": {
-                "title": "Label font",
-                "description": "Set a configuration for label font"
+                "title": "Fuente de la etiqueta",
+                "description": "Configurar fuente de la etiqueta"
             },
-            "headerFontSize": "Header font size",
-            "headerFontColor": "Header font color",
-            "headerFontStyle": "Header font style",
-            "labelFontSize": "Label font size",
-            "labelFontColor": "Label font color",
-            "labelFontStyle": "Label font style",
-            "valueFontSize": "Value font size"
+            "headerFontSize": "Tamaño de fuente del encabezado",
+            "headerFontColor": "Color de fuente del encabezado",
+            "headerFontStyle": "Estilo de fuente del encabezado",
+            "labelFontSize": "Tamaño de fuente de la etiqueta",
+            "labelFontColor": "Color de fuente de la etiqueta",
+            "labelFontStyle": "Estilo de fuente de la etiqueta",
+            "valueFontSize": "Tamaño de fuente del valor"
         },
-        "compactView": "Compact view",
-        "showBackground": "Show background",
-        "timeFormat": "12-hour time format",
+        "compactView": "Vista compacta",
+        "showBackground": "Mostrar fondo",
+        "timeFormat": "Formato de 12 horas",
         "placeHolder": {
-            "latitude": "Enter latitude",
-            "longitude": "Enter longitude",
-            "customBackground": "URL or path to image",
-            "language": "Select language",
-            "moonPosition": "Select moon position on card"
+            "latitude": "Ingresar latitud",
+            "longitude": "Ingresar longitud",
+            "customBackground": "URL o ruta de la imagen",
+            "language": "Seleccionar idioma",
+            "moonPosition": "Posición de la luna en la tarjeta"
         }
     }
 }
