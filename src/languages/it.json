@@ -30,7 +30,11 @@
             "hoursAgo": "{0} ore fa",
             "inMinutes": "tra {0} minuti",
             "inHours": "tra {0} ore"
-        }
+        },
+        "position": "",
+        "direction": "",
+        "underHorizon": "",
+        "overHorizon": ""
     },
     "editor": {
         "viewConfig": {

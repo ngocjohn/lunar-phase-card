@@ -30,7 +30,11 @@
             "hoursAgo": "{0} часов назад",
             "inMinutes": "через {0} минут",
             "inHours": "через {0} часов"
-        }
+        },
+        "position": "",
+        "direction": "",
+        "underHorizon": "",
+        "overHorizon": ""
     },
     "editor": {
         "viewConfig": {

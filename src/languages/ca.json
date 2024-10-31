@@ -30,7 +30,11 @@
             "hoursAgo": "fa {0} hores",
             "inMinutes": "d'aquí a {0} minuts",
             "inHours": "d'aqui a {0} hores"
-        }
+        },
+        "position": "",
+        "direction": "",
+        "underHorizon": "",
+        "overHorizon": ""
     },
     "editor": {
         "viewConfig": {

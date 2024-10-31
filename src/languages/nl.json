@@ -30,7 +30,11 @@
             "hoursAgo": "{0} uren geleden",
             "inMinutes": "in {0} minuten",
             "inHours": "in {0} uur"
-        }
+        },
+        "position": "",
+        "direction": "",
+        "underHorizon": "",
+        "overHorizon": ""
     },
     "editor": {
         "viewConfig": {

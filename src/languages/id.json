@@ -30,7 +30,11 @@
             "hoursAgo": "{0} jam yang lalu",
             "inMinutes": "dalam {0} menit",
             "inHours": "dalam {0} jam"
-        }
+        },
+        "position": "",
+        "direction": "",
+        "underHorizon": "",
+        "overHorizon": ""
     },
     "editor": {
         "viewConfig": {

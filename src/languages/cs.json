@@ -30,7 +30,11 @@
             "hoursAgo": "před {0} hodinami",
             "inMinutes": "za {0} minut",
             "inHours": "za {0} hodin"
-        }
+        },
+        "position": "",
+        "direction": "",
+        "underHorizon": "",
+        "overHorizon": ""
     },
     "editor": {
         "viewConfig": {

@@ -30,7 +30,11 @@
             "hoursAgo": "{0} timer siden",
             "inMinutes": "in {0} minutter",
             "inHours": "in {0} timer"
-        }
+        },
+        "position": "",
+        "direction": "",
+        "underHorizon": "",
+        "overHorizon": ""
     },
     "editor": {
         "viewConfig": {
