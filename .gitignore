@@ -13,3 +13,4 @@ test/
 swiper-bundle.css
 scripts/missing_translations.json
 
+dist/lovelace-horizon-card.js

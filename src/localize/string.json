@@ -30,7 +30,11 @@
             "hoursAgo": "{0} hours ago",
             "inMinutes": "in {0} minutes",
             "inHours": "in {0} hours"
-        }
+        },
+        "position": "Position",
+        "direction": "Direction",
+        "underHorizon": "Moon under horizon",
+        "overHorizon": "Moon over horizon"
     },
     "editor": {
         "viewConfig": {

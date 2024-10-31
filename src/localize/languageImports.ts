@@ -5,6 +5,7 @@ import * as cs from '../languages/cs.json';
 import * as da from '../languages/da.json';
 import * as de from '../languages/de.json';
 import * as en from '../languages/en.json';
+import * as es from '../languages/es.json';
 import * as fr from '../languages/fr.json';
 import * as id from '../languages/id.json';
 import * as it from '../languages/it.json';
@@ -19,6 +20,7 @@ const languages: any = {
   da: da,
   de: de,
   en: en,
+  es: es,
   fr: fr,
   id: id,
   it: it,
@@ -34,6 +36,7 @@ export const languageOptions = [
   { key: 'da', name: da.name, nativeName: da.nativeName },
   { key: 'de', name: de.name, nativeName: de.nativeName },
   { key: 'en', name: en.name, nativeName: en.nativeName },
+  { key: 'es', name: es.name, nativeName: es.nativeName },
   { key: 'fr', name: fr.name, nativeName: fr.nativeName },
   { key: 'id', name: id.name, nativeName: id.nativeName },
   { key: 'it', name: it.name, nativeName: it.nativeName },

@@ -2,7 +2,6 @@
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { styleMap } from 'lit-html/directives/style-map.js';
 import { LovelaceCardEditor } from 'custom-card-helpers';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
 import { BASE_REFRESH_INTERVAL, BACKGROUND, CurrentPage } from './const';
@@ -101,6 +100,7 @@ export class LunarPhaseCard extends LitElement {
   protected firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
     this.measureCard();
+    this._computeStyles();
   }
   protected shouldUpdate(changedProps: PropertyValues): boolean {
     if (changedProps.has('_activeCard') && this._activeCard !== CurrentPage.BASE) {
@@ -178,7 +178,7 @@ export class LunarPhaseCard extends LitElement {
         : nothing;
 
     return html`
-      <ha-card class=${this._computeClasses()} style=${this._computeStyles()}>
+      <ha-card class=${this._computeClasses()}>
         ${header}
         <div class="lunar-card-content">${this._renderPage()}</div>
       </ha-card>
@@ -202,6 +202,7 @@ export class LunarPhaseCard extends LitElement {
       date: this._date,
       lang: this.selectedLanguage,
       config: this.config,
+      locale: this._hass.locale,
     };
     this.moon = new Moon(initData);
     // console.log('createMoon');
@@ -306,7 +307,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderHorizon(): TemplateResult | void {
-    return html`<moon-horizon .moon=${this.moon} .cardWidth=${this._cardWidth}></moon-horizon>`;
+    return html`<moon-horizon .hass=${this.hass} .moon=${this.moon} .cardWidth=${this._cardWidth}></moon-horizon>`;
   }
 
   private updateDate(action?: 'next' | 'prev') {
@@ -368,10 +369,14 @@ export class LunarPhaseCard extends LitElement {
           ? '#e1e1e1'
           : 'var(--primary-text-color)',
       '--swiper-theme-color': `var(--lunar-card-label-font-color, var(--primary-color))`,
-    };
-    return styleMap({
       '--lunar-background-image': `url(${background})`,
-      ...varCss,
+      '--lunar-fill-color': this._showBackground ? 'rgba(255,255,255,0.12157)' : 'var(--divider-color)',
+      '--lunar-fill-bellow-color': this._showBackground ? '#e1e0dd0f' : 'rgba(0, 0, 0, 0.06)',
+    };
+    Object.entries(varCss).forEach(([key, value]) => {
+      if (value) {
+        this.style.setProperty(key, value);
+      }
     });
   }
 

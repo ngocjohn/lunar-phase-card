@@ -22,7 +22,7 @@ const currentVersion = dev ? 'DEVELOPMENT' : `v${version}`;
 const custombanner = logCardInfo(currentVersion);
 
 const serveopts = {
-  contentBase: ['./dev'],
+  contentBase: ['./dist'],
   port,
   allowCrossOrigin: true,
   headers: {
@@ -74,7 +74,7 @@ export default [
   {
     input: 'src/lunar-phase-card.ts',
     output: {
-      file: dev ? './dev/lunar-phase-card-dev.js' : './dist/lunar-phase-card.js',
+      dir: './dist',
       format: 'es',
       sourcemap: dev,
       inlineDynamicImports: true,
