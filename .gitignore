@@ -2,6 +2,7 @@
 /.rpt2_cache/
 package-lock.json
 /dev
+dist/
 .vscode
 src/utils/testdata.ts
 all-keys.asc
@@ -14,3 +15,7 @@ swiper-bundle.css
 scripts/missing_translations.json
 
 dist/lovelace-horizon-card.js
+dist/lunar-phase-card.js
+dist/lunar-phase-card.js.map
+dist/lunar-phase-card.js
+dist/lunar-phase-card.js.map

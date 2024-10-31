@@ -1,84 +1,86 @@
 {
-    "name": "German",
-    "nativeName": "Deutsch",
-    "card": {
-        "phase": {
-            "firstQuarterMoon": "Erstes Viertel",
-            "fullMoon": "Vollmond",
-            "thirdQuarterMoon": "Letztes Viertel",
-            "newMoon": "Neumond",
-            "waxingCrescentMoon": "Zunehmende Sichel",
-            "waxingGibbousMoon": "Zunehmender Halbmond",
-            "waningCrescentMoon": "Abnehmender Halbmond",
-            "waningGibbousMoon": "Abnehmende Sichel"
-        },
-        "illumination": "Beleuchtung",
-        "illuminated": "beleuchtet",
-        "moonRise": "Aufgang",
-        "moonSet": "Untergang",
-        "moonHigh": "Kulmination",
-        "moonAge": "Alter",
-        "distance": "Entfernung",
-        "azimuth": "Azimut",
-        "altitude": "Höhe",
-        "fullMoon": "Nächster Vollmond",
-        "newMoon": "Nächster Neumond",
-        "relativeTime": {
-            "days": "Tage",
-            "justNow": "jetzt",
-            "minutesAgo": "vor {0} Minuten",
-            "hoursAgo": "vor {0} Stunden",
-            "inMinutes": "in {0} Minuten",
-            "inHours": "in {0} Stunden"
-        },
-        "position": "",
-        "direction": "",
-        "underHorizon": "",
-        "overHorizon": ""
+  "name": "German",
+  "nativeName": "Deutsch",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Erstes Viertel",
+      "fullMoon": "Vollmond",
+      "thirdQuarterMoon": "Letztes Viertel",
+      "newMoon": "Neumond",
+      "waxingCrescentMoon": "Zunehmende Sichel",
+      "waxingGibbousMoon": "Zunehmender Halbmond",
+      "waningCrescentMoon": "Abnehmender Halbmond",
+      "waningGibbousMoon": "Abnehmende Sichel"
     },
-    "editor": {
-        "viewConfig": {
-            "title": "Sprach- und Ansichtsmodus",
-            "description": "Einstellung der Sprache und des Hintergrunds"
-        },
-        "baseConfig": {
-            "title": "Breiten- und Längengrad",
-            "description": "Breiten- und Längengradkonfiguration"
-        },
-        "optionsConfig": {
-            "useDefault": "Systemeinstellungen verwenden",
-            "useEntity": "Entität verwenden",
-            "useCustom": "Benutzerdefinierte Einstellungen verwenden "
-        },
-        "fontOptions": {
-            "title": "Schriftartanpassungen",
-            "description": "Schriftgröße und -farbe festlegen",
-            "hideLabel": "Beschriftung ausblenden",
-            "headerFontConfig": {
-                "title": "Schriftart der Überschrift",
-                "description": "Schriftartkonfiguration der Überschrift"
-            },
-            "labelFontConfig": {
-                "title": "Schriftart des Labels",
-                "description": "Schriftartkonfiguration des Labels"
-            },
-            "headerFontSize": "Schriftgröße der Überschrift",
-            "headerFontColor": "Schriftfarbe der Überschrift",
-            "headerFontStyle": "Schriftstil der Überschrift",
-            "labelFontSize": "Schriftgröße des Labels",
-            "labelFontColor": "Schriftfarbe des Labels",
-            "labelFontStyle": "Schriftstil des Labels",
-            "valueFontSize": "Schriftgröße der ausgegebenen Werte"
-        },
-        "compactView": "Kompakte Ansicht",
-        "showBackground": "Hintergrund anzeigen",
-        "timeFormat": "12-Stunden-Zeitformat",
-        "placeHolder": {
-            "latitude": "Breitengrad eingeben",
-            "longitude": "Längengrad eingeben",
-            "customBackground": "URL oder Pfad zum Hintergrundbild",
-            "language": "Sprachauswahl",
-            "moonPosition": "Mondposition auf der Karte auswählen"
-        }
+    "illumination": "Beleuchtung",
+    "illuminated": "beleuchtet",
+    "moonRise": "Aufgang",
+    "moonSet": "Untergang",
+    "moonHigh": "Kulmination",
+    "moonAge": "Alter",
+    "distance": "Entfernung",
+    "azimuth": "Azimut",
+    "altitude": "Höhe",
+    "fullMoon": "Nächster Vollmond",
+    "newMoon": "Nächster Neumond",
+    "relativeTime": {
+      "days": "Tage",
+      "justNow": "jetzt",
+      "minutesAgo": "vor {0} Minuten",
+      "hoursAgo": "vor {0} Stunden",
+      "inMinutes": "in {0} Minuten",
+      "inHours": "in {0} Stunden"
+    },
+    "position": "Position",
+    "direction": "Richtung",
+    "underHorizon": "Mond unter dem Horizont",
+    "overHorizon": "Mond über dem Horizont",
+    "horizonTitle": "Heutiger Mond",
+    "currentTime": "Aktuelle Zeit"
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Sprach- und Ansichtsmodus",
+      "description": "Einstellung der Sprache und des Hintergrunds"
+    },
+    "baseConfig": {
+      "title": "Breiten- und Längengrad",
+      "description": "Breiten- und Längengradkonfiguration"
+    },
+    "optionsConfig": {
+      "useDefault": "Systemeinstellungen verwenden",
+      "useEntity": "Entität verwenden",
+      "useCustom": "Benutzerdefinierte Einstellungen verwenden "
+    },
+    "fontOptions": {
+      "title": "Schriftartanpassungen",
+      "description": "Schriftgröße und -farbe festlegen",
+      "hideLabel": "Beschriftung ausblenden",
+      "headerFontConfig": {
+        "title": "Schriftart der Überschrift",
+        "description": "Schriftartkonfiguration der Überschrift"
+      },
+      "labelFontConfig": {
+        "title": "Schriftart des Labels",
+        "description": "Schriftartkonfiguration des Labels"
+      },
+      "headerFontSize": "Schriftgröße der Überschrift",
+      "headerFontColor": "Schriftfarbe der Überschrift",
+      "headerFontStyle": "Schriftstil der Überschrift",
+      "labelFontSize": "Schriftgröße des Labels",
+      "labelFontColor": "Schriftfarbe des Labels",
+      "labelFontStyle": "Schriftstil des Labels",
+      "valueFontSize": "Schriftgröße der ausgegebenen Werte"
+    },
+    "compactView": "Kompakte Ansicht",
+    "showBackground": "Hintergrund anzeigen",
+    "timeFormat": "12-Stunden-Zeitformat",
+    "placeHolder": {
+      "latitude": "Breitengrad eingeben",
+      "longitude": "Längengrad eingeben",
+      "customBackground": "URL oder Pfad zum Hintergrundbild",
+      "language": "Sprachauswahl",
+      "moonPosition": "Mondposition auf der Karte auswählen"
     }
+  }
 }

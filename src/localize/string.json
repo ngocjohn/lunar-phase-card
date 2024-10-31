@@ -34,7 +34,9 @@
         "position": "Position",
         "direction": "Direction",
         "underHorizon": "Moon under horizon",
-        "overHorizon": "Moon over horizon"
+        "overHorizon": "Moon over horizon",
+        "horizonTitle": "Today's Moon",
+        "currentTime": "Current time"
     },
     "editor": {
         "viewConfig": {

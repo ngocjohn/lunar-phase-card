@@ -1,84 +1,86 @@
 {
-    "name": "Danish",
-    "nativeName": "Dansk",
-    "card": {
-        "phase": {
-            "firstQuarterMoon": "Tiltagende Måne",
-            "fullMoon": "Fuldmåne",
-            "thirdQuarterMoon": "Aftagende måne",
-            "newMoon": "Nymåne",
-            "waxingCrescentMoon": "Tiltagende halvmåne",
-            "waxingGibbousMoon": "Tiltagende måne",
-            "waningCrescentMoon": "Aftagende halvmåne",
-            "waningGibbousMoon": "Aftagende måne"
-        },
-        "illumination": "Belysning",
-        "illuminated": "Oplyst",
-        "moonRise": "Måneopgang",
-        "moonSet": "Månenedgang",
-        "moonHigh": "Månen højest",
-        "moonAge": "Månealderen",
-        "distance": "Afstand",
-        "azimuth": "Azimuth",
-        "altitude": "Højde",
-        "fullMoon": "Fuldmåne",
-        "newMoon": "Nymåne",
-        "relativeTime": {
-            "days": "dage",
-            "justNow": "lige nu",
-            "minutesAgo": "{0} minutter siden",
-            "hoursAgo": "{0} timer siden",
-            "inMinutes": "in {0} minutter",
-            "inHours": "in {0} timer"
-        },
-        "position": "",
-        "direction": "",
-        "underHorizon": "",
-        "overHorizon": ""
+  "name": "Danish",
+  "nativeName": "Dansk",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Tiltagende Måne",
+      "fullMoon": "Fuldmåne",
+      "thirdQuarterMoon": "Aftagende måne",
+      "newMoon": "Nymåne",
+      "waxingCrescentMoon": "Tiltagende halvmåne",
+      "waxingGibbousMoon": "Tiltagende måne",
+      "waningCrescentMoon": "Aftagende halvmåne",
+      "waningGibbousMoon": "Aftagende måne"
     },
-    "editor": {
-        "viewConfig": {
-            "title": "Sprog og visningstilstand",
-            "description": "Indstil en konfiguration for sprog og baggrund"
-        },
-        "baseConfig": {
-            "title": "Bredde og længdegrad",
-            "description": "Indstil en konfiguration for breddegrad og længdegrad"
-        },
-        "optionsConfig": {
-            "useDefault": "Brug systemet",
-            "useEntity": "Brug enhed",
-            "useCustom": "Brug brugerdefineret"
-        },
-        "fontOptions": {
-            "title": "Fonttilpasning",
-            "description": "Indstil en konfiguration for skriftstørrelse og farve",
-            "hideLabel": "Skjul etiket",
-            "headerFontConfig": {
-                "title": "Header font",
-                "description": "Indstil en konfiguration for header font"
-            },
-            "labelFontConfig": {
-                "title": "Etiket skrifttype",
-                "description": "Indstil en konfiguration for etiket skrifttype"
-            },
-            "headerFontSize": "Header skriftstørrelse",
-            "headerFontColor": "Header skriftfarve",
-            "headerFontStyle": "Header skrifttype",
-            "labelFontSize": "Etiket skriftstørrelse",
-            "labelFontColor": "Etiket skriftfarve",
-            "labelFontStyle": "Etiket skrifttype",
-            "valueFontSize": "Værdi skriftstørrelse"
-        },
-        "compactView": "Kompakt udsigt",
-        "showBackground": "Vis baggrund",
-        "timeFormat": "12-timers tidsformat",
-        "placeHolder": {
-            "latitude": "Indtast breddegrad",
-            "longitude": "Indtast længdegrad",
-            "customBackground": "URL eller sti til billede",
-            "language": "Vælg sprog",
-            "moonPosition": "Vælg måneposition på kortet"
-        }
+    "illumination": "Belysning",
+    "illuminated": "Oplyst",
+    "moonRise": "Måneopgang",
+    "moonSet": "Månenedgang",
+    "moonHigh": "Månen højest",
+    "moonAge": "Månealderen",
+    "distance": "Afstand",
+    "azimuth": "Azimuth",
+    "altitude": "Højde",
+    "fullMoon": "Fuldmåne",
+    "newMoon": "Nymåne",
+    "relativeTime": {
+      "days": "dage",
+      "justNow": "lige nu",
+      "minutesAgo": "{0} minutter siden",
+      "hoursAgo": "{0} timer siden",
+      "inMinutes": "in {0} minutter",
+      "inHours": "in {0} timer"
+    },
+    "position": "Position",
+    "direction": "Retning",
+    "underHorizon": "Månen under horisonten",
+    "overHorizon": "Månen over horisonten",
+    "horizonTitle": "Dagens Måne",
+    "currentTime": "Nuværende tid"
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Sprog og visningstilstand",
+      "description": "Indstil en konfiguration for sprog og baggrund"
+    },
+    "baseConfig": {
+      "title": "Bredde og længdegrad",
+      "description": "Indstil en konfiguration for breddegrad og længdegrad"
+    },
+    "optionsConfig": {
+      "useDefault": "Brug systemet",
+      "useEntity": "Brug enhed",
+      "useCustom": "Brug brugerdefineret"
+    },
+    "fontOptions": {
+      "title": "Fonttilpasning",
+      "description": "Indstil en konfiguration for skriftstørrelse og farve",
+      "hideLabel": "Skjul etiket",
+      "headerFontConfig": {
+        "title": "Header font",
+        "description": "Indstil en konfiguration for header font"
+      },
+      "labelFontConfig": {
+        "title": "Etiket skrifttype",
+        "description": "Indstil en konfiguration for etiket skrifttype"
+      },
+      "headerFontSize": "Header skriftstørrelse",
+      "headerFontColor": "Header skriftfarve",
+      "headerFontStyle": "Header skrifttype",
+      "labelFontSize": "Etiket skriftstørrelse",
+      "labelFontColor": "Etiket skriftfarve",
+      "labelFontStyle": "Etiket skrifttype",
+      "valueFontSize": "Værdi skriftstørrelse"
+    },
+    "compactView": "Kompakt udsigt",
+    "showBackground": "Vis baggrund",
+    "timeFormat": "12-timers tidsformat",
+    "placeHolder": {
+      "latitude": "Indtast breddegrad",
+      "longitude": "Indtast længdegrad",
+      "customBackground": "URL eller sti til billede",
+      "language": "Vælg sprog",
+      "moonPosition": "Vælg måneposition på kortet"
     }
+  }
 }

@@ -6,12 +6,14 @@ import { Chart } from 'chart.js/auto';
 
 import { Moon } from '../utils/moon';
 import styles from '../css/style.css';
+import { LunarPhaseCard } from '../lunar-phase-card';
 
 @customElement('moon-horizon')
 export class MoonHorizon extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() moon!: Moon;
   @state() moonChart: Chart | null = null;
+  @state() card!: LunarPhaseCard;
   @state() cardWidth!: number;
 
   static get styles(): CSSResultGroup {
@@ -233,6 +235,7 @@ export class MoonHorizon extends LitElement {
               if (dataSet.hidden) return;
               const { ctx } = chart;
               const emoji = todayData.moonPhase.phase.emoji;
+
               const { index: currentHourIndex } = currentMoon;
               const dataset = chart.getDatasetMeta(0);
               const { x, y } = dataset.data[currentHourIndex].getProps(['x', 'y']);
@@ -360,7 +363,7 @@ export class MoonHorizon extends LitElement {
   protected render(): TemplateResult {
     return html`
       <div class="moon-horizon">
-        <canvas id="moonPositionChart" width=${this.cardWidth}></canvas>
+        <canvas id="moonPositionChart" width=${this.card._cardWidth}></canvas>
       </div>
       ${this._renderCurrentDate()}
     `;
@@ -371,7 +374,7 @@ export class MoonHorizon extends LitElement {
     return html`
       <div class="moon-data">
         <div class="moon-data-item">
-          <span class="label">Current time</span>
+          <span class="label">${this.card.localize('card.currentTime')}</span>
           <div class="value">${formatDateTimeNumeric(new Date(), this.hass.locale)}</div>
         </div>
         ${Object.keys(dataItem).map((key) => {

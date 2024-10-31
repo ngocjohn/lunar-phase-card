@@ -33,7 +33,7 @@ export class LunarPhaseCard extends LitElement {
   @state() _connected: boolean = false;
   @state() _refreshInterval: number | undefined;
 
-  @state() private _cardWidth: number = 0;
+  @state() _cardWidth: number = 0;
 
   @query('lunar-base-data') _data!: LunarBaseData;
   public static getStubConfig = (hass: HomeAssistant): Record<string, unknown> => {
@@ -127,7 +127,7 @@ export class LunarPhaseCard extends LitElement {
     return this.config?.selected_language || this._hass.language;
   }
 
-  private localize = (string: string, search = '', replace = ''): string => {
+  public localize = (string: string, search = '', replace = ''): string => {
     return localize(string, this.selectedLanguage, search, replace);
   };
 
@@ -212,7 +212,7 @@ export class LunarPhaseCard extends LitElement {
     const headerContent = {
       [CurrentPage.CALENDAR]: this.moon?.phaseName,
       [CurrentPage.BASE]: this.moon?.phaseName,
-      [CurrentPage.HORIZON]: "Today's Moon Horizon",
+      [CurrentPage.HORIZON]: this.localize('card.horizonTitle'),
     };
     return html`
       <div class="lunar-card-header">
@@ -307,7 +307,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderHorizon(): TemplateResult | void {
-    return html`<moon-horizon .hass=${this.hass} .moon=${this.moon} .cardWidth=${this._cardWidth}></moon-horizon>`;
+    return html`<moon-horizon .hass=${this.hass} .moon=${this.moon} .card=${this}></moon-horizon>`;
   }
 
   private updateDate(action?: 'next' | 'prev') {
