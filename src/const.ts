@@ -3,7 +3,7 @@ import { FontSizeOptions, FontTextTransformOptions } from './types';
 
 export const REPOSITORY = repository.repo;
 export const CARD_VERSION = `v${version}`;
-export const BASE_REFRESH_INTERVAL = 60 * 1000; // 1 minute
+export const BASE_REFRESH_INTERVAL = 30 * 1000; // 1 minute
 
 import background from './images/bkg.png';
 
