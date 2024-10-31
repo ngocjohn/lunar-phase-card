@@ -27,6 +27,12 @@ export class LunarBaseData extends LitElement {
     }
   }
 
+  protected shouldUpdate(_changedProperties: PropertyValues): boolean {
+    if (_changedProperties.has('moon') && this.moon) {
+      return true;
+    }
+    return true;
+  }
   private initSwiper(): void {
     const swiperCon = this.shadowRoot?.querySelector('.swiper-container') as HTMLElement;
     if (!swiperCon) return;
@@ -94,7 +100,7 @@ export class LunarBaseData extends LitElement {
       <div class="moon-data-item">
         <span class="label">${label}</span>
         <div class="value">
-          ${secondValue ? html`<span class="second-value">(${secondValue}) </span>` : ''} ${value}
+          ${secondValue ? html`<span>(${secondValue}) </span>` : ''} ${value}
         </div>
       </div>
       </div>
