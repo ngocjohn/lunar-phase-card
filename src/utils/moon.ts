@@ -105,6 +105,59 @@ export class Moon {
 
     return data;
   }
+
+  get todayDataItem() {
+    const { azimuthDegrees, altitudeDegrees } = this._moonData;
+    const _altitudeDegData = this.moonData.altitudeDegrees;
+    const _moonFraction = this.moonData.moonFraction;
+    const formatedPosition = altitudeDegrees > 0 ? 'overHorizon' : 'underHorizon';
+    const cardiNalValue = this._convertCardinal(azimuthDegrees);
+    const data = {
+      positionFormated: this.createItem('position', this.localize(`card.${formatedPosition}`)),
+      azimuthCardinal: this.createItem('direction', azimuthDegrees.toFixed(0), '°', cardiNalValue),
+      _altitudeDegData,
+      _moonFraction,
+    };
+    return data;
+  }
+
+  get todayData() {
+    const today = new Date();
+
+    const startTime = new Date(today.setHours(0, 0, 0, 0));
+
+    const _altitudeData = this._getAltituteData(startTime);
+    const dataCotent = {
+      time: SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude),
+      altitude: this._getAltituteData(startTime),
+      timeLabels: Object.keys(_altitudeData),
+      altitudeData: Object.values(_altitudeData),
+      minMaxY: {
+        sugestedYMax: Math.ceil(Math.max(...Object.values(_altitudeData)) + 10),
+        sugestedYMin: Math.min(...Object.values(_altitudeData)) - 10,
+      },
+      moonPhase: this._moonData.illumination,
+      lang: {
+        rise: this.localize('card.moonRise'),
+        set: this.localize('card.moonSet'),
+      },
+    };
+
+    return dataCotent;
+  }
+
+  _getAltituteData = (startTime: Date) => {
+    const result: { [key: string]: number } = {};
+
+    for (let i = 0; i < 24; i++) {
+      const time = new Date(startTime.getTime() + i * 60 * 60 * 1000);
+      const formatedTime = formatTime(time, this.locale);
+      const position = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
+      result[formatedTime] = Number(position.altitudeDegrees.toFixed(2));
+    }
+    return result;
+  };
+
   _getMoonTime = (today: Date): SunCalc.IMoonTimes => {
     return SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
   };
@@ -116,55 +169,5 @@ export class Moon {
   _convertCardinal = (degrees: number): string => {
     const cardinalPoints = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'];
     return cardinalPoints[Math.round(degrees / 45)];
-  };
-
-  _getDirection() {
-    const { azimuthDegrees, altitudeDegrees } = this._moonData;
-    const formatedPosition = altitudeDegrees > 0 ? 'overHorizon' : 'underHorizon';
-    const cardiNalValue = this._convertCardinal(azimuthDegrees);
-    const data = {
-      positionFormated: this.createItem('position', this.localize(`card.${formatedPosition}`)),
-      azimuthCardinal: this.createItem('direction', azimuthDegrees.toFixed(0), '°', cardiNalValue),
-    };
-    return data;
-  }
-  _getAltituteData = (startTime: Date) => {
-    const result: { [key: string]: number } = {};
-    for (let i = 0; i < 24; i++) {
-      const time = new Date(startTime.getTime() + i * 60 * 60 * 1000);
-      const formatedTime = formatTime(time, this.locale);
-      const position = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
-      result[formatedTime] = Number(position.altitudeDegrees.toFixed(2));
-    }
-    return result;
-  };
-
-  _getAltitudeToday = () => {
-    const today = new Date();
-
-    const startTime = new Date(today.setHours(0, 0, 0, 0));
-    const { altitudeDegrees, moonFraction } = this.moonData;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const data: { [key: string]: any } = {};
-
-    data['time'] = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
-    const altitudeData = this._getAltituteData(startTime);
-    data['altitude'] = altitudeData;
-    data['moonPhase'] = SunCalc.getMoonIllumination(today);
-    data['moonPhase'] = {
-      ...data['moonPhase'],
-    };
-    const direction = this._getDirection();
-    data['dataItem'] = {
-      ...direction,
-      altitudeDegrees,
-      moonFraction,
-    };
-
-    data['lang'] = {
-      rise: this.localize('card.moonRise'),
-      set: this.localize('card.moonSet'),
-    };
-    return data;
   };
 }

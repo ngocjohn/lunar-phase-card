@@ -11,6 +11,7 @@ import { Moon } from './utils/moon';
 import './components/moon-data';
 import './components/moon-horizon';
 import { LunarBaseData } from './components/moon-data';
+import { MoonHorizon } from './components/moon-horizon';
 import style from './css/style.css';
 
 @customElement('lunar-phase-card')
@@ -36,6 +37,7 @@ export class LunarPhaseCard extends LitElement {
   @state() _cardWidth: number = 0;
 
   @query('lunar-base-data') _data!: LunarBaseData;
+  @query('moon-horizon') _moonHorizon!: MoonHorizon;
   public static getStubConfig = (hass: HomeAssistant): Record<string, unknown> => {
     const defaultLatitude = hass.config.latitude || 0;
     const defaultLongitude = hass.config.longitude || 0;
@@ -102,6 +104,7 @@ export class LunarPhaseCard extends LitElement {
     this.measureCard();
     this._computeStyles();
   }
+
   protected shouldUpdate(changedProps: PropertyValues): boolean {
     if (changedProps.has('_activeCard') && this._activeCard !== CurrentPage.BASE) {
       // console.log('shouldUpdate', this._activeCard);
@@ -116,7 +119,8 @@ export class LunarPhaseCard extends LitElement {
         this.startRefreshInterval();
       }
     }
-    return changedProps.has('_activeCard') || (changedProps.has('selectedDate') && this.selectedDate !== undefined);
+
+    return true;
   }
 
   get hass(): HomeAssistant {
@@ -152,8 +156,9 @@ export class LunarPhaseCard extends LitElement {
 
     // Set up a new interval
     this._refreshInterval = window.setInterval(() => {
-      if (this._activeCard === 'base') {
+      if (this._activeCard === CurrentPage.BASE || this._activeCard === CurrentPage.HORIZON) {
         this.requestUpdate();
+        console.log('requestUpdate');
       } else {
         this.clearRefreshInterval();
       }
@@ -330,7 +335,6 @@ export class LunarPhaseCard extends LitElement {
 
   private togglePage = (page: CurrentPage) => {
     this._activeCard = this._activeCard === page ? CurrentPage.BASE : page;
-    console.log('togglePage', this._activeCard);
   };
 
   private measureCard() {
