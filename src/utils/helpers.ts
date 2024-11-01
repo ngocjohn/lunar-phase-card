@@ -1,4 +1,6 @@
-import { FrontendLocaleData, TimeFormat, formatTime } from 'custom-card-helpers';
+import { FrontendLocaleData, TimeFormat, HomeAssistant } from 'custom-card-helpers';
+import { BASE_BACKGROUND_URL } from '../const';
+import { MOON_IMAGES } from './moon-pic';
 
 export function formatMoonTime(dateString: string): string {
   const date = new Date(dateString);
@@ -117,3 +119,62 @@ export const formatedTime = (time: number | Date, amPm: boolean, lang: string): 
 export const convertKmToMiles = (km: number, useMiles: boolean): number => {
   return useMiles ? km / 1.609344 : km;
 };
+
+export const addBackgroundLocalStorage = () => {
+  if (!localStorage.getItem('phaseCardBackground')) {
+    try {
+      fetch(BASE_BACKGROUND_URL)
+        .then((response) => response.blob())
+        .then((blob) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onloadend = () => {
+            const base64data = reader.result;
+            localStorage.setItem('phaseCardBackground', base64data as string);
+            console.log('Background image uploaded');
+          };
+        });
+    } catch (error) {
+      console.error('Error fetching background image:', error);
+    }
+  }
+  console.log('Background image already uploaded');
+};
+
+const getBlob = async (data: string) => {
+  const result = await fetch(data).then((response) => response.blob());
+  console.log('Moon image fetched', result);
+  return result;
+};
+
+export async function uploadMoonPics(hass: HomeAssistant) {
+  const images = MOON_IMAGES as string[];
+  const promises = images.map((image) => getBlob(image));
+  const blobs = await Promise.all(promises);
+
+  const imagesArray: string[] = [];
+
+  for (let i = 0; i < blobs.length; i++) {
+    const imageUrl = await upload(blobs[i] as File, hass);
+    if (imageUrl) imagesArray.push(imageUrl);
+  }
+  console.log('Moon images uploaded');
+  return imagesArray;
+}
+
+async function upload(file: File, hass: HomeAssistant): Promise<string | void> {
+  const formData = new FormData();
+  formData.append('file', file);
+  try {
+    const response = await hass.fetchWithAuth('/api/image/upload', {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await response.json();
+    const imageId = data.id;
+    const imageUrl = `/api/image/serve/${imageId}/original`;
+    return imageUrl;
+  } catch (error) {
+    console.error('Error uploading image:', error);
+  }
+}

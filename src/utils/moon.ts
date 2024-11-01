@@ -64,7 +64,7 @@ export class Moon {
 
   createItem = (label: string, value: string, unit?: string, secondValue?: string): MoonDataItem => ({
     label: this.localize(`card.${label}`),
-    value: `${value}${unit ? ` ${unit}` : ''}`,
+    value: `${value}${unit ? `${unit}` : ''}`,
     secondValue: secondValue ? `${secondValue}` : '',
   });
 
@@ -221,5 +221,12 @@ export class Moon {
   _convertCardinal = (degrees: number): string => {
     const cardinalPoints = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'];
     return cardinalPoints[Math.round(degrees / 45)];
+  };
+
+  setMoonImagesToStorage = () => {
+    // set as array
+    const moonImages = MOON_IMAGES;
+    // set to storage
+    localStorage.setItem('moonImages', JSON.parse(JSON.stringify(moonImages)));
   };
 }

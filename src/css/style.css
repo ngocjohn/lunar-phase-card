@@ -204,17 +204,18 @@ h1 {
 }
 
 .moon-data-item>.value {
-  display: flex;
+  display: inline-flex;
   color: var(--lunar-card-label-font-color);
   font-weight: 600;
   width: auto;
   text-wrap: nowrap !important;
+  align-items: center;
 }
 
 .value>span {
   font-weight: 400;
   font-size: smaller;
-  padding-right: 2px;
+  padding-inline: 2px;
   text-wrap: nowrap;
 }
 

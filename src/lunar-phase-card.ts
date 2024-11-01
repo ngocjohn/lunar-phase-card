@@ -16,6 +16,15 @@ import { MoonHorizon } from './components/moon-horizon';
 
 import style from './css/style.css';
 import { mdiCalendarSearch, mdiChartBellCurve } from '@mdi/js';
+import { MOON_IMAGES } from './utils/moon-pic';
+
+interface Image {
+  filesize: number;
+  name: string;
+  uploaded_at: string; // isoformat date
+  content_type: string;
+  id: string;
+}
 
 @customElement('lunar-phase-card')
 export class LunarPhaseCard extends LitElement {
@@ -153,6 +162,10 @@ export class LunarPhaseCard extends LitElement {
   get _date(): Date {
     const date = this.selectedDate ? new Date(this.selectedDate) : new Date();
     return date;
+  }
+
+  getMoonImage(index: number): string {
+    return MOON_IMAGES[index];
   }
 
   private startRefreshInterval() {
@@ -393,7 +406,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   // https://lit.dev/docs/components/styles/
-  public static get styles(): CSSResultGroup {
+  static get styles(): CSSResultGroup {
     return [style];
   }
 }

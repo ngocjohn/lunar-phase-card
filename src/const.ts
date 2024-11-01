@@ -1,6 +1,9 @@
 import { version, repository } from '../package.json';
 import { FontSizeOptions, FontTextTransformOptions } from './types';
 
+export const BASE_BACKGROUND_URL =
+  'https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/refs/heads/main/assets/card-bkg.png';
+
 export const REPOSITORY = repository.repo;
 export const CARD_VERSION = `v${version}`;
 export const BASE_REFRESH_INTERVAL = 30 * 1000; // 1 minute

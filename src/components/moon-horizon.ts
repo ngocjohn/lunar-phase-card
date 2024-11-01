@@ -51,10 +51,6 @@ export class MoonHorizon extends LitElement {
           width: 100%;
           height: 100%;
         }
-        .direction-icon {
-          /* --mdc-icon-size: 16px; */
-          margin-inline: 4px;
-        }
         .moon-data-wrapper {
           display: flex;
           flex-direction: column;
@@ -67,6 +63,7 @@ export class MoonHorizon extends LitElement {
           height: fit-content;
           padding: 0.5rem 0.5rem 0px;
           color: var(--lunar-card-label-font-color);
+          font-weight: 600;
         }
         .moon-data[show='false'] {
           max-height: 0px;
@@ -212,12 +209,13 @@ export class MoonHorizon extends LitElement {
               ${value}
               ${secondValue
                 ? html`
-                    <span>(${secondValue}) </span>
-                    <ha-icon
-                      class="direction-icon"
-                      style=${`transform: rotate(${parseInt(value, 0)}deg)`}
-                      icon="mdi:arrow-up-thin"
-                    ></ha-icon>
+                    <span> (${secondValue}) </span>
+                    <span style="margin-left: 4px;">
+                      <ha-icon
+                        style=${`transform: rotate(${parseInt(value, 0)}deg)`}
+                        icon="mdi:arrow-up-thin"
+                      ></ha-icon>
+                    </span>
                   `
                 : ''}
             </div>
@@ -225,6 +223,10 @@ export class MoonHorizon extends LitElement {
         `;
       })}
     `;
+  }
+
+  logInfo(message: string): void {
+    console.info(`[MoonCard] ${message}`);
   }
 
   /* -------------------------------- DATASETS -------------------------------- */
@@ -431,7 +433,6 @@ export class MoonHorizon extends LitElement {
       const label = this.todayData.lang[key];
       const yMinOffset = key === 'set' ? sugestedYMin + 15 : 55;
       const yTextOffset = key === 'set' ? sugestedYMin + 30 : 30;
-      console.log(key, 'position', position);
       return { show, position, label, formattedTime, yMinOffset, yTextOffset };
     };
 

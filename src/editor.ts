@@ -599,12 +599,9 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     formData.append('file', file);
 
     try {
-      const response = await fetch('/api/image/upload', {
+      const response = await this.hass.fetchWithAuth('/api/image/upload', {
         method: 'POST',
         body: formData,
-        headers: {
-          Authorization: `Bearer ${this.hass.auth.data.access_token}`,
-        },
       });
 
       if (!response.ok) {
