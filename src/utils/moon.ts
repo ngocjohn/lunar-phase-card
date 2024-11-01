@@ -1,9 +1,9 @@
 import * as SunCalc from '@noim/suncalc3';
 import { localize } from '../localize/localize';
 import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location } from '../types';
-import { formatTimeToHHMM, formatRelativeTime } from './helpers';
+import { formatRelativeTime, formatedTime, convertKmToMiles } from './helpers';
 import { MOON_IMAGES } from '../utils/moon-pic';
-import { FrontendLocaleData, formatTime } from 'custom-card-helpers';
+import { FrontendLocaleData, formatNumber } from 'custom-card-helpers';
 
 export class Moon {
   readonly _date: Date;
@@ -11,6 +11,8 @@ export class Moon {
   readonly location: Location;
   readonly config: LunarPhaseCardConfig;
   readonly locale: FrontendLocaleData;
+  readonly amPm: boolean;
+  readonly useMiles: boolean;
 
   constructor(data: { date: Date; lang: string; config: LunarPhaseCardConfig; locale: FrontendLocaleData }) {
     this._date = data.date;
@@ -18,10 +20,24 @@ export class Moon {
     this.config = data.config;
     this.location = { latitude: data.config.latitude, longitude: data.config.longitude } as Location;
     this.locale = data.locale;
+    this.amPm = this.config['12hr_format'] || false;
+    this.useMiles = this.config.mile_unit || false;
   }
 
   private localize = (string: string, search = '', replace = ''): string => {
     return localize(string, this.lang, search, replace);
+  };
+
+  private formatTime = (time: number | Date): string => {
+    return formatedTime(time, this.amPm, this.lang);
+  };
+
+  private convertKmToMiles = (km: number): number => {
+    return convertKmToMiles(km, this.useMiles);
+  };
+
+  private formatNumber = (num: string | number): string => {
+    return formatNumber(num, this.locale);
   };
 
   get _moonTime(): SunCalc.IMoonTimes {
@@ -53,16 +69,18 @@ export class Moon {
   });
 
   createMoonTime = (key: string, time: number | Date): MoonDataItem => {
-    const timeFormat = this.config['12hr_format'] || false;
     const localizeRelativeTime = (time: number | Date) => {
       const relativeTime = formatRelativeTime(new Date(time).toISOString());
       return relativeTime.value
         ? this.localize(relativeTime.key, '{0}', relativeTime.value)
         : this.localize(relativeTime.key);
     };
-    const value = formatTimeToHHMM(new Date(time).toISOString(), this.lang, timeFormat);
+
+    const timeString = this.formatTime(time);
+
+    // const value = formatTimeToHHMM(new Date(time).toISOString(), this.lang, timeFormat);
     const secondValue = localizeRelativeTime(time);
-    return this.createItem(key, value, '', secondValue);
+    return this.createItem(key, timeString, '', secondValue);
   };
 
   get moonImage(): MoonImage {
@@ -82,43 +100,60 @@ export class Moon {
   }
 
   get moonData(): MoonData {
-    const { createItem, createMoonTime } = this;
+    const { createItem, createMoonTime, convertKmToMiles, formatNumber, localize, useMiles, lang } = this;
+    // Helper function to format date as short time string
     const shortTime = (date: number | Date) =>
-      new Date(date).toLocaleDateString(this.lang, { weekday: 'short', month: 'short', day: 'numeric' });
+      new Date(date).toLocaleDateString(lang, { weekday: 'short', month: 'short', day: 'numeric' });
 
-    const { distance, azimuthDegrees, altitudeDegrees } = this._moonData;
-    const { fraction, phaseValue } = this._moonData.illumination;
-    const { fullMoon, newMoon } = this._moonData.illumination.next;
+    // Destructure relevant data
+    const { distance, azimuthDegrees, altitudeDegrees, illumination } = this._moonData;
+    const {
+      fraction,
+      phaseValue,
+      next: { fullMoon, newMoon },
+    } = illumination;
     const { rise, set, highest } = this._moonTime;
-    const data = {
-      moonFraction: createItem('illumination', `${(fraction * 100).toFixed(2)}%`),
-      moonAge: createItem('moonAge', `${(phaseValue * 29.53).toFixed(2)}`, this.localize('card.relativeTime.days')),
+
+    // Format numeric values
+    const formatted = {
+      moonFraction: formatNumber((fraction * 100).toFixed(2)),
+      moonAge: formatNumber((phaseValue * 29.53).toFixed(2)),
+      distance: formatNumber(convertKmToMiles(distance).toFixed(2)),
+      azimuth: formatNumber(azimuthDegrees.toFixed(2)),
+      altitude: formatNumber(altitudeDegrees.toFixed(2)),
+    };
+
+    // Construct moon data items
+    return {
+      moonFraction: createItem('illumination', formatted.moonFraction, '%'),
+      moonAge: createItem('moonAge', formatted.moonAge, localize('card.relativeTime.days')),
       moonRise: createMoonTime('moonRise', rise),
       moonSet: createMoonTime('moonSet', set),
       moonHighest: highest ? createMoonTime('moonHigh', highest) : undefined,
-      distance: createItem('distance', distance.toFixed(2), 'km'),
-      azimuthDegress: createItem('azimuth', azimuthDegrees.toFixed(2), '°'),
-      altitudeDegrees: createItem('altitude', altitudeDegrees.toFixed(2), '°'),
+      distance: createItem('distance', formatted.distance, useMiles ? 'mi' : 'km'),
+      azimuthDegress: createItem('azimuth', formatted.azimuth, '°'),
+      altitudeDegrees: createItem('altitude', formatted.altitude, '°'),
       nextFullMoon: createItem('fullMoon', shortTime(fullMoon.value)),
       nextNewMoon: createItem('newMoon', shortTime(newMoon.value)),
     };
-
-    return data;
   }
 
   get todayDataItem() {
     const { azimuthDegrees, altitudeDegrees } = this._moonData;
     const _altitudeDegData = this.moonData.altitudeDegrees;
     const _moonFraction = this.moonData.moonFraction;
+
+    const distance = this.moonData.distance;
     const formatedPosition = altitudeDegrees > 0 ? 'overHorizon' : 'underHorizon';
+    const azimutDegFormated = this.formatNumber(azimuthDegrees.toFixed(0));
     const cardiNalValue = this._convertCardinal(azimuthDegrees);
-    const data = {
+    return {
       positionFormated: this.createItem('position', this.localize(`card.${formatedPosition}`)),
-      azimuthCardinal: this.createItem('direction', azimuthDegrees.toFixed(0), '°', cardiNalValue),
+      azimuthCardinal: this.createItem('direction', azimutDegFormated, '°', cardiNalValue),
       _altitudeDegData,
       _moonFraction,
+      distance,
     };
-    return data;
   }
 
   get todayData() {
@@ -164,7 +199,7 @@ export class Moon {
 
     for (let i = 0; i < 48; i++) {
       const time = new Date(startTime.getTime() + i * 30 * 60 * 1000);
-      const formatedTime = formatTime(time, this.locale);
+      const formatedTime = this.formatTime(time);
       const position = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
       result[formatedTime] = Number(position.altitudeDegrees.toFixed(2));
     }

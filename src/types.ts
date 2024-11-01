@@ -53,6 +53,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   show_background?: boolean;
   compact_view?: boolean;
   '12hr_format'?: boolean;
+  mile_unit?: boolean;
   custom_background?: string;
   selected_language: string;
   moon_position?: 'left' | 'right';
@@ -71,6 +72,7 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   selected_language: 'en',
   compact_view: true,
   '12hr_format': false,
+  mile_unit: false,
   font_customize: {
     header_font_size: 'x-large',
     header_font_style: 'capitalize',

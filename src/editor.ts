@@ -124,7 +124,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
     const contentWrapp = html`
       <div class="radios-btn">${radios}</div>
-      <div class="base-config-selector">
+      <div>
         ${this._config?.use_default
           ? this._renderUseDefault()
           : this._config?.use_custom
@@ -227,6 +227,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       { label: 'compactView', configValue: 'compact_view' },
       { label: 'showBackground', configValue: 'show_background' },
       { label: 'timeFormat', configValue: '12hr_format' },
+      { label: 'mileUnit', configValue: 'mile_unit' },
     ];
 
     const viewOptions = html`
@@ -421,7 +422,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
           @alert-dismissed-clicked=${this._handleAlertDismissed}
         >
           <span class="alert-icon" slot="icon">${content[compareVersionsResult].icon}</span>
-          <span class="content">Latest: ${this._latestRelease}</span>
+          <span>Latest: ${this._latestRelease}</span>
         </ha-alert>
       </div>
     `;
@@ -451,7 +452,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   };
 
   private _tempCheckBox = (labelKey: string, checkedValue, configValueKey: string): TemplateResult => {
-    return html` <ha-formfield .label=${this.localize(`editor.${labelKey}`)}>
+    return html` <ha-formfield .label=${this.localize(`editor.${labelKey}`)} class="checkbox">
       <ha-checkbox
         .checked=${this._config?.[checkedValue]}
         .configValue=${configValueKey}

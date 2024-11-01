@@ -1,3 +1,5 @@
+import { FrontendLocaleData, TimeFormat, formatTime } from 'custom-card-helpers';
+
 export function formatMoonTime(dateString: string): string {
   const date = new Date(dateString);
   const today = new Date();
@@ -52,6 +54,7 @@ export function formatTimeToHHMM(dateString: string, lang: string, timeFormat: b
     return '';
   }
   // console.log(dateString, lang, timeFormat);
+
   const newLang = lang || 'en-US';
   const date = new Date(dateString);
   return date.toLocaleTimeString(newLang, { hour: '2-digit', minute: '2-digit', hour12: timeFormat });
@@ -96,3 +99,21 @@ export function compareVersions(version1, version2) {
 
   return 0; // Versions are equal
 }
+
+export const useAmPm = (locale: FrontendLocaleData): boolean => {
+  if (locale.time_format === TimeFormat.language || locale.time_format === TimeFormat.system) {
+    const testLanguage = locale.time_format === TimeFormat.language ? locale.language : undefined;
+    const test = new Date().toLocaleString(testLanguage);
+    return test.includes('AM') || test.includes('PM');
+  }
+
+  return locale.time_format === TimeFormat.am_pm;
+};
+
+export const formatedTime = (time: number | Date, amPm: boolean, lang: string): string => {
+  return new Intl.DateTimeFormat(lang, { hour: '2-digit', minute: '2-digit', hour12: amPm }).format(time);
+};
+
+export const convertKmToMiles = (km: number, useMiles: boolean): number => {
+  return useMiles ? km / 1.609344 : km;
+};
