@@ -13,6 +13,7 @@ import './components/moon-horizon';
 import { LunarBaseData } from './components/moon-data';
 import { MoonHorizon } from './components/moon-horizon';
 import style from './css/style.css';
+import { mdiCalendarSearch, mdiChartBellCurve } from '@mdi/js';
 
 @customElement('lunar-phase-card')
 export class LunarPhaseCard extends LitElement {
@@ -127,7 +128,7 @@ export class LunarPhaseCard extends LitElement {
     return this._hass;
   }
 
-  private get selectedLanguage(): string {
+  get selectedLanguage(): string {
     return this.config?.selected_language || this._hass.language;
   }
 
@@ -223,20 +224,20 @@ export class LunarPhaseCard extends LitElement {
       <div class="lunar-card-header">
         <h1>${headerContent[this._activeCard]}</h1>
         <div class="action-btns">
-          <div
+          <ha-icon-button
             @click=${() => this.togglePage(CurrentPage.CALENDAR)}
             class="btn-action click-shrink"
+            .path=${mdiCalendarSearch}
             ?active=${this._activeCard === CurrentPage.CALENDAR}
           >
-            <ha-icon icon="mdi:calendar-search"></ha-icon>
-          </div>
-          <div
+          </ha-icon-button>
+          <ha-icon-button
             @click=${() => this.togglePage(CurrentPage.HORIZON)}
+            .path=${mdiChartBellCurve}
             class="btn-action click-shrink"
             ?active=${this._activeCard === CurrentPage.HORIZON}
           >
-            <ha-icon icon="mdi:chart-bell-curve"></ha-icon>
-          </div>
+          </ha-icon-button>
         </div>
       </div>
     `;
@@ -347,10 +348,11 @@ export class LunarPhaseCard extends LitElement {
     const reverse = this.config.moon_position === 'right';
     const compactHeader = Boolean(this.config.compact_view && this._activeCard === CurrentPage.BASE);
     return classMap({
-      __background: this._showBackground,
-      '__flex-col': this._isCalendar,
-      __reverse: reverse && !this._isCalendar,
-      '__compact-header': compactHeader,
+      '--background': this._showBackground,
+      '--flex-col': this._isCalendar,
+      '--reverse': reverse && !this._isCalendar,
+      '--compact-header': compactHeader,
+      '--default-header': !compactHeader,
     });
   }
 

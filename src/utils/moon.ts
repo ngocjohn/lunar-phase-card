@@ -127,6 +127,7 @@ export class Moon {
     const startTime = new Date(today.setHours(0, 0, 0, 0));
 
     const _altitudeData = this._getAltituteData(startTime);
+
     const dataCotent = {
       time: SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude),
       altitude: this._getAltituteData(startTime),
@@ -146,11 +147,23 @@ export class Moon {
     return dataCotent;
   }
 
+  _getRiseSetData = (timeKey: string) => {
+    const today = new Date();
+    const timeData = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
+    const time = new Date(timeData[timeKey]);
+    const hour = time.getHours() + time.getMinutes() / 60;
+    const index = Math.floor(hour * 2);
+    const postition = this._getMoonPosition(time);
+    const altitude = postition.altitudeDegrees;
+
+    return { index, altitude };
+  };
+
   _getAltituteData = (startTime: Date) => {
     const result: { [key: string]: number } = {};
 
-    for (let i = 0; i < 24; i++) {
-      const time = new Date(startTime.getTime() + i * 60 * 60 * 1000);
+    for (let i = 0; i < 48; i++) {
+      const time = new Date(startTime.getTime() + i * 30 * 60 * 1000);
       const formatedTime = formatTime(time, this.locale);
       const position = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
       result[formatedTime] = Number(position.altitudeDegrees.toFixed(2));
@@ -160,6 +173,10 @@ export class Moon {
 
   _getMoonTime = (today: Date): SunCalc.IMoonTimes => {
     return SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
+  };
+
+  _getMoonPosition = (today: Date): SunCalc.IMoonPosition => {
+    return SunCalc.getMoonPosition(today, this.location.latitude, this.location.longitude);
   };
 
   _getMoonTransit = (rise: Date, set: Date): { main: Date | null; invert: Date | null } => {

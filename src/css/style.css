@@ -27,12 +27,12 @@ ha-card {
   height: auto;
   background-color: var(--card-background-color);
   letter-spacing: 0.5px;
-  padding: var(--lunar-card-padding, 12px);
+  padding: 0;
   --primary-text-color: var(--lunar-card-label-font-color, var(--primary-text-color));
   --swiper-theme-color: var(--lunar-card-label-font-color, var(--primary-text-color));
 }
 
-ha-card.__background {
+ha-card.--background {
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
@@ -42,30 +42,29 @@ ha-card.__background {
   --swiper-theme-color: var(--lunar-card-label-font-color, #e1e1e1);
 }
 
-ha-card.__flex-col .lunar-card-content {
+ha-card.--flex-col .lunar-card-content {
   flex-direction: column;
   gap: 1rem;
 }
 
-ha-card.__reverse .lunar-card-content {
+ha-card.--reverse .lunar-card-content {
   flex-direction: row-reverse;
 }
 
-ha-card.__compact-header .lunar-card-header {
-  padding: 0;
+
+ha-card.--default-header .lunar-card-content {
+  padding: 8px 12px 12px
 }
 
 .lunar-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0 14px 6px;
   width: 100%;
 }
 
 .lunar-card-header>.action-btns {
   display: inline-flex;
-  gap: 0.5rem;
 }
 
 .lunar-card-header.flexend {
@@ -74,8 +73,12 @@ ha-card.__compact-header .lunar-card-header {
 
 
 
-ha-card.__background h1 {
+ha-card.--background h1 {
   color: var(--lunar-card-header-font-color, #e1e1e1);
+}
+
+.--default-header h1 {
+  padding-inline: 1.2rem;
 }
 
 h1 {
@@ -103,6 +106,7 @@ h1 {
 }
 
 .click-shrink {
+  cursor: pointer;
   transition: transform 0.1s;
 }
 
@@ -115,11 +119,9 @@ h1 {
   padding: 0;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
   font-size: var(--lunar-card-label-font-size, 14px);
   text-transform: var(--lunar-card-label-text-transform, none);
 }
-
 
 
 .moon-image {
@@ -132,6 +134,7 @@ h1 {
   user-select: none;
   max-height: 185px;
   aspect-ratio: 1;
+  margin: 8px;
 }
 
 .moon-image[calendar] {
@@ -339,7 +342,10 @@ button.date-input-btn:hover {
   width: 100%;
   flex-direction: column;
   gap: 0.5rem;
+  margin-inline-start: 8px;
 }
+
+
 
 .moon-fraction {
   font-weight: inherit;
@@ -349,7 +355,7 @@ button.date-input-btn:hover {
 }
 
 .compact-view-items {
-  margin-top: 1rem;
+  margin-block: 12px;
   display: flex;
   width: 100%;
   justify-content: space-between;
