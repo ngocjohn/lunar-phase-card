@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LitElement, html, TemplateResult, CSSResultGroup, PropertyValues } from 'lit';
+import { LitElement, html, TemplateResult, CSSResultGroup, PropertyValues, unsafeCSS } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
 import Swiper from 'swiper';
@@ -8,16 +8,15 @@ import { MoonData, MoonDataItem } from '../types';
 import { Moon } from '../utils/moon';
 
 import mainStyles from '../css/style.css';
-import swiperStyleCss from '../css/swiperstyles.css';
+import swiperStyleCss from 'swiper/swiper-bundle.css';
 
 @customElement('lunar-base-data')
 export class LunarBaseData extends LitElement {
   @state() moon!: Moon;
   @state() swiper: Swiper | null = null;
 
-  // https://lit.dev/docs/components/styles/
-  public static get styles(): CSSResultGroup {
-    return [swiperStyleCss, mainStyles];
+  static get styles(): CSSResultGroup {
+    return [mainStyles, unsafeCSS(swiperStyleCss)];
   }
 
   protected firstUpdated(changedProps: PropertyValues): void {
