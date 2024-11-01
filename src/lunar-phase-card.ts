@@ -6,12 +6,14 @@ import { LovelaceCardEditor } from 'custom-card-helpers';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
 import { BASE_REFRESH_INTERVAL, BACKGROUND, CurrentPage } from './const';
 import { localize } from './localize/localize';
+import { useAmPm } from './utils/helpers';
 
 import { Moon } from './utils/moon';
 import './components/moon-data';
 import './components/moon-horizon';
 import { LunarBaseData } from './components/moon-data';
 import { MoonHorizon } from './components/moon-horizon';
+
 import style from './css/style.css';
 import { mdiCalendarSearch, mdiChartBellCurve } from '@mdi/js';
 
@@ -39,15 +41,19 @@ export class LunarPhaseCard extends LitElement {
 
   @query('lunar-base-data') _data!: LunarBaseData;
   @query('moon-horizon') _moonHorizon!: MoonHorizon;
+
   public static getStubConfig = (hass: HomeAssistant): Record<string, unknown> => {
     const defaultLatitude = hass.config.latitude || 0;
     const defaultLongitude = hass.config.longitude || 0;
     const lang = hass.language;
+    const timeFormat = useAmPm(hass.locale);
+    console.log('timeFormat', timeFormat);
     return {
       ...defaultConfig,
       latitude: defaultLatitude,
       longitude: defaultLongitude,
       selected_language: lang,
+      '12hr_format': timeFormat,
     };
   };
 
@@ -159,7 +165,7 @@ export class LunarPhaseCard extends LitElement {
     this._refreshInterval = window.setInterval(() => {
       if (this._activeCard === CurrentPage.BASE || this._activeCard === CurrentPage.HORIZON) {
         this.requestUpdate();
-        console.log('requestUpdate');
+        // console.log('requestUpdate');
       } else {
         this.clearRefreshInterval();
       }

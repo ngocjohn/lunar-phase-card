@@ -190,7 +190,7 @@ export class MoonHorizon extends LitElement {
           <ha-icon
             class="click-shrink"
             @click=${() => (this.moreInfo = !this.moreInfo)}
-            icon=${'mdi:chevron-up'}
+            icon=${'mdi:chevron-down'}
             ?active=${this.moreInfo}
           >
           </ha-icon>
