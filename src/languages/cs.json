@@ -1,86 +1,87 @@
 {
-  "name": "Czech",
-  "nativeName": "Čeština",
-  "card": {
-    "phase": {
-      "firstQuarterMoon": "První čtvrť",
-      "fullMoon": "Úplněk",
-      "thirdQuarterMoon": "Poslední čtvrť",
-      "newMoon": "Novoluní",
-      "waxingCrescentMoon": "Ubývající srpek",
-      "waxingGibbousMoon": "Dorůstající měsíc",
-      "waningCrescentMoon": "Ubývající srpek",
-      "waningGibbousMoon": "Ubývající měsíc"
+    "name": "Czech",
+    "nativeName": "Čeština",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "První čtvrť",
+            "fullMoon": "Úplněk",
+            "thirdQuarterMoon": "Poslední čtvrť",
+            "newMoon": "Novoluní",
+            "waxingCrescentMoon": "Ubývající srpek",
+            "waxingGibbousMoon": "Dorůstající měsíc",
+            "waningCrescentMoon": "Ubývající srpek",
+            "waningGibbousMoon": "Ubývající měsíc"
+        },
+        "illumination": "Osvětlená plocha",
+        "illuminated": "Osvětleno",
+        "moonRise": "Východ",
+        "moonSet": "Západ",
+        "moonHigh": "Měsíc vysoko",
+        "moonAge": "Věk Měsíce",
+        "distance": "Vzdálenost",
+        "azimuth": "Azimut",
+        "altitude": "Výška",
+        "fullMoon": "Úplněk",
+        "newMoon": "Novoluní",
+        "relativeTime": {
+            "days": "dny",
+            "justNow": "právě teď",
+            "minutesAgo": "před {0} minutami",
+            "hoursAgo": "před {0} hodinami",
+            "inMinutes": "za {0} minut",
+            "inHours": "za {0} hodin"
+        },
+        "position": "Pozice",
+        "direction": "Směr",
+        "underHorizon": "Měsíc pod horizontem",
+        "overHorizon": "Měsíc nad horizontem",
+        "horizonTitle": "Dnešní Měsíc",
+        "currentTime": "Aktuální čas"
     },
-    "illumination": "Osvětlená plocha",
-    "illuminated": "Osvětleno",
-    "moonRise": "Východ",
-    "moonSet": "Západ",
-    "moonHigh": "Měsíc vysoko",
-    "moonAge": "Věk Měsíce",
-    "distance": "Vzdálenost",
-    "azimuth": "Azimut",
-    "altitude": "Výška",
-    "fullMoon": "Úplněk",
-    "newMoon": "Novoluní",
-    "relativeTime": {
-      "days": "dny",
-      "justNow": "právě teď",
-      "minutesAgo": "před {0} minutami",
-      "hoursAgo": "před {0} hodinami",
-      "inMinutes": "za {0} minut",
-      "inHours": "za {0} hodin"
-    },
-    "position": "Pozice",
-    "direction": "Směr",
-    "underHorizon": "Měsíc pod horizontem",
-    "overHorizon": "Měsíc nad horizontem",
-    "horizonTitle": "Dnešní Měsíc",
-    "currentTime": "Aktuální čas"
-  },
-  "editor": {
-    "viewConfig": {
-      "title": "Jazyk a zobrazení",
-      "description": "Nastavte konfiguraci pro jazyk a pozadí"
-    },
-    "baseConfig": {
-      "title": "Zeměpisná šířka a délka",
-      "description": "Nastavte konfiguraci pro zeměpisnou šířku a délku"
-    },
-    "optionsConfig": {
-      "useDefault": "Použít výchozí",
-      "useEntity": "Použít entitu",
-      "useCustom": "Použít vlastní"
-    },
-    "fontOptions": {
-      "title": "Stylizace textu",
-      "description": "Nastavte stylizaci textu",
-      "hideLabel": "Skrýt popisek",
-      "headerFontConfig": {
-        "title": "Nadpis",
-        "description": "Nastavte stylizaci nadpisu"
-      },
-      "labelFontConfig": {
-        "title": "Popisek",
-        "description": "Nastavte stylizaci popisku"
-      },
-      "headerFontSize": "Velikost písma nadpisu",
-      "headerFontColor": "Barva písma nadpisu",
-      "headerFontStyle": "Styl písma nadpisu",
-      "labelFontSize": "Velikost písma popisku",
-      "labelFontColor": "Barva písma popisku",
-      "labelFontStyle": "Styl písma popisku",
-      "valueFontSize": "Velikost písma hodnoty"
-    },
-    "compactView": "Kompaktní zobrazení",
-    "showBackground": "Zobrazit pozadí",
-    "timeFormat": "12-hodinový formát času",
-    "placeHolder": {
-      "latitude": "Zadejte zeměpisnou šířku",
-      "longitude": "Zadejte zeměpisnou délku",
-      "customBackground": "URL nebo cesta k obrázku",
-      "language": "Vyberte jazyk",
-      "moonPosition": "Vyberte polohu Měsíce na kartě"
+    "editor": {
+        "viewConfig": {
+            "title": "Jazyk a zobrazení",
+            "description": "Nastavte konfiguraci pro jazyk a pozadí"
+        },
+        "baseConfig": {
+            "title": "Zeměpisná šířka a délka",
+            "description": "Nastavte konfiguraci pro zeměpisnou šířku a délku"
+        },
+        "optionsConfig": {
+            "useDefault": "Použít výchozí",
+            "useEntity": "Použít entitu",
+            "useCustom": "Použít vlastní"
+        },
+        "fontOptions": {
+            "title": "Stylizace textu",
+            "description": "Nastavte stylizaci textu",
+            "hideLabel": "Skrýt popisek",
+            "headerFontConfig": {
+                "title": "Nadpis",
+                "description": "Nastavte stylizaci nadpisu"
+            },
+            "labelFontConfig": {
+                "title": "Popisek",
+                "description": "Nastavte stylizaci popisku"
+            },
+            "headerFontSize": "Velikost písma nadpisu",
+            "headerFontColor": "Barva písma nadpisu",
+            "headerFontStyle": "Styl písma nadpisu",
+            "labelFontSize": "Velikost písma popisku",
+            "labelFontColor": "Barva písma popisku",
+            "labelFontStyle": "Styl písma popisku",
+            "valueFontSize": "Velikost písma hodnoty"
+        },
+        "compactView": "Kompaktní zobrazení",
+        "showBackground": "Zobrazit pozadí",
+        "timeFormat": "12-hodinový formát času",
+        "mileUnit": "Jednotka míle",
+        "placeHolder": {
+            "latitude": "Zadejte zeměpisnou šířku",
+            "longitude": "Zadejte zeměpisnou délku",
+            "customBackground": "URL nebo cesta k obrázku",
+            "language": "Vyberte jazyk",
+            "moonPosition": "Vyberte polohu Měsíce na kartě"
+        }
     }
-  }
 }

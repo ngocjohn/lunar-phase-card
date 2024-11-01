@@ -36,6 +36,11 @@
 
 .switches {
   display: flex;
+  flex-wrap: wrap;
+}
+
+.switches>.checkbox {
+  width: calc(100% / 2);
 }
 
 ha-textfield {
@@ -48,6 +53,11 @@ ha-select {
   width: 100%;
 }
 
+.font-config-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+}
 
 .font-config-content {
   display: grid;
@@ -57,7 +67,7 @@ ha-select {
 }
 
 .font-config-type {
-  color: var(--secondary-text-color);
+  /* color: var(--secondary-text-color); */
   display: flex;
   padding: 8px;
   justify-content: space-between;
@@ -150,4 +160,8 @@ ha-alert>.alert-icon {
   align-items: center;
   justify-content: center;
   padding-inline: 0.5rem;
+}
+
+.vic-tabbar>mwc-tab[active] {
+  background-color: var(--secondary-background-color) !important;
 }

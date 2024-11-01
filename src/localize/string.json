@@ -75,6 +75,7 @@
         "compactView": "Compact view",
         "showBackground": "Show background",
         "timeFormat": "12-hour time format",
+        "mileUnit": "Mile unit",
         "placeHolder": {
             "latitude": "Enter latitude",
             "longitude": "Enter longitude",
