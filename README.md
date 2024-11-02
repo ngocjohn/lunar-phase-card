@@ -38,6 +38,44 @@
 
 
 
+
+### Supported Localization
+
+<details>
+  <summary>The following languages are supported in this project</summary>
+
+| Language Code | Name     | Native Name     |
+| ------------- | ---------| ----------------|
+| `ca` | Catalan | Català |
+| `cs` | Czech | Čeština |
+| `da` | Danish | Dansk |
+| `de` | German | Deutsch |
+| `en` | English | English |
+| `es` | Spanish | Español |
+| `fr` | French | Français |
+| `id` | Indonesian | Bahasa Indonesia |
+| `it` | Italian | Italiano |
+| `nl` | Nederlands | Dutch |
+| `pt` | Portuguese | Português (Brasil) |
+| `ru` | Русский | Русский |
+| `sk` | Slovak | Slovenčina |
+
+</details>
+
+## Features
+
+- **Current Lunar Phase Display:** Shows the current phase of the moon.
+- **Detailed Lunar Information:** Provides additional details about the lunar cycle.
+- **Customizable:** Easily customizable to fit your dashboard's theme.
+- **Responsive Design:** Works well on both desktop and mobile devices.
+- **Custom Latitude and Longitude Configuration:** Offers the possibility to configure custom latitude and longitude for precise lunar data.
+- **Specific Date Lunar Information:** Option to display the moon information for a specific date.
+- **Multilingual Support**: The card includes various translations, making it accessible in multiple languages.
+
+
+
+
+
 ### Supported Localization
 
 <details>

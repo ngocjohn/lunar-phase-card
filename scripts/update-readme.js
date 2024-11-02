@@ -35,9 +35,7 @@ const updateReadme = () => {
   });
 
   // Create the new language table
-  const newTableRows = languages
-    .map((lang) => `| \`${lang.code}\`     | ${lang.name}          | ${lang.nativeName}          |`)
-    .join('\n');
+  const newTableRows = languages.map((lang) => `| \`${lang.code}\` | ${lang.name} | ${lang.nativeName} |`).join('\n');
 
   const newLocalizationSection = `
 ### Supported Localization
@@ -45,8 +43,8 @@ const updateReadme = () => {
 <details>
   <summary>The following languages are supported in this project</summary>
 
-| Language Code | Name                   | Native Name					  |
-| ------------- | ---------------------- | ---------------------- |
+| Language Code | Name     | Native Name     |
+| ------------- | ---------| ----------------|
 ${newTableRows}
 
 </details>`;
