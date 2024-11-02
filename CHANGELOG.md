@@ -1,3 +1,24 @@
+<a id="v1.7.1"></a>
+# [v1.7.1](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.7.1) - 2024-11-02
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.7.1 -->
+
+## What's Changed
+### New Features 🎉
+- **Update Horizon Graph with Hover Interaction**: Added a new hover feature to the graph points, allowing you to interact with and retrieve data by hovering over specific points. Updates the graph data in real-time based on the current time for a more accurate and dynamic user experience. [#36](https://github.com/ngocjohn/lunar-phase-card/pull/36)
+
+### Bug Fixes 🐛
+- Fixed minor bugs present in the previous release to enhance stability and performance.
+
+
+![moon-horizon-graph](https://github.com/user-attachments/assets/b02f9d1f-3f4b-4d7c-93e1-cf64b5ab2900)
+
+
+**Full Changelog**: [View Changes](https://github.com/ngocjohn/lunar-phase-card/compare/v1.7.0...v1.7.1)
+
+[Changes][v1.7.1]
+
+
 <a id="v1.7.0"></a>
 # [v1.7.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.7.0) - 2024-11-02
 
@@ -164,6 +185,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.7.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.7.0...v1.7.1
 [v1.7.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.6.0...v1.7.0
 [v1.6.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.5.0...v1.6.0
 [v1.5.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.4.0...v1.5.0
