@@ -139,6 +139,7 @@ export class Moon {
       altitude: formatNumber(altitudeDegrees.toFixed(2)),
     };
 
+    const cardinal = convertCardinal(azimuthDegrees);
     // Construct moon data items
     return {
       moonFraction: createItem('illumination', formatted.moonFraction, '%'),
@@ -151,7 +152,7 @@ export class Moon {
       altitudeDegrees: createItem('altitude', formatted.altitude, '°'),
       nextFullMoon: createItem('fullMoon', shortTime(fullMoon.value)),
       nextNewMoon: createItem('newMoon', shortTime(newMoon.value)),
-      direction: createItem('direction', formatted.azimuth, '°', convertCardinal(azimuthDegrees)),
+      direction: createItem('direction', formatted.azimuth, '°', cardinal),
       position: createItem('position', localize(`card.${altitudeDegrees > 0 ? 'overHorizon' : 'underHorizon'}`)),
     };
   }
@@ -251,7 +252,8 @@ export class Moon {
       'NW',
       'NNW',
     ];
-    const value = pointsMap[Math.round(degrees / 22.5)];
+    const index = Math.round(degrees / 22.5) % 16;
+    const value = pointsMap[index];
     return this.localize(`card.cardinalShort.${value}`);
   };
 
