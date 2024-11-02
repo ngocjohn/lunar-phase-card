@@ -61,10 +61,13 @@
 </details>
 
 ### View options
-
+* Default view
 ![Default card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-default-view.gif)
+* Calendar card
 ![Calendar card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-calendar.gif)
-![Horizon card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-horizon-graph.gif)
+* Horizon graph
+![Horizon card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-graph-info.gif)
+* Compact view
 ![Compact card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact-view.png)
 
 
