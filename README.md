@@ -166,6 +166,7 @@ https://github.com/ngocjohn/lunar-phase-card
 | `show_background`   | boolean | Optional    | Whether to show the background image. Defaults to `false`.            |
 | `compact_view`      | boolean | Optional    | Whether to display the card in a compact view. Defaults to `false`.   |
 | `12hr_format`       | boolean | Optional    | Whether to display time in 12-hour format. Defaults to `false`.       |
+| `mile_unit`         | boolean | Optional    | Whether to display distance in miles. Defaults to `false`.            |
 | `custom_background` | string  | Optional    | URL of a custom background image for the card.                        |
 | `selected_language` | string  | Optional    | ISO code of the language to be used. Defaults to system or `en`.      |
 | `latitude`          | number  | Optional    | The latitude for which to calculate the lunar phase.                  |
@@ -187,6 +188,7 @@ use_custom: false
 show_background: true
 compact_view: true
 12hr_format: false
+mile_unit: false
 custom_background: '/local/images/moon_background.jpg'
 selected_language: 'en'
 latitude: 48.8566
