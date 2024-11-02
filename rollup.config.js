@@ -77,7 +77,7 @@ export default [
     output: {
       dir: './dist',
       format: 'es',
-      sourcemap: dev,
+      sourcemap: dev ? true : false,
       inlineDynamicImports: true,
       banner: custombanner,
     },
