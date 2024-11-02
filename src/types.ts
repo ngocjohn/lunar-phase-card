@@ -110,4 +110,6 @@ export interface MoonData {
   altitudeDegrees: MoonDataItem;
   nextFullMoon: MoonDataItem;
   nextNewMoon: MoonDataItem;
+  direction?: MoonDataItem;
+  position?: MoonDataItem;
 }
