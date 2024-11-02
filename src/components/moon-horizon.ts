@@ -210,11 +210,8 @@ export class MoonHorizon extends LitElement {
               ${secondValue
                 ? html`
                     <span> (${secondValue}) </span>
-                    <span style="margin-left: 4px;">
-                      <ha-icon
-                        style=${`transform: rotate(${parseInt(value, 0)}deg)`}
-                        icon="mdi:arrow-up-thin"
-                      ></ha-icon>
+                    <span style=${`transform: rotate(${parseInt(value, 0)}deg);`}>
+                      <ha-icon icon="mdi:arrow-up-thin"></ha-icon>
                     </span>
                   `
                 : ''}
