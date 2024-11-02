@@ -42,7 +42,7 @@ export class LunarPhaseCard extends LitElement {
   @state() config!: LunarPhaseCardConfig;
   @property({ type: Object }) protected moon!: Moon;
   @state() private _activeCard: CurrentPage = CurrentPage.BASE;
-  @state() private selectedDate: Date | undefined;
+  @state() selectedDate: Date | undefined;
   @state() _connected: boolean = false;
   @state() _refreshInterval: number | undefined;
 
@@ -104,6 +104,7 @@ export class LunarPhaseCard extends LitElement {
     super.connectedCallback();
     if (process.env.ROLLUP_WATCH === 'true') {
       window.LunarCard = this;
+      window.Moon = this.moon;
     }
     this._connected = true;
     this.startRefreshInterval();
@@ -125,10 +126,7 @@ export class LunarPhaseCard extends LitElement {
     if (changedProps.has('_activeCard') && this._activeCard !== CurrentPage.BASE) {
       // console.log('shouldUpdate', this._activeCard);
       this.clearRefreshInterval();
-    } else if (
-      (changedProps.has('_activeCard') && this._activeCard === CurrentPage.BASE) ||
-      this._activeCard === CurrentPage.HORIZON
-    ) {
+    } else if (changedProps.has('_activeCard') && this._activeCard === CurrentPage.BASE) {
       // console.log('shouldUpdate', this._activeCard);
       if (this.selectedDate !== undefined) {
         this.selectedDate = undefined;
@@ -162,10 +160,6 @@ export class LunarPhaseCard extends LitElement {
   get _date(): Date {
     const date = this.selectedDate ? new Date(this.selectedDate) : new Date();
     return date;
-  }
-
-  getMoonImage(index: number): string {
-    return MOON_IMAGES[index];
   }
 
   private startRefreshInterval() {
@@ -353,6 +347,10 @@ export class LunarPhaseCard extends LitElement {
     this.selectedDate = new Date(input.value);
   }
 
+  customDate(customDate: Date) {
+    this.selectedDate = new Date(customDate);
+  }
+
   private togglePage = (page: CurrentPage) => {
     this._activeCard = this._activeCard === page ? CurrentPage.BASE : page;
   };
@@ -363,6 +361,7 @@ export class LunarPhaseCard extends LitElement {
       this._cardWidth = card.clientWidth;
     }
   }
+
   private _computeClasses() {
     const reverse = this.config.moon_position === 'right';
     const compactHeader = Boolean(this.config.compact_view && this._activeCard === CurrentPage.BASE);
@@ -422,6 +421,7 @@ export class LunarPhaseCard extends LitElement {
 declare global {
   interface Window {
     LunarCard: LunarPhaseCard;
+    Moon: Moon;
   }
   interface HTMLElementTagNameMap {
     'lunar-phase-card': LunarPhaseCard;

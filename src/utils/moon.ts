@@ -4,6 +4,7 @@ import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location } fro
 import { formatRelativeTime, formatedTime, convertKmToMiles } from './helpers';
 import { MOON_IMAGES } from '../utils/moon-pic';
 import { FrontendLocaleData, formatNumber } from 'custom-card-helpers';
+import { Part } from 'lit';
 
 export class Moon {
   readonly _date: Date;
@@ -114,7 +115,8 @@ export class Moon {
   }
 
   get moonData(): MoonData {
-    const { createItem, createMoonTime, convertKmToMiles, formatNumber, localize, useMiles, lang } = this;
+    const { createItem, createMoonTime, convertKmToMiles, formatNumber, localize, useMiles, lang, convertCardinal } =
+      this;
     // Helper function to format date as short time string
     const shortTime = (date: number | Date) =>
       new Date(date).toLocaleDateString(lang, { weekday: 'short', month: 'short', day: 'numeric' });
@@ -149,23 +151,18 @@ export class Moon {
       altitudeDegrees: createItem('altitude', formatted.altitude, '°'),
       nextFullMoon: createItem('fullMoon', shortTime(fullMoon.value)),
       nextNewMoon: createItem('newMoon', shortTime(newMoon.value)),
+      direction: createItem('direction', formatted.azimuth, '°', convertCardinal(azimuthDegrees)),
+      position: createItem('position', localize(`card.${altitudeDegrees > 0 ? 'overHorizon' : 'underHorizon'}`)),
     };
   }
 
   get todayDataItem() {
-    const { azimuthDegrees, altitudeDegrees } = this._moonData;
-    const _altitudeDegData = this.moonData.altitudeDegrees;
-    const _moonFraction = this.moonData.moonFraction;
-
-    const distance = this.moonData.distance;
-    const formatedPosition = altitudeDegrees > 0 ? 'overHorizon' : 'underHorizon';
-    const azimutDegFormated = this.formatNumber(azimuthDegrees.toFixed(0));
-    const cardiNalValue = this._convertCardinal(azimuthDegrees);
+    const { position, direction, altitudeDegrees, moonFraction, distance } = this.moonData;
     return {
-      positionFormated: this.createItem('position', this.localize(`card.${formatedPosition}`)),
-      azimuthCardinal: this.createItem('direction', azimutDegFormated, '°', cardiNalValue),
-      _altitudeDegData,
-      _moonFraction,
+      position,
+      direction,
+      altitudeDegrees,
+      moonFraction,
       distance,
     };
   }
@@ -174,12 +171,15 @@ export class Moon {
     const today = new Date();
 
     const startTime = new Date(today.setHours(0, 0, 0, 0));
-
     const _altitudeData = this._getAltituteData(startTime);
-
+    const timeToday = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
     const dataCotent = {
-      time: SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude),
+      time: timeToday,
       altitude: this._getAltituteData(startTime),
+      direction: {
+        rise: this.timePostion('rise'),
+        set: this.timePostion('set'),
+      },
       timeLabels: Object.keys(_altitudeData),
       altitudeData: Object.values(_altitudeData),
       minMaxY: {
@@ -232,9 +232,39 @@ export class Moon {
     return SunCalc.moonTransit(rise, set, this.location.latitude, this.location.longitude);
   };
 
-  _convertCardinal = (degrees: number): string => {
-    const cardinalPoints = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N'];
-    return cardinalPoints[Math.round(degrees / 45)];
+  convertCardinal = (degrees: number): string => {
+    const pointsMap = [
+      'N',
+      'NNE',
+      'NE',
+      'ENE',
+      'E',
+      'ESE',
+      'SE',
+      'SSE',
+      'S',
+      'SSW',
+      'SW',
+      'WSW',
+      'W',
+      'WNW',
+      'NW',
+      'NNW',
+    ];
+    const value = pointsMap[Math.round(degrees / 22.5)];
+    return this.localize(`card.cardinalShort.${value}`);
+  };
+
+  timePostion = (timeKey: string): string => {
+    const today = new Date();
+    const timeData = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
+    const time = new Date(timeData[timeKey]);
+    const position = this._getMoonPosition(time);
+    const azimuth = position.azimuthDegrees;
+    const cardinal = this.convertCardinal(azimuth);
+
+    const formatedAzimuth = this.formatNumber(azimuth.toFixed(2));
+    return `${formatedAzimuth}° ${cardinal}`;
   };
 
   setMoonImagesToStorage = () => {

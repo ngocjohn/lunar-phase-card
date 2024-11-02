@@ -57,7 +57,10 @@ export class LunarBaseData extends LitElement {
 
   protected render(): TemplateResult {
     // const newMoonData = this.baseMoonData;
-    const newMoonData = this.moon.moonData;
+    const baseMoonData = this.moon.moonData;
+    const newMoonData: MoonData = { ...baseMoonData };
+    delete newMoonData.direction;
+    delete newMoonData.position;
     const chunkedData = this._chunkObject(newMoonData, 5);
     const dataContainer = Object.keys(chunkedData).map((key) => {
       return html`
