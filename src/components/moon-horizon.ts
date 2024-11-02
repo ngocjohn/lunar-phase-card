@@ -354,7 +354,7 @@ export class MoonHorizon extends LitElement {
 
   private _chartOptions = (): ChartOptions => {
     const { secondaryTextColor } = this.cssColors;
-    const { sugestedYMax } = this.todayData.minMaxY;
+    const { sugestedYMax, sugestedYMin } = this.todayData.minMaxY;
     const ticksOptions = {
       color: secondaryTextColor,
     };
@@ -362,10 +362,10 @@ export class MoonHorizon extends LitElement {
     // Scales
     const scales = {} as ScaleOptions;
     scales['y'] = {
-      suggestedMax: sugestedYMax + 15,
-      suggestedMin: -60,
+      suggestedMax: 60 + sugestedYMax,
+      suggestedMin: sugestedYMin > -60 ? -60 : sugestedYMin,
       ticks: {
-        stepSize: 30, // Step size of 30
+        stepSize: 15, // Step size of 30
         ...ticksOptions,
       },
       border: {
