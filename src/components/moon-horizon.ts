@@ -287,7 +287,7 @@ export class MoonHorizon extends LitElement {
     // Scales
     const scales = {} as ScaleOptions;
     scales['y'] = {
-      suggestedMax: sugestedYMax,
+      suggestedMax: sugestedYMax + 15,
       suggestedMin: -60,
       ticks: {
         stepSize: 30, // Step size of 30
