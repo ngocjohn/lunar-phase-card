@@ -69,7 +69,7 @@
 * Calendar card
 ![Calendar card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-calendar.gif)
 * Horizon graph
-![Horizon card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-graph-info.gif)
+![Horizon card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-graph-info-new.gif)
 * Compact view
 ![Compact card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact-view.png)
 
