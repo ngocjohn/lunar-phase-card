@@ -2,7 +2,7 @@
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { LovelaceCardEditor } from 'custom-card-helpers';
+import { LovelaceCardEditor, formatDate, FrontendLocaleData } from 'custom-card-helpers';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
 import { BASE_REFRESH_INTERVAL, BACKGROUND, CurrentPage } from './const';
 import { localize } from './localize/localize';
@@ -11,11 +11,19 @@ import { getDefaultConfig } from './utils/helpers';
 import { Moon } from './utils/moon';
 import './components/moon-data';
 import './components/moon-horizon';
+import './components/moon-phase-calendar';
 import { LunarBaseData } from './components/moon-data';
 import { MoonHorizon } from './components/moon-horizon';
 
 import style from './css/style.css';
-import { mdiCalendarSearch, mdiChartBellCurve } from '@mdi/js';
+import {
+  mdiCalendarMonthOutline,
+  mdiCalendarSearch,
+  mdiChartBellCurve,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiRestore,
+} from '@mdi/js';
 
 @customElement('lunar-phase-card')
 export class LunarPhaseCard extends LitElement {
@@ -37,6 +45,7 @@ export class LunarPhaseCard extends LitElement {
   @state() _refreshInterval: number | undefined;
 
   @state() _cardWidth: number = 0;
+  @state() _calendarPopup: boolean = false;
 
   @query('lunar-base-data') _data!: LunarBaseData;
   @query('moon-horizon') _moonHorizon!: MoonHorizon;
@@ -113,6 +122,12 @@ export class LunarPhaseCard extends LitElement {
 
   get _isCalendar(): boolean {
     return this._activeCard === CurrentPage.CALENDAR;
+  }
+
+  get _locale(): FrontendLocaleData {
+    const locale = this._hass.locale;
+    locale.language = this.selectedLanguage;
+    return locale;
   }
 
   get _showBackground(): boolean {
@@ -269,21 +284,34 @@ export class LunarPhaseCard extends LitElement {
 
   private renderCalendar(): TemplateResult | void {
     // Initialize selectedDate to today if it is not already set
-    const initValue = this._date.toISOString().split('T')[0];
 
-    const dateInput = html`<div class="date-input-wrapper">
-      <button @click=${() => this.updateDate('prev')} class="date-input-btn click-shrink">
-        <ha-icon icon="mdi:chevron-left"></ha-icon>
-      </button>
-      <input type="date" class="date-input" .value=${initValue} @input=${this._handleDateChange} />
-      <button @click=${() => this.updateDate('next')} class="date-input-btn click-shrink">
-        <ha-icon icon="mdi:chevron-right"></ha-icon>
-      </button>
+    const dateInput = html` <div class="date-input-wrapper">
+      <ha-icon-button .path=${mdiCalendarMonthOutline} @click=${() => (this._calendarPopup = true)}> </ha-icon-button>
+
+      <div class="date-row">
+        <ha-icon-button .path=${mdiChevronLeft} @click=${() => this.updateDate('prev')}> </ha-icon-button>
+        <div>
+          ${this.selectedDate !== undefined
+            ? formatDate(this.selectedDate, this._locale)
+            : formatDate(new Date(), this._locale)}
+        </div>
+        <ha-icon-button .path=${mdiChevronRight} @click=${() => this.updateDate('next')}> </ha-icon-button>
+      </div>
+      <ha-icon-button
+        .disabled=${!this.selectedDate}
+        .path=${mdiRestore}
+        @click=${() => (this.selectedDate = undefined)}
+      >
+      </ha-icon-button>
     </div>`;
 
     return html`
-      ${this.renderMoonImage()}
-      <div class="calendar-wrapper">${dateInput}${this.renderMoonData()}</div>
+      <div class="calendar-container">
+        <div class="calendar-mini-popup" ?hidden=${!this._calendarPopup}>
+          <moon-phase-calendar .card="${this}" .moon=${this.moon}></moon-phase-calendar>
+        </div>
+        <div class="calendar-wrapper">${this.renderMoonImage()}${dateInput}${this.renderMoonData()}</div>
+      </div>
     `;
   }
 
