@@ -63,7 +63,7 @@ export class Moon {
     return this.localize(`card.phase.${this._moonData.illumination.phase.id}`);
   }
 
-  blackBeforeUnit = (unit: string): string => {
+  blankBeforeUnit = (unit: string): string => {
     if (unit === '°') {
       return '';
     }
@@ -79,7 +79,7 @@ export class Moon {
 
   createItem = (label: string, value: string, unit?: string, secondValue?: string): MoonDataItem => ({
     label: this.localize(`card.${label}`),
-    value: `${value}${unit ? this.blackBeforeUnit(unit) + unit : ''}`,
+    value: `${value}${unit ? this.blankBeforeUnit(unit) + unit : ''}`,
     secondValue: secondValue ? `${secondValue}` : '',
   });
 
