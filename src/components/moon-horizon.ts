@@ -1,6 +1,9 @@
+import { formatTime, formatDateTime, HomeAssistant } from 'custom-card-helpers';
 import { LitElement, html, CSSResultGroup, TemplateResult, css } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
-import { formatTime, formatDateTime, HomeAssistant } from 'custom-card-helpers';
+
+import type { ChartDataset } from 'chart.js/auto';
+
 // Chart.js
 import {
   Chart,
@@ -12,12 +15,11 @@ import {
   ScaleChartOptions,
 } from 'chart.js/auto';
 import annotationPlugin from 'chartjs-plugin-annotation';
-import type { ChartDataset } from 'chart.js/auto';
 Chart.register(annotationPlugin);
 
+import { LunarPhaseCard } from '../lunar-phase-card';
 // Local imports
 import { Moon } from '../utils/moon';
-import { LunarPhaseCard } from '../lunar-phase-card';
 
 // Styles
 import styles from '../css/style.css';

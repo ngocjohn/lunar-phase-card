@@ -1,3 +1,2 @@
-src/localize/*.ts
-src/localize/*.js
-scripts/*.js
+node_modules
+dist

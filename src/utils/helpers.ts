@@ -1,4 +1,5 @@
 import { FrontendLocaleData, TimeFormat, HomeAssistant } from 'custom-card-helpers';
+
 import { BASE_BACKGROUND_URL } from '../const';
 import { MOON_IMAGES } from './moon-pic';
 

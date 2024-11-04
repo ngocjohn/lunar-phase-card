@@ -1,21 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
-import { customElement, property, query, state } from 'lit/decorators.js';
-import { classMap } from 'lit/directives/class-map.js';
-import { LovelaceCardEditor, formatDate, FrontendLocaleData } from 'custom-card-helpers';
-import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
-import { BASE_REFRESH_INTERVAL, BACKGROUND, CurrentPage } from './const';
-import { localize } from './localize/localize';
-import { getDefaultConfig } from './utils/helpers';
-
-import { Moon } from './utils/moon';
-import './components/moon-data';
-import './components/moon-horizon';
-import './components/moon-phase-calendar';
-import { LunarBaseData } from './components/moon-data';
-import { MoonHorizon } from './components/moon-horizon';
-
-import style from './css/style.css';
 import {
   mdiCalendarMonthOutline,
   mdiCalendarSearch,
@@ -24,6 +6,22 @@ import {
   mdiChevronRight,
   mdiRestore,
 } from '@mdi/js';
+import { LovelaceCardEditor, formatDate, FrontendLocaleData } from 'custom-card-helpers';
+import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
+import { customElement, property, query, state } from 'lit/decorators.js';
+import { classMap } from 'lit/directives/class-map.js';
+
+import { LunarBaseData } from './components/moon-data';
+import { MoonHorizon } from './components/moon-horizon';
+import { BASE_REFRESH_INTERVAL, BACKGROUND, CurrentPage } from './const';
+import style from './css/style.css';
+import './components/moon-data';
+import './components/moon-horizon';
+import './components/moon-phase-calendar';
+import { localize } from './localize/localize';
+import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
+import { getDefaultConfig } from './utils/helpers';
+import { Moon } from './utils/moon';
 
 @customElement('lunar-phase-card')
 export class LunarPhaseCard extends LitElement {

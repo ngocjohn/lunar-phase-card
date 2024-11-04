@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { REPOSITORY, BASE_BACKGROUND_URL } from '../const';
+import { REPOSITORY } from '../const';
 
 // Hack to load ha-components needed for editor
 export const loadHaComponents = () => {

@@ -1,16 +1,15 @@
+import { Calendar } from '@fullcalendar/core';
+import allLocales from '@fullcalendar/core/locales-all';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 import { LitElement, html, TemplateResult, CSSResultGroup, css } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 
-import { Calendar } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import allLocales from '@fullcalendar/core/locales-all';
-
+import { LunarPhaseCard } from '../lunar-phase-card';
 import { Moon } from '../utils/moon';
 
 // styles
 import styles from '../css/style.css';
-import { LunarPhaseCard } from '../lunar-phase-card';
 
 @customElement('moon-phase-calendar')
 export class MoonPhaseCalendar extends LitElement {

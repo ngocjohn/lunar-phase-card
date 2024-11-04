@@ -4,6 +4,7 @@ import perfectionist from 'eslint-plugin-perfectionist';
 
 export default [
   {
+    files: ['src/**/*.ts'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -23,16 +24,16 @@ export default [
           type: 'alphabetical',
           order: 'asc',
           ignoreCase: true,
-          internalPattern: ['~/**'],
+          internalPattern: ['~/**', '^~/.*'],
           newlinesBetween: 'always',
           maxLineLength: undefined,
           groups: [
-            'type',
-            ['builtin', 'external'],
-            'internal-type',
-            'internal',
+            ['external', 'builtin'],
             ['parent-type', 'sibling-type', 'index-type'],
             ['parent', 'sibling', 'index'],
+            'type',
+            'internal-type',
+            'internal',
             'object',
             'unknown',
           ],
@@ -41,6 +42,5 @@ export default [
         },
       ],
     },
-    ignores: ['rollup.config.*'],
   },
 ];

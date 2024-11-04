@@ -1,14 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, CSSResultGroup, PropertyValues, unsafeCSS } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-
 import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
-import { MoonData, MoonDataItem } from '../types';
-import { Moon } from '../utils/moon';
+import swiperStyleCss from 'swiper/swiper-bundle.css';
 
 import mainStyles from '../css/style.css';
-import swiperStyleCss from 'swiper/swiper-bundle.css';
+import { MoonData, MoonDataItem } from '../types';
+import { Moon } from '../utils/moon';
 
 @customElement('lunar-base-data')
 export class LunarBaseData extends LitElement {

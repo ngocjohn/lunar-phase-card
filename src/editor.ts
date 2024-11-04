@@ -1,19 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/*  @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 // Custom card helpers
 import { fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
 
-import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, FontCustomStyles, defaultConfig } from './types';
-
-import { languageOptions, localize } from './localize/localize';
-import { loadHaComponents, fetchLatestReleaseTag, stickyPreview } from './utils/loader';
-import { compareVersions } from './utils/helpers';
-import { deepMerge, InitializeDefaultConfig } from './utils/ha-helper';
-
 import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES } from './const';
 import editorcss from './css/editor.css';
+import { languageOptions, localize } from './localize/localize';
+import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, FontCustomStyles, defaultConfig } from './types';
+import { deepMerge, InitializeDefaultConfig } from './utils/ha-helper';
+import { compareVersions } from './utils/helpers';
+import { loadHaComponents, fetchLatestReleaseTag, stickyPreview } from './utils/loader';
 
 @customElement('lunar-phase-card-editor')
 export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEditor {

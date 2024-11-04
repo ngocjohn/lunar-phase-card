@@ -1,9 +1,10 @@
 import * as SunCalc from '@noim/suncalc3';
+import { FrontendLocaleData, formatNumber } from 'custom-card-helpers';
+
 import { localize } from '../localize/localize';
 import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location } from '../types';
-import { formatRelativeTime, formatedTime, convertKmToMiles } from './helpers';
 import { MOON_IMAGES } from '../utils/moon-pic';
-import { FrontendLocaleData, formatNumber } from 'custom-card-helpers';
+import { formatRelativeTime, formatedTime, convertKmToMiles } from './helpers';
 
 export class Moon {
   readonly _date: Date;
