@@ -178,3 +178,23 @@ async function upload(file: File, hass: HomeAssistant): Promise<string | void> {
     console.error('Error uploading image:', error);
   }
 }
+
+export function getDefaultConfig(hass: HomeAssistant) {
+  console.log('getDefaultConfig');
+  const {
+    latitude,
+    longitude,
+    unit_system: { length },
+  } = hass.config;
+  const selected_language = hass.language;
+  const timeFormat = useAmPm(hass.locale);
+  const mile_unit = length !== 'km';
+  console.log('getDefaultConfig', latitude, longitude, selected_language, timeFormat, mile_unit);
+  return {
+    latitude,
+    longitude,
+    selected_language,
+    '12hr_format': timeFormat,
+    mile_unit,
+  };
+}
