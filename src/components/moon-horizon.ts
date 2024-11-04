@@ -270,6 +270,7 @@ export class MoonHorizon extends LitElement {
   }
 
   private _renderDataItem(): TemplateResult {
+    if (!this.moreInfo) return html``;
     const dataItem = this.moon.todayDataItem;
     return html`
       ${Object.keys(dataItem).map((key) => {
