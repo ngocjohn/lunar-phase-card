@@ -6,7 +6,7 @@ import { LovelaceCardEditor } from 'custom-card-helpers';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
 import { BASE_REFRESH_INTERVAL, BACKGROUND, CurrentPage } from './const';
 import { localize } from './localize/localize';
-import { useAmPm } from './utils/helpers';
+import { getDefaultConfig } from './utils/helpers';
 
 import { Moon } from './utils/moon';
 import './components/moon-data';
@@ -16,15 +16,6 @@ import { MoonHorizon } from './components/moon-horizon';
 
 import style from './css/style.css';
 import { mdiCalendarSearch, mdiChartBellCurve } from '@mdi/js';
-import { MOON_IMAGES } from './utils/moon-pic';
-
-interface Image {
-  filesize: number;
-  name: string;
-  uploaded_at: string; // isoformat date
-  content_type: string;
-  id: string;
-}
 
 @customElement('lunar-phase-card')
 export class LunarPhaseCard extends LitElement {
@@ -43,7 +34,6 @@ export class LunarPhaseCard extends LitElement {
   @property({ type: Object }) protected moon!: Moon;
   @state() private _activeCard: CurrentPage = CurrentPage.BASE;
   @state() selectedDate: Date | undefined;
-  @state() _connected: boolean = false;
   @state() _refreshInterval: number | undefined;
 
   @state() _cardWidth: number = 0;
@@ -51,18 +41,16 @@ export class LunarPhaseCard extends LitElement {
   @query('lunar-base-data') _data!: LunarBaseData;
   @query('moon-horizon') _moonHorizon!: MoonHorizon;
 
+  // https://lit.dev/docs/components/styles/
+  static get styles(): CSSResultGroup {
+    return [style];
+  }
+
   public static getStubConfig = (hass: HomeAssistant): Record<string, unknown> => {
-    const defaultLatitude = hass.config.latitude || 0;
-    const defaultLongitude = hass.config.longitude || 0;
-    const lang = hass.language;
-    const timeFormat = useAmPm(hass.locale);
-    console.log('timeFormat', timeFormat);
+    const initConfig = getDefaultConfig(hass);
     return {
       ...defaultConfig,
-      latitude: defaultLatitude,
-      longitude: defaultLongitude,
-      selected_language: lang,
-      '12hr_format': timeFormat,
+      ...initConfig,
     };
   };
 
@@ -76,43 +64,17 @@ export class LunarPhaseCard extends LitElement {
     };
   }
 
-  private getGridRowSize(): number {
-    const isCompact = this.config.compact_view;
-    const isCalendar = this._activeCard === CurrentPage.CALENDAR;
-    let gridRowSize = 2; // 1 = 56px + gutter 8px
-    if (!isCompact) gridRowSize += 2;
-    if (isCalendar) gridRowSize += 6;
-    return gridRowSize;
-  }
-
-  public getLayoutOptions() {
-    const gridRowSize = this.getGridRowSize();
-    return {
-      grid_min_rows: gridRowSize,
-      grid_max_rows: 8,
-      grid_columns: 4,
-      grid_min_columns: 4,
-    };
-  }
-
-  public getCardSize(): number {
-    // return this.getGridRowSize();
-    return 5;
-  }
-
   connectedCallback(): void {
     super.connectedCallback();
     if (process.env.ROLLUP_WATCH === 'true') {
       window.LunarCard = this;
       window.Moon = this.moon;
     }
-    this._connected = true;
     this.startRefreshInterval();
   }
 
   disconnectedCallback(): void {
     this.clearRefreshInterval();
-    this._connected = false;
     super.disconnectedCallback();
   }
 
@@ -123,7 +85,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
-    if (changedProps.has('_activeCard') && this._activeCard !== CurrentPage.BASE) {
+    if (changedProps.has('_activeCard') && this._activeCard === CurrentPage.CALENDAR) {
       // console.log('shouldUpdate', this._activeCard);
       this.clearRefreshInterval();
     } else if (changedProps.has('_activeCard') && this._activeCard === CurrentPage.BASE) {
@@ -347,10 +309,6 @@ export class LunarPhaseCard extends LitElement {
     this.selectedDate = new Date(input.value);
   }
 
-  customDate(customDate: Date) {
-    this.selectedDate = new Date(customDate);
-  }
-
   private togglePage = (page: CurrentPage) => {
     this._activeCard = this._activeCard === page ? CurrentPage.BASE : page;
   };
@@ -404,9 +362,28 @@ export class LunarPhaseCard extends LitElement {
     });
   }
 
-  // https://lit.dev/docs/components/styles/
-  static get styles(): CSSResultGroup {
-    return [style];
+  private getGridRowSize(): number {
+    const isCompact = this.config.compact_view;
+    const isCalendar = this._activeCard === CurrentPage.CALENDAR;
+    let gridRowSize = 2; // 1 = 56px + gutter 8px
+    if (!isCompact) gridRowSize += 2;
+    if (isCalendar) gridRowSize += 6;
+    return gridRowSize;
+  }
+
+  public getLayoutOptions() {
+    const gridRowSize = this.getGridRowSize();
+    return {
+      grid_min_rows: gridRowSize,
+      grid_max_rows: 8,
+      grid_columns: 4,
+      grid_min_columns: 4,
+    };
+  }
+
+  public getCardSize(): number {
+    // return this.getGridRowSize();
+    return 5;
   }
 }
 
