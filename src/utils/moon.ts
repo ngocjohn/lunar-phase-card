@@ -4,7 +4,6 @@ import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location } fro
 import { formatRelativeTime, formatedTime, convertKmToMiles } from './helpers';
 import { MOON_IMAGES } from '../utils/moon-pic';
 import { FrontendLocaleData, formatNumber } from 'custom-card-helpers';
-import { Part } from 'lit';
 
 export class Moon {
   readonly _date: Date;
@@ -269,6 +268,47 @@ export class Moon {
     return `${formatedAzimuth}° ${cardinal}`;
   };
 
+  get calendarEvents() {
+    const events: { title: string; start: string; allDay: boolean }[] = [];
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    for (let i = 1; i <= daysInMonth; i++) {
+      const day = new Date(year, month, i);
+      const moonIlumin = SunCalc.getMoonIllumination(day);
+      const phaseEmoji = moonIlumin.phase.emoji;
+      const phaseAge = this.formatNumber((moonIlumin.phaseValue * 29.53).toFixed(0));
+
+      events.push({
+        title: `${phaseEmoji} ${phaseAge}`,
+        start: day.toISOString().split('T')[0],
+        allDay: true,
+      });
+    }
+    return events;
+  }
+
+  // Helper method to generate events for a specific date range
+  getEventsForRange(start: Date, end: Date): { title: string; start: string; allDay: boolean }[] {
+    const events: { title: string; start: string; allDay: boolean }[] = [];
+    const daysInRange = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
+
+    for (let i = 0; i <= daysInRange; i++) {
+      const day = new Date(start.getTime() + i * 1000 * 60 * 60 * 24);
+      const moonIllumination = SunCalc.getMoonIllumination(day);
+      const phaseEmoji = moonIllumination.phase.emoji;
+      const phaseAge = this.formatNumber((moonIllumination.phaseValue * 29.53).toFixed(0));
+
+      events.push({
+        title: `${phaseEmoji}`,
+        start: day.toISOString().split('T')[0],
+        allDay: true,
+      });
+    }
+    return events;
+  }
   setMoonImagesToStorage = () => {
     // set as array
     const moonImages = MOON_IMAGES;
