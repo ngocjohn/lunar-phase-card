@@ -1,11 +1,3 @@
-import {
-  mdiCalendarMonthOutline,
-  mdiCalendarSearch,
-  mdiChartBellCurve,
-  mdiChevronLeft,
-  mdiChevronRight,
-  mdiRestore,
-} from '@mdi/js';
 import { LovelaceCardEditor, formatDate, FrontendLocaleData, TimeFormat } from 'custom-card-helpers';
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
@@ -13,15 +5,18 @@ import { classMap } from 'lit/directives/class-map.js';
 
 import { LunarBaseData } from './components/moon-data';
 import { MoonHorizon } from './components/moon-horizon';
-import { BASE_REFRESH_INTERVAL, BACKGROUND, CurrentPage } from './const';
+import { BACKGROUND, CurrentPage, MoonState, ICON } from './const';
 import style from './css/style.css';
 import './components/moon-data';
 import './components/moon-horizon';
 import './components/moon-phase-calendar';
 import { localize } from './localize/localize';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
-import { getDefaultConfig, useAmPm } from './utils/helpers';
+import { getDefaultConfig } from './utils/helpers';
 import { Moon } from './utils/moon';
+
+const BASE_REFRESH_INTERVAL = 15 * 1000;
+const LOADING_TIMEOUT = 1500;
 
 @customElement('lunar-phase-card')
 export class LunarPhaseCard extends LitElement {
@@ -44,6 +39,7 @@ export class LunarPhaseCard extends LitElement {
 
   @state() _cardWidth: number = 0;
   @state() _calendarPopup: boolean = false;
+  @state() _state: MoonState = MoonState.READY;
 
   @query('lunar-base-data') _data!: LunarBaseData;
   @query('moon-horizon') _moonHorizon!: MoonHorizon;
@@ -99,10 +95,8 @@ export class LunarPhaseCard extends LitElement {
       // console.log('shouldUpdate', this._activeCard);
       if (this.selectedDate !== undefined) {
         this.selectedDate = undefined;
-        this.startRefreshInterval();
       }
     }
-
     return true;
   }
 
@@ -144,6 +138,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private startRefreshInterval() {
+    console.log('refresh start', new Date().toLocaleTimeString());
     // Clear any existing interval to avoid multiple intervals running
     if (this._refreshInterval !== undefined) {
       clearInterval(this._refreshInterval);
@@ -152,8 +147,11 @@ export class LunarPhaseCard extends LitElement {
     // Set up a new interval
     this._refreshInterval = window.setInterval(() => {
       if (this._activeCard === CurrentPage.BASE || this._activeCard === CurrentPage.HORIZON) {
+        this._state = MoonState.LOADING;
+        setTimeout(() => {
+          this._state = MoonState.READY;
+        }, LOADING_TIMEOUT);
         this.requestUpdate();
-        // console.log('requestUpdate');
       } else {
         this.clearRefreshInterval();
       }
@@ -177,26 +175,27 @@ export class LunarPhaseCard extends LitElement {
         ? this.renderHeader()
         : nothing;
 
+    const renderCardMap = {
+      [CurrentPage.BASE]: this.renderBaseCard(),
+      [CurrentPage.CALENDAR]: this.renderCalendar(),
+      [CurrentPage.HORIZON]: this.renderHorizon(),
+    };
+
     return html`
       <ha-card class=${this._computeClasses()}>
+        <div class="loading" ?hidden=${this._state !== MoonState.LOADING}>
+          <ha-circular-progress indeterminate size="tiny"></ha-circular-progress>
+        </div>
+
         ${header}
-        <div class="lunar-card-content">${this._renderPage()}</div>
+        <div class="lunar-card-content">${renderCardMap[this._activeCard]}</div>
       </ha-card>
     `;
   }
 
-  private _renderPage(): TemplateResult | void {
-    const baseCard = html` ${this.renderMoonImage()} ${this.renderMoonData()} `;
-    switch (this._activeCard) {
-      case CurrentPage.CALENDAR:
-        return this.renderCalendar();
-      case CurrentPage.HORIZON:
-        return this.renderHorizon();
-      default:
-        return baseCard;
-    }
+  private renderBaseCard(): TemplateResult | void {
+    return html` ${this.renderMoonImage()} ${this.renderMoonData()} `;
   }
-
   private createMoon() {
     const initData = {
       date: this._date,
@@ -208,29 +207,33 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderHeader(): TemplateResult | void {
-    const headerContent = {
-      [CurrentPage.CALENDAR]: this.moon?.phaseName,
-      [CurrentPage.BASE]: this.moon?.phaseName,
-      [CurrentPage.HORIZON]: this.localize('card.horizonTitle'),
-    };
+    const headerContent =
+      this._activeCard !== CurrentPage.HORIZON ? this.moon?.phaseName : this.localize('card.horizonTitle');
+
+    const buttons = [
+      { icon: ICON.WEATHER, page: CurrentPage.BASE },
+      { icon: ICON.SEARCH, page: CurrentPage.CALENDAR },
+      { icon: ICON.CHART, page: CurrentPage.HORIZON },
+    ];
+
+    if (this._activeCard === CurrentPage.BASE) {
+      buttons.splice(0, 1);
+    }
+
     return html`
       <div class="lunar-card-header">
-        <h1>${headerContent[this._activeCard]}</h1>
+        <h1>${headerContent}</h1>
         <div class="action-btns">
-          <ha-icon-button
-            @click=${() => this.togglePage(CurrentPage.CALENDAR)}
-            class="btn-action click-shrink"
-            .path=${mdiCalendarSearch}
-            ?active=${this._activeCard === CurrentPage.CALENDAR}
-          >
-          </ha-icon-button>
-          <ha-icon-button
-            @click=${() => this.togglePage(CurrentPage.HORIZON)}
-            .path=${mdiChartBellCurve}
-            class="btn-action click-shrink"
-            ?active=${this._activeCard === CurrentPage.HORIZON}
-          >
-          </ha-icon-button>
+          ${buttons.map(
+            (btn) => html`
+              <ha-icon-button
+                @click=${() => this.togglePage(btn.page)}
+                class="btn-action click-shrink"
+                .path=${btn.icon}
+                ?active=${this._activeCard === btn.page}
+              ></ha-icon-button>
+            `
+          )}
         </div>
       </div>
     `;
@@ -289,16 +292,16 @@ export class LunarPhaseCard extends LitElement {
     // Initialize selectedDate to today if it is not already set
 
     const dateInput = html` <div class="date-input-wrapper">
-      <ha-icon-button .path=${mdiCalendarMonthOutline} @click=${() => (this._calendarPopup = true)}> </ha-icon-button>
+      <ha-icon-button .path=${ICON.CALENDAR} @click=${() => (this._calendarPopup = true)}> </ha-icon-button>
 
       <div class="date-row">
-        <ha-icon-button .path=${mdiChevronLeft} @click=${() => this.updateDate('prev')}> </ha-icon-button>
+        <ha-icon-button .path=${ICON.LEFT} @click=${() => this.updateDate('prev')}> </ha-icon-button>
         <div>${formatDate(this._date, this._locale)}</div>
-        <ha-icon-button .path=${mdiChevronRight} @click=${() => this.updateDate('next')}> </ha-icon-button>
+        <ha-icon-button .path=${ICON.RIGHT} @click=${() => this.updateDate('next')}> </ha-icon-button>
       </div>
       <ha-icon-button
         .disabled=${!this.selectedDate}
-        .path=${mdiRestore}
+        .path=${ICON.RESTORE}
         @click=${() => (this.selectedDate = undefined)}
       >
       </ha-icon-button>
@@ -307,7 +310,7 @@ export class LunarPhaseCard extends LitElement {
     return html`
       <div class="calendar-container">
         <div class="calendar-mini-popup" ?hidden=${!this._calendarPopup}>
-          <moon-phase-calendar .card="${this}" .moon=${this.moon}></moon-phase-calendar>
+          <moon-phase-calendar .card=${this as any} .moon=${this.moon}></moon-phase-calendar>
         </div>
         <div class="calendar-wrapper">${this.renderMoonImage()}${dateInput}${this.renderMoonData()}</div>
       </div>
@@ -315,7 +318,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderHorizon(): TemplateResult | void {
-    return html`<moon-horizon .hass=${this.hass} .moon=${this.moon} .card=${this}></moon-horizon>`;
+    return html`<moon-horizon .hass=${this.hass} .moon=${this.moon} .card=${this as any}></moon-horizon>`;
   }
 
   private updateDate(action?: 'next' | 'prev') {
@@ -326,14 +329,6 @@ export class LunarPhaseCard extends LitElement {
       date.setDate(date.getDate() - 1);
     }
     this.selectedDate = date;
-  }
-
-  private _handleDateChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (!input.value) {
-      input.value = new Date().toISOString().split('T')[0];
-    }
-    this.selectedDate = new Date(input.value);
   }
 
   private togglePage = (page: CurrentPage) => {

@@ -1,3 +1,15 @@
+import {
+  mdiCalendarMonthOutline,
+  mdiCalendarSearch,
+  mdiChartBellCurve,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiMoonFull,
+  mdiMoonNew,
+  mdiRestore,
+  mdiWeatherNight,
+} from '@mdi/js';
+
 import { version, repository } from '../package.json';
 import { FontSizeOptions, FontTextTransformOptions } from './types';
 
@@ -6,7 +18,7 @@ export const BASE_BACKGROUND_URL =
 
 export const REPOSITORY = repository.repo;
 export const CARD_VERSION = `v${version}`;
-export const BASE_REFRESH_INTERVAL = 30 * 1000; // 1 minute
+export const BASE_REFRESH_INTERVAL = 15 * 1000;
 
 import background from './images/bkg.png';
 
@@ -34,3 +46,20 @@ export const enum CurrentPage {
   BASE = 'base',
   HORIZON = 'horizon',
 }
+
+export const enum MoonState {
+  READY = 'ready',
+  LOADING = 'loading',
+}
+
+export const ICON = {
+  CALENDAR: mdiCalendarMonthOutline,
+  SEARCH: mdiCalendarSearch,
+  CHART: mdiChartBellCurve,
+  LEFT: mdiChevronLeft,
+  RIGHT: mdiChevronRight,
+  MOONFULL: mdiMoonFull,
+  MOONNEW: mdiMoonNew,
+  RESTORE: mdiRestore,
+  WEATHER: mdiWeatherNight,
+};
