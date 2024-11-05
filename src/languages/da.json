@@ -94,6 +94,8 @@
         "showBackground": "Vis baggrund",
         "timeFormat": "12-timers tidsformat",
         "mileUnit": "Milenhed",
+        "yTicks": "Y-axis ticks",
+        "xTicks": "X-axis ticks",
         "placeHolder": {
             "latitude": "Indtast breddegrad",
             "longitude": "Indtast længdegrad",

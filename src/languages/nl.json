@@ -94,6 +94,8 @@
         "showBackground": "toon achtergrond",
         "timeFormat": "12-uur formaat",
         "mileUnit": "Mijleenheid",
+        "yTicks": "Y-axis ticks",
+        "xTicks": "X-axis ticks",
         "placeHolder": {
             "latitude": "Enter breedtegraad",
             "longitude": "Enter lengtegraad",

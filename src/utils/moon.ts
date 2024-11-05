@@ -1,27 +1,25 @@
 import * as SunCalc from '@noim/suncalc3';
-import { FrontendLocaleData, formatNumber } from 'custom-card-helpers';
+import { FrontendLocaleData, formatNumber, relativeTime, formatTime } from 'custom-card-helpers';
 
 import { localize } from '../localize/localize';
 import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location } from '../types';
 import { MOON_IMAGES } from '../utils/moon-pic';
-import { formatRelativeTime, formatedTime, convertKmToMiles } from './helpers';
+import { convertKmToMiles, compareTime } from './helpers';
 
 export class Moon {
   readonly _date: Date;
-  readonly lang: string;
   readonly location: Location;
   readonly config: LunarPhaseCardConfig;
   readonly locale: FrontendLocaleData;
-  readonly amPm: boolean;
   readonly useMiles: boolean;
+  readonly lang: string;
 
-  constructor(data: { date: Date; lang: string; config: LunarPhaseCardConfig; locale: FrontendLocaleData }) {
+  constructor(data: { date: Date; config: LunarPhaseCardConfig; locale: FrontendLocaleData }) {
     this._date = data.date;
-    this.lang = data.lang;
+    this.lang = data.locale.language;
     this.config = data.config;
     this.location = { latitude: data.config.latitude, longitude: data.config.longitude } as Location;
     this.locale = data.locale;
-    this.amPm = this.config['12hr_format'] || false;
     this.useMiles = this.config.mile_unit || false;
   }
 
@@ -30,7 +28,7 @@ export class Moon {
   };
 
   private formatTime = (time: number | Date): string => {
-    return formatedTime(time, this.amPm, this.lang);
+    return formatTime(new Date(time), this.locale);
   };
 
   private convertKmToMiles = (km: number): number => {
@@ -84,17 +82,8 @@ export class Moon {
   });
 
   createMoonTime = (key: string, time: number | Date): MoonDataItem => {
-    const localizeRelativeTime = (time: number | Date) => {
-      const relativeTime = formatRelativeTime(new Date(time).toISOString());
-      return relativeTime.value
-        ? this.localize(relativeTime.key, '{0}', relativeTime.value)
-        : this.localize(relativeTime.key);
-    };
-
     const timeString = this.formatTime(time);
-
-    // const value = formatTimeToHHMM(new Date(time).toISOString(), this.lang, timeFormat);
-    const secondValue = localizeRelativeTime(time);
+    const secondValue = compareTime(new Date(time)) ? relativeTime(new Date(time), this.locale) : '';
     return this.createItem(key, timeString, '', secondValue);
   };
 
@@ -310,6 +299,7 @@ export class Moon {
     }
     return events;
   }
+
   setMoonImagesToStorage = () => {
     // set as array
     const moonImages = MOON_IMAGES;

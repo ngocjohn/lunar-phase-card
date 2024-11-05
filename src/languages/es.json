@@ -94,6 +94,8 @@
         "showBackground": "Mostrar fondo",
         "timeFormat": "Formato de 12 horas",
         "mileUnit": "Unidad de milla",
+        "yTicks": "Y-axis ticks",
+        "xTicks": "X-axis ticks",
         "placeHolder": {
             "latitude": "Ingresar latitud",
             "longitude": "Ingresar longitud",

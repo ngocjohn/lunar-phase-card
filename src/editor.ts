@@ -226,6 +226,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       { label: 'showBackground', configValue: 'show_background' },
       { label: 'timeFormat', configValue: '12hr_format' },
       { label: 'mileUnit', configValue: 'mile_unit' },
+      { label: 'yTicks', configValue: 'y_ticks' },
+      { label: 'xTicks', configValue: 'x_ticks' },
     ];
 
     const viewOptions = html`

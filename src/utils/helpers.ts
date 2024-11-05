@@ -199,3 +199,15 @@ export function getDefaultConfig(hass: HomeAssistant) {
     mile_unit,
   };
 }
+
+// Compare time to show
+export const compareTime = (time: Date): boolean => {
+  const date = new Date(time);
+  const now = new Date();
+
+  const timeDifference = date.getTime() - now.getTime();
+  const hoursDifference = Math.round(timeDifference / (1000 * 60 * 60)); // Convert milliseconds to hours
+
+  // if time is between 24ago and 24h from now
+  return hoursDifference >= -24 && hoursDifference <= 24;
+};

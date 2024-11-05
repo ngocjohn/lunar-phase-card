@@ -94,6 +94,8 @@
         "showBackground": "Hintergrund anzeigen",
         "timeFormat": "12-Stunden-Zeitformat",
         "mileUnit": "Meileneinheit",
+        "yTicks": "Y-axis ticks",
+        "xTicks": "X-axis ticks",
         "placeHolder": {
             "latitude": "Breitengrad eingeben",
             "longitude": "Längengrad eingeben",

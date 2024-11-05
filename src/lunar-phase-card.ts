@@ -6,7 +6,7 @@ import {
   mdiChevronRight,
   mdiRestore,
 } from '@mdi/js';
-import { LovelaceCardEditor, formatDate, FrontendLocaleData } from 'custom-card-helpers';
+import { LovelaceCardEditor, formatDate, FrontendLocaleData, TimeFormat } from 'custom-card-helpers';
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -20,7 +20,7 @@ import './components/moon-horizon';
 import './components/moon-phase-calendar';
 import { localize } from './localize/localize';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
-import { getDefaultConfig } from './utils/helpers';
+import { getDefaultConfig, useAmPm } from './utils/helpers';
 import { Moon } from './utils/moon';
 
 @customElement('lunar-phase-card')
@@ -124,8 +124,14 @@ export class LunarPhaseCard extends LitElement {
 
   get _locale(): FrontendLocaleData {
     const locale = this._hass.locale;
-    locale.language = this.selectedLanguage;
-    return locale;
+    const timeFormat = this.config['12hr_format'] ? TimeFormat.am_pm : TimeFormat.twenty_four;
+    const language = this.selectedLanguage;
+    const newLocale = {
+      ...locale,
+      language,
+      time_format: timeFormat,
+    };
+    return newLocale;
   }
 
   get _showBackground(): boolean {
@@ -194,9 +200,8 @@ export class LunarPhaseCard extends LitElement {
   private createMoon() {
     const initData = {
       date: this._date,
-      lang: this.selectedLanguage,
       config: this.config,
-      locale: this._hass.locale,
+      locale: this._locale,
     };
     this.moon = new Moon(initData);
     // console.log('createMoon');
@@ -235,7 +240,7 @@ export class LunarPhaseCard extends LitElement {
     if (!this.moon) return;
     const { moonPic } = this.moon.moonImage;
 
-    return html` <div class="moon-image" ?calendar=${this._isCalendar}>
+    return html` <div class="moon-image animate" ?calendar=${this._isCalendar}>
       <img src=${moonPic} class="rotatable" />
     </div>`;
   }
@@ -288,11 +293,7 @@ export class LunarPhaseCard extends LitElement {
 
       <div class="date-row">
         <ha-icon-button .path=${mdiChevronLeft} @click=${() => this.updateDate('prev')}> </ha-icon-button>
-        <div>
-          ${this.selectedDate !== undefined
-            ? formatDate(this.selectedDate, this._locale)
-            : formatDate(new Date(), this._locale)}
-        </div>
+        <div>${formatDate(this._date, this._locale)}</div>
         <ha-icon-button .path=${mdiChevronRight} @click=${() => this.updateDate('next')}> </ha-icon-button>
       </div>
       <ha-icon-button
@@ -380,6 +381,7 @@ export class LunarPhaseCard extends LitElement {
       '--lunar-background-image': `url(${background})`,
       '--lunar-fill-color': this._showBackground ? 'rgba(255,255,255,0.12157)' : 'var(--divider-color)',
       '--lunar-fill-bellow-color': this._showBackground ? '#e1e0dd0f' : 'rgba(0, 0, 0, 0.06)',
+      '--lunar-fill-line-bellow-color': this._showBackground ? '#e1e0dd30' : 'var(--divider-color)',
     };
     Object.entries(varCss).forEach(([key, value]) => {
       if (value) {

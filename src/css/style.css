@@ -90,6 +90,7 @@ h1 {
   font-weight: 400;
   text-transform: var(--lunar-card-header-text-transform, capitalize);
   font-size: var(--lunar-card-header-font-size, x-large);
+  line-height: 120%;
 }
 
 .btn-action {
@@ -280,8 +281,8 @@ section {
 .calendar-container .calendar-mini-popup {
   display: block;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0%;
+  left: 0%;
   width: 100%;
   height: 100%;
   z-index: 1;
@@ -320,14 +321,12 @@ section {
 }
 
 .date-row {
-  display: flex;
-  gap: 1rem;
+  display: inline-flex;
   align-items: center;
   font-size: larger;
   font-weight: 600;
-  flex: 1 1 0;
-  width: 100%;
   justify-content: space-evenly;
+  text-wrap-mode: nowrap;
 }
 
 .date-input-label {
@@ -423,4 +422,19 @@ button.date-input-btn:hover {
 .compact-item .value {
   color: var(--lunar-card-label-font-color);
   opacity: 0.8;
+}
+
+@keyframes FadeInBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+.animate {
+  animation: FadeInBottom 0.5s ease-in;
 }
