@@ -10,18 +10,14 @@ import editorcss from './css/editor.css';
 import { languageOptions, localize } from './localize/localize';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, FontCustomStyles, defaultConfig } from './types';
 import { deepMerge, InitializeDefaultConfig } from './utils/ha-helper';
-import { compareVersions } from './utils/helpers';
-import { loadHaComponents, fetchLatestReleaseTag, stickyPreview } from './utils/loader';
+import { loadHaComponents, stickyPreview } from './utils/loader';
 
 @customElement('lunar-phase-card-editor')
 export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass!: HomeAssistant;
 
   @state() private _config!: LunarPhaseCardConfig;
-  @state() private _latestRelease = '';
   @state() private _activeTabIndex: number = 0;
-
-  private _systemLanguage = this.hass?.language;
 
   public async setConfig(config: LunarPhaseCardConfig): Promise<void> {
     this._config = deepMerge(InitializeDefaultConfig(), config);
@@ -32,27 +28,13 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private get selectedLanguage(): string {
-    return this._config?.selected_language || 'en';
+    return this._config?.selected_language || this.hass?.language;
   }
 
   protected update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
-    if (changedProperties.has('_latestRelease') && this._latestRelease !== '') {
-      const compareVersionsResult = this._compareVersions();
-      const toast = this.shadowRoot?.getElementById('toast') as HTMLElement;
-      const version = this.shadowRoot?.querySelector('.version') as HTMLElement;
-      if (toast || version) {
-        if (compareVersionsResult !== 0) {
-          toast.classList.add('show');
-          version.style.display = 'none';
-        } else {
-          version.style.display = 'flex';
-        }
-      }
-    }
-
-    this._systemLanguage = this.hass?.language;
   }
+
   private localize = (string: string, search = '', replace = ''): string => {
     return localize(string, this.selectedLanguage, search, replace);
   };
@@ -61,9 +43,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     super.connectedCallback();
     void loadHaComponents();
     void stickyPreview();
-    void fetchLatestReleaseTag().then((releaseTag) => {
-      this._latestRelease = releaseTag;
-    });
     if (process.env.ROLLUP_WATCH === 'true') {
       window.LunarEditor = this;
     }
@@ -211,7 +190,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   private _renderViewConfiguration(): TemplateResult {
     const langOpts = [
-      { key: 'system', name: 'System', nativeName: this._systemLanguage },
+      { key: 'system', name: 'System', nativeName: this.hass?.language },
       ...languageOptions.sort((a, b) => a.name.localeCompare(b.name)),
     ];
 
@@ -369,13 +348,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
       <div>${tabs[activeTabIndex]?.content || html`<div>No content available</div>`}</div>
       <div class="version">
-        <span
-          >${CARD_VERSION === this._latestRelease
-            ? html`version: ${CARD_VERSION}`
-            : html`version: ${CARD_VERSION} -> <span class="update">${this._latestRelease}</span>`}</span
-        >
+        <span> version: ${CARD_VERSION}</span>
       </div>
-      ${this._renderToast()}
     `;
   };
 
@@ -392,38 +366,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
           <ha-icon icon=${icon}></ha-icon>
         </div>
         ${content}
-      </div>
-    `;
-  }
-
-  private _renderToast(): TemplateResult {
-    const compareVersionsResult = this._compareVersions();
-    if (compareVersionsResult === 0) {
-      return html``;
-    }
-
-    const content = {
-      '-1': {
-        title: 'New version available',
-        icon: '🎉',
-      },
-      1: {
-        title: 'You are using a beta version',
-        icon: '🚨',
-      },
-    };
-
-    return html`
-      <div id="toast">
-        <ha-alert
-          alert-type="info"
-          title="${content[compareVersionsResult].title}"
-          dismissable="true"
-          @alert-dismissed-clicked=${this._handleAlertDismissed}
-        >
-          <span class="alert-icon" slot="icon">${content[compareVersionsResult].icon}</span>
-          <span>Latest: ${this._latestRelease}</span>
-        </ha-alert>
       </div>
     `;
   }
@@ -582,10 +524,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       toast.classList.remove('show');
       version.style.visibility = 'visible';
     }
-  }
-
-  private _compareVersions() {
-    return compareVersions(CARD_VERSION, this._latestRelease);
   }
 
   private async _handleFilePicked(ev: Event): Promise<void> {
