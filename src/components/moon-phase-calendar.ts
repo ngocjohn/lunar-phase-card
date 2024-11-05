@@ -114,6 +114,8 @@ export class MoonPhaseCalendar extends LitElement {
   }
 
   protected render(): TemplateResult {
-    return html` <div id="calendar"></div> `;
+    const maxWidth = this.card._cardWidth;
+
+    return html` <div id="calendar" style="max-width: ${maxWidth}px;"></div> `;
   }
 }
