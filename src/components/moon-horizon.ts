@@ -1,4 +1,4 @@
-import { formatTime, formatDateTime, HomeAssistant } from 'custom-card-helpers';
+import { formatTime, formatDateTime, HomeAssistant, formatDateTimeWithSeconds } from 'custom-card-helpers';
 import { LitElement, html, CSSResultGroup, TemplateResult, css } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 
@@ -24,7 +24,7 @@ import { Moon } from '../utils/moon';
 // Styles
 import styles from '../css/style.css';
 
-const HOVER_TIMEOUT = 100;
+const HOVER_TIMEOUT = 50;
 
 @customElement('moon-horizon')
 export class MoonHorizon extends LitElement {
@@ -36,7 +36,8 @@ export class MoonHorizon extends LitElement {
   @state() moreInfo = false;
   @state() tooltip = true;
   @state() hoverOnChart = false;
-  @state() timeHidden = false;
+  private _timeAnimationFrame: number | null = null;
+  private _lastTime: string | null = null;
   @state() private hoverTimeout: number | null = null;
 
   static get styles(): CSSResultGroup {
@@ -108,6 +109,7 @@ export class MoonHorizon extends LitElement {
 
   disconnectedCallback(): void {
     console.log('MoonCard disconnected');
+    this.clearTimeAnimationFrame();
     super.disconnectedCallback();
   }
 
@@ -184,7 +186,7 @@ export class MoonHorizon extends LitElement {
               grid: {
                 ...options.scales?.y?.grid,
                 drawOnChartArea: false,
-                display: true,
+                display: false,
               },
             },
           },
@@ -193,6 +195,7 @@ export class MoonHorizon extends LitElement {
             tooltip: {
               ...options.plugins?.tooltip,
               usePointStyle: true,
+
               callbacks: {
                 label: (context) => {
                   const { datasetIndex, dataIndex } = context;
@@ -201,10 +204,12 @@ export class MoonHorizon extends LitElement {
                   const value = dataset?.data[dataIndex];
                   return `${label}: ${value}°`;
                 },
+
                 labelPointStyle: () => {
                   return {
-                    pointStyle: 'triangle',
+                    pointStyle: false,
                     rotation: 0,
+                    radius: 0,
                   };
                 },
               },
@@ -212,19 +217,16 @@ export class MoonHorizon extends LitElement {
           },
           // Hover on point
           onHover: (_event, elements) => {
-            this.hoverOnChart = elements.length > 0;
-            this.moonChart?.update();
             if (elements.length > 0) {
-              // Clear the previous timeout if there is one
-              if (this.hoverTimeout) {
-                clearTimeout(this.hoverTimeout);
-              }
+              this.hoverOnChart = true;
+              console.log('Hover on chart', this.hoverOnChart);
 
               this.hoverTimeout = window.setTimeout(() => {
                 const element = elements[0];
                 const dataIndex = element.index;
                 this.hoverCustomDate(dataIndex);
               }, HOVER_TIMEOUT); // Delay the hover event
+              this.moonChart?.update();
             } else {
               // Clear the timeout if no element is hovered
               if (this.hoverTimeout) {
@@ -245,39 +247,31 @@ export class MoonHorizon extends LitElement {
       });
       // Add event listeners
       ctx.addEventListener('mouseout', () => {
+        console.log('Mouse out');
         // Clear the hover timeout
         if (this.hoverTimeout) {
           clearTimeout(this.hoverTimeout);
           this.hoverTimeout = null;
+          this.hoverOnChart = false;
+          this.moonChart?.update();
         }
 
         // Reset the selected date
         if (this.card.selectedDate !== undefined) {
           this.card.selectedDate = undefined;
         }
-
-        this.hoverOnChart = false;
-        this.moonChart?.update();
-      });
-
-      ctx.addEventListener('mouseover', () => {
-        console.log('Mouse over');
       });
     }
   }
 
   protected render(): TemplateResult {
-    const locale = this.hass.locale;
-    locale.language = this.card.selectedLanguage;
     return html`
       <div class="moon-horizon">
         <canvas id="moonPositionChart" width=${this.card._cardWidth}></canvas>
       </div>
       <div class="moon-data-wrapper">
         <div class="moon-data-header">
-          ${this.card.selectedDate !== undefined
-            ? formatDateTime(this.card.selectedDate, locale)
-            : formatDateTime(new Date(), locale)}
+          ${this.renderTimeHeader()}
           <ha-icon
             class="click-shrink"
             @click=${() => (this.moreInfo = !this.moreInfo)}
@@ -289,6 +283,33 @@ export class MoonHorizon extends LitElement {
         <div class="moon-data" show=${this.moreInfo}>${this._renderDataItem()}</div>
       </div>
     `;
+  }
+
+  private renderTimeHeader(): TemplateResult {
+    const locale = this.card._locale;
+
+    // Start the animation frame loop if it hasn't started yet
+    if (!this._timeAnimationFrame && this.card.selectedDate === undefined) {
+      console.log('Starting animation frame');
+      const updateFrame = () => {
+        this._timeAnimationFrame = requestAnimationFrame(updateFrame);
+
+        const currentTime = new Date().toLocaleTimeString();
+        // Only re-render if the seconds have changed
+        if (currentTime !== this._lastTime) {
+          this._lastTime = currentTime;
+          this.requestUpdate(); // Trigger a re-render
+        }
+      };
+      this._timeAnimationFrame = requestAnimationFrame(updateFrame);
+    }
+
+    const timeStr =
+      this.card.selectedDate !== undefined
+        ? formatDateTime(this.card.selectedDate, locale)
+        : formatDateTimeWithSeconds(new Date(), locale);
+
+    return html` ${timeStr} `;
   }
 
   private _renderDataItem(): TemplateResult {
@@ -320,10 +341,27 @@ export class MoonHorizon extends LitElement {
   async hoverCustomDate(dataIndex: number): Promise<void> {
     if (!this.moreInfo) return;
     const time = this.todayData.timeLabels[dataIndex];
+    const isAmPm = time.includes('AM') || time.includes('PM');
     const hourMin = time.split(':');
-    const today = new Date();
-    const customDate = new Date(today.setHours(parseInt(hourMin[0], 0), parseInt(hourMin[1], 0), 0, 0));
-    this.card.selectedDate = customDate;
+    if (isAmPm) {
+      const hour = parseInt(hourMin[0], 0);
+      const amPm = hourMin[1].split(' ');
+      if (amPm[1] === 'PM' && hour !== 12) {
+        hourMin[0] = (hour + 12).toString();
+      }
+    }
+    const date = new Date();
+    date.setHours(parseInt(hourMin[0], 0), parseInt(hourMin[1], 0));
+    this.card.selectedDate = date;
+  }
+
+  clearTimeAnimationFrame(): void {
+    // Cancel the animation frame when the component is disconnected
+    console.log('Clearing animation frame');
+    if (this._timeAnimationFrame) {
+      cancelAnimationFrame(this._timeAnimationFrame);
+      this._timeAnimationFrame = null;
+    }
   }
 
   /* -------------------------------- DATASETS -------------------------------- */
@@ -379,6 +417,7 @@ export class MoonHorizon extends LitElement {
     const { secondaryTextColor } = this.cssColors;
     const { sugestedYMax, sugestedYMin } = this.todayData.minMaxY;
     const { y_ticks, x_ticks } = this.card.config;
+
     const ticksOptions = {
       color: secondaryTextColor,
     };
@@ -399,10 +438,6 @@ export class MoonHorizon extends LitElement {
     };
 
     scales['x'] = {
-      title: {
-        display: false,
-        text: 'Time',
-      },
       grid: {
         display: false,
       },
@@ -443,12 +478,13 @@ export class MoonHorizon extends LitElement {
       },
     };
 
-    plugins['tooltip'] = {
-      enabled: this.tooltip !== false,
-    };
-
     const layout: ChartOptions['layout'] = {
-      padding: 4,
+      padding: {
+        bottom: 10,
+        left: 4,
+        right: 4,
+        top: 10,
+      },
     };
     // Options
     const options = {} as ChartOptions;
