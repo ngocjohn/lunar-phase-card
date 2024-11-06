@@ -35,8 +35,10 @@ export class Moon {
     return convertKmToMiles(km, this.useMiles);
   };
 
-  private formatNumber = (num: string | number): string => {
-    return formatNumber(num, this.locale);
+  private formatNumber = (num: number): string => {
+    const decimal = this.config.number_decimals;
+    const numberValue = num.toFixed(decimal);
+    return formatNumber(numberValue, this.locale);
   };
 
   get _moonTime(): SunCalc.IMoonTimes {
@@ -122,11 +124,11 @@ export class Moon {
 
     // Format numeric values
     const formatted = {
-      moonFraction: formatNumber((fraction * 100).toFixed(decimal)),
-      moonAge: formatNumber((phaseValue * 29.53).toFixed(decimal)),
-      distance: formatNumber(convertKmToMiles(distance).toFixed(decimal)),
-      azimuth: formatNumber(azimuthDegrees.toFixed(decimal)),
-      altitude: formatNumber(altitudeDegrees.toFixed(decimal)),
+      moonFraction: formatNumber(fraction * 100),
+      moonAge: formatNumber(phaseValue * 29.53),
+      distance: formatNumber(convertKmToMiles(distance)),
+      azimuth: formatNumber(azimuthDegrees),
+      altitude: formatNumber(altitudeDegrees),
     };
 
     const cardinal = convertCardinal(azimuthDegrees);
@@ -185,6 +187,13 @@ export class Moon {
 
     return dataCotent;
   }
+
+  _getDataInRange = () => {
+    const now = new Date();
+    const timeRange = new Date(now.getTime() - 12 * 60 * 60 * 1000);
+    const dataSet = this._getDataAltitude(timeRange);
+    return dataSet;
+  };
 
   _getAltituteData = (startTime: Date) => {
     const result: { [key: string]: number } = {};
@@ -264,7 +273,7 @@ export class Moon {
     // Formated direction data
     const azimuth = timePosition.azimuthDegrees;
     const cardinal = this.convertCardinal(azimuth);
-    const formatedAzimuth = this.formatNumber(azimuth.toFixed(2));
+    const formatedAzimuth = this.formatNumber(azimuth);
     const direction = `${formatedAzimuth}° ${cardinal}`;
 
     // Formated time
@@ -276,7 +285,7 @@ export class Moon {
     const lineOffset = timeKey === 'set' ? -20 : 20;
     const textOffset = timeKey === 'set' ? -30 : 60;
     const position = {
-      index: Math.floor(time.getHours() + time.getMinutes() / 60) * 2,
+      index: Math.round((time.getHours() + time.getMinutes() / 60) * 2),
       altitude,
     };
 
@@ -294,7 +303,7 @@ export class Moon {
       const day = new Date(year, month, i);
       const moonIlumin = SunCalc.getMoonIllumination(day);
       const phaseEmoji = moonIlumin.phase.emoji;
-      const phaseAge = this.formatNumber((moonIlumin.phaseValue * 29.53).toFixed(0));
+      const phaseAge = this.formatNumber(moonIlumin.phaseValue * 29.53);
 
       events.push({
         title: `${phaseEmoji} ${phaseAge}`,
@@ -314,7 +323,6 @@ export class Moon {
       const day = new Date(start.getTime() + i * 1000 * 60 * 60 * 24);
       const moonIllumination = SunCalc.getMoonIllumination(day);
       const phaseEmoji = moonIllumination.phase.emoji;
-      const phaseAge = this.formatNumber((moonIllumination.phaseValue * 29.53).toFixed(0));
 
       events.push({
         title: `${phaseEmoji}`,
