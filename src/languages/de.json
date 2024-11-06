@@ -101,7 +101,8 @@
             "longitude": "Längengrad eingeben",
             "customBackground": "URL oder Pfad zum Hintergrundbild",
             "language": "Sprachauswahl",
-            "moonPosition": "Mondposition auf der Karte auswählen"
+            "moonPosition": "Mondposition auf der Karte auswählen",
+            "defaultCard": "Standardkarte auswählen"
         }
     }
 }

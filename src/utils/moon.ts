@@ -162,10 +162,18 @@ export class Moon {
 
     const startTime = new Date(today.setHours(0, 0, 0, 0));
     const _altitudeData = this._getAltituteData(startTime);
+    const newAltitudeData = this._getDataAltitude(startTime);
+    const newTimeLabels = Object.values(newAltitudeData).map((item) => item.x);
+    const newAltitudeDataValues = Object.values(newAltitudeData).map((item) => item.y);
+
     const timeToday = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
     const dataCotent = {
       time: timeToday,
-      altitude: this._getAltituteData(startTime),
+      altitude: this._getDataAltitude(startTime),
+      newData: {
+        timeLabels: newTimeLabels,
+        altitudeData: newAltitudeDataValues,
+      },
       direction: {
         rise: this.timePostion('rise'),
         set: this.timePostion('set'),
@@ -206,6 +214,18 @@ export class Moon {
       const formatedTime = this.formatTime(time);
       const position = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
       result[formatedTime] = Number(position.altitudeDegrees.toFixed(2));
+    }
+    return result;
+  };
+
+  _getDataAltitude = (startTime: Date) => {
+    const result: { x: number; y: number }[] = [];
+
+    for (let i = 0; i < 48; i++) {
+      const time = new Date(startTime.getTime() + i * 30 * 60 * 1000);
+      const formatedTime = time.getTime();
+      const position = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
+      result.push({ x: formatedTime, y: Number(position.altitudeDegrees.toFixed(2)) });
     }
     return result;
   };

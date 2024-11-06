@@ -101,7 +101,8 @@
             "longitude": "Enter longitude",
             "customBackground": "URL or path to image",
             "language": "Select language",
-            "moonPosition": "Select moon position on card"
+            "moonPosition": "Select moon position on card",
+            "defaultCard": "Select default card"
         }
     }
 }

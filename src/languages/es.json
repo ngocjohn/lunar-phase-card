@@ -101,7 +101,8 @@
             "longitude": "Ingresar longitud",
             "customBackground": "URL o ruta de la imagen",
             "language": "Seleccionar idioma",
-            "moonPosition": "Posición de la luna en la tarjeta"
+            "moonPosition": "Posición de la luna en la tarjeta",
+            "defaultCard": "Seleccionar tarjeta predeterminada"
         }
     }
 }

@@ -101,7 +101,8 @@
             "longitude": "Indtast længdegrad",
             "customBackground": "URL eller sti til billede",
             "language": "Vælg sprog",
-            "moonPosition": "Vælg måneposition på kortet"
+            "moonPosition": "Vælg måneposition på kortet",
+            "defaultCard": "Vælg standardkort"
         }
     }
 }

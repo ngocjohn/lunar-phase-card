@@ -101,7 +101,8 @@
             "longitude": "Entra la longitud",
             "customBackground": "URL o camí a la imatge del fons",
             "language": "Selecciona l'idioma",
-            "moonPosition": "Selecciona la posició de la lluna a la targeta"
+            "moonPosition": "Selecciona la posició de la lluna a la targeta",
+            "defaultCard": "Selecciona la targeta per defecte"
         }
     }
 }

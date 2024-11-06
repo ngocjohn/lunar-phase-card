@@ -101,7 +101,8 @@
             "longitude": "Zadajte zemepisnú dĺžku",
             "customBackground": "URL alebo cesta k obrázku",
             "language": "Vyberte jazyk",
-            "moonPosition": "Vyberte polohu Mesiaca na karte"
+            "moonPosition": "Vyberte polohu Mesiaca na karte",
+            "defaultCard": "Vyberte predvolenú kartu"
         }
     }
 }

@@ -101,7 +101,8 @@
             "longitude": "Inserir longitude",
             "customBackground": "URL ou caminho para a imagem",
             "language": "Selecionar idioma",
-            "moonPosition": "Selecione a posição da lua no cartão"
+            "moonPosition": "Selecione a posição da lua no cartão",
+            "defaultCard": "Selecionar cartão padrão"
         }
     }
 }

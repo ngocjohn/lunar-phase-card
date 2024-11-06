@@ -2,6 +2,8 @@
 import { LovelaceCardConfig, Themes, HomeAssistant, Theme } from 'custom-card-helpers';
 import { HassEntity } from 'home-assistant-js-websocket';
 
+import { PageType } from './const';
+
 export interface ModeSpecificTheme {
   light: Partial<Theme>;
   dark: Partial<Theme>;
@@ -43,6 +45,7 @@ export interface FontCustomStyles {
   label_font_color: string;
   hide_label: boolean;
 }
+export type DefaultPage = 'calendar' | 'base' | 'horizon';
 
 export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   type: string;
@@ -56,7 +59,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   mile_unit?: boolean;
   y_ticks?: boolean;
   x_ticks?: boolean;
-  custom_background?: string;
+  default_card?: PageType.BASE | PageType.CALENDAR | PageType.HORIZON;
   selected_language: string;
   moon_position?: 'left' | 'right';
   latitude: number;
@@ -77,6 +80,7 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   mile_unit: false,
   y_ticks: false,
   x_ticks: true,
+  default_card: PageType.BASE,
   font_customize: {
     header_font_size: 'x-large',
     header_font_style: 'capitalize',

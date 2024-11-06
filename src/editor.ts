@@ -189,6 +189,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private _renderViewConfiguration(): TemplateResult {
+    const content: TemplateResult[][] = [];
     const langOpts = [
       { key: 'system', name: 'System', nativeName: this.hass?.language },
       ...languageOptions.sort((a, b) => a.name.localeCompare(b.name)),
@@ -225,6 +226,18 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         false // Allow custom value
       )}
     `;
+
+    const defaultCard = this._haComboBox(
+      [
+        { value: 'base', label: 'Base' },
+        { value: 'calendar', label: 'Calendar' },
+        { value: 'horizon', label: 'Horizon' },
+      ],
+      'placeHolder.defaultCard',
+      this._config?.default_card || 'base',
+      'default_card',
+      false
+    );
 
     const moonPositon = this._haComboBox(
       [
@@ -265,8 +278,10 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
             `}
       </div>
     `;
-    const content = html` ${viewOptions} ${langComboBox} ${moonPositon} ${textFormInput} `;
-    return this.contentTemplate('viewConfig', 'viewConfig', 'mdi:image', content);
+
+    content.push([viewOptions, langComboBox, defaultCard, moonPositon, textFormInput]);
+
+    return this.contentTemplate('viewConfig', 'viewConfig', 'mdi:image', html`${content}`);
   }
 
   private _renderFontConfiguration(): TemplateResult {

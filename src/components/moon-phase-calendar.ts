@@ -60,7 +60,6 @@ export class MoonPhaseCalendar extends LitElement {
   }
 
   initCalendar(): void {
-    console.log('MoonPhaseCalendar initCalendar');
     // Initialize FullCalendar
     const calendarEl = this.shadowRoot?.getElementById('calendar') as HTMLElement;
     if (!calendarEl) return;

@@ -101,7 +101,8 @@
             "longitude": "Enter lengtegraad",
             "customBackground": "URL of path naar afbeelding",
             "language": "Seleceer taal",
-            "moonPosition": "Selecteer maanpositie op de kaart"
+            "moonPosition": "Selecteer maanpositie op de kaart",
+            "defaultCard": "Selecteer standaardkaart"
         }
     }
 }

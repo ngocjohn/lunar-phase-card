@@ -101,7 +101,8 @@
             "longitude": "Masukkan garis bujur",
             "customBackground": "URL atau lokasi penyimpanan gambar",
             "language": "Pilih bahasa",
-            "moonPosition": "Pilih posisi bulan pada kartu"
+            "moonPosition": "Pilih posisi bulan pada kartu",
+            "defaultCard": "Pilih kartu default"
         }
     }
 }

@@ -41,7 +41,7 @@ export const FONTCOLORS: string[] = [
   'gray',
 ];
 
-export const enum CurrentPage {
+export const enum PageType {
   CALENDAR = 'calendar',
   BASE = 'base',
   HORIZON = 'horizon',
