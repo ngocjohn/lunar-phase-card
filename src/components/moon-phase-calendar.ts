@@ -17,7 +17,7 @@ export class MoonPhaseCalendar extends LitElement {
   @state() moon!: Moon;
 
   @state() calendar!: Calendar;
-
+  @state() cardWidth = 500;
   static get styles(): CSSResultGroup {
     return [
       styles,
@@ -56,6 +56,7 @@ export class MoonPhaseCalendar extends LitElement {
   }
 
   protected firstUpdated(): void {
+    this.measureCard();
     this.initCalendar();
   }
 
@@ -112,9 +113,13 @@ export class MoonPhaseCalendar extends LitElement {
     this.calendar.addEventSource(events); // Add new events
   }
 
+  private measureCard() {
+    const card = this.parentElement;
+    if (card) {
+      this.cardWidth = card.clientWidth;
+    }
+  }
   protected render(): TemplateResult {
-    const maxWidth = this.card._cardWidth;
-
-    return html` <div id="calendar" style="max-width: ${maxWidth}px;"></div> `;
+    return html` <div id="calendar" style="max-width: ${this.cardWidth}px;"></div> `;
   }
 }
