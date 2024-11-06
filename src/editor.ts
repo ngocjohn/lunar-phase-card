@@ -229,7 +229,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
     const defaultCard = this._haComboBox(
       [
-        { value: 'base', label: 'Base' },
+        { value: 'base', label: 'Default' },
         { value: 'calendar', label: 'Calendar' },
         { value: 'horizon', label: 'Horizon' },
       ],

@@ -44,7 +44,6 @@ export class LunarPhaseCard extends LitElement {
   @state() selectedDate: Date | undefined;
   @state() _refreshInterval: number | undefined;
 
-  @state() _cardWidth: number = 0;
   @state() _calendarPopup: boolean = false;
   @state() _state: MoonState = MoonState.READY;
 
@@ -94,7 +93,6 @@ export class LunarPhaseCard extends LitElement {
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
-    this.measureCard();
     this._computeStyles();
     this._activeCard = this._defaultCard;
   }
@@ -154,7 +152,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private startRefreshInterval() {
-    console.log('refresh start', new Date().toLocaleTimeString());
+    // console.log('refresh start', new Date().toLocaleTimeString());
     // Clear any existing interval to avoid multiple intervals running
     if (this._refreshInterval !== undefined) {
       clearInterval(this._refreshInterval);
@@ -354,13 +352,6 @@ export class LunarPhaseCard extends LitElement {
     this._activeCard = this._activeCard === page ? this._defaultCard : page;
   };
 
-  private measureCard() {
-    const card = this.shadowRoot?.querySelector('ha-card');
-    if (card) {
-      this._cardWidth = card.clientWidth;
-    }
-  }
-
   private _computeClasses() {
     const reverse = this.config.moon_position === 'right';
     const compactHeader = Boolean(this.config.compact_view && this._activeCard === PageType.BASE);
@@ -370,6 +361,7 @@ export class LunarPhaseCard extends LitElement {
       '--reverse': reverse && !this._isCalendar,
       '--compact-header': compactHeader,
       '--default-header': !compactHeader,
+      '--horizon': this._activeCard === PageType.HORIZON,
     });
   }
 

@@ -56,6 +56,15 @@ ha-card.--default-header .lunar-card-content {
   padding: 8px 12px 12px
 }
 
+ha-card.--default-header .lunar-card-header {
+  margin-top: 8px;
+}
+
+ha-card.--horizon .lunar-card-content {
+  display: block;
+  padding: 8px 0 12px;
+}
+
 ha-card>.loading {
   display: block;
   position: absolute;
