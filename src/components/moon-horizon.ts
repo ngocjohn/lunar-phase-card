@@ -23,6 +23,7 @@ import { Moon } from '../utils/moon';
 
 // Styles
 import styles from '../css/style.css';
+import { ChartColors } from '../types';
 
 const HOVER_TIMEOUT = 50;
 
@@ -34,11 +35,11 @@ export class MoonHorizon extends LitElement {
 
   @state() _chart!: Chart;
   @state() moreInfo = false;
-  @state() tooltip = true;
   @state() hoverOnChart = false;
+  @state() hoverTimeout: number | null = null;
+
   private _timeAnimationFrame: number | null = null;
   private _lastTime: string | null = null;
-  @state() private hoverTimeout: number | null = null;
 
   static get styles(): CSSResultGroup {
     return [
@@ -110,11 +111,11 @@ export class MoonHorizon extends LitElement {
 
   disconnectedCallback(): void {
     console.log('MoonCard disconnected');
-    this.clearTimeAnimationFrame();
+    this.cancelTimeAnimationFrame();
     super.disconnectedCallback();
   }
 
-  get todayData() {
+  private get todayData() {
     return this.moon.todayData;
   }
 
@@ -125,33 +126,26 @@ export class MoonHorizon extends LitElement {
     return [moonMarkerPlugin, timeMarkerPlugin, fillTopPlugin];
   }
 
-  private get cssColors(): {
-    primaryTextColor: string;
-    secondaryTextColor: string;
-    fillColor: string;
-    fillBellowColor: string;
-    fillBellowLineColor: string;
-  } {
+  private get cssColors(): ChartColors {
     const cssColors = getComputedStyle(this);
     return {
       primaryTextColor: cssColors.getPropertyValue('--lunar-card-label-font-color'),
       secondaryTextColor: cssColors.getPropertyValue('--secondary-text-color'),
       fillColor: cssColors.getPropertyValue('--lunar-fill-color'),
-      fillBellowColor: cssColors.getPropertyValue('--lunar-fill-bellow-color'),
-      fillBellowLineColor: cssColors.getPropertyValue('--lunar-fill-line-bellow-color'),
+      fillBelowColor: cssColors.getPropertyValue('--lunar-fill-bellow-color'),
+      fillBelowLineColor: cssColors.getPropertyValue('--lunar-fill-line-bellow-color'),
     };
   }
 
   protected firstUpdated(): void {
-    this.initChart();
+    this.setupChart();
   }
 
-  private initChart(): void {
+  private setupChart(): void {
     // Data
     const data = this._getChartData();
     const options = this._chartOptions();
     // Plugins
-
     const customPlugins = this.plugins;
     // Create the chart
     const ctx = this.shadowRoot?.getElementById('moonPositionChart') as HTMLCanvasElement;
@@ -189,7 +183,7 @@ export class MoonHorizon extends LitElement {
               this.hoverOnChart = true;
               const element = elements[0];
               const xTimeNum = element.element.getProps(['raw'], true).raw.x;
-              this.handleHoverPoint(xTimeNum);
+              this.handlePointHover(xTimeNum);
 
               this._chart?.update();
             }
@@ -225,7 +219,7 @@ export class MoonHorizon extends LitElement {
       </div>
       <div class="moon-data-wrapper">
         <div class="moon-data-header">
-          ${this.renderTimeHeader()}
+          ${this.renderHeaderTime()}
           <ha-icon
             class="click-shrink"
             @click=${() => (this.moreInfo = !this.moreInfo)}
@@ -234,12 +228,12 @@ export class MoonHorizon extends LitElement {
           >
           </ha-icon>
         </div>
-        <div class="moon-data" show=${this.moreInfo}>${this._renderDataItem()}</div>
+        <div class="moon-data" show=${this.moreInfo}>${this.renderDataItem()}</div>
       </div>
     `;
   }
 
-  private renderTimeHeader(): TemplateResult {
+  private renderHeaderTime(): TemplateResult {
     const locale = this.card._locale;
 
     // Start the animation frame loop if it hasn't started yet
@@ -266,7 +260,7 @@ export class MoonHorizon extends LitElement {
     return html` ${timeStr} `;
   }
 
-  private _renderDataItem(): TemplateResult {
+  private renderDataItem(): TemplateResult {
     if (!this.moreInfo) return html``;
     const dataItem = this.moon.todayDataItem;
     return html`
@@ -292,13 +286,13 @@ export class MoonHorizon extends LitElement {
     `;
   }
 
-  async handleHoverPoint(date: number): Promise<void> {
+  async handlePointHover(date: number): Promise<void> {
     if (!this.moreInfo) return;
     const time = new Date(date);
     this.card.selectedDate = time;
   }
 
-  clearTimeAnimationFrame(): void {
+  cancelTimeAnimationFrame(): void {
     // Cancel the animation frame when the component is disconnected
     if (this._timeAnimationFrame) {
       cancelAnimationFrame(this._timeAnimationFrame);
@@ -309,7 +303,7 @@ export class MoonHorizon extends LitElement {
   /* -------------------------------- DATASETS -------------------------------- */
 
   private _getChartData = (): ChartData => {
-    const { primaryTextColor, secondaryTextColor, fillColor, fillBellowColor, fillBellowLineColor } = this.cssColors;
+    const { primaryTextColor, secondaryTextColor, fillColor, fillBelowColor, fillBelowLineColor } = this.cssColors;
     const todayData = this.todayData;
     const timeLabels = todayData.timeLabels;
     const altitudeData = todayData.altitude;
@@ -324,13 +318,13 @@ export class MoonHorizon extends LitElement {
       fill: {
         target: { value: 0 }, // Fill area above 0° altitude
         above: fillColor,
-        below: fillBellowColor,
+        below: fillBelowColor,
       },
       cubicInterpolationMode: 'monotone',
       tension: 0.2,
       segment: {
         borderColor: (ctx: ScriptableLineSegmentContext) =>
-          ctx.p0.parsed.y >= 0 && ctx.p1.parsed.y >= 0 ? primaryTextColor : fillBellowLineColor,
+          ctx.p0.parsed.y >= 0 && ctx.p1.parsed.y >= 0 ? primaryTextColor : fillBelowLineColor,
         borderWidth: (ctx: ScriptableLineSegmentContext) => (ctx.p0.parsed.y <= 0 ? 1 : 1.2),
       },
       radius: () => (this.hoverOnChart ? 1.1 : 0),
@@ -510,40 +504,12 @@ export class MoonHorizon extends LitElement {
         ctx.fillStyle = gradient;
         ctx.fillRect(midX, top, right - midX, fillTop - top);
         ctx.restore();
-        ctx.save();
       },
     };
   };
 
-  private getTimeMarkers() {
-    const showOnChart = (time: Date): boolean => {
-      const todayStart = new Date();
-      todayStart.setHours(0, 0, 0, 0);
-
-      const todayEnd = new Date();
-      todayEnd.setHours(23, 59, 59, 999);
-      return time > todayStart && time < todayEnd;
-    };
-
-    const generateData = (key: string) => {
-      const time = new Date(this.todayData.time[key]);
-      const formattedTime = formatTime(time, this.card._locale);
-      const position = this.moon._getRiseSetData(key);
-      const show = showOnChart(time);
-      const direction = this.moon.todayData.direction[key];
-      const label = this.todayData.lang[key];
-      const lineOffset = key === 'set' ? -20 : 20;
-      const textOffset = key === 'set' ? -30 : 60;
-      return { show, position, label, formattedTime, lineOffset, textOffset, direction };
-    };
-
-    const markers = ['rise', 'set'].map((key) => generateData(key));
-
-    return markers;
-  }
-
   private timeMarkerPlugin = (): Plugin => {
-    const timeMarkers = this.getTimeMarkers();
+    const timeMarkers = this.todayData.timeMarkers;
     const { secondaryTextColor, fillColor } = this.cssColors;
     const drawTimeMarker = (
       ctx: CanvasRenderingContext2D,
@@ -577,20 +543,17 @@ export class MoonHorizon extends LitElement {
         const {
           ctx,
           scales: { x, y },
-          data: { datasets },
         } = chart;
-        const timeData = datasets[1].data as any[];
-
         // Iterate over each time marker and draw if necessary
 
         timeMarkers.forEach((timeMarker: any) => {
-          const { show, position, label, formattedTime, direction, lineOffset, textOffset } = timeMarker;
+          const { show, position, label, formatedTime, direction, lineOffset, textOffset } = timeMarker;
           if (show) {
             const { index, altitude } = position;
             const xPosition = x.getPixelForValue(index);
             const yPosition = y.getPixelForValue(altitude);
 
-            drawTimeMarker(ctx, label, formattedTime, direction, xPosition, yPosition, lineOffset, textOffset);
+            drawTimeMarker(ctx, label, formatedTime, direction, xPosition, yPosition, lineOffset, textOffset);
           }
         });
       },

@@ -59,6 +59,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   mile_unit?: boolean;
   y_ticks?: boolean;
   x_ticks?: boolean;
+  number_decimals?: number;
   default_card?: PageType.BASE | PageType.CALENDAR | PageType.HORIZON;
   selected_language: string;
   moon_position?: 'left' | 'right';
@@ -81,6 +82,8 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   y_ticks: false,
   x_ticks: true,
   default_card: PageType.BASE,
+  moon_position: 'left',
+  number_decimals: 2,
   font_customize: {
     header_font_size: 'x-large',
     header_font_style: 'capitalize',
@@ -121,3 +124,11 @@ export interface MoonData {
   direction?: MoonDataItem;
   position?: MoonDataItem;
 }
+
+export type ChartColors = {
+  primaryTextColor: string;
+  secondaryTextColor: string;
+  fillColor: string;
+  fillBelowColor: string;
+  fillBelowLineColor: string;
+};

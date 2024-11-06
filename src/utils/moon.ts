@@ -106,6 +106,7 @@ export class Moon {
   get moonData(): MoonData {
     const { createItem, createMoonTime, convertKmToMiles, formatNumber, localize, useMiles, lang, convertCardinal } =
       this;
+    const decimal = this.config.number_decimals;
     // Helper function to format date as short time string
     const shortTime = (date: number | Date) =>
       new Date(date).toLocaleDateString(lang, { weekday: 'short', month: 'short', day: 'numeric' });
@@ -121,24 +122,24 @@ export class Moon {
 
     // Format numeric values
     const formatted = {
-      moonFraction: formatNumber((fraction * 100).toFixed(2)),
-      moonAge: formatNumber((phaseValue * 29.53).toFixed(2)),
-      distance: formatNumber(convertKmToMiles(distance).toFixed(2)),
-      azimuth: formatNumber(azimuthDegrees.toFixed(2)),
-      altitude: formatNumber(altitudeDegrees.toFixed(2)),
+      moonFraction: formatNumber((fraction * 100).toFixed(decimal)),
+      moonAge: formatNumber((phaseValue * 29.53).toFixed(decimal)),
+      distance: formatNumber(convertKmToMiles(distance).toFixed(decimal)),
+      azimuth: formatNumber(azimuthDegrees.toFixed(decimal)),
+      altitude: formatNumber(altitudeDegrees.toFixed(decimal)),
     };
 
     const cardinal = convertCardinal(azimuthDegrees);
     // Construct moon data items
     return {
-      moonFraction: createItem('illumination', formatted.moonFraction, '%'),
       moonAge: createItem('moonAge', formatted.moonAge, localize('card.relativeTime.days')),
+      moonFraction: createItem('illumination', formatted.moonFraction, '%'),
+      azimuthDegress: createItem('azimuth', formatted.azimuth, '°', cardinal),
+      altitudeDegrees: createItem('altitude', formatted.altitude, '°'),
+      distance: createItem('distance', formatted.distance, useMiles ? 'mi' : 'km'),
       moonRise: createMoonTime('moonRise', rise),
       moonSet: createMoonTime('moonSet', set),
       moonHighest: highest ? createMoonTime('moonHigh', highest) : undefined,
-      distance: createItem('distance', formatted.distance, useMiles ? 'mi' : 'km'),
-      azimuthDegress: createItem('azimuth', formatted.azimuth, '°'),
-      altitudeDegrees: createItem('altitude', formatted.altitude, '°'),
       nextFullMoon: createItem('fullMoon', shortTime(fullMoon.value)),
       nextNewMoon: createItem('newMoon', shortTime(newMoon.value)),
       direction: createItem('direction', formatted.azimuth, '°', cardinal),
@@ -159,25 +160,15 @@ export class Moon {
 
   get todayData() {
     const today = new Date();
-
     const startTime = new Date(today.setHours(0, 0, 0, 0));
     const _altitudeData = this._getAltituteData(startTime);
-    const newAltitudeData = this._getDataAltitude(startTime);
-    const newTimeLabels = Object.values(newAltitudeData).map((item) => item.x);
-    const newAltitudeDataValues = Object.values(newAltitudeData).map((item) => item.y);
-
     const timeToday = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
+
+    const timeMarkers = ['rise', 'set'].map((key) => this.timeDataSet(key));
+
     const dataCotent = {
       time: timeToday,
       altitude: this._getDataAltitude(startTime),
-      newData: {
-        timeLabels: newTimeLabels,
-        altitudeData: newAltitudeDataValues,
-      },
-      direction: {
-        rise: this.timePostion('rise'),
-        set: this.timePostion('set'),
-      },
       timeLabels: Object.keys(_altitudeData),
       altitudeData: Object.values(_altitudeData),
       minMaxY: {
@@ -189,22 +180,11 @@ export class Moon {
         rise: this.localize('card.moonRise'),
         set: this.localize('card.moonSet'),
       },
+      timeMarkers,
     };
 
     return dataCotent;
   }
-
-  _getRiseSetData = (timeKey: string) => {
-    const today = new Date();
-    const timeData = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
-    const time = new Date(timeData[timeKey]);
-    const hour = time.getHours() + time.getMinutes() / 60;
-    const index = Math.floor(hour * 2);
-    const postition = this._getMoonPosition(time);
-    const altitude = postition.altitudeDegrees;
-
-    return { index, altitude };
-  };
 
   _getAltituteData = (startTime: Date) => {
     const result: { [key: string]: number } = {};
@@ -266,16 +246,41 @@ export class Moon {
     return this.localize(`card.cardinalShort.${value}`);
   };
 
-  timePostion = (timeKey: string): string => {
+  timeDataSet = (timeKey: string): Record<string, any> => {
+    const showOnChart = (time: Date): boolean => {
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0);
+
+      const todayEnd = new Date();
+      todayEnd.setHours(23, 59, 59, 999);
+      return time > todayStart && time < todayEnd;
+    };
+
     const today = new Date();
     const timeData = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
     const time = new Date(timeData[timeKey]);
-    const position = this._getMoonPosition(time);
-    const azimuth = position.azimuthDegrees;
+    const timePosition = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
+    const altitude = timePosition.altitudeDegrees;
+    // Formated direction data
+    const azimuth = timePosition.azimuthDegrees;
     const cardinal = this.convertCardinal(azimuth);
-
     const formatedAzimuth = this.formatNumber(azimuth.toFixed(2));
-    return `${formatedAzimuth}° ${cardinal}`;
+    const direction = `${formatedAzimuth}° ${cardinal}`;
+
+    // Formated time
+    const formatedTime = this.formatTime(time);
+
+    // Show on chart
+    const show = showOnChart(time);
+    const label = this.localize(`card.moon${timeKey.charAt(0).toUpperCase() + timeKey.slice(1)}`);
+    const lineOffset = timeKey === 'set' ? -20 : 20;
+    const textOffset = timeKey === 'set' ? -30 : 60;
+    const position = {
+      index: Math.floor(time.getHours() + time.getMinutes() / 60) * 2,
+      altitude,
+    };
+
+    return { show, position, label, formatedTime, lineOffset, textOffset, direction };
   };
 
   get calendarEvents() {

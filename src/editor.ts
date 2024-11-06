@@ -250,7 +250,17 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       false
     );
 
-    const textFormInput = html`
+    const numberDecimals = html` <ha-selector
+      .hass=${this.hass}
+      .value=${this._config?.number_decimals as number}
+      .configValue=${'number_decimals'}
+      .selector=${{ number: { max: 10, min: 0, mode: 'box', step: 1 } }}
+      .label=${'Number Decimals'}
+      .required=${true}
+      @value-changed=${this._handleValueChange}
+    ></ha-selector>`;
+
+    const customBackgroundInput = html`
       <div class="custom-background-wrapper">
         <ha-textfield
           .label=${this.localize('editor.placeHolder.customBackground')}
@@ -279,7 +289,11 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       </div>
     `;
 
-    content.push([viewOptions, langComboBox, defaultCard, moonPositon, textFormInput]);
+    const comboboxex = html`
+      <div class="comboboxes">${langComboBox} ${defaultCard} ${moonPositon} ${numberDecimals}</div>
+    `;
+
+    content.push([viewOptions, comboboxex, customBackgroundInput]);
 
     return this.contentTemplate('viewConfig', 'viewConfig', 'mdi:image', html`${content}`);
   }
