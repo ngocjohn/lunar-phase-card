@@ -1,3 +1,25 @@
+<a id="v1.7.2"></a>
+# [v1.7.2](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.7.2) - 2024-11-07
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.7.2 -->
+
+## What's Changed
+### New Features 🎉
+* **Full Moon Phase Calendar**: Added an all-new calendar feature that allows users to view the moon phase for every day of the month. This enhancement makes it easier to plan and track lunar events throughout the month. [#37](https://github.com/ngocjohn/lunar-phase-card/pull/37)
+* **Configurable Axis Ticks**: Introduced a configuration setting that lets users customize the visibility of ticks on the x and y axes in the horizon graph. This option provides greater flexibility in how data is presented and improves readability based on user preference.
+* **Graph Design Overhaul**: Significantly improved the design of the horizon graph, making it clearer and more engaging. The graph is now more interactive, with smoother transitions and better visual.
+* **Initial Card Type Setting**: Added an option to set the initial card type (base, calendar, horizon), allowing users to control which view appears by default when opening the card.
+* **Decimal Precision Configuration**: Added a configuration option to set the number of decimal places displayed for numerical values, giving users more control over data precision.
+
+![moon-calendar](https://github.com/user-attachments/assets/30adf30d-cb62-419c-8706-061dd12bd722)
+
+![moon-graph](https://github.com/user-attachments/assets/8a31d9be-e750-402e-ba16-89882d00848f)
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.7.1...v1.7.2
+
+[Changes][v1.7.2]
+
+
 <a id="v1.7.1"></a>
 # [v1.7.1](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.7.1) - 2024-11-02
 
@@ -185,6 +207,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.7.2]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.7.1...v1.7.2
 [v1.7.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.7.0...v1.7.1
 [v1.7.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.6.0...v1.7.0
 [v1.6.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.5.0...v1.6.0
