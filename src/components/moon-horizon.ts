@@ -470,9 +470,7 @@ export class MoonHorizon extends LitElement {
 
   /* --------------------------------- PLUGINS -------------------------------- */
   private moonMarkerPlugin = (): Plugin => {
-    let emoji = this.todayData.moonPhase.phase.emoji;
-    let isHovered = false; // Flag to indicate hover state
-    let storedPosition: { x: number; y: number } | null = null;
+    const emoji = this.todayData.moonPhase.phase.emoji;
     const getIndex = () => {
       const now = new Date();
       const hour = now.getHours() + now.getMinutes() / 60;
@@ -496,95 +494,12 @@ export class MoonHorizon extends LitElement {
           // Draw the emoji
           ctx.save();
           ctx.font = '24px serif';
-          ctx.fillText(isHovered ? '' : emoji, x - 12, y);
+          ctx.fillText(emoji, x - 12, y);
           ctx.restore();
-
-          // Store the emoji position for hover detection
-          storedPosition = { x: x - 12, y };
-        }
-      },
-      afterEvent(chart: Chart, args) {
-        const ctx = chart.ctx;
-        const inChartArea = args.inChartArea as boolean;
-        const { x: mouseX, y: mouseY, type } = args.event;
-        const { x, y } = storedPosition || { x: 0, y: 0 };
-        const emojiWidth = ctx.measureText(emoji).width;
-        const emojiHeight = 24; // Approximate height based on font size
-        // Check if the mouse is hovering over the emoji area
-        if (inChartArea && mouseX && mouseY && type === 'mousemove') {
-          const isHovering =
-            mouseX >= x - emojiWidth &&
-            mouseX <= x + emojiWidth &&
-            mouseY >= y - emojiHeight &&
-            mouseY <= y + emojiHeight;
-
-          if (isHovering !== isHovered) {
-            isHovered = isHovering; // Update hover state
-            chart.update('none'); // Update the chart without animating
-            args.changed = true;
-          }
         }
       },
     };
   };
-
-  // private moonMarkerPlugin = (): Plugin => {
-  //   const emoji = this.todayData.moonPhase.phase.emoji;
-  //   const getIndex = () => {
-  //     const now = new Date();
-  //     const hour = now.getHours() + now.getMinutes() / 60;
-  //     const index = Math.floor(hour) * 2;
-  //     return index;
-  //   };
-
-  //   const currentHourIndex = getIndex();
-
-  //   return {
-  //     id: 'moonMarkerPlugin',
-  //     afterDatasetsDraw(chart: Chart) {
-  //       const dataSet = chart.getDatasetMeta(0);
-  //       if (dataSet.hidden) return;
-  //       const ctx = chart.ctx;
-  //       const { x, y } = dataSet.data[currentHourIndex].getProps(['x', 'y']);
-
-  //       // Draw the emoji
-  //       ctx.save();
-  //       ctx.font = '24px serif';
-  //       ctx.fillText(emoji, x - 12, y);
-  //       ctx.restore();
-
-  //       // Add hover event to the chart's canvas
-  //       chart.canvas.addEventListener('mousemove', (event) => {
-  //         console.log('Mouse move event');
-  //         const rect = chart.canvas.getBoundingClientRect();
-  //         const mouseX = event.clientX - rect.left;
-  //         const mouseY = event.clientY - rect.top;
-
-  //         // Check if mouse is hovering over the emoji area
-  //         const emojiWidth = ctx.measureText(emoji).width;
-  //         const emojiHeight = 24; // Approximate height based on font size
-  //         const isHovering =
-  //           mouseX >= x - 12 && mouseX <= x - 12 + emojiWidth && mouseY >= y - emojiHeight && mouseY <= y;
-
-  //         if (isHovering) {
-  //           // Do something when hovering, e.g., change the emoji color or display a tooltip
-  //           ctx.save();
-  //           ctx.clearRect(x - 12, y - emojiHeight, emojiWidth, emojiHeight); // Clear the previous emoji
-  //           ctx.fillStyle = 'red'; // Change color on hover
-  //           ctx.fillText(emoji, x - 12, y); // Redraw the emoji
-  //           ctx.restore();
-  //         } else {
-  //           // Optionally reset the emoji if not hovering
-  //           ctx.save();
-  //           ctx.clearRect(x - 12, y - emojiHeight, emojiWidth, emojiHeight); // Clear the hovered emoji
-  //           ctx.fillStyle = 'black'; // Original color
-  //           ctx.fillText(emoji, x - 12, y); // Redraw the emoji
-  //           ctx.restore();
-  //         }
-  //       });
-  //     },
-  //   };
-  // };
 
   private fillTopPlugin = (): Plugin => {
     const { fillColor } = this.cssColors;
