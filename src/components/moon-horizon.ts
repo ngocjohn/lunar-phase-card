@@ -25,6 +25,7 @@ import { Moon } from '../utils/moon';
 // Styles
 import styles from '../css/style.css';
 import { ChartColors } from '../types';
+import { MOON_RISE_ICON, MOON_SET_ICON } from '../utils/moon-pic';
 
 const HOVER_TIMEOUT = 50;
 
@@ -131,6 +132,7 @@ export class MoonHorizon extends LitElement {
     const fillTopPlugin = this.fillTopPlugin();
     const timeMarkerPlugin = this.timeMarkerPlugin();
     const moonMarkerPlugin = this.moonMarkerPlugin();
+
     return [moonMarkerPlugin, timeMarkerPlugin, fillTopPlugin];
   }
 
@@ -197,7 +199,7 @@ export class MoonHorizon extends LitElement {
             if (elements.length > 0) {
               const element = elements[0];
               const dataIndex = element.index;
-              console.log('Clicked on', dataIndex, element);
+              // console.log('Clicked on', dataIndex, element);
             }
           },
         },
@@ -337,7 +339,7 @@ export class MoonHorizon extends LitElement {
       tension: 0.2,
       segment: {
         borderColor: (ctx: ScriptableLineSegmentContext) =>
-          ctx.p0.parsed.y >= 0 && ctx.p1.parsed.y >= 0 ? primaryTextColor : fillBelowLineColor,
+          ctx.p0.parsed.y >= 0 || ctx.p1.parsed.y >= 0 ? primaryTextColor : fillBelowLineColor,
         borderWidth: (ctx: ScriptableLineSegmentContext) => (ctx.p0.parsed.y <= 0 ? 1 : 1.2),
       },
       radius: () => (this.hoverOnChart ? 1.1 : 0),
@@ -468,7 +470,9 @@ export class MoonHorizon extends LitElement {
 
   /* --------------------------------- PLUGINS -------------------------------- */
   private moonMarkerPlugin = (): Plugin => {
-    const emoji = this.todayData.moonPhase.phase.emoji;
+    let emoji = this.todayData.moonPhase.phase.emoji;
+    let isHovered = false; // Flag to indicate hover state
+    let storedPosition: { x: number; y: number } | null = null;
     const getIndex = () => {
       const now = new Date();
       const hour = now.getHours() + now.getMinutes() / 60;
@@ -480,21 +484,107 @@ export class MoonHorizon extends LitElement {
 
     return {
       id: 'moonMarkerPlugin',
-      events: ['click'],
-      afterDatasetsDraw(chart: Chart) {
+      afterDatasetDraw(chart: Chart, args) {
+        const index = args.index;
+        if (index !== 0) return;
         const dataSet = chart.getDatasetMeta(0);
         if (dataSet.hidden) return;
+
         const ctx = chart.ctx;
         const { x, y } = dataSet.data[currentHourIndex].getProps(['x', 'y']);
+        if (emoji) {
+          // Draw the emoji
+          ctx.save();
+          ctx.font = '24px serif';
+          ctx.fillText(isHovered ? '' : emoji, x - 12, y);
+          ctx.restore();
 
-        // Draw the emoji
-        ctx.save();
-        ctx.font = '24px serif';
-        ctx.fillText(emoji, x - 12, y);
-        ctx.restore();
+          // Store the emoji position for hover detection
+          storedPosition = { x: x - 12, y };
+        }
+      },
+      afterEvent(chart: Chart, args) {
+        const ctx = chart.ctx;
+        const inChartArea = args.inChartArea as boolean;
+        const { x: mouseX, y: mouseY, type } = args.event;
+        const { x, y } = storedPosition || { x: 0, y: 0 };
+        const emojiWidth = ctx.measureText(emoji).width;
+        const emojiHeight = 24; // Approximate height based on font size
+        // Check if the mouse is hovering over the emoji area
+        if (inChartArea && mouseX && mouseY && type === 'mousemove') {
+          const isHovering =
+            mouseX >= x - emojiWidth &&
+            mouseX <= x + emojiWidth &&
+            mouseY >= y - emojiHeight &&
+            mouseY <= y + emojiHeight;
+
+          if (isHovering !== isHovered) {
+            isHovered = isHovering; // Update hover state
+            chart.update('none'); // Update the chart without animating
+            args.changed = true;
+          }
+        }
       },
     };
   };
+
+  // private moonMarkerPlugin = (): Plugin => {
+  //   const emoji = this.todayData.moonPhase.phase.emoji;
+  //   const getIndex = () => {
+  //     const now = new Date();
+  //     const hour = now.getHours() + now.getMinutes() / 60;
+  //     const index = Math.floor(hour) * 2;
+  //     return index;
+  //   };
+
+  //   const currentHourIndex = getIndex();
+
+  //   return {
+  //     id: 'moonMarkerPlugin',
+  //     afterDatasetsDraw(chart: Chart) {
+  //       const dataSet = chart.getDatasetMeta(0);
+  //       if (dataSet.hidden) return;
+  //       const ctx = chart.ctx;
+  //       const { x, y } = dataSet.data[currentHourIndex].getProps(['x', 'y']);
+
+  //       // Draw the emoji
+  //       ctx.save();
+  //       ctx.font = '24px serif';
+  //       ctx.fillText(emoji, x - 12, y);
+  //       ctx.restore();
+
+  //       // Add hover event to the chart's canvas
+  //       chart.canvas.addEventListener('mousemove', (event) => {
+  //         console.log('Mouse move event');
+  //         const rect = chart.canvas.getBoundingClientRect();
+  //         const mouseX = event.clientX - rect.left;
+  //         const mouseY = event.clientY - rect.top;
+
+  //         // Check if mouse is hovering over the emoji area
+  //         const emojiWidth = ctx.measureText(emoji).width;
+  //         const emojiHeight = 24; // Approximate height based on font size
+  //         const isHovering =
+  //           mouseX >= x - 12 && mouseX <= x - 12 + emojiWidth && mouseY >= y - emojiHeight && mouseY <= y;
+
+  //         if (isHovering) {
+  //           // Do something when hovering, e.g., change the emoji color or display a tooltip
+  //           ctx.save();
+  //           ctx.clearRect(x - 12, y - emojiHeight, emojiWidth, emojiHeight); // Clear the previous emoji
+  //           ctx.fillStyle = 'red'; // Change color on hover
+  //           ctx.fillText(emoji, x - 12, y); // Redraw the emoji
+  //           ctx.restore();
+  //         } else {
+  //           // Optionally reset the emoji if not hovering
+  //           ctx.save();
+  //           ctx.clearRect(x - 12, y - emojiHeight, emojiWidth, emojiHeight); // Clear the hovered emoji
+  //           ctx.fillStyle = 'black'; // Original color
+  //           ctx.fillText(emoji, x - 12, y); // Redraw the emoji
+  //           ctx.restore();
+  //         }
+  //       });
+  //     },
+  //   };
+  // };
 
   private fillTopPlugin = (): Plugin => {
     const { fillColor } = this.cssColors;
@@ -523,59 +613,125 @@ export class MoonHorizon extends LitElement {
   private timeMarkerPlugin = (): Plugin => {
     const timeMarkers = this.todayData.timeMarkers;
     const { secondaryTextColor, fillColor } = this.cssColors;
+
+    // Pre-load SVG images as Image objects
+    const moonUpSvg = new Image();
+    const moonDownSvg = new Image();
+
+    moonUpSvg.src =
+      'data:image/svg+xml;charset=utf-8,' +
+      encodeURIComponent(MOON_RISE_ICON.replace('currentcolor', secondaryTextColor));
+    moonDownSvg.src =
+      'data:image/svg+xml;charset=utf-8,' +
+      encodeURIComponent(MOON_SET_ICON.replace('currentcolor', secondaryTextColor));
+
+    const getMaxValueText = (ctx: CanvasRenderingContext2D, formatedTime: string, direction: string) => {
+      const timeWidth = ctx.measureText(formatedTime).width;
+      const directionWidth = ctx.measureText(direction).width;
+      return Math.max(timeWidth, directionWidth);
+    };
+
     const drawTimeMarker = (
       ctx: CanvasRenderingContext2D,
-      label: string,
+      isUp: boolean,
       formatedTime: string,
       direction: string,
       x: number,
       y: number,
       lineOffset: number,
-      textOffset: number
+      textOffset: number,
+      xOffset: number,
+      textAlign: CanvasTextAlign
     ) => {
       ctx.save();
 
+      // Draw the line
       ctx.beginPath();
-      // circle point
-      ctx.arc(x, y, 2, 0, 2 * Math.PI);
-      ctx.fillStyle = fillColor;
-      ctx.fill();
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = secondaryTextColor;
-      ctx.stroke();
-      // line and text
-      ctx.font = '12px';
       ctx.fillStyle = secondaryTextColor;
       ctx.strokeStyle = fillColor;
       ctx.beginPath();
       ctx.moveTo(x, y);
       ctx.lineTo(x, y - lineOffset);
       ctx.stroke();
-      ctx.fillText(label, x - 12, y - textOffset);
-      ctx.fillText(formatedTime, x - 12, y - textOffset + 15);
-      ctx.fillText(direction, x - 12, y - textOffset + 30);
+
+      // Draw the chevron arrow (up or down)
+      ctx.beginPath();
+      ctx.moveTo(x - 5, y); // Starting point for the left edge
+      if (isUp) {
+        // Chevron pointing up
+        ctx.lineTo(x, y - 5); // Top point of the chevron
+        ctx.lineTo(x + 5, y); // Right edge
+      } else {
+        // Chevron pointing down
+        ctx.lineTo(x, y + 5); // Bottom point of the chevron
+        ctx.lineTo(x + 5, y); // Right edge
+      }
+      ctx.closePath();
+      ctx.fillStyle = secondaryTextColor;
+      ctx.fill();
+
+      // Load and draw the SVG based on isUp
+      const imgToDraw = isUp ? moonUpSvg : moonDownSvg;
+      // Draw the SVG image onto the canvas directly
+      ctx.drawImage(imgToDraw, xOffset, y - textOffset + 5, 17, 17);
+
+      // Draw the time and direction text
+      ctx.fillStyle = secondaryTextColor;
+      ctx.strokeStyle = fillColor;
+      ctx.font = '12px';
+      ctx.textAlign = textAlign;
+      ctx.fillText(formatedTime, xOffset + 20, y - textOffset + 15);
+      ctx.fillText(direction, xOffset, y - textOffset + 35);
+
       ctx.restore();
     };
 
     return {
       id: 'timeMarkerPlugin',
-      beforeDraw(chart: Chart) {
+      beforeDatasetDraw(chart: Chart) {
         const timeDataSet = chart.getDatasetMeta(1);
         if (timeDataSet.hidden) return;
         const {
           ctx,
+          chartArea: { left, right },
           scales: { x, y },
         } = chart;
         // Iterate over each time marker and draw if necessary
 
         timeMarkers.forEach((timeMarker: any) => {
-          const { show, position, label, formatedTime, direction, lineOffset, textOffset } = timeMarker;
+          const { show, position, isUp, formatedTime, direction, lineOffset, textOffset } = timeMarker;
           if (show) {
             const { index, altitude } = position;
             const xPosition = x.getPixelForValue(index);
             const yPosition = y.getPixelForValue(altitude);
+            const maxTextWidth = getMaxValueText(ctx, formatedTime, direction);
+            let textAlign: CanvasTextAlign = 'start';
+            let centerText = maxTextWidth / 2;
+            let xOffset = xPosition - centerText;
 
-            drawTimeMarker(ctx, label, formatedTime, direction, xPosition, yPosition, lineOffset, textOffset);
+            if (xPosition + centerText > right) {
+              textAlign = 'end';
+              xOffset = xPosition - 4;
+            } else if (xPosition - centerText < left) {
+              textAlign = 'start';
+              xOffset = xPosition + 4;
+            } else {
+              xOffset = xPosition - centerText;
+              textAlign = 'start';
+            }
+
+            drawTimeMarker(
+              ctx,
+              isUp,
+              formatedTime,
+              direction,
+              xPosition,
+              yPosition,
+              lineOffset,
+              textOffset,
+              xOffset,
+              textAlign
+            );
           }
         });
       },

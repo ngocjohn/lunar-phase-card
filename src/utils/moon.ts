@@ -281,15 +281,17 @@ export class Moon {
 
     // Show on chart
     const show = showOnChart(time);
-    const label = this.localize(`card.moon${timeKey.charAt(0).toUpperCase() + timeKey.slice(1)}`);
-    const lineOffset = timeKey === 'set' ? -20 : 20;
+    const isUp = timeKey === 'set' ? false : true;
+    const lineOffset = timeKey === 'set' ? -30 : 20;
     const textOffset = timeKey === 'set' ? -30 : 60;
+    const index = Math.round((time.getHours() + time.getMinutes() / 60) * 2);
+    const randomNum = Math.floor(Math.random() * (47 - 0 + 1)) + 0;
     const position = {
-      index: Math.round((time.getHours() + time.getMinutes() / 60) * 2),
+      index: index,
       altitude,
     };
 
-    return { show, position, label, formatedTime, lineOffset, textOffset, direction };
+    return { show, position, isUp, formatedTime, lineOffset, textOffset, direction };
   };
 
   get calendarEvents() {
