@@ -1,6 +1,7 @@
 import * as SunCalc from '@noim/suncalc3';
 import { FrontendLocaleData, formatNumber, relativeTime, formatTime } from 'custom-card-helpers';
 
+import { MOON_PIC_URL } from '../const';
 import { localize } from '../localize/localize';
 import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location } from '../types';
 import { MOON_IMAGES } from '../utils/moon-pic';
@@ -167,15 +168,15 @@ export class Moon {
     const timeToday = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
 
     const timeMarkers = ['rise', 'set'].map((key) => this.timeDataSet(key));
-
+    const currentMoon = this._getCurrentMoonData();
     const dataCotent = {
       time: timeToday,
       altitude: this._getDataAltitude(startTime),
       timeLabels: Object.keys(_altitudeData),
       altitudeData: Object.values(_altitudeData),
       minMaxY: {
-        sugestedYMax: Math.ceil(Math.max(...Object.values(_altitudeData)) + 10),
-        sugestedYMin: Math.min(...Object.values(_altitudeData)) - 10,
+        sugestedYMax: Math.round(Math.max(...Object.values(_altitudeData)) + 10),
+        sugestedYMin: Math.round(Math.min(...Object.values(_altitudeData)) - 10),
       },
       moonPhase: this._moonData.illumination,
       lang: {
@@ -193,6 +194,19 @@ export class Moon {
     const timeRange = new Date(now.getTime() - 12 * 60 * 60 * 1000);
     const dataSet = this._getDataAltitude(timeRange);
     return dataSet;
+  };
+
+  _getCurrentMoonData = (): string => {
+    const now = new Date();
+    const currentData = SunCalc.getMoonData(now, this.location.latitude, this.location.longitude);
+    const { azimuthDegrees } = currentData;
+    const formatNumber = this.formatNumber(azimuthDegrees);
+    const cardinal = this.convertCardinal(azimuthDegrees);
+    const direction = `${formatNumber}° ${cardinal}`;
+    const formatedTime = this.formatTime(now);
+
+    const contentText = `${formatedTime} - ${direction}`;
+    return contentText;
   };
 
   _getAltituteData = (startTime: Date) => {
@@ -229,6 +243,32 @@ export class Moon {
 
   _getMoonTransit = (rise: Date, set: Date): { main: Date | null; invert: Date | null } => {
     return SunCalc.moonTransit(rise, set, this.location.latitude, this.location.longitude);
+  };
+
+  _currentMoonIndex(): number {
+    const now = new Date();
+    const hour = now.getHours() + now.getMinutes() / 60;
+    const index = Math.floor(hour) * 2;
+    return index;
+  }
+
+  _fetchtCurrentMoon = (): Record<string, any> => {
+    const now = new Date();
+    const hour = now.getHours() + now.getMinutes() / 60;
+    const index = Math.floor(hour) * 2;
+    const currentData = SunCalc.getMoonData(now, this.location.latitude, this.location.longitude);
+    const { azimuthDegrees, altitudeDegrees } = currentData;
+    const formatNumber = this.formatNumber(azimuthDegrees);
+    const cardinal = this.convertCardinal(azimuthDegrees);
+    const direction = `${formatNumber}° ${cardinal}`;
+    const formatedTime = this.formatTime(now);
+    const altitude = `${this.formatNumber(altitudeDegrees)}°`;
+
+    const contentBody: string[] = [];
+    contentBody.push(altitude);
+    contentBody.push(direction);
+
+    return { currentHourIndex: index, body: contentBody, title: formatedTime };
   };
 
   convertCardinal = (degrees: number): string => {
@@ -274,7 +314,7 @@ export class Moon {
     const azimuth = timePosition.azimuthDegrees;
     const cardinal = this.convertCardinal(azimuth);
     const formatedAzimuth = this.formatNumber(azimuth);
-    const direction = `${formatedAzimuth}° ${cardinal}`;
+    const direction = `${formatedAzimuth}°${cardinal}`;
 
     // Formated time
     const formatedTime = this.formatTime(time);
@@ -282,8 +322,7 @@ export class Moon {
     // Show on chart
     const show = showOnChart(time);
     const isUp = timeKey === 'set' ? false : true;
-    const lineOffset = timeKey === 'set' ? -30 : 20;
-    const textOffset = timeKey === 'set' ? -30 : 60;
+    const lineOffset = 30;
     const index = Math.round((time.getHours() + time.getMinutes() / 60) * 2);
     const randomNum = Math.floor(Math.random() * (47 - 0 + 1)) + 0;
     const position = {
@@ -291,7 +330,7 @@ export class Moon {
       altitude,
     };
 
-    return { show, position, isUp, formatedTime, lineOffset, textOffset, direction };
+    return { show, position, isUp, formatedTime, lineOffset, direction };
   };
 
   get calendarEvents() {

@@ -364,7 +364,7 @@ export class MoonHorizon extends LitElement {
     const { secondaryTextColor } = this.cssColors;
     const { sugestedYMax, sugestedYMin } = this.todayData.minMaxY;
     const { y_ticks, x_ticks } = this.card.config;
-
+    const currentMoon = this.moon._fetchtCurrentMoon();
     const ticksOptions = {
       color: secondaryTextColor,
     };
@@ -397,7 +397,7 @@ export class MoonHorizon extends LitElement {
         maxRotation: 40,
       },
       border: {
-        display: true,
+        display: false,
       },
     };
 
@@ -438,7 +438,17 @@ export class MoonHorizon extends LitElement {
       bodyAlign: 'right',
       displayColors: false,
       callbacks: {
+        title: (context) => {
+          if (context[0].dataIndex === currentMoon.currentHourIndex) {
+            return `${currentMoon.title}`;
+          } else {
+            return context[0].label;
+          }
+        },
         label: (context) => {
+          if (context.dataIndex === currentMoon.currentHourIndex) {
+            return currentMoon.body;
+          }
           return `${context.formattedValue}°`;
         },
       },
@@ -470,21 +480,33 @@ export class MoonHorizon extends LitElement {
 
   /* --------------------------------- PLUGINS -------------------------------- */
   private moonMarkerPlugin = (): Plugin => {
+    const { secondaryTextColor, fillColor, primaryTextColor } = this.cssColors;
+    const sugestedYMax = this.todayData.minMaxY.sugestedYMax;
     const emoji = this.todayData.moonPhase.phase.emoji;
-    const getIndex = () => {
-      const now = new Date();
-      const hour = now.getHours() + now.getMinutes() / 60;
-      const index = Math.floor(hour) * 2;
-      return index;
-    };
+    const currentHourIndex = this.moon._currentMoonIndex();
 
-    const currentHourIndex = getIndex();
+    // const drawCurrentAltitude = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
+    //   ctx.save();
+    //   // Draw the line
+    //   ctx.beginPath();
+    //   ctx.fillStyle = secondaryTextColor;
+    //   ctx.strokeStyle = fillColor;
+    //   ctx.moveTo(x, y);
+    //   ctx.lineTo(x, y - sugestedYMax);
+    //   ctx.stroke();
+
+    //   // Fill text properties
+    //   ctx.fillStyle = primaryTextColor;
+    //   ctx.strokeStyle = fillColor;
+    //   ctx.font = '14px';
+    //   ctx.textAlign = 'center';
+    //   ctx.fillText(textContent, x, y - sugestedYMax - 25);
+    //   ctx.restore();
+    // };
 
     return {
       id: 'moonMarkerPlugin',
-      afterDatasetDraw(chart: Chart, args) {
-        const index = args.index;
-        if (index !== 0) return;
+      afterDatasetsDraw(chart: Chart) {
         const dataSet = chart.getDatasetMeta(0);
         if (dataSet.hidden) return;
 
@@ -528,6 +550,7 @@ export class MoonHorizon extends LitElement {
   private timeMarkerPlugin = (): Plugin => {
     const timeMarkers = this.todayData.timeMarkers;
     const { secondaryTextColor, fillColor } = this.cssColors;
+    const { sugestedYMax, sugestedYMin } = this.todayData.minMaxY;
 
     // Pre-load SVG images as Image objects
     const moonUpSvg = new Image();
@@ -540,10 +563,11 @@ export class MoonHorizon extends LitElement {
       'data:image/svg+xml;charset=utf-8,' +
       encodeURIComponent(MOON_SET_ICON.replace('currentcolor', secondaryTextColor));
 
-    const getMaxValueText = (ctx: CanvasRenderingContext2D, formatedTime: string, direction: string) => {
+    const getMaxValueText = (ctx: CanvasRenderingContext2D, isUp: string, formatedTime: string, direction: string) => {
+      const setRiseWidth = ctx.measureText(isUp).width;
       const timeWidth = ctx.measureText(formatedTime).width;
       const directionWidth = ctx.measureText(direction).width;
-      return Math.max(timeWidth, directionWidth);
+      return Math.max(setRiseWidth, timeWidth, directionWidth);
     };
 
     const drawTimeMarker = (
@@ -554,20 +578,10 @@ export class MoonHorizon extends LitElement {
       x: number,
       y: number,
       lineOffset: number,
-      textOffset: number,
       xOffset: number,
       textAlign: CanvasTextAlign
     ) => {
       ctx.save();
-
-      // Draw the line
-      ctx.beginPath();
-      ctx.fillStyle = secondaryTextColor;
-      ctx.strokeStyle = fillColor;
-      ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(x, y - lineOffset);
-      ctx.stroke();
 
       // Draw the chevron arrow (up or down)
       ctx.beginPath();
@@ -585,18 +599,45 @@ export class MoonHorizon extends LitElement {
       ctx.fillStyle = secondaryTextColor;
       ctx.fill();
 
-      // Load and draw the SVG based on isUp
-      const imgToDraw = isUp ? moonUpSvg : moonDownSvg;
-      // Draw the SVG image onto the canvas directly
-      ctx.drawImage(imgToDraw, xOffset, y - textOffset + 5, 17, 17);
-
-      // Draw the time and direction text
+      // Draw the line
+      ctx.beginPath();
       ctx.fillStyle = secondaryTextColor;
       ctx.strokeStyle = fillColor;
-      ctx.font = '12px';
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      if (isUp) {
+        ctx.lineTo(x, y - lineOffset);
+      } else {
+        ctx.lineTo(x, y + lineOffset);
+      }
+      ctx.stroke();
+
+      ctx.fillStyle = secondaryTextColor;
       ctx.textAlign = textAlign;
-      ctx.fillText(formatedTime, xOffset + 20, y - textOffset + 15);
-      ctx.fillText(direction, xOffset, y - textOffset + 35);
+      ctx.textAlign = textAlign;
+
+      // Load and draw the SVG based on `isUp`
+      const imgToDraw = isUp ? moonUpSvg : moonDownSvg;
+      const timeWidth = ctx.measureText(formatedTime).width;
+      let iconOffset;
+
+      // Determine `iconOffset` based on `textAlign`
+      if (textAlign === 'start') {
+        iconOffset = xOffset + timeWidth + 5; // Icon placed to the right of the text
+      } else if (textAlign === 'end') {
+        iconOffset = xOffset - timeWidth - 22; // Icon placed to the left of the text (accounting for the icon width)
+      }
+      // Draw the icon
+      ctx.drawImage(imgToDraw, iconOffset, isUp ? y - lineOffset - 35 : y + lineOffset, 18, 18);
+
+      // Draw the time and direction text
+      if (isUp) {
+        ctx.fillText(direction, xOffset, y - lineOffset - 10);
+        ctx.fillText(formatedTime, xOffset, y - lineOffset - 25);
+      } else {
+        ctx.fillText(direction, xOffset, y + lineOffset + 25);
+        ctx.fillText(formatedTime, xOffset, y + lineOffset + 10);
+      }
 
       ctx.restore();
     };
@@ -608,45 +649,37 @@ export class MoonHorizon extends LitElement {
         if (timeDataSet.hidden) return;
         const {
           ctx,
-          chartArea: { left, right },
+          chartArea: { left, right, bottom },
           scales: { x, y },
         } = chart;
         // Iterate over each time marker and draw if necessary
 
-        timeMarkers.forEach((timeMarker: any) => {
-          const { show, position, isUp, formatedTime, direction, lineOffset, textOffset } = timeMarker;
+        timeMarkers.map((timeMarker: any) => {
+          const { show, position, isUp, formatedTime, direction } = timeMarker;
           if (show) {
-            const { index, altitude } = position;
+            const { index } = position;
+
             const xPosition = x.getPixelForValue(index);
-            const yPosition = y.getPixelForValue(altitude);
-            const maxTextWidth = getMaxValueText(ctx, formatedTime, direction);
+            const yPosition = y.getPixelForValue(0);
+
+            const lineOffset = isUp ? Math.abs(sugestedYMax) + 10 : Math.round((bottom - yPosition) / 2);
+            const maxTextWidth = getMaxValueText(ctx, isUp ? 'Rise' : 'Set', formatedTime, direction);
+
             let textAlign: CanvasTextAlign = 'start';
             let centerText = maxTextWidth / 2;
-            let xOffset = xPosition - centerText;
+            let xOffset = xPosition;
 
             if (xPosition + centerText > right) {
               textAlign = 'end';
-              xOffset = xPosition - 4;
+              xOffset = xPosition - 2;
             } else if (xPosition - centerText < left) {
               textAlign = 'start';
-              xOffset = xPosition + 4;
+              xOffset = xPosition + 2;
             } else {
               xOffset = xPosition - centerText;
-              textAlign = 'start';
             }
 
-            drawTimeMarker(
-              ctx,
-              isUp,
-              formatedTime,
-              direction,
-              xPosition,
-              yPosition,
-              lineOffset,
-              textOffset,
-              xOffset,
-              textAlign
-            );
+            drawTimeMarker(ctx, isUp, formatedTime, direction, xPosition, yPosition, lineOffset, xOffset, textAlign);
           }
         });
       },

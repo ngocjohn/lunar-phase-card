@@ -15,6 +15,9 @@ import { FontSizeOptions, FontTextTransformOptions } from './types';
 
 export const BASE_BACKGROUND_URL =
   'https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/refs/heads/main/assets/card-bkg.png';
+const COMMIT_SHA = '21460de854685f223251b6eaa7bfe34ea5c133fb';
+const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${COMMIT_SHA}/moon_pic/`;
+export const MOON_PIC_URL = (index: number) => `${PIC_URL}moon_image_${index}.png`;
 
 export const REPOSITORY = repository.repo;
 export const CARD_VERSION = `v${version}`;
