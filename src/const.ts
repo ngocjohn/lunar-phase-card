@@ -11,21 +11,22 @@ import {
 } from '@mdi/js';
 
 import { version, repository } from '../package.json';
+import background from './images/bkg.png';
+import blueBackground from './images/blue-bg.png';
 import { FontSizeOptions, FontTextTransformOptions } from './types';
 
-export const BASE_BACKGROUND_URL =
-  'https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/refs/heads/main/assets/card-bkg.png';
-const COMMIT_SHA = '21460de854685f223251b6eaa7bfe34ea5c133fb';
-const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${COMMIT_SHA}/moon_pic/`;
-export const MOON_PIC_URL = (index: number) => `${PIC_URL}moon_image_${index}.png`;
+const COMMIT_SHA = '3ae3789a888f7749545560214246cbc410502a6d';
+const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${COMMIT_SHA}/background/`;
+const BACKGROUND_URL = (index: number) => `${PIC_URL}moon_bg_${index}.png`;
+
+export const CUSTOM_BG = [blueBackground, BACKGROUND_URL(1), BACKGROUND_URL(2), BACKGROUND_URL(3), BACKGROUND_URL(4)];
 
 export const REPOSITORY = repository.repo;
 export const CARD_VERSION = `v${version}`;
 export const BASE_REFRESH_INTERVAL = 15 * 1000;
 
-import background from './images/bkg.png';
-
 export const BACKGROUND = background;
+export const BLUE_BG = blueBackground;
 
 export const FONTSIZES: FontSizeOptions[] = ['auto', 'small', 'medium', 'large', 'x-large', 'xx-large'];
 export const FONTSTYLES: FontTextTransformOptions[] = ['none', 'capitalize', 'uppercase', 'lowercase'];

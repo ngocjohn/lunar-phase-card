@@ -1,6 +1,5 @@
 import { FrontendLocaleData, TimeFormat, HomeAssistant } from 'custom-card-helpers';
 
-import { BASE_BACKGROUND_URL } from '../const';
 import { MOON_IMAGES } from './moon-pic';
 
 export function formatMoonTime(dateString: string): string {
@@ -119,27 +118,6 @@ export const formatedTime = (time: number | Date, amPm: boolean, lang: string): 
 
 export const convertKmToMiles = (km: number, useMiles: boolean): number => {
   return useMiles ? km / 1.609344 : km;
-};
-
-export const addBackgroundLocalStorage = () => {
-  if (!localStorage.getItem('phaseCardBackground')) {
-    try {
-      fetch(BASE_BACKGROUND_URL)
-        .then((response) => response.blob())
-        .then((blob) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(blob);
-          reader.onloadend = () => {
-            const base64data = reader.result;
-            localStorage.setItem('phaseCardBackground', base64data as string);
-            console.log('Background image uploaded');
-          };
-        });
-    } catch (error) {
-      console.error('Error fetching background image:', error);
-    }
-  }
-  console.log('Background image already uploaded');
 };
 
 const getBlob = async (data: string) => {

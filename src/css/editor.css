@@ -94,6 +94,15 @@ ha-select {
   cursor: pointer;
 }
 
+img.bg-thumbnail {
+  width: 100%;
+  height: auto;
+  -o-object-fit: cover;
+  object-fit: cover;
+  border-radius: 12px;
+  aspect-ratio: 3;
+}
+
 .custom-background-wrapper {
   display: inline-flex;
   align-items: center;

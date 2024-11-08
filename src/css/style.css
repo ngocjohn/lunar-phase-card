@@ -34,7 +34,7 @@ ha-card {
 
 ha-card.--background {
   background-size: cover;
-  background-position: bottom;
+  background-position: center;
   background-repeat: no-repeat;
   background-image: var(--lunar-background-image);
   transition: all 0.5s ease;

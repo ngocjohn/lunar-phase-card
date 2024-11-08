@@ -6,7 +6,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
 
 // Helpers
-import { BACKGROUND, PageType, MoonState, ICON } from './const';
+import { BLUE_BG, PageType, MoonState, ICON } from './const';
 import { localize } from './localize/localize';
 import { getDefaultConfig } from './utils/helpers';
 
@@ -367,7 +367,7 @@ export class LunarPhaseCard extends LitElement {
 
   private _computeStyles() {
     const fontOptions = this.config?.font_customize;
-    const background = this.config.custom_background || BACKGROUND;
+    const background = this.config.custom_background || BLUE_BG;
     const varCss = {
       '--lunar-card-header-font-size': fontOptions.header_font_size,
       '--lunar-card-header-text-transform': fontOptions.header_font_style,

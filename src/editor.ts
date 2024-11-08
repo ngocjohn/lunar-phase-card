@@ -6,6 +6,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
 
 import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES } from './const';
+import { CUSTOM_BG } from './const';
 import editorcss from './css/editor.css';
 import { languageOptions, localize } from './localize/localize';
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, FontCustomStyles, defaultConfig } from './types';
@@ -260,6 +261,34 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       @value-changed=${this._handleValueChange}
     ></ha-selector>`;
 
+    const customBackgroundInput = this._renderCustomBackground();
+
+    const comboboxex = html`
+      <div class="comboboxes">${langComboBox} ${defaultCard} ${moonPositon} ${numberDecimals}</div>
+    `;
+
+    content.push([viewOptions, comboboxex, customBackgroundInput]);
+
+    return this.contentTemplate('viewConfig', 'viewConfig', 'mdi:image', html`${content}`);
+  }
+
+  private _renderCustomBackground(): TemplateResult {
+    const backgroundOptions = html`
+      ${Array.from({ length: 5 }).map(
+        (_, i) => html`
+          <ha-formfield>
+            <img src=${CUSTOM_BG[i]} class="bg-thumbnail" slot="label" />
+            <ha-radio
+              .checked=${this._config?.custom_background === CUSTOM_BG[i] ||
+              (this._config?.custom_background === undefined && i === 0)}
+              .value=${i}
+              @change=${this._handleBgChange}
+            ></ha-radio>
+          </ha-formfield>
+        `
+      )}
+    `;
+
     const customBackgroundInput = html`
       <div class="custom-background-wrapper">
         <ha-textfield
@@ -289,13 +318,38 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       </div>
     `;
 
-    const comboboxex = html`
-      <div class="comboboxes">${langComboBox} ${defaultCard} ${moonPositon} ${numberDecimals}</div>
+    const backgroundContainer = html`
+      <div class="font-config-wrapper">
+        <div class="font-config-type">
+          <span class="title">Background</span>
+          <span class="desc">Customize the background</span>
+        </div>
+        <div class="font-config-content">${backgroundOptions}</div>
+        <div class="font-config-content">${customBackgroundInput}</div>
+      </div>
     `;
 
-    content.push([viewOptions, comboboxex, customBackgroundInput]);
+    return backgroundContainer;
+  }
 
-    return this.contentTemplate('viewConfig', 'viewConfig', 'mdi:image', html`${content}`);
+  private _handleBgChange(ev): void {
+    if (!this._config) {
+      return;
+    }
+
+    const target = ev.target as any;
+    const configValue = target.value;
+
+    if (this._config.custom_bg === configValue) {
+      return;
+    }
+
+    if (configValue === 0) {
+      this._config = { ...this._config, custom_background: undefined };
+    }
+
+    this._config = { ...this._config, custom_background: CUSTOM_BG[configValue] };
+    fireEvent(this, 'config-changed', { config: this._config });
   }
 
   private _renderFontConfiguration(): TemplateResult {

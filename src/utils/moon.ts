@@ -1,7 +1,6 @@
 import * as SunCalc from '@noim/suncalc3';
 import { FrontendLocaleData, formatNumber, relativeTime, formatTime } from 'custom-card-helpers';
 
-import { MOON_PIC_URL } from '../const';
 import { localize } from '../localize/localize';
 import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location } from '../types';
 import { MOON_IMAGES } from '../utils/moon-pic';
