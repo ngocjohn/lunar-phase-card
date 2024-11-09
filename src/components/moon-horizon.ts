@@ -43,6 +43,7 @@ export class MoonHorizon extends LitElement {
   private _timeAnimationFrame: number | null = null;
   private _lastTime: string | null = null;
   @state() private cardWidth = 0;
+  @state() private _resizeEntry?: ResizeObserverEntry;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -63,7 +64,7 @@ export class MoonHorizon extends LitElement {
       entries.forEach((entry) => {
         // Immediately compute the rect and measure the card on resize
         this.measureCard();
-        console.log('resize entry', entry);
+        this._resizeEntry = entry;
       });
     });
 
@@ -85,7 +86,6 @@ export class MoonHorizon extends LitElement {
       return;
     }
     // Log card width for debugging
-    console.log('Card measured:', card.offsetWidth);
     this.cardWidth = card.offsetWidth;
   }
 
@@ -234,6 +234,7 @@ export class MoonHorizon extends LitElement {
           onResize: (_chart, size) => {
             if (this.cardWidth !== size.width) {
               _chart.resize();
+              _chart.update('none');
             }
           },
         },
