@@ -90,7 +90,7 @@ export class Moon {
   };
 
   get moonImage(): MoonImage {
-    const phaseIndex = Math.floor(this._moonData.illumination.phaseValue * 31) % 31;
+    const phaseIndex = Math.round(this._moonData.illumination.phaseValue * 31) % 31;
     const { zenithAngle, parallacticAngle } = this._moonData;
     const rotateDeg = (zenithAngle - parallacticAngle) * (180 / Math.PI);
     return {
@@ -108,7 +108,6 @@ export class Moon {
   get moonData(): MoonData {
     const { createItem, createMoonTime, convertKmToMiles, formatNumber, localize, useMiles, lang, convertCardinal } =
       this;
-    const decimal = this.config.number_decimals;
     // Helper function to format date as short time string
     const shortTime = (date: number | Date) =>
       new Date(date).toLocaleDateString(lang, { weekday: 'short', month: 'short', day: 'numeric' });

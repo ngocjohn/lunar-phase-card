@@ -37,7 +37,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   @state() _hass!: HomeAssistant;
-  @state() config!: LunarPhaseCardConfig;
+  @property({ attribute: false }) config!: LunarPhaseCardConfig;
   @property({ type: Object }) protected moon!: Moon;
 
   @state() _activeCard: PageType | null = null;
@@ -75,6 +75,7 @@ export class LunarPhaseCard extends LitElement {
 
   constructor() {
     super();
+    this._handleEditorEvent = this._handleEditorEvent.bind(this);
   }
 
   connectedCallback(): void {
@@ -84,6 +85,7 @@ export class LunarPhaseCard extends LitElement {
       window.Moon = this.moon;
     }
     this.startRefreshInterval();
+    document.addEventListener('lunar-card-event', (ev) => this._handleEditorEvent(ev));
   }
 
   disconnectedCallback(): void {
@@ -91,10 +93,32 @@ export class LunarPhaseCard extends LitElement {
     super.disconnectedCallback();
   }
 
+  private _handleEditorEvent(ev: any): void {
+    ev.stopPropagation();
+    if (!this.isEditorPreview) return;
+    console.log('editor event', ev.detail);
+    const activeTabIndex = ev.detail.activeTabIndex;
+    if (activeTabIndex === 3 && this._activeCard !== PageType.HORIZON) {
+      this._activeCard = PageType.HORIZON;
+      this.requestUpdate();
+    } else if (activeTabIndex !== 3) {
+      return;
+    }
+  }
+
   protected firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
+
+    // Initial style computation and first render handling
     this._computeStyles();
-    this._activeCard = this._defaultCard;
+    this._handleFirstRender();
+  }
+
+  protected updated(changedProps: PropertyValues): void {
+    super.updated(changedProps);
+    if (!this.config || !this._hass) {
+      return;
+    }
   }
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
@@ -107,6 +131,7 @@ export class LunarPhaseCard extends LitElement {
         this.startRefreshInterval();
       }
     }
+
     return true;
   }
 
@@ -149,6 +174,19 @@ export class LunarPhaseCard extends LitElement {
 
   get _defaultCard(): PageType {
     return this.config.default_card || PageType.BASE;
+  }
+
+  get isEditorPreview(): boolean {
+    const parentElementClassPreview = this.offsetParent?.classList.contains('element-preview');
+    return parentElementClassPreview || false;
+  }
+
+  private _handleFirstRender() {
+    if (this.isEditorPreview && this.config.activeGraphTab === 3) {
+      this._activeCard = PageType.HORIZON;
+    } else {
+      this._activeCard = this._defaultCard;
+    }
   }
 
   private startRefreshInterval() {
@@ -259,8 +297,8 @@ export class LunarPhaseCard extends LitElement {
   private renderMoonImage(): TemplateResult | void {
     if (!this.moon) return;
     const { moonPic } = this.moon.moonImage;
-
-    return html` <div class="moon-image animate" ?calendar=${this._isCalendar}>
+    const animate = !this.isEditorPreview ? 'moon-image animate' : 'moon-image';
+    return html` <div class=${animate} ?calendar=${this._isCalendar}>
       <img src=${moonPic} class="rotatable" />
     </div>`;
   }

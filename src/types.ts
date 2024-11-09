@@ -47,6 +47,16 @@ export interface FontCustomStyles {
 }
 export type DefaultPage = 'calendar' | 'base' | 'horizon';
 
+export interface HorizonGraphConfig {
+  y_ticks?: boolean;
+  x_ticks?: boolean;
+  show_time?: boolean;
+  y_ticks_position?: 'left' | 'right';
+  y_ticks_step_size?: number;
+  legend_position?: 'top' | 'bottom';
+  legend_align?: 'start' | 'center' | 'end';
+}
+
 export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   type: string;
   entity?: string;
@@ -57,8 +67,6 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   compact_view?: boolean;
   '12hr_format'?: boolean;
   mile_unit?: boolean;
-  y_ticks?: boolean;
-  x_ticks?: boolean;
   number_decimals?: number;
   default_card?: PageType.BASE | PageType.CALENDAR | PageType.HORIZON;
   selected_language: string;
@@ -66,6 +74,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   latitude: number;
   longitude: number;
   font_customize: FontCustomStyles;
+  graph_config?: HorizonGraphConfig;
 }
 
 export const defaultConfig: Partial<LunarPhaseCardConfig> = {
@@ -79,11 +88,18 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   compact_view: true,
   '12hr_format': false,
   mile_unit: false,
-  y_ticks: false,
-  x_ticks: true,
   default_card: PageType.BASE,
   moon_position: 'left',
   number_decimals: 2,
+  graph_config: {
+    y_ticks: false,
+    x_ticks: true,
+    show_time: true,
+    y_ticks_position: 'left',
+    y_ticks_step_size: 30,
+    legend_position: 'top',
+    legend_align: 'center',
+  },
   font_customize: {
     header_font_size: 'x-large',
     header_font_style: 'capitalize',
