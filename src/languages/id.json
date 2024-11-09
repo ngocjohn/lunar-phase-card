@@ -90,19 +90,27 @@
             "labelFontStyle": "Gaya huruf pada label",
             "valueFontSize": "Ukuran angka dari nilai yang ditampil"
         },
+        "graphConfig": {
+            "title": "Kustomisasi grafik",
+            "description": "Atur konfigurasi untuk grafik"
+        },
         "compactView": "Tampilan kompak",
         "showBackground": "Tampilkan gambar latar belakang",
         "timeFormat": "Format waktu 12 jam",
         "mileUnit": "Satuan mil",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
+        "showTime": "Penanda waktu terbit/terbenam",
         "placeHolder": {
             "latitude": "Masukkan garis lintang",
             "longitude": "Masukkan garis bujur",
             "customBackground": "URL atau lokasi penyimpanan gambar",
             "language": "Pilih bahasa",
             "moonPosition": "Pilih posisi bulan pada kartu",
-            "defaultCard": "Pilih kartu default"
+            "defaultCard": "Pilih kartu default",
+            "yTicksPosition": "Posisi penanda sumbu Y",
+            "legendPosition": "Posisi legenda",
+            "legendAlign": "Perataan legenda"
         }
     }
 }

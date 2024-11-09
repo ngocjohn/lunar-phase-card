@@ -90,19 +90,27 @@
             "labelFontStyle": "Stile carattere etichetta",
             "valueFontSize": "Valore dimensione carattere"
         },
+        "graphConfig": {
+            "title": "Personalizzazione del grafico",
+            "description": "Imposta una configurazione per il grafico"
+        },
         "compactView": "Visualizzazione compatta",
         "showBackground": "Mostra sfondo",
         "timeFormat": "Formato a 12 ore",
         "mileUnit": "Unità di miglio",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
+        "showTime": "Indicatori di tempo di alba/tramonto",
         "placeHolder": {
             "latitude": "Inserisci Latitudine",
             "longitude": "Inserisci Longitudine",
             "customBackground": "URL o percorso dell'immagine",
             "language": "Seleziona lingua",
             "moonPosition": "Seleziona la posizione della luna sulla carta",
-            "defaultCard": "Seleziona la scheda predefinita"
+            "defaultCard": "Seleziona la scheda predefinita",
+            "yTicksPosition": "Posizione delle tacche dell'asse Y",
+            "legendPosition": "Posizione della legenda",
+            "legendAlign": "Allineamento della legenda"
         }
     }
 }

@@ -90,19 +90,27 @@
             "labelFontStyle": "Label font style",
             "valueFontSize": "Value font size"
         },
+        "graphConfig": {
+            "title": "Graph customization",
+            "description": "Set a configuration for graph"
+        },
         "compactView": "Compact view",
         "showBackground": "Show background",
         "timeFormat": "12-hour time format",
         "mileUnit": "Mile unit",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
+        "showTime": "Set/Rise time markers",
         "placeHolder": {
             "latitude": "Enter latitude",
             "longitude": "Enter longitude",
             "customBackground": "URL or path to image",
             "language": "Select language",
             "moonPosition": "Select moon position on card",
-            "defaultCard": "Select default card"
+            "defaultCard": "Select default card",
+            "yTicksPosition": "Y-axis ticks position",
+            "legendPosition": "Legend position",
+            "legendAlign": "Legend align"
         }
     }
 }

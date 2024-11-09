@@ -90,19 +90,27 @@
             "labelFontStyle": "Estil de la font de l'etiqueta",
             "valueFontSize": "Mida de la font del valor"
         },
+        "graphConfig": {
+            "title": "Personalització del gràfic",
+            "description": "Configura una configuració per al gràfic"
+        },
         "compactView": "Vista compacta",
         "showBackground": "Mostra el fons",
         "timeFormat": "Format del temps de 12 hores",
         "mileUnit": "Unitat de milla",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
+        "showTime": "Marcadors de temps de sortida/posta",
         "placeHolder": {
             "latitude": "Entra la latitud",
             "longitude": "Entra la longitud",
             "customBackground": "URL o camí a la imatge del fons",
             "language": "Selecciona l'idioma",
             "moonPosition": "Selecciona la posició de la lluna a la targeta",
-            "defaultCard": "Selecciona la targeta per defecte"
+            "defaultCard": "Selecciona la targeta per defecte",
+            "yTicksPosition": "Posició de les marques de l'eix Y",
+            "legendPosition": "Posició de la llegenda",
+            "legendAlign": "Alineació de la llegenda"
         }
     }
 }

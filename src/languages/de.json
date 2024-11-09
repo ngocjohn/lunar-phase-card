@@ -90,19 +90,27 @@
             "labelFontStyle": "Schriftstil des Labels",
             "valueFontSize": "Schriftgröße der ausgegebenen Werte"
         },
+        "graphConfig": {
+            "title": "Grafikanpassung",
+            "description": "Konfiguration für den Graphen festlegen"
+        },
         "compactView": "Kompakte Ansicht",
         "showBackground": "Hintergrund anzeigen",
         "timeFormat": "12-Stunden-Zeitformat",
         "mileUnit": "Meileneinheit",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
+        "showTime": "Markierungen für Auf-/Untergangszeiten",
         "placeHolder": {
             "latitude": "Breitengrad eingeben",
             "longitude": "Längengrad eingeben",
             "customBackground": "URL oder Pfad zum Hintergrundbild",
             "language": "Sprachauswahl",
             "moonPosition": "Mondposition auf der Karte auswählen",
-            "defaultCard": "Standardkarte auswählen"
+            "defaultCard": "Standardkarte auswählen",
+            "yTicksPosition": "Position der Y-Achsenmarkierungen",
+            "legendPosition": "Position der Legende",
+            "legendAlign": "Ausrichtung der Legende"
         }
     }
 }

@@ -90,19 +90,27 @@
             "labelFontStyle": "Label font stijl",
             "valueFontSize": "Waarde font grootte"
         },
+        "graphConfig": {
+            "title": "Grafiekaanpassing",
+            "description": "Stel een configuratie in voor de grafiek"
+        },
         "compactView": "Compacte weergave",
         "showBackground": "toon achtergrond",
         "timeFormat": "12-uur formaat",
         "mileUnit": "Mijleenheid",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
+        "showTime": "Tijdmarkeringen van opkomst/ondergang",
         "placeHolder": {
             "latitude": "Enter breedtegraad",
             "longitude": "Enter lengtegraad",
             "customBackground": "URL of path naar afbeelding",
             "language": "Seleceer taal",
             "moonPosition": "Selecteer maanpositie op de kaart",
-            "defaultCard": "Selecteer standaardkaart"
+            "defaultCard": "Selecteer standaardkaart",
+            "yTicksPosition": "Positie van Y-asmarkeringen",
+            "legendPosition": "Positie van de legenda",
+            "legendAlign": "Uitlijning van de legenda"
         }
     }
 }

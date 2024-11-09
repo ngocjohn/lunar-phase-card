@@ -90,19 +90,27 @@
             "labelFontStyle": "Стиль",
             "valueFontSize": "Размер текста"
         },
+        "graphConfig": {
+            "title": "Настройка графика",
+            "description": "Установите конфигурацию для графика"
+        },
         "compactView": "Компактный вид",
         "showBackground": "Показать фон",
         "timeFormat": "12-часовой формат времени",
         "mileUnit": "Единица измерения миль",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
+        "showTime": "Маркеры времени восхода/заката",
         "placeHolder": {
             "latitude": "Введите широту",
             "longitude": "Введите долготу",
             "customBackground": "URL или путь к изображению",
             "language": "Выберите язык",
             "moonPosition": "Выберите положение луны на карте",
-            "defaultCard": "Выберите карту по умолчанию"
+            "defaultCard": "Выберите карту по умолчанию",
+            "yTicksPosition": "Положение меток на оси Y",
+            "legendPosition": "Положение легенды",
+            "legendAlign": "Выравнивание легенды"
         }
     }
 }

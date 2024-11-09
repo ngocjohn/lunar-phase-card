@@ -59,20 +59,20 @@ ha-select {
   width: 100%;
 }
 
-.font-config-wrapper {
+.sub-config-wrapper {
   display: flex;
   flex-direction: column;
   gap: inherit;
 }
 
-.font-config-content {
+.sub-config-content {
   display: grid;
   grid-gap: 8px;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   align-items: center;
 }
 
-.font-config-type {
+.sub-config-type {
   /* color: var(--secondary-text-color); */
   display: flex;
   padding: 8px;
@@ -80,12 +80,12 @@ ha-select {
   align-items: center;
 }
 
-.font-config-type .title {
+.sub-config-type .title {
   font-weight: 500;
   text-transform: uppercase;
 }
 
-.font-config-type .desc {
+.sub-config-type .desc {
   font-weight: 400;
 }
 
@@ -95,7 +95,7 @@ ha-select {
 }
 
 img.bg-thumbnail {
-  width: 100%;
+  width: 70%;
   height: auto;
   -o-object-fit: cover;
   object-fit: cover;

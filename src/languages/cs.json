@@ -90,19 +90,27 @@
             "labelFontStyle": "Styl písma popisku",
             "valueFontSize": "Velikost písma hodnoty"
         },
+        "graphConfig": {
+            "title": "Přizpůsobení grafu",
+            "description": "Nastavte konfiguraci grafu"
+        },
         "compactView": "Kompaktní zobrazení",
         "showBackground": "Zobrazit pozadí",
         "timeFormat": "12-hodinový formát času",
         "mileUnit": "Jednotka míle",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
+        "showTime": "Značky času východu/západu",
         "placeHolder": {
             "latitude": "Zadejte zeměpisnou šířku",
             "longitude": "Zadejte zeměpisnou délku",
             "customBackground": "URL nebo cesta k obrázku",
             "language": "Vyberte jazyk",
             "moonPosition": "Vyberte polohu Měsíce na kartě",
-            "defaultCard": "Vyberte výchozí kartu"
+            "defaultCard": "Vyberte výchozí kartu",
+            "yTicksPosition": "Pozice značek na ose Y",
+            "legendPosition": "Pozice legendy",
+            "legendAlign": "Zarovnání legendy"
         }
     }
 }

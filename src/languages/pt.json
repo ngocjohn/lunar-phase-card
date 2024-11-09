@@ -90,19 +90,27 @@
             "labelFontStyle": "Estilo da fonte do rótulo",
             "valueFontSize": "Tamanho da fonte do valor"
         },
+        "graphConfig": {
+            "title": "Personalização do gráfico",
+            "description": "Defina uma configuração para o gráfico"
+        },
         "compactView": "Visualização compacta",
         "showBackground": "Mostrar plano de fundo",
         "timeFormat": "Formato de 12 horas",
         "mileUnit": "Unidade de milha",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
+        "showTime": "Marcadores de tempo de nascer/pôr do sol",
         "placeHolder": {
             "latitude": "Inserir latitude",
             "longitude": "Inserir longitude",
             "customBackground": "URL ou caminho para a imagem",
             "language": "Selecionar idioma",
             "moonPosition": "Selecione a posição da lua no cartão",
-            "defaultCard": "Selecionar cartão padrão"
+            "defaultCard": "Selecionar cartão padrão",
+            "yTicksPosition": "Posição das marcas do eixo Y",
+            "legendPosition": "Posição da legenda",
+            "legendAlign": "Alinhamento da legenda"
         }
     }
 }

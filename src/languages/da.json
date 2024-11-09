@@ -90,19 +90,27 @@
             "labelFontStyle": "Etiket skrifttype",
             "valueFontSize": "Værdi skriftstørrelse"
         },
+        "graphConfig": {
+            "title": "Graf tilpasning",
+            "description": "Indstil en konfiguration for grafen"
+        },
         "compactView": "Kompakt udsigt",
         "showBackground": "Vis baggrund",
         "timeFormat": "12-timers tidsformat",
         "mileUnit": "Milenhed",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
+        "showTime": "Markører for opgang/nedgang",
         "placeHolder": {
             "latitude": "Indtast breddegrad",
             "longitude": "Indtast længdegrad",
             "customBackground": "URL eller sti til billede",
             "language": "Vælg sprog",
             "moonPosition": "Vælg måneposition på kortet",
-            "defaultCard": "Vælg standardkort"
+            "defaultCard": "Vælg standardkort",
+            "yTicksPosition": "Position for Y-akse markeringer",
+            "legendPosition": "Position for legenden",
+            "legendAlign": "Justering af legenden"
         }
     }
 }
