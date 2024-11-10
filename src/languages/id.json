@@ -101,6 +101,8 @@
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Penanda waktu terbit/terbenam",
+        "showCurrent": "Posisi Bulan Saat Ini",
+        "showLegend": "Tampilkan legenda",
         "placeHolder": {
             "latitude": "Masukkan garis lintang",
             "longitude": "Masukkan garis bujur",

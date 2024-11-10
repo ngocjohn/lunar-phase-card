@@ -139,8 +139,16 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       `;
     });
 
+    const southern = html` <ha-formfield .label=${'Southern Hemisphere'}>
+      <ha-checkbox
+        .checked=${this._config?.southern_hemisphere}
+        .configValue=${'southern_hemisphere'}
+        @change=${this._handleValueChange}
+      ></ha-checkbox>
+    </ha-formfield>`;
+
     const contentWrapp = html`
-      <div class="radios-btn">${radios}</div>
+      <div class="comboboxes">${radios} ${southern}</div>
       <div>
         ${this._config?.use_default
           ? this._renderUseDefault()
@@ -312,6 +320,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       { label: 'yTicks', configValue: 'y_ticks' },
       { label: 'xTicks', configValue: 'x_ticks' },
       { label: 'showTime', configValue: 'show_time' },
+      { label: 'showCurrent', configValue: 'show_current' },
+      { label: 'showLegend', configValue: 'show_legend' },
     ];
 
     const checkBoxes = html`
@@ -579,7 +589,10 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   /* ----------------------------- HANDLER METHODS ---------------------------- */
 
-  private _handleValueChange(ev) {
+  private _handleValueChange(event: any): void {
+    event.stopPropagation();
+    const ev = event as CustomEvent;
+    console.log('ev', ev);
     if (!this._config || !this.hass) {
       return;
     }
@@ -587,8 +600,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     const target = ev.target as any;
     const configValue = target?.configValue;
     const configKey = target?.configKey;
-    // Safely access the value, add a fallback to an empty string if undefined
-    const value = target?.checked !== undefined ? target.checked : ev.detail.value;
+
+    let value: any = target.checked !== undefined ? target.checked : ev.detail.value;
 
     console.log('configKey', configKey, 'configValue', configValue, 'value', value);
     const updates: Partial<LunarPhaseCardConfig> = {};
@@ -607,7 +620,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     // Check if the configValue is a key of FontCustomStyles
     if (configKey === 'font_customize') {
       const key = configValue as keyof FontCustomStyles;
-
       // If the current value is undefined, use the default value
       const updatedValue = value !== undefined ? value : defaultFontCustomStyles[key];
 

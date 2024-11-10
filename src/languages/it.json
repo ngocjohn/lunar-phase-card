@@ -101,6 +101,8 @@
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Indicatori di tempo di alba/tramonto",
+        "showCurrent": "Posizione attuale della Luna",
+        "showLegend": "Mostra leggenda",
         "placeHolder": {
             "latitude": "Inserisci Latitudine",
             "longitude": "Inserisci Longitudine",
