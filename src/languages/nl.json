@@ -7,10 +7,10 @@
             "fullMoon": "Volle maan",
             "thirdQuarterMoon": "Laatste kwartier",
             "newMoon": "Nieuwe maan",
-            "waxingCrescentMoon": "Afnemende halve maan",
-            "waxingGibbousMoon": "Afnemende maan",
-            "waningCrescentMoon": "Wassende halve maan",
-            "waningGibbousMoon": "Wassende maan"
+            "waxingCrescentMoon": "Wassende halve maan",
+            "waxingGibbousMoon": "Wassende maan",
+            "waningCrescentMoon": "Afnemende halve maan",
+            "waningGibbousMoon": "Afnemende maan"
         },
         "illumination": "Verlichting ",
         "illuminated": " Verlicht ",
