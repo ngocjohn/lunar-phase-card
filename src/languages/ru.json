@@ -101,6 +101,8 @@
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Маркеры времени восхода/заката",
+        "showCurrent": "Текущее положение Луны",
+        "showLegend": "Показать легенду",
         "placeHolder": {
             "latitude": "Введите широту",
             "longitude": "Введите долготу",

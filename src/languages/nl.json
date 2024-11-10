@@ -101,6 +101,8 @@
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Tijdmarkeringen van opkomst/ondergang",
+        "showCurrent": "Huidige positie van de Maan",
+        "showLegend": "Toon legenda",
         "placeHolder": {
             "latitude": "Enter breedtegraad",
             "longitude": "Enter lengtegraad",

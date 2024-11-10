@@ -101,6 +101,8 @@
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Markierungen für Auf-/Untergangszeiten",
+        "showCurrent": "Aktuelle Mondposition",
+        "showLegend": "Legende anzeigen",
         "placeHolder": {
             "latitude": "Breitengrad eingeben",
             "longitude": "Längengrad eingeben",

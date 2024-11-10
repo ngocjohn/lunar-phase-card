@@ -101,6 +101,8 @@
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Značky času východu/západu",
+        "showCurrent": "Aktuálna poloha Mesiaca",
+        "showLegend": "Zobraziť legendu",
         "placeHolder": {
             "latitude": "Zadajte zemepisnú šírku",
             "longitude": "Zadajte zemepisnú dĺžku",

@@ -101,6 +101,8 @@
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Marcadores de tiempo de salida/puesta",
+        "showCurrent": "Posición actual de la Luna",
+        "showLegend": "Mostrar leyenda",
         "placeHolder": {
             "latitude": "Ingresar latitud",
             "longitude": "Ingresar longitud",

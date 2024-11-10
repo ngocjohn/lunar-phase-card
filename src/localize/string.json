@@ -101,6 +101,8 @@
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Set/Rise time markers",
+        "showCurrent": "Current Moon position",
+        "showLegend": "Display legend",
         "placeHolder": {
             "latitude": "Enter latitude",
             "longitude": "Enter longitude",

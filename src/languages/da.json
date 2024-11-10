@@ -101,6 +101,8 @@
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Markører for opgang/nedgang",
+        "showCurrent": "Nuværende måneposition",
+        "showLegend": "Vis legend",
         "placeHolder": {
             "latitude": "Indtast breddegrad",
             "longitude": "Indtast længdegrad",

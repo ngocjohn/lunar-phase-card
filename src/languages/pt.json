@@ -101,6 +101,8 @@
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Marcadores de tempo de nascer/pôr do sol",
+        "showCurrent": "Posição atual da Lua",
+        "showLegend": "Mostrar legenda",
         "placeHolder": {
             "latitude": "Inserir latitude",
             "longitude": "Inserir longitude",
