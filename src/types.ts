@@ -51,6 +51,8 @@ export interface HorizonGraphConfig {
   y_ticks?: boolean;
   x_ticks?: boolean;
   show_time?: boolean;
+  show_current?: boolean;
+  show_legend?: boolean;
   y_ticks_position?: 'left' | 'right';
   y_ticks_step_size?: number;
   legend_position?: 'top' | 'bottom';
@@ -71,6 +73,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   default_card?: PageType.BASE | PageType.CALENDAR | PageType.HORIZON;
   selected_language: string;
   moon_position?: 'left' | 'right';
+  southern_hemisphere?: boolean;
   latitude: number;
   longitude: number;
   font_customize: FontCustomStyles;
@@ -90,11 +93,13 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   mile_unit: false,
   default_card: PageType.BASE,
   moon_position: 'left',
+  southern_hemisphere: false,
   number_decimals: 2,
   graph_config: {
     y_ticks: false,
     x_ticks: true,
     show_time: true,
+    show_current: true,
     y_ticks_position: 'left',
     y_ticks_step_size: 30,
     legend_position: 'top',

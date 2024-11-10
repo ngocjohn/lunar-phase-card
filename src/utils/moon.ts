@@ -172,6 +172,8 @@ export class Moon {
       altitude: this._getDataAltitude(startTime),
       timeLabels: Object.keys(_altitudeData),
       altitudeData: Object.values(_altitudeData),
+      reverseLabels: Object.keys(_altitudeData).reverse(),
+      reverseAltitudeData: Object.values(_altitudeData).reverse(),
       minMaxY: {
         sugestedYMax: Math.round(Math.max(...Object.values(_altitudeData)) + 10),
         sugestedYMin: Math.round(Math.min(...Object.values(_altitudeData)) - 10),
@@ -266,7 +268,7 @@ export class Moon {
     contentBody.push(altitude);
     contentBody.push(direction);
 
-    return { currentHourIndex: index, body: contentBody, title: formatedTime };
+    return { currentHourIndex: index, body: contentBody, title: formatedTime, altitudeDegrees };
   };
 
   convertCardinal = (degrees: number): string => {

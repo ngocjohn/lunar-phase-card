@@ -2,6 +2,7 @@ import { LovelaceCardEditor, formatDate, FrontendLocaleData, TimeFormat } from '
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
+
 // Local types
 import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
 
@@ -46,7 +47,6 @@ export class LunarPhaseCard extends LitElement {
 
   @state() _calendarPopup: boolean = false;
   @state() _state: MoonState = MoonState.READY;
-
   @query('lunar-base-data') _data!: LunarBaseData;
   @query('moon-horizon') _moonHorizon!: MoonHorizon;
 
@@ -85,7 +85,7 @@ export class LunarPhaseCard extends LitElement {
       window.Moon = this.moon;
     }
     this.startRefreshInterval();
-    document.addEventListener('lunar-card-event', (ev) => this._handleEditorEvent(ev));
+    document.addEventListener('lunar-card-event', (ev) => this._handleEditorEvent(ev as CustomEvent));
   }
 
   disconnectedCallback(): void {
@@ -93,7 +93,7 @@ export class LunarPhaseCard extends LitElement {
     super.disconnectedCallback();
   }
 
-  private _handleEditorEvent(ev: any): void {
+  private _handleEditorEvent(ev: CustomEvent) {
     ev.stopPropagation();
     if (!this.isEditorPreview) return;
     console.log('editor event', ev.detail);
@@ -108,8 +108,6 @@ export class LunarPhaseCard extends LitElement {
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
-
-    // Initial style computation and first render handling
     this._computeStyles();
     this._handleFirstRender();
   }
@@ -187,6 +185,7 @@ export class LunarPhaseCard extends LitElement {
     } else {
       this._activeCard = this._defaultCard;
     }
+    this.requestUpdate();
   }
 
   private startRefreshInterval() {
@@ -297,9 +296,10 @@ export class LunarPhaseCard extends LitElement {
   private renderMoonImage(): TemplateResult | void {
     if (!this.moon) return;
     const { moonPic } = this.moon.moonImage;
-    const animate = !this.isEditorPreview ? 'moon-image animate' : 'moon-image';
-    return html` <div class=${animate} ?calendar=${this._isCalendar}>
-      <img src=${moonPic} class="rotatable" />
+    const animateClass = !this.isEditorPreview ? 'moon-image animate' : 'moon-image';
+    const southernHemisphere = this.config.southern_hemisphere || false;
+    return html` <div class=${animateClass} ?calendar=${this._isCalendar}>
+      <img src=${moonPic} class="rotatable" ?southern=${southernHemisphere} />
     </div>`;
   }
 
