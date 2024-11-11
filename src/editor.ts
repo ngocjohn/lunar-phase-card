@@ -390,7 +390,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   private _renderCustomBackground(): TemplateResult {
     const backgroundOptions = html`
-      ${Array.from({ length: 5 }).map(
+      ${Array.from({ length: CUSTOM_BG.length }).map(
         (_, i) => html`
           <ha-formfield>
             <img src=${CUSTOM_BG[i]} class="bg-thumbnail" slot="label" />
@@ -398,7 +398,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
               .checked=${this._config?.custom_background === CUSTOM_BG[i] ||
               (this._config?.custom_background === undefined && i === 0)}
               .value=${i}
-              @change=${this._handleBgChange}
+              .configKey=${'custom_bg'}
+              @change=${this._handleValueChange}
             ></ha-radio>
           </ha-formfield>
         `
@@ -592,7 +593,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   private _handleValueChange(event: any): void {
     event.stopPropagation();
     const ev = event as CustomEvent;
-    console.log('ev', ev);
     if (!this._config || !this.hass) {
       return;
     }
@@ -638,6 +638,9 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       } else {
         updates.selected_language = value;
       }
+    } else if (configKey === 'custom_bg') {
+      value = event.target.value;
+      updates.custom_background = value === 0 ? undefined : CUSTOM_BG[value];
     } else {
       // Update the main configuration object
       updates[configValue] = value;
@@ -712,26 +715,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       console.log('updates', updates);
       fireEvent(this, 'config-changed', { config: this._config });
     }
-  }
-
-  private _handleBgChange(ev): void {
-    if (!this._config) {
-      return;
-    }
-
-    const target = ev.target as any;
-    const configValue = target.value;
-
-    if (this._config.custom_bg === configValue) {
-      return;
-    }
-
-    if (configValue === 0) {
-      this._config = { ...this._config, custom_background: undefined };
-    }
-
-    this._config = { ...this._config, custom_background: CUSTOM_BG[configValue] };
-    fireEvent(this, 'config-changed', { config: this._config });
   }
 
   private async _handleFilePicked(ev: Event): Promise<void> {

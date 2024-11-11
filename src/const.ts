@@ -15,11 +15,11 @@ import background from './images/bkg.png';
 import blueBackground from './images/blue-bg.png';
 import { FontSizeOptions, FontTextTransformOptions } from './types';
 
-const COMMIT_SHA = '3ae3789a888f7749545560214246cbc410502a6d';
-const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${COMMIT_SHA}/background/`;
+const VERSION_TAG = '1.7.3';
+const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${VERSION_TAG}/background/`;
 const BACKGROUND_URL = (index: number) => `${PIC_URL}moon_bg_${index}.png`;
 
-export const CUSTOM_BG = [blueBackground, BACKGROUND_URL(1), BACKGROUND_URL(2), BACKGROUND_URL(3), BACKGROUND_URL(4)];
+export const CUSTOM_BG = [blueBackground, BACKGROUND_URL(1), BACKGROUND_URL(2), BACKGROUND_URL(3)];
 
 export const REPOSITORY = repository.repo;
 export const CARD_VERSION = `v${version}`;
