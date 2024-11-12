@@ -47,6 +47,9 @@ export class LunarPhaseCard extends LitElement {
 
   @state() _calendarPopup: boolean = false;
   @state() _state: MoonState = MoonState.READY;
+  @state() _resizeInitiated = false;
+  @state() public _cardWidth = 0;
+  @state() _resizeObserver: ResizeObserver | null = null;
   @query('lunar-base-data') _data!: LunarBaseData;
   @query('moon-horizon') _moonHorizon!: MoonHorizon;
 
@@ -84,32 +87,74 @@ export class LunarPhaseCard extends LitElement {
       window.LunarCard = this;
       window.Moon = this.moon;
     }
+    if (!this._resizeInitiated && !this._resizeObserver) {
+      this.delayedAttachResizeObserver();
+    }
     this.startRefreshInterval();
     document.addEventListener('lunar-card-event', (ev) => this._handleEditorEvent(ev as CustomEvent));
   }
 
   disconnectedCallback(): void {
     this.clearRefreshInterval();
+    this.detachResizeObserver();
+    this._resizeInitiated = false;
     super.disconnectedCallback();
+  }
+  delayedAttachResizeObserver(): void {
+    setTimeout(() => {
+      this.attachResizeObserver();
+      this._resizeInitiated = true;
+    }, 0);
+  }
+
+  attachResizeObserver(): void {
+    if (this._resizeObserver) {
+      return;
+    }
+    this._resizeObserver = new ResizeObserver(() => {
+      this.measureCard();
+    });
+
+    const card = this.shadowRoot?.querySelector('ha-card') as HTMLElement;
+    if (card) {
+      this._resizeObserver.observe(card);
+    }
+  }
+
+  detachResizeObserver(): void {
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+      this._resizeObserver = null;
+    }
+  }
+
+  private measureCard(): void {
+    const card = this.shadowRoot?.querySelector('ha-card') as HTMLElement;
+    if (card) {
+      this._cardWidth = card.clientWidth;
+    }
   }
 
   private _handleEditorEvent(ev: CustomEvent) {
     ev.stopPropagation();
-    if (!this.isEditorPreview) return;
+    if (!this.isEditorPreview) {
+      return;
+    }
     console.log('editor event', ev.detail);
     const activeTabIndex = ev.detail.activeTabIndex;
     if (activeTabIndex === 3 && this._activeCard !== PageType.HORIZON) {
       this._activeCard = PageType.HORIZON;
-      this.requestUpdate();
     } else if (activeTabIndex !== 3) {
       return;
     }
   }
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
+  protected async firstUpdated(_changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(_changedProperties);
-    this._computeStyles();
     this._handleFirstRender();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    this._computeStyles();
+    this.measureCard();
   }
 
   protected updated(changedProps: PropertyValues): void {
@@ -182,10 +227,15 @@ export class LunarPhaseCard extends LitElement {
   private _handleFirstRender() {
     if (this.isEditorPreview && this.config.activeGraphTab === 3) {
       this._activeCard = PageType.HORIZON;
+    } else if (this.isEditorPreview && !this.config.activeGraphTab && this._defaultCard === PageType.HORIZON) {
+      this._activeCard = PageType.BASE;
+      setTimeout(() => {
+        this._activeCard = PageType.HORIZON;
+      }, 150);
     } else {
       this._activeCard = this._defaultCard;
+      this.requestUpdate();
     }
-    this.requestUpdate();
   }
 
   private startRefreshInterval() {

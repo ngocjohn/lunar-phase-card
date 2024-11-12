@@ -42,7 +42,6 @@ export class MoonHorizon extends LitElement {
   @state() private _timeAnimationFrame: number | null = null;
   @state() private _lastTime: string | null = null;
   @state() _resizeInitiated = false;
-  @state() _chartWidth = 0;
   @state() _resizeObserver: ResizeObserver | null = null;
 
   connectedCallback(): void {
@@ -53,56 +52,15 @@ export class MoonHorizon extends LitElement {
         window.Chart = this._chart;
       }
     }, 100);
-    if (!this._resizeInitiated && !this._resizeObserver && this.card.isEditorPreview === false) {
-      this.delayedAttachResizeObserver();
-    }
   }
 
   disconnectedCallback(): void {
     this.cancelTimeAnimationFrame();
-    this.detachResizeObserver();
-    this._resizeInitiated = false;
     super.disconnectedCallback();
-  }
-
-  delayedAttachResizeObserver(): void {
-    setTimeout(() => {
-      this.attachResizeObserver();
-      this._resizeInitiated = true;
-    }, 0);
-  }
-
-  attachResizeObserver(): void {
-    if (this._resizeObserver || this.card.isEditorPreview) {
-      return;
-    }
-    this._resizeObserver = new ResizeObserver(() => {
-      this.measureCard();
-    });
-
-    const card = this.offsetParent as HTMLElement;
-    if (card) {
-      this._resizeObserver.observe(card);
-    }
-  }
-
-  detachResizeObserver(): void {
-    if (this._resizeObserver) {
-      this._resizeObserver.disconnect();
-      this._resizeObserver = null;
-    }
-  }
-
-  private measureCard(): void {
-    const card = this.offsetParent as HTMLElement;
-    if (card) {
-      this._chartWidth = card.offsetWidth;
-    }
   }
 
   protected async firstUpdated(changedProps: PropertyValues): Promise<void> {
     super.firstUpdated(changedProps);
-
     await new Promise((resolve) => setTimeout(resolve, 50));
     this.setupChart();
   }
@@ -111,18 +69,18 @@ export class MoonHorizon extends LitElement {
     return [
       css`
         .moon-horizon {
-          display: flex;
+          display: block;
           position: relative;
           margin: 0;
           width: 100%;
           height: 100%;
           /* box-shadow: 0 0 6px #e1e0dd30; */
-          max-width: 500px;
+          max-width: 900px;
           backdrop-filter: blur(4px);
           border-radius: 0;
           /* border: 1px solid var(--divider-color); */
           box-sizing: border-box;
-          padding: 0 2px;
+          /* padding: 0 2px; */
         }
 
         .moon-horizon canvas {
@@ -251,12 +209,12 @@ export class MoonHorizon extends LitElement {
           // Hover on point
           onHover: (_event, elements) => {
             if (elements.length > 0) {
-              this.hoverOnChart = true;
+              this.hoverOnChart = elements.length > 0;
               const element = elements[0];
               const xTimeNum = element.element.getProps(['raw'], true).raw.x;
               this.handlePointHover(xTimeNum);
 
-              this._chart?.update('default');
+              this._chart?.update();
             }
           },
           onClick: (_event, elements) => {
@@ -267,7 +225,8 @@ export class MoonHorizon extends LitElement {
             }
           },
           onResize: (_chart, size) => {
-            if (this._chartWidth !== size.width) {
+            // Resize the chart if the width has changed
+            if (this.card._cardWidth !== size.width) {
               _chart.resize();
               _chart.update('none');
             }
@@ -293,7 +252,7 @@ export class MoonHorizon extends LitElement {
   protected render(): TemplateResult {
     return html`
       <div class="moon-horizon">
-        <canvas id="moonPositionChart" width=${this._chartWidth}></canvas>
+        <canvas id="moonPositionChart" width=${this.card._cardWidth}></canvas>
       </div>
       <div class="moon-data-wrapper">
         <div class="moon-data-header">
