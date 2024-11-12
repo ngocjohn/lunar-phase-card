@@ -404,9 +404,9 @@ export class MoonHorizon extends LitElement {
         borderColor: (ctx: ScriptableLineSegmentContext) =>
           ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? primaryTextColor : fillBelowLineColor,
         borderWidth: (ctx: ScriptableLineSegmentContext) =>
-          ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? 1.3 : 1,
+          ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? 1.2 : 1,
       },
-      radius: () => (this.hoverOnChart ? 1.1 : 0),
+      radius: () => (this.hoverOnChart ? 1.2 : 0),
       usePointStyle: true,
       pointHoverRadius: 3,
       pointHoverBackgroundColor: secondaryTextColor,
@@ -436,7 +436,12 @@ export class MoonHorizon extends LitElement {
     const { secondaryTextColor, defaultPrimaryColor, defaultAccentColor } = this.cssColors;
     const { sugestedYMax, sugestedYMin } = this.todayData.minMaxY;
     const graphConfig = this.card.config?.graph_config;
-    const currentMoon = this.moon._fetchtCurrentMoon();
+    const currentMoon = this.moon.currentMoonData;
+
+    const timeMarkers = this.moon.timeMarkers;
+    const riseObj = timeMarkers[0];
+    const setObj = timeMarkers[1];
+
     const { moonHighest } = this.todayData;
     const highestBody = moonHighest.contentBody;
     const highestIndex = this.todayData.altitudeValues.indexOf(moonHighest.rawData.y);
@@ -505,6 +510,10 @@ export class MoonHorizon extends LitElement {
             return defaultAccentColor;
           case highestIndex:
             return defaultPrimaryColor;
+          case riseObj.position.index:
+            return defaultPrimaryColor;
+          case setObj.position.index:
+            return defaultPrimaryColor;
           default:
             return secondaryTextColor;
         }
@@ -516,6 +525,10 @@ export class MoonHorizon extends LitElement {
               return currentMoon.title;
             case highestIndex:
               return 'Highest at ' + moonHighest.formatedTime;
+            case riseObj.position.index:
+              return 'Rise: ' + riseObj.formatedTime;
+            case setObj.position.index:
+              return 'Set: ' + setObj.formatedTime;
             default:
               return ctx[0].label;
           }
@@ -526,6 +539,10 @@ export class MoonHorizon extends LitElement {
               return currentMoon.body;
             case highestIndex:
               return highestBody;
+            case riseObj.position.index:
+              return riseObj.body;
+            case setObj.position.index:
+              return setObj.body;
             default:
               return `${ctx.formattedValue}°`;
           }
@@ -567,7 +584,8 @@ export class MoonHorizon extends LitElement {
   /* --------------------------------- PLUGINS -------------------------------- */
   private moonMarkerPlugin = (): Plugin => {
     const emoji = this.todayData.moonPhase.phase.emoji;
-    const { currentHourIndex, altitudeDegrees } = this.moon._fetchtCurrentMoon();
+    const emojiFontSize = '18px Arial';
+    const { currentHourIndex, altitudeDegrees } = this.moon.currentMoonData;
     const showCurrent = this.card.config?.graph_config?.show_current ?? true;
     if (!showCurrent) return { id: 'moonMarkerPlugin' };
     return {
@@ -579,13 +597,20 @@ export class MoonHorizon extends LitElement {
           ctx,
           scales: { x, y },
         } = chart;
+        // Measure the emoji size
+        ctx.font = emojiFontSize; // Set font size before measuring
+        const emojiSize = ctx.measureText(emoji);
 
-        const xPosition = x.getPixelForValue(currentHourIndex) - 12;
-        const yPosition = y.getPixelForValue(altitudeDegrees) + 6;
+        // Center the emoji horizontally at the x-position
+        const xPosition = x.getPixelForValue(currentHourIndex) - emojiSize.width / 2;
+
+        // Center the emoji vertically at the y-position
+        const totalHeight = emojiSize.actualBoundingBoxAscent + emojiSize.actualBoundingBoxDescent;
+        const yPosition = y.getPixelForValue(altitudeDegrees) + emojiSize.actualBoundingBoxAscent - totalHeight / 2;
         if (emoji) {
           // Draw the emoji
           ctx.save();
-          ctx.font = '20px Arial';
+          ctx.font = emojiFontSize;
           ctx.fillText(emoji, xPosition, yPosition);
           ctx.restore();
         }
@@ -734,8 +759,7 @@ export class MoonHorizon extends LitElement {
           if (show) {
             const { index } = position;
 
-            let xPosition = x.getPixelForValue(index);
-            xPosition = isUp ? xPosition - 5 : xPosition;
+            const xPosition = x.getPixelForValue(index) + 2;
 
             const yPosition = y.getPixelForValue(0);
 
