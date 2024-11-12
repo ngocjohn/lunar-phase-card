@@ -1,118 +1,119 @@
 {
-    "name": "Русский",
-    "nativeName": "Русский",
-    "card": {
-        "phase": {
-            "firstQuarterMoon": "Первая четверть",
-            "fullMoon": "Полнолуние",
-            "thirdQuarterMoon": "Последняя четверть",
-            "newMoon": "Новолуние",
-            "waxingCrescentMoon": "Растущий полумесяц",
-            "waxingGibbousMoon": "Растущая луна",
-            "waningCrescentMoon": "Убывающий полумесяц",
-            "waningGibbousMoon": "Убывающая луна"
-        },
-        "illumination": "Освещенность",
-        "illuminated": "Освещено",
-        "moonRise": "Восход Луны",
-        "moonSet": "Закат Луны",
-        "moonHigh": "Луна наивысшая",
-        "moonAge": "Возраст Луны",
-        "distance": "Расстояние",
-        "azimuth": "Азимут",
-        "altitude": "Высота",
-        "fullMoon": "Полнолуние",
-        "newMoon": "Новолуние",
-        "relativeTime": {
-            "days": "дней",
-            "justNow": "только что",
-            "minutesAgo": "{0} минут назад",
-            "hoursAgo": "{0} часов назад",
-            "inMinutes": "через {0} минут",
-            "inHours": "через {0} часов"
-        },
-        "position": "Позиция",
-        "direction": "Направление",
-        "cardinalShort": {
-            "N": "С",
-            "NNE": "ССВ",
-            "NE": "СВ",
-            "ENE": "ВСВ",
-            "E": "В",
-            "ESE": "ВЮВ",
-            "SE": "ЮВ",
-            "SSE": "ЮЮВ",
-            "S": "Ю",
-            "SSW": "ЮЮЗ",
-            "SW": "ЮЗ",
-            "WSW": "ЗЮЗ",
-            "W": "З",
-            "WNW": "ЗСЗ",
-            "NW": "СЗ",
-            "NNW": "ССЗ"
-        },
-        "underHorizon": "Луна под горизонтом",
-        "overHorizon": "Луна над горизонтом",
-        "horizonTitle": "Луна сегодня",
-        "currentTime": "Текущее время"
+  "name": "Русский",
+  "nativeName": "Русский",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Первая четверть",
+      "fullMoon": "Полнолуние",
+      "thirdQuarterMoon": "Последняя четверть",
+      "newMoon": "Новолуние",
+      "waxingCrescentMoon": "Растущий полумесяц",
+      "waxingGibbousMoon": "Растущая луна",
+      "waningCrescentMoon": "Убывающий полумесяц",
+      "waningGibbousMoon": "Убывающая луна"
     },
-    "editor": {
-        "viewConfig": {
-            "title": "Язык и режим отображения",
-            "description": "Настройка языка и фона"
-        },
-        "baseConfig": {
-            "title": "Широта и долгота",
-            "description": "Настройка широты и долготы"
-        },
-        "optionsConfig": {
-            "useDefault": "Cистемная",
-            "useEntity": "Entity",
-            "useCustom": "Ручная"
-        },
-        "fontOptions": {
-            "title": "Настройка шрифтов",
-            "description": "Настройка размера и цвета шрифта",
-            "hideLabel": "Скрыть метку",
-            "headerFontConfig": {
-                "title": "Шрифт заголовка",
-                "description": "Настройка шрифта заголовка"
-            },
-            "labelFontConfig": {
-                "title": "Шрифт метки",
-                "description": "Настройка шрифта метки"
-            },
-            "headerFontSize": "Размер текста",
-            "headerFontColor": "Цвет текста",
-            "headerFontStyle": "Стиль",
-            "labelFontSize": "Размер текста",
-            "labelFontColor": "Цвет текста",
-            "labelFontStyle": "Стиль",
-            "valueFontSize": "Размер текста"
-        },
-        "graphConfig": {
-            "title": "Настройка графика",
-            "description": "Установите конфигурацию для графика"
-        },
-        "compactView": "Компактный вид",
-        "showBackground": "Показать фон",
-        "timeFormat": "12-часовой формат времени",
-        "mileUnit": "Единица измерения миль",
-        "yTicks": "Y-axis ticks",
-        "xTicks": "X-axis ticks",
-        "showTime": "Маркеры времени восхода/заката",
-        "showCurrent": "Текущее положение Луны",
-        "showLegend": "Показать легенду",
-        "placeHolder": {
-            "latitude": "Введите широту",
-            "longitude": "Введите долготу",
-            "customBackground": "URL или путь к изображению",
-            "language": "Выберите язык",
-            "moonPosition": "Выберите положение луны на карте",
-            "defaultCard": "Выберите карту по умолчанию",
-            "yTicksPosition": "Положение меток на оси Y",
-            "legendPosition": "Положение легенды",
-            "legendAlign": "Выравнивание легенды"
-        }
+    "illumination": "Освещенность",
+    "illuminated": "Освещено",
+    "moonRise": "Восход Луны",
+    "moonSet": "Закат Луны",
+    "moonHigh": "Луна наивысшая",
+    "moonAge": "Возраст Луны",
+    "distance": "Расстояние",
+    "azimuth": "Азимут",
+    "altitude": "Высота",
+    "fullMoon": "Полнолуние",
+    "newMoon": "Новолуние",
+    "relativeTime": {
+      "days": "дней",
+      "justNow": "только что",
+      "minutesAgo": "{0} минут назад",
+      "hoursAgo": "{0} часов назад",
+      "inMinutes": "через {0} минут",
+      "inHours": "через {0} часов"
+    },
+    "position": "Позиция",
+    "direction": "Направление",
+    "cardinalShort": {
+      "N": "С",
+      "NNE": "ССВ",
+      "NE": "СВ",
+      "ENE": "ВСВ",
+      "E": "В",
+      "ESE": "ВЮВ",
+      "SE": "ЮВ",
+      "SSE": "ЮЮВ",
+      "S": "Ю",
+      "SSW": "ЮЮЗ",
+      "SW": "ЮЗ",
+      "WSW": "ЗЮЗ",
+      "W": "З",
+      "WNW": "ЗСЗ",
+      "NW": "СЗ",
+      "NNW": "ССЗ"
+    },
+    "underHorizon": "Луна под горизонтом",
+    "overHorizon": "Луна над горизонтом",
+    "horizonTitle": "Луна сегодня",
+    "currentTime": "Текущее время"
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Язык и режим отображения",
+      "description": "Настройка языка и фона"
+    },
+    "baseConfig": {
+      "title": "Широта и долгота",
+      "description": "Настройка широты и долготы"
+    },
+    "optionsConfig": {
+      "useDefault": "Cистемная",
+      "useEntity": "Entity",
+      "useCustom": "Ручная"
+    },
+    "fontOptions": {
+      "title": "Настройка шрифтов",
+      "description": "Настройка размера и цвета шрифта",
+      "hideLabel": "Скрыть метку",
+      "headerFontConfig": {
+        "title": "Шрифт заголовка",
+        "description": "Настройка шрифта заголовка"
+      },
+      "labelFontConfig": {
+        "title": "Шрифт метки",
+        "description": "Настройка шрифта метки"
+      },
+      "headerFontSize": "Размер текста",
+      "headerFontColor": "Цвет текста",
+      "headerFontStyle": "Стиль",
+      "labelFontSize": "Размер текста",
+      "labelFontColor": "Цвет текста",
+      "labelFontStyle": "Стиль",
+      "valueFontSize": "Размер текста"
+    },
+    "graphConfig": {
+      "title": "Настройка графика",
+      "description": "Установите конфигурацию для графика"
+    },
+    "compactView": "Компактный вид",
+    "showBackground": "Показать фон",
+    "timeFormat": "12-часовой формат времени",
+    "mileUnit": "Единица измерения миль",
+    "yTicks": "Y-axis ticks",
+    "xTicks": "X-axis ticks",
+    "showTime": "Маркеры времени восхода/заката",
+    "showCurrent": "Текущее положение Луны",
+    "showLegend": "Показать легенду",
+    "showHighest": "Показать высшее положение Луны",
+    "placeHolder": {
+      "latitude": "Введите широту",
+      "longitude": "Введите долготу",
+      "customBackground": "URL или путь к изображению",
+      "language": "Выберите язык",
+      "moonPosition": "Выберите положение луны на карте",
+      "defaultCard": "Выберите карту по умолчанию",
+      "yTicksPosition": "Положение меток на оси Y",
+      "legendPosition": "Положение легенды",
+      "legendAlign": "Выравнивание легенды"
     }
+  }
 }

@@ -72,6 +72,10 @@ ha-select {
   align-items: center;
 }
 
+.sub-config-content>*:nth-last-child(1):nth-child(odd) {
+  grid-column: span 2;
+}
+
 .sub-config-type {
   /* color: var(--secondary-text-color); */
   display: flex;

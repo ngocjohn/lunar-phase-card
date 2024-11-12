@@ -1,118 +1,119 @@
 {
-    "name": "German",
-    "nativeName": "Deutsch",
-    "card": {
-        "phase": {
-            "firstQuarterMoon": "Erstes Viertel",
-            "fullMoon": "Vollmond",
-            "thirdQuarterMoon": "Letztes Viertel",
-            "newMoon": "Neumond",
-            "waxingCrescentMoon": "Zunehmende Sichel",
-            "waxingGibbousMoon": "Zunehmender Halbmond",
-            "waningCrescentMoon": "Abnehmender Halbmond",
-            "waningGibbousMoon": "Abnehmende Sichel"
-        },
-        "illumination": "Beleuchtung",
-        "illuminated": "beleuchtet",
-        "moonRise": "Aufgang",
-        "moonSet": "Untergang",
-        "moonHigh": "Kulmination",
-        "moonAge": "Alter",
-        "distance": "Entfernung",
-        "azimuth": "Azimut",
-        "altitude": "Höhe",
-        "fullMoon": "Nächster Vollmond",
-        "newMoon": "Nächster Neumond",
-        "relativeTime": {
-            "days": "Tage",
-            "justNow": "jetzt",
-            "minutesAgo": "vor {0} Minuten",
-            "hoursAgo": "vor {0} Stunden",
-            "inMinutes": "in {0} Minuten",
-            "inHours": "in {0} Stunden"
-        },
-        "position": "Position",
-        "direction": "Richtung",
-        "cardinalShort": {
-            "N": "N",
-            "NNE": "NNO",
-            "NE": "NO",
-            "ENE": "ONO",
-            "E": "O",
-            "ESE": "OSO",
-            "SE": "SO",
-            "SSE": "SSO",
-            "S": "S",
-            "SSW": "SSW",
-            "SW": "SW",
-            "WSW": "WSW",
-            "W": "W",
-            "WNW": "WNW",
-            "NW": "NW",
-            "NNW": "NNW"
-        },
-        "underHorizon": "Mond unter dem Horizont",
-        "overHorizon": "Mond über dem Horizont",
-        "horizonTitle": "Heutiger Mond",
-        "currentTime": "Aktuelle Zeit"
+  "name": "German",
+  "nativeName": "Deutsch",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Erstes Viertel",
+      "fullMoon": "Vollmond",
+      "thirdQuarterMoon": "Letztes Viertel",
+      "newMoon": "Neumond",
+      "waxingCrescentMoon": "Zunehmende Sichel",
+      "waxingGibbousMoon": "Zunehmender Halbmond",
+      "waningCrescentMoon": "Abnehmender Halbmond",
+      "waningGibbousMoon": "Abnehmende Sichel"
     },
-    "editor": {
-        "viewConfig": {
-            "title": "Sprach- und Ansichtsmodus",
-            "description": "Einstellung der Sprache und des Hintergrunds"
-        },
-        "baseConfig": {
-            "title": "Breiten- und Längengrad",
-            "description": "Breiten- und Längengradkonfiguration"
-        },
-        "optionsConfig": {
-            "useDefault": "Systemeinstellungen verwenden",
-            "useEntity": "Entität verwenden",
-            "useCustom": "Benutzerdefinierte Einstellungen verwenden "
-        },
-        "fontOptions": {
-            "title": "Schriftartanpassungen",
-            "description": "Schriftgröße und -farbe festlegen",
-            "hideLabel": "Beschriftung ausblenden",
-            "headerFontConfig": {
-                "title": "Schriftart der Überschrift",
-                "description": "Schriftartkonfiguration der Überschrift"
-            },
-            "labelFontConfig": {
-                "title": "Schriftart des Labels",
-                "description": "Schriftartkonfiguration des Labels"
-            },
-            "headerFontSize": "Schriftgröße der Überschrift",
-            "headerFontColor": "Schriftfarbe der Überschrift",
-            "headerFontStyle": "Schriftstil der Überschrift",
-            "labelFontSize": "Schriftgröße des Labels",
-            "labelFontColor": "Schriftfarbe des Labels",
-            "labelFontStyle": "Schriftstil des Labels",
-            "valueFontSize": "Schriftgröße der ausgegebenen Werte"
-        },
-        "graphConfig": {
-            "title": "Grafikanpassung",
-            "description": "Konfiguration für den Graphen festlegen"
-        },
-        "compactView": "Kompakte Ansicht",
-        "showBackground": "Hintergrund anzeigen",
-        "timeFormat": "12-Stunden-Zeitformat",
-        "mileUnit": "Meileneinheit",
-        "yTicks": "Y-axis ticks",
-        "xTicks": "X-axis ticks",
-        "showTime": "Markierungen für Auf-/Untergangszeiten",
-        "showCurrent": "Aktuelle Mondposition",
-        "showLegend": "Legende anzeigen",
-        "placeHolder": {
-            "latitude": "Breitengrad eingeben",
-            "longitude": "Längengrad eingeben",
-            "customBackground": "URL oder Pfad zum Hintergrundbild",
-            "language": "Sprachauswahl",
-            "moonPosition": "Mondposition auf der Karte auswählen",
-            "defaultCard": "Standardkarte auswählen",
-            "yTicksPosition": "Position der Y-Achsenmarkierungen",
-            "legendPosition": "Position der Legende",
-            "legendAlign": "Ausrichtung der Legende"
-        }
+    "illumination": "Beleuchtung",
+    "illuminated": "beleuchtet",
+    "moonRise": "Aufgang",
+    "moonSet": "Untergang",
+    "moonHigh": "Kulmination",
+    "moonAge": "Alter",
+    "distance": "Entfernung",
+    "azimuth": "Azimut",
+    "altitude": "Höhe",
+    "fullMoon": "Nächster Vollmond",
+    "newMoon": "Nächster Neumond",
+    "relativeTime": {
+      "days": "Tage",
+      "justNow": "jetzt",
+      "minutesAgo": "vor {0} Minuten",
+      "hoursAgo": "vor {0} Stunden",
+      "inMinutes": "in {0} Minuten",
+      "inHours": "in {0} Stunden"
+    },
+    "position": "Position",
+    "direction": "Richtung",
+    "cardinalShort": {
+      "N": "N",
+      "NNE": "NNO",
+      "NE": "NO",
+      "ENE": "ONO",
+      "E": "O",
+      "ESE": "OSO",
+      "SE": "SO",
+      "SSE": "SSO",
+      "S": "S",
+      "SSW": "SSW",
+      "SW": "SW",
+      "WSW": "WSW",
+      "W": "W",
+      "WNW": "WNW",
+      "NW": "NW",
+      "NNW": "NNW"
+    },
+    "underHorizon": "Mond unter dem Horizont",
+    "overHorizon": "Mond über dem Horizont",
+    "horizonTitle": "Heutiger Mond",
+    "currentTime": "Aktuelle Zeit"
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Sprach- und Ansichtsmodus",
+      "description": "Einstellung der Sprache und des Hintergrunds"
+    },
+    "baseConfig": {
+      "title": "Breiten- und Längengrad",
+      "description": "Breiten- und Längengradkonfiguration"
+    },
+    "optionsConfig": {
+      "useDefault": "Systemeinstellungen verwenden",
+      "useEntity": "Entität verwenden",
+      "useCustom": "Benutzerdefinierte Einstellungen verwenden "
+    },
+    "fontOptions": {
+      "title": "Schriftartanpassungen",
+      "description": "Schriftgröße und -farbe festlegen",
+      "hideLabel": "Beschriftung ausblenden",
+      "headerFontConfig": {
+        "title": "Schriftart der Überschrift",
+        "description": "Schriftartkonfiguration der Überschrift"
+      },
+      "labelFontConfig": {
+        "title": "Schriftart des Labels",
+        "description": "Schriftartkonfiguration des Labels"
+      },
+      "headerFontSize": "Schriftgröße der Überschrift",
+      "headerFontColor": "Schriftfarbe der Überschrift",
+      "headerFontStyle": "Schriftstil der Überschrift",
+      "labelFontSize": "Schriftgröße des Labels",
+      "labelFontColor": "Schriftfarbe des Labels",
+      "labelFontStyle": "Schriftstil des Labels",
+      "valueFontSize": "Schriftgröße der ausgegebenen Werte"
+    },
+    "graphConfig": {
+      "title": "Grafikanpassung",
+      "description": "Konfiguration für den Graphen festlegen"
+    },
+    "compactView": "Kompakte Ansicht",
+    "showBackground": "Hintergrund anzeigen",
+    "timeFormat": "12-Stunden-Zeitformat",
+    "mileUnit": "Meileneinheit",
+    "yTicks": "Y-axis ticks",
+    "xTicks": "X-axis ticks",
+    "showTime": "Markierungen für Auf-/Untergangszeiten",
+    "showCurrent": "Aktuelle Mondposition",
+    "showLegend": "Legende anzeigen",
+    "showHighest": "Höchste Mondposition anzeigen",
+    "placeHolder": {
+      "latitude": "Breitengrad eingeben",
+      "longitude": "Längengrad eingeben",
+      "customBackground": "URL oder Pfad zum Hintergrundbild",
+      "language": "Sprachauswahl",
+      "moonPosition": "Mondposition auf der Karte auswählen",
+      "defaultCard": "Standardkarte auswählen",
+      "yTicksPosition": "Position der Y-Achsenmarkierungen",
+      "legendPosition": "Position der Legende",
+      "legendAlign": "Ausrichtung der Legende"
     }
+  }
 }

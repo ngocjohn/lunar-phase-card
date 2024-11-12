@@ -1,118 +1,119 @@
 {
-    "name": "Portuguese",
-    "nativeName": "Português (Brasil)",
-    "card": {
-        "phase": {
-            "firstQuarterMoon": "Primeiro quarto",
-            "fullMoon": "Lua cheia",
-            "thirdQuarterMoon": "Último quarto",
-            "newMoon": "Lua nova",
-            "waxingCrescentMoon": "Lua crescente crescente",
-            "waxingGibbousMoon": "Lua crescente convexa",
-            "waningCrescentMoon": "Lua minguante crescente",
-            "waningGibbousMoon": "Lua minguante convexa"
-        },
-        "illumination": "Iluminação",
-        "illuminated": "Iluminada",
-        "moonRise": "Nascer da lua",
-        "moonSet": "Pôr da lua",
-        "moonHigh": "Lua mais alta",
-        "moonAge": "Idade da lua",
-        "distance": "Distância",
-        "azimuth": "Azimute",
-        "altitude": "Altitude",
-        "fullMoon": "Lua chei",
-        "newMoon": "Lua nova",
-        "relativeTime": {
-            "days": "dias",
-            "justNow": "agora mesmo",
-            "minutesAgo": "há {0} minutos",
-            "hoursAgo": "há {0} horas",
-            "inMinutes": "em {0} minutos",
-            "inHours": "em {0} horas"
-        },
-        "position": "Posição",
-        "direction": "Direção",
-        "cardinalShort": {
-            "N": "N",
-            "NNE": "NNE",
-            "NE": "NE",
-            "ENE": "ENE",
-            "E": "E",
-            "ESE": "ESE",
-            "SE": "SE",
-            "SSE": "SSE",
-            "S": "S",
-            "SSW": "SSO",
-            "SW": "SO",
-            "WSW": "OSO",
-            "W": "O",
-            "WNW": "ONO",
-            "NW": "NO",
-            "NNW": "NNO"
-        },
-        "underHorizon": "Lua abaixo do horizonte",
-        "overHorizon": "Lua acima do horizonte",
-        "horizonTitle": "Lua de hoje",
-        "currentTime": "Hora atual"
+  "name": "Portuguese",
+  "nativeName": "Português (Brasil)",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Primeiro quarto",
+      "fullMoon": "Lua cheia",
+      "thirdQuarterMoon": "Último quarto",
+      "newMoon": "Lua nova",
+      "waxingCrescentMoon": "Lua crescente crescente",
+      "waxingGibbousMoon": "Lua crescente convexa",
+      "waningCrescentMoon": "Lua minguante crescente",
+      "waningGibbousMoon": "Lua minguante convexa"
     },
-    "editor": {
-        "viewConfig": {
-            "title": "Idioma e modo de visualização",
-            "description": "Definir uma configuração para idioma e plano de fundo"
-        },
-        "baseConfig": {
-            "title": "Latitude e Longitude",
-            "description": "Definir uma configuração para latitude e longitude"
-        },
-        "optionsConfig": {
-            "useDefault": "Usar sistema",
-            "useEntity": "Usar entidade",
-            "useCustom": "Usar personalizado"
-        },
-        "fontOptions": {
-            "title": "Estilização de texto",
-            "description": "Definir estilização de texto",
-            "hideLabel": "Ocultar rótulo",
-            "headerFontConfig": {
-                "title": "Título",
-                "description": "Definir estilização de título"
-            },
-            "labelFontConfig": {
-                "title": "Rótulo",
-                "description": "Definir estilização de rótulo"
-            },
-            "headerFontSize": "Tamanho da fonte do título",
-            "headerFontColor": "Cor da fonte do título",
-            "headerFontStyle": "Estilo da fonte do título",
-            "labelFontSize": "Tamanho da fonte do rótulo",
-            "labelFontColor": "Cor da fonte do rótulo",
-            "labelFontStyle": "Estilo da fonte do rótulo",
-            "valueFontSize": "Tamanho da fonte do valor"
-        },
-        "graphConfig": {
-            "title": "Personalização do gráfico",
-            "description": "Defina uma configuração para o gráfico"
-        },
-        "compactView": "Visualização compacta",
-        "showBackground": "Mostrar plano de fundo",
-        "timeFormat": "Formato de 12 horas",
-        "mileUnit": "Unidade de milha",
-        "yTicks": "Y-axis ticks",
-        "xTicks": "X-axis ticks",
-        "showTime": "Marcadores de tempo de nascer/pôr do sol",
-        "showCurrent": "Posição atual da Lua",
-        "showLegend": "Mostrar legenda",
-        "placeHolder": {
-            "latitude": "Inserir latitude",
-            "longitude": "Inserir longitude",
-            "customBackground": "URL ou caminho para a imagem",
-            "language": "Selecionar idioma",
-            "moonPosition": "Selecione a posição da lua no cartão",
-            "defaultCard": "Selecionar cartão padrão",
-            "yTicksPosition": "Posição das marcas do eixo Y",
-            "legendPosition": "Posição da legenda",
-            "legendAlign": "Alinhamento da legenda"
-        }
+    "illumination": "Iluminação",
+    "illuminated": "Iluminada",
+    "moonRise": "Nascer da lua",
+    "moonSet": "Pôr da lua",
+    "moonHigh": "Lua mais alta",
+    "moonAge": "Idade da lua",
+    "distance": "Distância",
+    "azimuth": "Azimute",
+    "altitude": "Altitude",
+    "fullMoon": "Lua chei",
+    "newMoon": "Lua nova",
+    "relativeTime": {
+      "days": "dias",
+      "justNow": "agora mesmo",
+      "minutesAgo": "há {0} minutos",
+      "hoursAgo": "há {0} horas",
+      "inMinutes": "em {0} minutos",
+      "inHours": "em {0} horas"
+    },
+    "position": "Posição",
+    "direction": "Direção",
+    "cardinalShort": {
+      "N": "N",
+      "NNE": "NNE",
+      "NE": "NE",
+      "ENE": "ENE",
+      "E": "E",
+      "ESE": "ESE",
+      "SE": "SE",
+      "SSE": "SSE",
+      "S": "S",
+      "SSW": "SSO",
+      "SW": "SO",
+      "WSW": "OSO",
+      "W": "O",
+      "WNW": "ONO",
+      "NW": "NO",
+      "NNW": "NNO"
+    },
+    "underHorizon": "Lua abaixo do horizonte",
+    "overHorizon": "Lua acima do horizonte",
+    "horizonTitle": "Lua de hoje",
+    "currentTime": "Hora atual"
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Idioma e modo de visualização",
+      "description": "Definir uma configuração para idioma e plano de fundo"
+    },
+    "baseConfig": {
+      "title": "Latitude e Longitude",
+      "description": "Definir uma configuração para latitude e longitude"
+    },
+    "optionsConfig": {
+      "useDefault": "Usar sistema",
+      "useEntity": "Usar entidade",
+      "useCustom": "Usar personalizado"
+    },
+    "fontOptions": {
+      "title": "Estilização de texto",
+      "description": "Definir estilização de texto",
+      "hideLabel": "Ocultar rótulo",
+      "headerFontConfig": {
+        "title": "Título",
+        "description": "Definir estilização de título"
+      },
+      "labelFontConfig": {
+        "title": "Rótulo",
+        "description": "Definir estilização de rótulo"
+      },
+      "headerFontSize": "Tamanho da fonte do título",
+      "headerFontColor": "Cor da fonte do título",
+      "headerFontStyle": "Estilo da fonte do título",
+      "labelFontSize": "Tamanho da fonte do rótulo",
+      "labelFontColor": "Cor da fonte do rótulo",
+      "labelFontStyle": "Estilo da fonte do rótulo",
+      "valueFontSize": "Tamanho da fonte do valor"
+    },
+    "graphConfig": {
+      "title": "Personalização do gráfico",
+      "description": "Defina uma configuração para o gráfico"
+    },
+    "compactView": "Visualização compacta",
+    "showBackground": "Mostrar plano de fundo",
+    "timeFormat": "Formato de 12 horas",
+    "mileUnit": "Unidade de milha",
+    "yTicks": "Y-axis ticks",
+    "xTicks": "X-axis ticks",
+    "showTime": "Marcadores de tempo de nascer/pôr do sol",
+    "showCurrent": "Posição atual da Lua",
+    "showLegend": "Mostrar legenda",
+    "showHighest": "Exibir a posição mais alta da Lua",
+    "placeHolder": {
+      "latitude": "Inserir latitude",
+      "longitude": "Inserir longitude",
+      "customBackground": "URL ou caminho para a imagem",
+      "language": "Selecionar idioma",
+      "moonPosition": "Selecione a posição da lua no cartão",
+      "defaultCard": "Selecionar cartão padrão",
+      "yTicksPosition": "Posição das marcas do eixo Y",
+      "legendPosition": "Posição da legenda",
+      "legendAlign": "Alinhamento da legenda"
     }
+  }
 }

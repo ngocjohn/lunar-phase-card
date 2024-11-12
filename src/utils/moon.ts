@@ -27,7 +27,7 @@ export class Moon {
     return localize(string, this.lang, search, replace);
   };
 
-  private formatTime = (time: number | Date): string => {
+  formatTime = (time: number | Date): string => {
     return formatTime(new Date(time), this.locale);
   };
 
@@ -119,8 +119,8 @@ export class Moon {
       phaseValue,
       next: { fullMoon, newMoon },
     } = illumination;
-    const { rise, set, highest } = this._moonTime;
-
+    const { rise, set } = this._moonTime;
+    const { main } = this.moonTransit;
     // Format numeric values
     const formatted = {
       moonFraction: formatNumber(fraction * 100),
@@ -140,7 +140,7 @@ export class Moon {
       distance: createItem('distance', formatted.distance, useMiles ? 'mi' : 'km'),
       moonRise: createMoonTime('moonRise', rise),
       moonSet: createMoonTime('moonSet', set),
-      moonHighest: highest ? createMoonTime('moonHigh', highest) : undefined,
+      moonHighest: createMoonTime('moonHigh', new Date(main || 0)),
       nextFullMoon: createItem('fullMoon', shortTime(fullMoon.value)),
       nextNewMoon: createItem('newMoon', shortTime(newMoon.value)),
       direction: createItem('direction', formatted.azimuth, '°', cardinal),
@@ -161,39 +161,76 @@ export class Moon {
 
   get todayData() {
     const today = new Date();
-    const startTime = new Date(today.setHours(0, 0, 0, 0));
-    const _altitudeData = this._getAltituteData(startTime);
+    const startTime = new Date(today.setHours(0, 30, 0, 0));
     const timeToday = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
+    // moon highest
+    const moonHighest = this._getMoonHighest(timeToday.rise, timeToday.set);
+    // current moon
+    const currentMoon = this._fetchtCurrentMoon();
+    // time markers
 
-    const timeMarkers = ['rise', 'set'].map((key) => this.timeDataSet(key));
-    const currentMoon = this._getCurrentMoonData();
+    // dataset
+
+    let dataWithXY = this._getDataAltitude(startTime);
+    const changedIndexWithHighest = this._getClosestIndex(moonHighest.rawData.x, dataWithXY);
+    dataWithXY[changedIndexWithHighest] = moonHighest.rawData;
+    dataWithXY = dataWithXY.sort((a, b) => a.x - b.x);
+
+    const timeLabels = Object.values(dataWithXY).map((item) => item.x);
+    const altitudeValues = Object.values(dataWithXY).map((item) => item.y);
+    const minMaxY = {
+      sugestedYMax: Math.round(Math.max(...altitudeValues) + 10),
+      sugestedYMin: Math.round(Math.min(...altitudeValues) - 10),
+    };
+
     const dataCotent = {
       time: timeToday,
-      altitude: this._getDataAltitude(startTime),
-      timeLabels: Object.keys(_altitudeData),
-      altitudeData: Object.values(_altitudeData),
-      reverseLabels: Object.keys(_altitudeData).reverse(),
-      reverseAltitudeData: Object.values(_altitudeData).reverse(),
-      minMaxY: {
-        sugestedYMax: Math.round(Math.max(...Object.values(_altitudeData)) + 10),
-        sugestedYMin: Math.round(Math.min(...Object.values(_altitudeData)) - 10),
-      },
+      moonHighest,
+      altitude: dataWithXY,
+      timeLabels,
+      altitudeValues,
+      minMaxY,
       moonPhase: this._moonData.illumination,
       lang: {
         rise: this.localize('card.moonRise'),
         set: this.localize('card.moonSet'),
       },
-      timeMarkers,
+      currentMoon,
     };
 
     return dataCotent;
   }
 
-  _getDataInRange = () => {
-    const now = new Date();
-    const timeRange = new Date(now.getTime() - 12 * 60 * 60 * 1000);
-    const dataSet = this._getDataAltitude(timeRange);
-    return dataSet;
+  get timeMarkers() {
+    const timeMarkers = ['rise', 'set'].map((key) => this.timeDataSet(key));
+    return timeMarkers;
+  }
+
+  _getMoonHighest = (rise: number | Date, set: number | Date): Record<string, any> => {
+    const { formatNumber } = this;
+
+    const moonTransit = SunCalc.moonTransit(rise, set, this.location.latitude, this.location.longitude);
+    const { main } = moonTransit;
+    const moonTransitTime = new Date(main || 0);
+    const moonTransitPosition = SunCalc.getMoonPosition(
+      moonTransitTime,
+      this.location.latitude,
+      this.location.longitude
+    );
+    const altitude = `${formatNumber(moonTransitPosition.altitudeDegrees)}°`;
+    const azimuth = formatNumber(moonTransitPosition.azimuthDegrees);
+    const cardinal = this.convertCardinal(moonTransitPosition.azimuthDegrees);
+    const direction = `${azimuth}° ${cardinal}`;
+    const formatedTime = this.formatTime(moonTransitTime);
+    const rawData = {
+      x: moonTransitTime.getTime(),
+      y: Number(moonTransitPosition.altitudeDegrees.toFixed(2)),
+    };
+
+    const contentBody: string[] = [];
+    contentBody.push(altitude);
+    contentBody.push(direction);
+    return { formatedTime, contentBody, rawData };
   };
 
   _getCurrentMoonData = (): string => {
@@ -209,23 +246,32 @@ export class Moon {
     return contentText;
   };
 
-  _getAltituteData = (startTime: Date) => {
+  _getAltituteData = (startTime: Date): { [key: string]: number } => {
     const result: { [key: string]: number } = {};
+    const stepSize = 15 * 60 * 1000; // 15 minutes
+    // time range 1 day
+    const timeRange = 24 * 60 * 60 * 1000;
+    const steps = timeRange / stepSize;
 
-    for (let i = 0; i < 48; i++) {
-      const time = new Date(startTime.getTime() + i * 30 * 60 * 1000);
+    for (let i = 0; i < steps; i++) {
+      const time = new Date(startTime.getTime() + i * stepSize);
       const formatedTime = this.formatTime(time);
       const position = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
       result[formatedTime] = Number(position.altitudeDegrees.toFixed(2));
     }
+
     return result;
   };
 
   _getDataAltitude = (startTime: Date) => {
+    const stepConfig = this.config.graph_config?.time_step_size ?? 30;
     const result: { x: number; y: number }[] = [];
+    const stepSize = stepConfig * 60 * 1000; // time step in minutes
+    const timeRange = 24 * 60 * 60 * 1000; // 1 day
+    const steps = timeRange / stepSize;
 
-    for (let i = 0; i < 48; i++) {
-      const time = new Date(startTime.getTime() + i * 30 * 60 * 1000);
+    for (let i = 0; i < steps; i++) {
+      const time = new Date(startTime.getTime() + i * stepSize);
       const formatedTime = time.getTime();
       const position = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
       result.push({ x: formatedTime, y: Number(position.altitudeDegrees.toFixed(2)) });
@@ -245,17 +291,10 @@ export class Moon {
     return SunCalc.moonTransit(rise, set, this.location.latitude, this.location.longitude);
   };
 
-  _currentMoonIndex(): number {
-    const now = new Date();
-    const hour = now.getHours() + now.getMinutes() / 60;
-    const index = Math.floor(hour) * 2;
-    return index;
-  }
-
   _fetchtCurrentMoon = (): Record<string, any> => {
     const now = new Date();
-    const hour = now.getHours() + now.getMinutes() / 60;
-    const index = Math.floor(hour) * 2;
+    const hour = (now.getHours() + now.getMinutes() / 60) * 2;
+    const index = Math.floor(hour) % 48;
     const currentData = SunCalc.getMoonData(now, this.location.latitude, this.location.longitude);
     const { azimuthDegrees, altitudeDegrees } = currentData;
     const formatNumber = this.formatNumber(azimuthDegrees);
@@ -263,15 +302,19 @@ export class Moon {
     const direction = `${formatNumber}° ${cardinal}`;
     const formatedTime = this.formatTime(now);
     const altitude = `${this.formatNumber(altitudeDegrees)}°`;
+    const rawData = {
+      x: now.getTime(),
+      y: Number(altitudeDegrees.toFixed(2)),
+    };
 
     const contentBody: string[] = [];
     contentBody.push(altitude);
     contentBody.push(direction);
 
-    return { currentHourIndex: index, body: contentBody, title: formatedTime, altitudeDegrees };
+    return { currentHourIndex: index, body: contentBody, title: formatedTime, altitudeDegrees, rawData };
   };
 
-  convertCardinal = (degrees: number): string => {
+  private convertCardinal = (degrees: number): string => {
     const pointsMap = [
       'N',
       'NNE',
@@ -319,18 +362,33 @@ export class Moon {
     // Formated time
     const formatedTime = this.formatTime(time);
 
+    const rawData = {
+      x: time.getTime(),
+      y: 'N/A',
+    };
+
     // Show on chart
     const show = showOnChart(time);
     const isUp = timeKey === 'set' ? false : true;
     const lineOffset = 30;
-    const index = Math.round((time.getHours() + time.getMinutes() / 60) * 2);
+    const timeValue = (time.getHours() + time.getMinutes() / 60) * 2;
+    const index = Math.round(timeValue);
     const randomNum = Math.floor(Math.random() * (47 - 0 + 1)) + 0;
+    const closetIndex = this._getClosestIndex(rawData.x, this.todayData.altitude);
     const position = {
-      index: index,
+      index: closetIndex,
       altitude,
+      closetIndex,
     };
 
-    return { show, position, isUp, formatedTime, lineOffset, direction };
+    return { show, position, isUp, formatedTime, lineOffset, direction, rawData };
+  };
+
+  _getClosestIndex = (time: number, data: { x: number; y: number }[]): number => {
+    const closest = data.reduce((prev, curr) => {
+      return Math.abs(curr.x - time) < Math.abs(prev.x - time) ? curr : prev;
+    });
+    return data.indexOf(closest);
   };
 
   get calendarEvents() {

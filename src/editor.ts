@@ -26,16 +26,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     this._config = config;
   }
 
-  protected firstUpdated(changedProps: PropertyValues): void {
-    super.firstUpdated(changedProps);
-  }
-
   private get selectedLanguage(): string {
     return this._config?.selected_language || this.hass?.language;
-  }
-
-  protected update(changedProperties: PropertyValues): void {
-    super.update(changedProperties);
   }
 
   private localize = (string: string, search = '', replace = ''): string => {
@@ -322,6 +314,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       { label: 'showTime', configValue: 'show_time' },
       { label: 'showCurrent', configValue: 'show_current' },
       { label: 'showLegend', configValue: 'show_legend' },
+      { label: 'showHighest', configValue: 'show_highest' },
     ];
 
     const checkBoxes = html`
@@ -357,16 +350,29 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       )}
     `;
 
-    const yTicksStepSize = html` <ha-selector
-      .hass=${this.hass}
-      .value=${this._config?.graph_config?.y_ticks_step_size as number}
-      .configValue=${'y_ticks_step_size'}
-      .selector=${{ number: { max: 90, min: 5, mode: 'box', step: 5 } }}
-      .label=${'Y Ticks Step Size'}
-      .required=${false}
-      .configKey=${'graph_config'}
-      @value-changed=${this._handleValueChange}
-    ></ha-selector>`;
+    const numberSelector = [
+      {
+        label: 'Y Ticks Step Size',
+        value: 'y_ticks_step_size',
+        selector: { number: { max: 90, min: 5, mode: 'box', step: 5 } },
+      },
+      {
+        label: 'Time Step Size',
+        value: 'time_step_size',
+        selector: { number: { max: 60, min: 5, mode: 'slider', step: 5 } },
+      },
+    ].map((item) => {
+      return html` <ha-selector
+        .hass=${this.hass}
+        .value=${(this._config?.graph_config?.[item.value] as number) ?? 30}
+        .configValue=${item.value}
+        .selector=${item.selector}
+        .label=${item.label}
+        .required=${false}
+        .configKey=${'graph_config'}
+        @value-changed=${this._handleValueChange}
+      ></ha-selector>`;
+    });
 
     const graphConfig = html`
       <div class="sub-config-wrapper">
@@ -381,7 +387,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
           <span class="title">Customize options</span>
           <span class="desc">Customize the graph</span>
         </div>
-        <div class="sub-config-content">${yTicksPosition} ${yTicksStepSize}</div>
+        <div class="sub-config-content">${yTicksPosition} ${numberSelector}</div>
       </div>
     `;
 

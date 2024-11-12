@@ -53,10 +53,12 @@ export interface HorizonGraphConfig {
   show_time?: boolean;
   show_current?: boolean;
   show_legend?: boolean;
+  show_highest?: boolean;
   y_ticks_position?: 'left' | 'right';
   y_ticks_step_size?: number;
   legend_position?: 'top' | 'bottom';
   legend_align?: 'start' | 'center' | 'end';
+  time_step_size?: number;
 }
 
 export interface LunarPhaseCardConfig extends LovelaceCardConfig {
@@ -100,10 +102,13 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
     x_ticks: true,
     show_time: true,
     show_current: true,
+    show_legend: true,
+    show_highest: true,
     y_ticks_position: 'left',
     y_ticks_step_size: 30,
     legend_position: 'top',
     legend_align: 'center',
+    time_step_size: 30,
   },
   font_customize: {
     header_font_size: 'x-large',
@@ -152,4 +157,5 @@ export type ChartColors = {
   fillColor: string;
   fillBelowColor: string;
   fillBelowLineColor: string;
+  [key: string]: string;
 };

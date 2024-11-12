@@ -34,7 +34,7 @@ export class MoonHorizon extends LitElement {
   @property({ attribute: false }) moon!: Moon;
   @property({ attribute: false }) card!: LunarPhaseCard;
 
-  @property({ type: Object }) private _chart: Chart | null = null;
+  @state() _chart!: Chart;
   @state() moreInfo = false;
   @state() hoverOnChart = false;
   @state() hoverTimeout: number | null = null;
@@ -47,7 +47,13 @@ export class MoonHorizon extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
-    if (!this._resizeInitiated && !this._resizeObserver) {
+    window.MoonCard = this;
+    setTimeout(() => {
+      if (this._chart) {
+        window.Chart = this._chart;
+      }
+    }, 100);
+    if (!this._resizeInitiated && !this._resizeObserver && this.card.isEditorPreview === false) {
       this.delayedAttachResizeObserver();
     }
   }
@@ -67,7 +73,7 @@ export class MoonHorizon extends LitElement {
   }
 
   attachResizeObserver(): void {
-    if (this._resizeObserver) {
+    if (this._resizeObserver || this.card.isEditorPreview) {
       return;
     }
     this._resizeObserver = new ResizeObserver(() => {
@@ -111,7 +117,7 @@ export class MoonHorizon extends LitElement {
           width: 100%;
           height: 100%;
           /* box-shadow: 0 0 6px #e1e0dd30; */
-          max-width: 900px;
+          max-width: 500px;
           backdrop-filter: blur(4px);
           border-radius: 0;
           /* border: 1px solid var(--divider-color); */
@@ -170,11 +176,12 @@ export class MoonHorizon extends LitElement {
   }
 
   private get plugins(): Plugin[] {
-    const fillTopPlugin = this.fillTopPlugin();
-    const timeMarkerPlugin = this.timeMarkerPlugin();
-    const moonMarkerPlugin = this.moonMarkerPlugin();
-
-    return [moonMarkerPlugin, timeMarkerPlugin, fillTopPlugin];
+    const plugins: Plugin[] = [];
+    plugins.push(this.fillTopPlugin());
+    plugins.push(this.timeMarkerPlugin());
+    plugins.push(this.moonMarkerPlugin());
+    plugins.push(this.highestAltitudePlugin());
+    return plugins;
   }
 
   private get chartData(): ChartData {
@@ -185,7 +192,7 @@ export class MoonHorizon extends LitElement {
     return this._chartOptions();
   }
 
-  private cssColors(): ChartColors {
+  private get cssColors(): ChartColors {
     const cssColors = getComputedStyle(this) as CSSStyleDeclaration;
     return {
       primaryTextColor: cssColors.getPropertyValue('--lunar-card-label-font-color'),
@@ -193,6 +200,8 @@ export class MoonHorizon extends LitElement {
       fillColor: cssColors.getPropertyValue('--lunar-fill-color'),
       fillBelowColor: cssColors.getPropertyValue('--lunar-fill-bellow-color'),
       fillBelowLineColor: cssColors.getPropertyValue('--lunar-fill-line-bellow-color'),
+      defaultPrimaryColor: cssColors.getPropertyValue('--primary-color'),
+      defaultAccentColor: cssColors.getPropertyValue('--accent-color'),
     };
   }
 
@@ -219,12 +228,12 @@ export class MoonHorizon extends LitElement {
             ...options.scales,
             x: {
               ...options.scales?.x,
-              // reverse: true,
+              alignToPixels: true,
               ticks: {
                 ...options.scales?.x?.ticks,
 
                 callback: function (value, index) {
-                  return (index + 1) % 2 === 0 ? this.getLabelForValue(Number(value)) : '';
+                  return index % 2 !== 0 ? this.getLabelForValue(Number(value)) : '';
                 },
               },
             },
@@ -371,9 +380,9 @@ export class MoonHorizon extends LitElement {
   /* -------------------------------- DATASETS -------------------------------- */
 
   private _getChartData = (): ChartData => {
-    const { primaryTextColor, secondaryTextColor, fillColor, fillBelowColor, fillBelowLineColor } = this.cssColors();
+    const { primaryTextColor, secondaryTextColor, fillColor, fillBelowColor, fillBelowLineColor } = this.cssColors;
     const todayData = this.todayData;
-    const timeLabels = todayData.timeLabels;
+    const timeLabels = Object.values(todayData.altitude).map((item) => this.moon.formatTime(item.x));
 
     const altitudeData = todayData.altitude;
     const { set, rise } = todayData.lang;
@@ -390,17 +399,19 @@ export class MoonHorizon extends LitElement {
         below: fillBelowColor,
       },
       cubicInterpolationMode: 'monotone',
-      tension: 1,
+      tension: 0.2,
       segment: {
         borderColor: (ctx: ScriptableLineSegmentContext) =>
           ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? primaryTextColor : fillBelowLineColor,
         borderWidth: (ctx: ScriptableLineSegmentContext) =>
-          ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? 1.2 : 1,
+          ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? 1.3 : 1,
       },
       radius: () => (this.hoverOnChart ? 1.1 : 0),
+      usePointStyle: true,
       pointHoverRadius: 3,
       pointHoverBackgroundColor: secondaryTextColor,
       pointHoverBorderWidth: 2,
+      spanGaps: true,
     };
 
     const timeDataset = {
@@ -422,10 +433,13 @@ export class MoonHorizon extends LitElement {
   };
 
   private _chartOptions = (): ChartOptions => {
-    const { secondaryTextColor } = this.cssColors();
+    const { secondaryTextColor, defaultPrimaryColor, defaultAccentColor } = this.cssColors;
     const { sugestedYMax, sugestedYMin } = this.todayData.minMaxY;
     const graphConfig = this.card.config?.graph_config;
     const currentMoon = this.moon._fetchtCurrentMoon();
+    const { moonHighest } = this.todayData;
+    const highestBody = moonHighest.contentBody;
+    const highestIndex = this.todayData.altitudeValues.indexOf(moonHighest.rawData.y);
     const ticksOptions = {
       color: secondaryTextColor,
     };
@@ -484,17 +498,38 @@ export class MoonHorizon extends LitElement {
     };
 
     plugins['tooltip'] = {
-      backgroundColor: (ctx) => {
-        const index = ctx?.tooltipItems?.[0]?.dataIndex;
-        return index === currentMoon.currentHourIndex ? 'black' : 'rgba(0, 0, 0, 0.8)';
-      },
       titleColor: (ctx) => {
         const index = ctx?.tooltipItems?.[0]?.dataIndex;
-        return index === currentMoon.currentHourIndex ? 'red' : secondaryTextColor;
+        switch (index) {
+          case currentMoon.currentHourIndex:
+            return defaultAccentColor;
+          case highestIndex:
+            return defaultPrimaryColor;
+          default:
+            return secondaryTextColor;
+        }
       },
       callbacks: {
-        title: (ctx) => (ctx[0].dataIndex === currentMoon.currentHourIndex ? currentMoon.title : ctx[0].label),
-        label: (ctx) => (ctx.dataIndex === currentMoon.currentHourIndex ? currentMoon.body : `${ctx.formattedValue}°`),
+        title: (ctx) => {
+          switch (ctx[0].dataIndex) {
+            case currentMoon.currentHourIndex:
+              return currentMoon.title;
+            case highestIndex:
+              return 'Highest at ' + moonHighest.formatedTime;
+            default:
+              return ctx[0].label;
+          }
+        },
+        label: (ctx) => {
+          switch (ctx.dataIndex) {
+            case currentMoon.currentHourIndex:
+              return currentMoon.body;
+            case highestIndex:
+              return highestBody;
+            default:
+              return `${ctx.formattedValue}°`;
+          }
+        },
       },
       bodyFont: {
         size: 14,
@@ -545,12 +580,12 @@ export class MoonHorizon extends LitElement {
           scales: { x, y },
         } = chart;
 
-        const xPosition = x.getPixelForValue(currentHourIndex);
+        const xPosition = x.getPixelForValue(currentHourIndex) - 12;
         const yPosition = y.getPixelForValue(altitudeDegrees) + 6;
         if (emoji) {
           // Draw the emoji
           ctx.save();
-          ctx.font = '24px serif';
+          ctx.font = '20px Arial';
           ctx.fillText(emoji, xPosition, yPosition);
           ctx.restore();
         }
@@ -559,7 +594,7 @@ export class MoonHorizon extends LitElement {
   };
 
   private fillTopPlugin = (): Plugin => {
-    const { fillColor, secondaryTextColor } = this.cssColors();
+    const { fillColor, secondaryTextColor } = this.cssColors;
     return {
       id: 'fillTopPlugin',
       beforeDraw(chart: Chart) {
@@ -590,8 +625,8 @@ export class MoonHorizon extends LitElement {
   };
 
   private timeMarkerPlugin = (): Plugin => {
-    const timeMarkers = this.todayData.timeMarkers;
-    const { secondaryTextColor, fillColor } = this.cssColors();
+    const timeMarkers = this.moon.timeMarkers;
+    const { secondaryTextColor, fillColor } = this.cssColors;
 
     // Pre-load SVG images as Image objects
     const moonUpSvg = new Image();
@@ -656,7 +691,7 @@ export class MoonHorizon extends LitElement {
       ctx.fillStyle = secondaryTextColor;
       ctx.textAlign = textAlign;
       ctx.font = '12px Arial';
-      ctx.filter = this.hoverOnChart ? 'opacity(0.2)' : 'opacity(1)';
+      ctx.filter = this.hoverOnChart ? 'opacity(0.4)' : 'opacity(1)';
       // Load and draw the SVG based on `isUp`
       const imgToDraw = isUp ? moonUpSvg : moonDownSvg;
       const timeWidth = ctx.measureText(formatedTime).width;
@@ -699,7 +734,9 @@ export class MoonHorizon extends LitElement {
           if (show) {
             const { index } = position;
 
-            const xPosition = x.getPixelForValue(index);
+            let xPosition = x.getPixelForValue(index);
+            xPosition = isUp ? xPosition - 5 : xPosition;
+
             const yPosition = y.getPixelForValue(0);
 
             const lineOffset = isUp ? Math.round((yPosition - top) / 2) : Math.round((bottom - yPosition) / 2);
@@ -725,6 +762,28 @@ export class MoonHorizon extends LitElement {
       },
     };
   };
+
+  private highestAltitudePlugin = (): Plugin => {
+    const showHighest = this.card.config?.graph_config?.show_highest ?? true;
+    const { rawData } = this.todayData.moonHighest;
+    const { primaryTextColor } = this.cssColors;
+    const yValue = rawData.y;
+    const yIndex = this.todayData.altitudeValues.indexOf(yValue);
+    return {
+      id: 'highestAltitudePlugin',
+      afterDatasetsDraw(chart: Chart) {
+        const dataSet = chart.getDatasetMeta(0);
+        if (!showHighest || dataSet.hidden) return;
+        const point = dataSet.data[yIndex];
+        point.options.pointHoverBorderWidth = 4;
+        point.options.pointHoverRadius = 4;
+        point.options.pointHoverBackgroundColor = primaryTextColor;
+        point.options.radius = 4;
+        chart.setActiveElements([{ datasetIndex: 0, index: yIndex }]);
+        chart.update('default');
+      },
+    };
+  };
 }
 
 declare global {
@@ -733,5 +792,6 @@ declare global {
   }
   interface Window {
     MoonCard: MoonHorizon;
+    Chart: Chart;
   }
 }

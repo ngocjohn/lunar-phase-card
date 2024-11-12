@@ -103,6 +103,7 @@
         "showTime": "Set/Rise time markers",
         "showCurrent": "Current Moon position",
         "showLegend": "Display legend",
+        "showHighest": "Display highest Moon position",
         "placeHolder": {
             "latitude": "Enter latitude",
             "longitude": "Enter longitude",
