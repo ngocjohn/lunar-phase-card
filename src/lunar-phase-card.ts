@@ -1,4 +1,4 @@
-import { LovelaceCardEditor, formatDate, FrontendLocaleData, TimeFormat } from 'custom-card-helpers';
+import { LovelaceCardEditor, formatDate, FrontendLocaleData, TimeFormat, fireEvent } from 'custom-card-helpers';
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -9,7 +9,9 @@ import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultCo
 // Helpers
 import { BLUE_BG, PageType, MoonState, ICON } from './const';
 import { localize } from './localize/localize';
+import { deepMerge, generateConfig } from './utils/ha-helper';
 import { getDefaultConfig } from './utils/helpers';
+import { isEditorMode } from './utils/loader';
 
 // components
 import { LunarBaseData } from './components/moon-data';
@@ -49,6 +51,8 @@ export class LunarPhaseCard extends LitElement {
   @state() _state: MoonState = MoonState.READY;
   @state() _resizeInitiated = false;
   @state() public _cardWidth = 0;
+
+  @state() _activeEditorPage?: PageType;
   @state() _resizeObserver: ResizeObserver | null = null;
   @query('lunar-base-data') _data!: LunarBaseData;
   @query('moon-horizon') _moonHorizon!: MoonHorizon;
@@ -71,14 +75,7 @@ export class LunarPhaseCard extends LitElement {
       throw new Error('Invalid configuration');
     }
 
-    this.config = {
-      ...config,
-    };
-  }
-
-  constructor() {
-    super();
-    this._handleEditorEvent = this._handleEditorEvent.bind(this);
+    this.config = generateConfig({ ...config });
   }
 
   connectedCallback(): void {
@@ -87,17 +84,20 @@ export class LunarPhaseCard extends LitElement {
       window.LunarCard = this;
       window.Moon = this.moon;
     }
+    if (isEditorMode(this)) {
+      document.addEventListener('toggle-graph-editor', (ev) => this._handleEditorEvent(ev as CustomEvent));
+    }
     if (!this._resizeInitiated && !this._resizeObserver) {
       this.delayedAttachResizeObserver();
     }
     this.startRefreshInterval();
-    document.addEventListener('lunar-card-event', (ev) => this._handleEditorEvent(ev as CustomEvent));
   }
 
   disconnectedCallback(): void {
     this.clearRefreshInterval();
     this.detachResizeObserver();
     this._resizeInitiated = false;
+    document.removeEventListener('toggle-graph-editor', (ev) => this._handleEditorEvent(ev as CustomEvent));
     super.disconnectedCallback();
   }
   delayedAttachResizeObserver(): void {
@@ -135,24 +135,24 @@ export class LunarPhaseCard extends LitElement {
     }
   }
 
-  private _handleEditorEvent(ev: CustomEvent) {
-    ev.stopPropagation();
-    if (!this.isEditorPreview) {
+  private _handleEditorEvent(event: CustomEvent) {
+    event.stopPropagation();
+    if (!isEditorMode(this)) {
       return;
     }
-    console.log('editor event', ev.detail);
-    const activeTabIndex = ev.detail.activeTabIndex;
-    if (activeTabIndex === 3 && this._activeCard !== PageType.HORIZON) {
+
+    const isHorizon = event.detail.activeGraphEditor;
+    if (isHorizon) {
       this._activeCard = PageType.HORIZON;
-    } else if (activeTabIndex !== 3) {
+    } else {
       return;
     }
   }
 
   protected async firstUpdated(_changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(_changedProperties);
-    this._handleFirstRender();
     await new Promise((resolve) => setTimeout(resolve, 0));
+    this._handleFirstRender();
     this._computeStyles();
     this.measureCard();
   }
@@ -225,22 +225,30 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private _handleFirstRender() {
-    if (this.isEditorPreview && this.config.activeGraphTab === 3) {
-      this._activeCard = PageType.HORIZON;
-    } else if (this.isEditorPreview && !this.config.activeGraphTab && this._defaultCard === PageType.HORIZON) {
-      this._activeCard = PageType.BASE;
-      setTimeout(() => {
+    if (isEditorMode(this)) {
+      const activeGraphEditor = this.isGraphEditor;
+      if (activeGraphEditor && this._activeCard !== PageType.HORIZON) {
         this._activeCard = PageType.HORIZON;
-      }, 150);
+      } else if (!activeGraphEditor && this._defaultCard === PageType.HORIZON) {
+        this._activeCard = PageType.BASE;
+        setTimeout(() => {
+          this._activeCard = PageType.HORIZON;
+        }, 150);
+      } else {
+        this._activeCard = this._defaultCard;
+      }
     } else {
       this._activeCard = this._defaultCard;
-      this.requestUpdate();
     }
   }
 
+  private get isGraphEditor(): Boolean {
+    const value = localStorage.getItem('activeGraphEditor');
+    return value === 'true';
+  }
+
   private startRefreshInterval() {
-    // console.log('refresh start', new Date().toLocaleTimeString());
-    // Clear any existing interval to avoid multiple intervals running
+    // Clear any existing interval
     if (this._refreshInterval !== undefined) {
       clearInterval(this._refreshInterval);
     }
@@ -289,7 +297,6 @@ export class LunarPhaseCard extends LitElement {
         <div class="loading" ?hidden=${this._state !== MoonState.LOADING}>
           <ha-circular-progress indeterminate size="tiny"></ha-circular-progress>
         </div>
-
         ${header}
         <div class="lunar-card-content">${renderCardMap[card]}</div>
       </ha-card>

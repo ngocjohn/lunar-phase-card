@@ -16,7 +16,6 @@
   border-bottom: inherit;
   min-height: 48px;
   align-items: center;
-  cursor: pointer;
   overflow: hidden;
   font-weight: 500;
   outline: 0px;
@@ -97,6 +96,24 @@ ha-select {
   padding-inline: 0.5rem;
   cursor: pointer;
 }
+
+.location-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  padding-inline: 8px;
+}
+
+.location-item .primary {
+  font-weight: 500;
+}
+
+.location-item .secondary {
+  color: var(--secondary-text-color);
+  text-transform: capitalize;
+}
+
 
 img.bg-thumbnail {
   width: 70%;

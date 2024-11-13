@@ -1,5 +1,6 @@
-import { FrontendLocaleData, TimeFormat, HomeAssistant } from 'custom-card-helpers';
+import { FrontendLocaleData, TimeFormat, HomeAssistant, LovelaceCardConfig } from 'custom-card-helpers';
 
+import { LocationAddress, LunarPhaseCardConfig } from '../types';
 import { MOON_IMAGES } from './moon-pic';
 
 export function formatMoonTime(dateString: string): string {
@@ -168,13 +169,29 @@ export function getDefaultConfig(hass: HomeAssistant) {
   const selected_language = hass.language;
   const timeFormat = useAmPm(hass.locale);
   const mile_unit = length !== 'km';
-  console.log('getDefaultConfig', latitude, longitude, selected_language, timeFormat, mile_unit);
+  const cardId = `lmc-${Math.random().toString(36).substring(2, 9)}`;
+  console.log(
+    'default config',
+    'latitude:',
+    latitude,
+    'longitude:',
+    longitude,
+    'selected_language:',
+    selected_language,
+    'timeFormat:',
+    timeFormat,
+    'mile_unit:',
+    mile_unit,
+    'cardId:',
+    cardId
+  );
   return {
     latitude,
     longitude,
     selected_language,
     '12hr_format': timeFormat,
     mile_unit,
+    cardId,
   };
 }
 
@@ -189,3 +206,81 @@ export const compareTime = (time: Date): boolean => {
   // if time is between 24ago and 24h from now
   return hoursDifference >= -24 && hoursDifference <= 24;
 };
+
+export function compareChanges(oldConfig: LunarPhaseCardConfig, newConfig: Partial<LunarPhaseCardConfig>) {
+  const changes: Record<string, any> = {};
+
+  for (const key of Object.keys(newConfig)) {
+    if (newConfig[key] instanceof Object && key in oldConfig) {
+      const nestedChanges = compareChanges(oldConfig[key], newConfig[key]);
+      // Only add nested changes if there are actual differences
+      if (nestedChanges && Object.keys(nestedChanges).length > 0) {
+        changes[key] = nestedChanges;
+      }
+    } else if (oldConfig[key] !== newConfig[key]) {
+      // Only add the key if the values are different
+      changes[key] = {
+        oldValue: oldConfig[key],
+        newValue: newConfig[key],
+      };
+    }
+  }
+
+  // Log the changes with old vs. new, only if there are changes
+  if (Object.keys(changes).length > 0) {
+    console.group('Configuration Changes');
+    Object.entries(changes).forEach(([key, value]) => {
+      if (typeof value === 'object' && value.oldValue !== undefined && value.newValue !== undefined) {
+        console.log(`%c${key}:`, 'color: #1e88e5', 'Old:', value.oldValue, 'New:', value.newValue);
+      } else {
+        console.log(`%c${key}:`, 'color: #1e88e5', value);
+      }
+    });
+    console.groupEnd();
+  }
+
+  return changes; // Ensure we return the changes object
+}
+
+export function compareConfig(refObj: any, configObj: any): boolean {
+  let isValid = true;
+  for (const key in refObj) {
+    if (typeof refObj[key] === 'object' && refObj[key] !== null) {
+      if (!(key in configObj)) {
+        isValid = false;
+      } else if (!compareConfig(refObj[key], configObj[key])) {
+        isValid = false; // If any nested object is invalid
+      }
+    } else {
+      // Check if the property exists in configObj
+      if (!(key in configObj)) {
+        isValid = false;
+      }
+    }
+  }
+  return isValid;
+}
+
+export async function getAddressFromOpenStreet(lat: number, lon: number): Promise<LocationAddress> {
+  console.log('getAddressFromOpenStreet', lat, lon);
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (response.ok) {
+      // Extract address components from the response
+      const address = {
+        city: data.address.city || data.address.town || '',
+        country: data.address.country || data.address.state || '',
+      };
+      console.log('Address fetched from OpenStreetMap:', address);
+      return address;
+    } else {
+      throw new Error('Failed to fetch address OpenStreetMap');
+    }
+  } catch (error) {
+    console.log('Error fetching address from OpenStreetMap:', error);
+    return { city: '', country: '' };
+  }
+}

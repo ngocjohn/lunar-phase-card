@@ -80,6 +80,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   longitude: number;
   font_customize: FontCustomStyles;
   graph_config?: HorizonGraphConfig;
+  cardId?: string;
 }
 
 export const defaultConfig: Partial<LunarPhaseCardConfig> = {
@@ -158,4 +159,9 @@ export type ChartColors = {
   fillBelowColor: string;
   fillBelowLineColor: string;
   [key: string]: string;
+};
+
+export type LocationAddress = {
+  country: string;
+  city: string;
 };

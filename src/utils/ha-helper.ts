@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LunarPhaseCardConfig } from '../types';
+import { LunarPhaseCardConfig, defaultConfig } from '../types';
 
 export function deepMerge(target: any, source: any): any {
   for (const key of Object.keys(source)) {
@@ -14,26 +14,26 @@ export function deepMerge(target: any, source: any): any {
   return target;
 }
 
-export function InitializeDefaultConfig(): Record<string, unknown> {
-  const defaultConfig: Partial<LunarPhaseCardConfig> = {
-    type: 'custom:lunar-phase-card',
-    entity: '',
-    use_default: true,
-    use_custom: false,
-    use_entity: false,
-    show_background: true,
-    selected_language: 'en',
-    compact_view: true,
-    '12hr_format': false,
-    font_customize: {
-      header_font_size: 'x-large',
-      header_font_style: 'capitalize',
-      header_font_color: '',
-      label_font_size: 'auto',
-      label_font_style: 'none',
-      label_font_color: '',
-      hide_label: false,
-    },
+export const generateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfig => {
+  const defaultConf = defaultConfig;
+  const { y_ticks, x_ticks } = config;
+  if (y_ticks !== undefined && x_ticks !== undefined) {
+    defaultConf.graph_config = {
+      ...defaultConf.graph_config,
+      y_ticks,
+      x_ticks,
+    };
+    config = { ...config, y_ticks: undefined, x_ticks: undefined };
+  }
+
+  const conf = {
+    ...defaultConf,
+    ...config,
+    font_customize: { ...defaultConf.font_customize, ...config.font_customize },
+    graph_config: { ...defaultConf.graph_config, ...config.graph_config },
   };
-  return defaultConfig;
-}
+
+  return conf;
+};
+
+export default generateConfig;
