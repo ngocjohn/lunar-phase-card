@@ -12,16 +12,31 @@ import { Moon } from '../utils/moon';
 export class LunarBaseData extends LitElement {
   @state() moon!: Moon;
   @state() swiper: Swiper | null = null;
+  @state() moonData?: MoonData;
 
   static get styles(): CSSResultGroup {
     return [mainStyles, unsafeCSS(swiperStyleCss)];
   }
 
-  protected firstUpdated(changedProps: PropertyValues): void {
+  protected async firstUpdated(changedProps: PropertyValues): Promise<void> {
     super.firstUpdated(changedProps);
+    console.time('moon');
     if (this.moon) {
-      this.initSwiper();
+      this._validateMoonData();
     }
+    this.initSwiper();
+  }
+
+  private _validateMoonData() {
+    const replacer = (key: string, value: any) => {
+      if (['direction', 'position'].includes(key)) {
+        return undefined;
+      }
+      return value;
+    };
+    const moonData = JSON.parse(JSON.stringify(this.moon.moonData, replacer));
+    this.moonData = moonData;
+    console.timeEnd('moon');
   }
 
   protected shouldUpdate(_changedProperties: PropertyValues): boolean {
@@ -55,11 +70,8 @@ export class LunarBaseData extends LitElement {
 
   protected render(): TemplateResult {
     // const newMoonData = this.baseMoonData;
-    const baseMoonData = this.moon.moonData;
-    const newMoonData: MoonData = { ...baseMoonData };
-    delete newMoonData.direction;
-    delete newMoonData.position;
-    const chunkedData = this._chunkObject(newMoonData, 5);
+    const baseMoonData = (this.moonData as MoonData) || {};
+    const chunkedData = this._chunkObject(baseMoonData, 5);
     const dataContainer = Object.keys(chunkedData).map((key) => {
       return html`
         <div class="swiper-slide">

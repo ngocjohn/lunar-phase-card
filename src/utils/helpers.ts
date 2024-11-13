@@ -1,6 +1,6 @@
 import { FrontendLocaleData, TimeFormat, HomeAssistant, LovelaceCardConfig } from 'custom-card-helpers';
 
-import { LocationAddress, LunarPhaseCardConfig } from '../types';
+import { LocationAddress, LunarPhaseCardConfig, SearchResults } from '../types';
 import { MOON_IMAGES } from './moon-pic';
 
 export function formatMoonTime(dateString: string): string {
@@ -282,5 +282,31 @@ export async function getAddressFromOpenStreet(lat: number, lon: number): Promis
   } catch (error) {
     console.log('Error fetching address from OpenStreetMap:', error);
     return { city: '', country: '' };
+  }
+}
+
+export async function getCoordinates(query: string): Promise<SearchResults[]> {
+  console.log('getCoordinates', query);
+  const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=jsonv2&limit=5`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log('getCoordinates', data);
+    if (response.ok) {
+      const results = data.map((result: any) => ({
+        display_name: result.display_name,
+        name: result.display_name,
+        lat: parseFloat(result.lat),
+        lon: parseFloat(result.lon),
+      }));
+      console.log('Coordinates fetched:', results);
+      return results;
+    } else {
+      throw new Error('Failed to fetch coordinates');
+    }
+  } catch (error) {
+    console.log('Error fetching coordinates:', error);
+    return [];
   }
 }
