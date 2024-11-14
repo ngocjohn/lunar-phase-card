@@ -1,4 +1,6 @@
-import { mdiClose, mdiMagnify } from '@mdi/js';
+import { mdiClose } from '@mdi/js';
+import { ICity } from 'country-state-city';
+import { City } from 'country-state-city';
 import { LitElement, TemplateResult, CSSResultGroup, html, nothing, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
@@ -16,8 +18,6 @@ export class MoonEditorSearch extends LitElement {
   @property({ attribute: false }) _editor!: LunarPhaseCardEditor;
   @state() _searchValue: string = '';
   @state() _searchResults: SearchResults[] = [];
-  @state() _searchResultsVisible = false;
-  @state() _toastDissmissed = false;
 
   static get styles(): CSSResultGroup {
     return [editorStyles];
@@ -28,15 +28,14 @@ export class MoonEditorSearch extends LitElement {
       <ha-textfield
         .autofocus=${this.autofocus}
         .aria-label=${'Search'}
-        .placeholder=${'Enter a location'}
+        .placeholder=${'Search for a location, e.g. "London, UK"'}
         .value=${this._searchValue || ''}
         @input=${(ev: Event) => this._handleSearchInput(ev)}
-        @blur=${() => this._searchLocation()}
       >
       </ha-textfield>
-      ${this._searchResultsVisible
+      ${this._searchValue !== ''
         ? html`<ha-icon-button .path=${mdiClose} @click=${this._clearSearch}></ha-icon-button>`
-        : html`<ha-icon-button .path=${mdiMagnify} @click=${this._searchLocation}></ha-icon-button>`}
+        : nothing}
     `;
 
     const infoSuccess = html` <ha-alert
@@ -54,27 +53,13 @@ export class MoonEditorSearch extends LitElement {
     </div>`;
   }
 
-  private _handleAlertDismiss(ev: Event): void {
-    const alert = ev.target as HTMLElement;
-    alert.style.display = 'none';
-    this._toastDissmissed = true;
-  }
-
   private _renderSearchResults(): TemplateResult | typeof nothing {
-    if (!this._searchResultsVisible || this._searchResults.length === 0) {
-      return html`${!this._toastDissmissed
-        ? html` <ha-alert
-            alert-type="info"
-            dismissable
-            @alert-dismissed-clicked=${(ev: Event) => this._handleAlertDismiss(ev)}
-          >
-            You can get the latitude and longitude from the search with query like "London, UK".</ha-alert
-          >`
-        : nothing}`;
+    if (this._searchResults.length === 0) {
+      return nothing;
     }
     const results = this._searchResults.map((result) => {
       return html`<li class="search-item" @click=${() => this._handleSearchResult(result)}>
-        ${result.display_name}
+        ${result.display_name || result.name} ${result.countryCode ? `(${result.countryCode})` : ''}
       </li> `;
     });
 
@@ -85,11 +70,18 @@ export class MoonEditorSearch extends LitElement {
 
   private _handleSearchResult(result: SearchResults): void {
     console.log('search result', result);
-    const { lat, lon, display_name } = result;
+    const resultCity = {
+      name: result.display_name || result.name,
+      latitude: result.lat || result.latitude,
+      longitude: result.lon || result.longitude,
+    };
+
+    const { name, latitude, longitude } = resultCity;
+
     const event = new CustomEvent('location-update', {
       detail: {
-        latitude: lat,
-        longitude: lon,
+        latitude,
+        longitude,
       },
       bubbles: true,
       composed: true,
@@ -97,45 +89,58 @@ export class MoonEditorSearch extends LitElement {
 
     this.dispatchEvent(event);
     this._clearSearch();
-    const message = `${display_name} [${lat}, ${lon}]`;
-    this._handleSettingsSuccess(message);
+    const message = `${name} [${latitude}, ${longitude}]`;
+    this._setSettingsAlert(message);
   }
 
-  private _handleSettingsSuccess(message: string): void {
-    const alert = this.shadowRoot?.getElementById('success-alert') as HTMLElement;
+  private _setSettingsAlert(message: string, error: boolean = false): void {
+    const alert = this.shadowRoot?.getElementById('success-alert') as Element;
     if (alert) {
       alert.innerHTML = message;
-      alert.style.display = 'block';
+      alert.setAttribute('alert-type', error ? 'error' : 'info');
+      alert.setAttribute('style', 'display: block;');
+      alert.setAttribute('title', error ? '' : 'Location change');
       setTimeout(() => {
-        alert.style.display = 'none';
+        alert.setAttribute('style', 'display: none;');
       }, ALERT_DURATION);
     }
   }
 
-  private _handleSearchInput(ev: Event): void {
+  private async _handleSearchInput(ev: Event): Promise<void> {
     ev.stopPropagation();
     const target = ev.target as HTMLInputElement;
     this._searchValue = target.value;
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    this._refreshSearchResults(this._searchValue);
+  }
+
+  private async _refreshSearchResults(searchValue: string): Promise<void> {
+    const searchValueTrimmed = searchValue.trim();
+    let searchResults = this.getMatchingCities(searchValueTrimmed) as ICity[];
+
+    if (searchResults.length === 0) {
+      searchResults = await getCoordinates(searchValueTrimmed);
+      if (searchResults.length === 0) {
+        this._setSettingsAlert('No results found', true);
+      }
+    }
+
+    if (searchResults) {
+      this._searchResults = searchResults as SearchResults[];
+    }
+  }
+
+  private getMatchingCities(startsWith: string): ICity[] {
+    const range = 10;
+    const cities = City.getAllCities();
+    cities.sort((a, b) => a.name.localeCompare(b.name));
+    const filteredCities = cities.filter((city) => city.name.toLowerCase().startsWith(startsWith.toLowerCase()));
+    return filteredCities.slice(0, range);
   }
 
   private _clearSearch(): void {
     console.log('clear search');
     this._searchValue = '';
     this._searchResults = [];
-    this._searchResultsVisible = false;
-  }
-
-  private async _searchLocation(): Promise<void> {
-    console.log('search location', this._searchValue);
-    const searchValue = this._searchValue;
-    if (!searchValue || searchValue === '') {
-      return;
-    }
-    this._toastDissmissed = true;
-    const results = await getCoordinates(searchValue);
-    if (results) {
-      this._searchResults = results;
-      this._searchResultsVisible = true;
-    }
   }
 }

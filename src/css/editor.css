@@ -116,7 +116,7 @@ ul.search-results {
   padding-right: 0;
   margin-top: 0;
   margin-bottom: 0;
-  max-height: 500px;
+  max-height: 250px;
   overflow-y: auto;
   background-color: var(--divider-color);
 }

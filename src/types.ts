@@ -1,3 +1,4 @@
+import { ICity } from 'country-state-city';
 // Cutom card helpers:
 import { LovelaceCardConfig, Themes, HomeAssistant, Theme } from 'custom-card-helpers';
 import { HassEntity } from 'home-assistant-js-websocket';
@@ -171,4 +172,12 @@ export type SearchResults = {
   name: string;
   lat: number;
   lon: number;
+} & ICity;
+
+export type ResultItem = SearchResults & {
+  name: string;
+  countryCode: string;
+  stateCode: string;
+  latitude?: string | null;
+  longitude?: string | null;
 };

@@ -42,7 +42,6 @@ export class LunarPhaseCard extends LitElement {
   @state() _hass!: HomeAssistant;
   @property({ attribute: false }) config!: LunarPhaseCardConfig;
   @property({ type: Object }) protected moon!: Moon;
-
   @state() _activeCard: PageType | null = null;
   @state() selectedDate: Date | undefined;
   @state() _refreshInterval: number | undefined;

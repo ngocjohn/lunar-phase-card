@@ -13,7 +13,7 @@ const updateReadme = () => {
   const startMarker = '### Supported Localization';
   const endMarker = '</details>';
   const startIndex = readmeContent.indexOf(startMarker);
-  const endIndex = readmeContent.indexOf(endMarker) + endMarker.length;
+  const endIndex = readmeContent.indexOf(endMarker, startIndex);
 
   if (startIndex === -1 || endIndex === -1) {
     console.error('Localization section not found in README.md');
@@ -58,5 +58,4 @@ ${newTableRows}
   console.log('README.md updated successfully!');
 };
 
-// Run the script
 updateReadme();
