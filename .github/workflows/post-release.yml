@@ -1,7 +1,8 @@
 name: Post release
 on:
   release:
-    types: [published]
+    types:
+      - released
   workflow_dispatch:
 
 jobs:
