@@ -14,8 +14,6 @@ import {
   Plugin,
   ScaleChartOptions,
 } from 'chart.js/auto';
-// import annotationPlugin from 'chartjs-plugin-annotation';
-// Chart.register(annotationPlugin);
 
 import { LunarPhaseCard } from '../lunar-phase-card';
 // Local imports
