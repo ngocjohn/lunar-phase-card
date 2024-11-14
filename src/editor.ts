@@ -1,7 +1,6 @@
 /*  @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 // Custom card helpers
 import { fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
@@ -21,15 +20,20 @@ import { generateConfig } from './utils/ha-helper';
 import { compareConfig, getAddressFromOpenStreet } from './utils/helpers';
 import { loadHaComponents, stickyPreview, _saveConfig } from './utils/loader';
 
+// Components
+import './components/moon-editor-search';
+import { mdiMagnify } from '@mdi/js';
+
 @customElement('lunar-phase-card-editor')
 export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass!: HomeAssistant;
 
-  @state() private _config!: LunarPhaseCardConfig;
+  @state() _config!: LunarPhaseCardConfig;
   @state() private _activeTabIndex?: number;
   @state() _activeGraphEditor = false;
 
   @state() private _location!: LocationAddress;
+  @state() private _searchLocation: boolean = false;
 
   public async setConfig(config: LunarPhaseCardConfig): Promise<void> {
     this._config = { ...config };
@@ -52,6 +56,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   protected async firstUpdated(changedProps: PropertyValues): Promise<void> {
     super.firstUpdated(changedProps);
+    console.log('First updated');
     await new Promise((resolve) => setTimeout(resolve, 0));
     this._handleFirstConfig(this._config);
     this.getLocation();
@@ -80,6 +85,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       this._config = newConfig;
       fireEvent(this, 'config-changed', { config: this._config });
       await _saveConfig(cardId, this._config);
+      console.log('Config is valid');
     }
   }
   private get selectedLanguage(): string {
@@ -95,12 +101,11 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private getLocation = () => {
-    this.updateComplete.then(() => {
+    this.updateComplete.then(async () => {
       const { latitude, longitude } = this._config;
       if (latitude && longitude) {
-        getAddressFromOpenStreet(latitude, longitude).then((location) => {
-          this._location = location;
-        });
+        const location = await getAddressFromOpenStreet(latitude, longitude);
+        this._location = location;
       }
     });
   };
@@ -172,31 +177,52 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       ></ha-checkbox>
     </ha-formfield>`;
 
-    const contentWrapp = html`
-      <div class="comboboxes">${radios} ${southern}</div>
-      ${this._renderLocation()}
-      <div>
-        ${this._config?.use_default
-          ? this._renderUseDefault()
-          : this._config?.use_custom
-            ? this._renderCustomLatLong()
-            : this._config?.use_entity
-              ? this._renderEntityPicker()
-              : ''}
-      </div>
-    `;
+    const searchWrapper = html` <moon-editor-search
+      ._editor=${this}
+      @location-update=${(ev: CustomEvent) => this._handleLocationChange(ev)}
+    ></moon-editor-search>`;
+
+    const contentWrapp = html`${this._renderLocation()}
+    ${this._searchLocation
+      ? html`<div class="sub-config-wrapper">${searchWrapper}</div>`
+      : html`
+          <div>
+            ${this._config?.use_default
+              ? this._renderUseDefault()
+              : this._config?.use_custom
+                ? this._renderCustomLatLong()
+                : this._config?.use_entity
+                  ? this._renderEntityPicker()
+                  : ''}
+          </div>
+
+          <div class="comboboxes">${radios} ${southern}</div>
+        `}`;
 
     return this.contentTemplate('baseConfig', 'baseConfig', 'mdi:cog', contentWrapp);
   }
 
   private _renderLocation(): TemplateResult {
     const location = this._location || { country: '', city: '' };
+
+    const markerStyle = `color: var(--secondary-text-color); margin-right: 0.5rem;`;
+    const headerStyle = `border: none; min-height: auto;`;
+
+    const locationHeader = html` <ha-icon icon="mdi:map-marker" style=${markerStyle}></ha-icon>
+      <div class="header-title">
+        <div>${location.city}</div>
+        <span class="secondary">${location.country}</span>
+      </div>
+      <ha-icon-button
+        .path=${mdiMagnify}
+        @click=${() => (this._searchLocation = !this._searchLocation)}
+      ></ha-icon-button>`;
+
     return html`
-      <div class="header-container">
-        <div class="header-title">
-          <div>${location.country} ${unsafeHTML(`&#8226;`)} ${location.city}</div>
-        </div>
-        <ha-icon icon=${'mdi:map-marker'}></ha-icon>
+      <div class="header-container" style=${headerStyle}>
+        ${this._searchLocation
+          ? html`<ha-button @click=${() => (this._searchLocation = !this._searchLocation)}>Back</ha-button> `
+          : locationHeader}
       </div>
     `;
   }
@@ -645,6 +671,13 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   };
 
   /* ----------------------------- HANDLER METHODS ---------------------------- */
+
+  private _handleLocationChange(ev: CustomEvent): void {
+    const { latitude, longitude } = ev.detail;
+    this._config = { ...this._config, latitude, longitude };
+    fireEvent(this, 'config-changed', { config: this._config });
+    this.getLocation();
+  }
 
   private _handleValueChange(event: any): void {
     event.stopPropagation();

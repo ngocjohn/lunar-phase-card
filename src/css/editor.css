@@ -33,6 +33,12 @@
   font-size: 12px;
 }
 
+.search-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .switches {
   display: flex;
   flex-wrap: wrap;
@@ -96,6 +102,48 @@ ha-select {
   padding-inline: 0.5rem;
   cursor: pointer;
 }
+
+.search-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+ul.search-results {
+  list-style-type: none;
+  padding-left: 0;
+  padding-right: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-height: 500px;
+  overflow-y: auto;
+  background-color: var(--divider-color);
+}
+
+li.search-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--divider-color);
+  min-height: 40px;
+}
+
+li.search-item:nth-child(odd) {
+  background-color: var(--secondary-background-color);
+}
+
+li.search-item:hover {
+  background-color: var(--divider-color);
+}
+
+li.search-item:last-child {
+  border-bottom: none;
+}
+
+
 
 .location-item {
   display: flex;

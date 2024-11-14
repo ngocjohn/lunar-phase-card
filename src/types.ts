@@ -148,8 +148,8 @@ export interface MoonData {
   altitudeDegrees: MoonDataItem;
   nextFullMoon: MoonDataItem;
   nextNewMoon: MoonDataItem;
-  direction?: MoonDataItem;
-  position?: MoonDataItem;
+  direction: MoonDataItem;
+  position: MoonDataItem;
 }
 
 export type ChartColors = {
@@ -164,4 +164,11 @@ export type ChartColors = {
 export type LocationAddress = {
   country: string;
   city: string;
+};
+
+export type SearchResults = {
+  display_name: string;
+  name: string;
+  lat: number;
+  lon: number;
 };
