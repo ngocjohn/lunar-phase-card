@@ -262,7 +262,7 @@ export function compareConfig(refObj: any, configObj: any): boolean {
 }
 
 export async function getAddressFromOpenStreet(lat: number, lon: number): Promise<LocationAddress> {
-  console.log('getAddressFromOpenStreet', lat, lon);
+  // console.log('getAddressFromOpenStreet', lat, lon);
   const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
   try {
     const response = await fetch(url);
@@ -292,7 +292,6 @@ export async function getCoordinates(query: string): Promise<SearchResults[]> {
   try {
     const response = await fetch(url);
     const data = await response.json();
-    console.log('getCoordinates', data);
     if (response.ok) {
       const results = data.map((result: any) => ({
         display_name: result.display_name,

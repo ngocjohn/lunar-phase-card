@@ -20,7 +20,7 @@ export class LunarBaseData extends LitElement {
 
   protected async firstUpdated(changedProps: PropertyValues): Promise<void> {
     super.firstUpdated(changedProps);
-    console.time('moon');
+
     if (this.moon) {
       this._validateMoonData();
     }
@@ -36,7 +36,7 @@ export class LunarBaseData extends LitElement {
     };
     const moonData = JSON.parse(JSON.stringify(this.moon.moonData, replacer));
     this.moonData = moonData;
-    console.timeEnd('moon');
+
   }
 
   protected shouldUpdate(_changedProperties: PropertyValues): boolean {

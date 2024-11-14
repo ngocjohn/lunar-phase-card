@@ -46,17 +46,14 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     if (process.env.ROLLUP_WATCH === 'true') {
       window.LunarEditor = this;
     }
-    console.log('LunarPhaseCardEditor connected');
   }
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
-    console.log('LunarPhaseCardEditor disconnected');
   }
 
   protected async firstUpdated(changedProps: PropertyValues): Promise<void> {
     super.firstUpdated(changedProps);
-    console.log('First updated');
     await new Promise((resolve) => setTimeout(resolve, 0));
     this._handleFirstConfig(this._config);
     this.getLocation();
@@ -674,7 +671,14 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   private _handleLocationChange(ev: CustomEvent): void {
     const { latitude, longitude } = ev.detail;
-    this._config = { ...this._config, latitude, longitude };
+    const newConfig = {
+      use_custom: true,
+      use_default: false,
+      use_entity: false,
+      latitude,
+      longitude,
+    };
+    this._config = { ...this._config, ...newConfig };
     fireEvent(this, 'config-changed', { config: this._config });
     this.getLocation();
   }
