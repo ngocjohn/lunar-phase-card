@@ -10,12 +10,10 @@ import postcss from 'rollup-plugin-postcss';
 import postcssPresetEnv from 'postcss-preset-env';
 import postcssLit from 'rollup-plugin-postcss-lit';
 import filesize from 'rollup-plugin-filesize';
-import dotenv from 'dotenv';
 import replace from '@rollup/plugin-replace';
 import { version } from './package.json';
 import { logCardInfo } from './rollup.config.dev.mjs';
 
-dotenv.config();
 const dev = process.env.ROLLUP_WATCH;
 const port = process.env.PORT || 8235;
 const currentVersion = dev ? 'DEVELOPMENT' : `v${version}`;
