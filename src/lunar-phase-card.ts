@@ -1,4 +1,4 @@
-import { LovelaceCardEditor, formatDate, FrontendLocaleData, TimeFormat, fireEvent } from 'custom-card-helpers';
+import { LovelaceCardEditor, formatDate, FrontendLocaleData, TimeFormat } from 'custom-card-helpers';
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -9,7 +9,7 @@ import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultCo
 // Helpers
 import { BLUE_BG, PageType, MoonState, ICON } from './const';
 import { localize } from './localize/localize';
-import { deepMerge, generateConfig } from './utils/ha-helper';
+import { generateConfig } from './utils/ha-helper';
 import { getDefaultConfig } from './utils/helpers';
 import { isEditorMode } from './utils/loader';
 

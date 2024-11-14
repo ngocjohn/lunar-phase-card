@@ -263,7 +263,7 @@ export function compareConfig(refObj: any, configObj: any): boolean {
 
 export async function getAddressFromOpenStreet(lat: number, lon: number): Promise<LocationAddress> {
   console.log('getAddressFromOpenStreet', lat, lon);
-  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
+  const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -277,7 +277,8 @@ export async function getAddressFromOpenStreet(lat: number, lon: number): Promis
       console.log('Address fetched from OpenStreetMap:', address);
       return address;
     } else {
-      throw new Error('Failed to fetch address OpenStreetMap');
+      // throw new Error('Failed to fetch address OpenStreetMap');
+      return { city: '', country: '' };
     }
   } catch (error) {
     console.log('Error fetching address from OpenStreetMap:', error);
@@ -286,7 +287,6 @@ export async function getAddressFromOpenStreet(lat: number, lon: number): Promis
 }
 
 export async function getCoordinates(query: string): Promise<SearchResults[]> {
-  console.log('getCoordinates', query);
   const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=jsonv2&limit=5`;
 
   try {
@@ -303,7 +303,8 @@ export async function getCoordinates(query: string): Promise<SearchResults[]> {
       console.log('Coordinates fetched:', results);
       return results;
     } else {
-      throw new Error('Failed to fetch coordinates');
+      // throw new Error('Failed to fetch coordinates');
+      return [];
     }
   } catch (error) {
     console.log('Error fetching coordinates:', error);

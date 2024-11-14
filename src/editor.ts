@@ -1,7 +1,6 @@
 /*  @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 // Custom card helpers
 import { fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
@@ -23,13 +22,13 @@ import { loadHaComponents, stickyPreview, _saveConfig } from './utils/loader';
 
 // Components
 import './components/moon-editor-search';
-import { mdiClose, mdiMagnify } from '@mdi/js';
+import { mdiMagnify } from '@mdi/js';
 
 @customElement('lunar-phase-card-editor')
 export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass!: HomeAssistant;
 
-  @state() private _config!: LunarPhaseCardConfig;
+  @state() _config!: LunarPhaseCardConfig;
   @state() private _activeTabIndex?: number;
   @state() _activeGraphEditor = false;
 
@@ -178,13 +177,13 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       ></ha-checkbox>
     </ha-formfield>`;
 
-    const searchWrapper = html` ${this._renderLocation()}
-      <moon-editor-search
-        ._editor=${this}
-        @location-update=${(ev: CustomEvent) => this._handleLocationChange(ev)}
-      ></moon-editor-search>`;
+    const searchWrapper = html` <moon-editor-search
+      ._editor=${this}
+      @location-update=${(ev: CustomEvent) => this._handleLocationChange(ev)}
+    ></moon-editor-search>`;
 
-    const contentWrapp = html` ${this._searchLocation
+    const contentWrapp = html`${this._renderLocation()}
+    ${this._searchLocation
       ? html`<div class="sub-config-wrapper">${searchWrapper}</div>`
       : html`
           <div>
@@ -196,7 +195,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
                   ? this._renderEntityPicker()
                   : ''}
           </div>
-          ${this._renderLocation()}
+
           <div class="comboboxes">${radios} ${southern}</div>
         `}`;
 
@@ -205,13 +204,25 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   private _renderLocation(): TemplateResult {
     const location = this._location || { country: '', city: '' };
-    const icon = this._searchLocation ? mdiClose : mdiMagnify;
+
+    const markerStyle = `color: var(--secondary-text-color); margin-right: 0.5rem;`;
+    const headerStyle = `border: none; min-height: auto;`;
+
+    const locationHeader = html` <ha-icon icon="mdi:map-marker" style=${markerStyle}></ha-icon>
+      <div class="header-title">
+        <div>${location.city}</div>
+        <span class="secondary">${location.country}</span>
+      </div>
+      <ha-icon-button
+        .path=${mdiMagnify}
+        @click=${() => (this._searchLocation = !this._searchLocation)}
+      ></ha-icon-button>`;
+
     return html`
-      <div class="header-container">
-        <div class="header-title">
-          <div>${location.country} ${unsafeHTML(`&#8226;`)} ${location.city}</div>
-        </div>
-        <ha-icon-button .path=${icon} @click=${() => (this._searchLocation = !this._searchLocation)}></ha-icon-button>
+      <div class="header-container" style=${headerStyle}>
+        ${this._searchLocation
+          ? html`<ha-button @click=${() => (this._searchLocation = !this._searchLocation)}>Back</ha-button> `
+          : locationHeader}
       </div>
     `;
   }
