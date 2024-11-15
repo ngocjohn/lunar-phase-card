@@ -28,7 +28,6 @@
     "chart.js": "^4.4.5",
     "custom-card-helpers": "^1.7.2",
     "eslint-plugin-perfectionist": "^3.9.1",
-    "home-assistant-js-websocket": "^9.4.0",
     "json5": "^2.2.3",
     "lit": "^3.1.4"
   },
