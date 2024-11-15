@@ -119,8 +119,7 @@ export class Moon {
       phaseValue,
       next: { fullMoon, newMoon },
     } = illumination;
-    const { rise, set } = this._moonTime;
-    const { main } = this.moonTransit;
+    const { rise, set, highest } = this._moonTime;
     // Format numeric values
     const formatted = {
       moonFraction: formatNumber(fraction * 100),
@@ -140,7 +139,7 @@ export class Moon {
       distance: createItem('distance', formatted.distance, useMiles ? 'mi' : 'km'),
       moonRise: createMoonTime('moonRise', rise),
       moonSet: createMoonTime('moonSet', set),
-      moonHighest: createMoonTime('moonHigh', new Date(main || 0)),
+      moonHighest: createMoonTime('moonHigh', new Date(highest as Date)),
       nextFullMoon: createItem('fullMoon', shortTime(fullMoon.value)),
       nextNewMoon: createItem('newMoon', shortTime(newMoon.value)),
       direction: createItem('direction', formatted.azimuth, '°', cardinal),
@@ -164,7 +163,7 @@ export class Moon {
     const startTime = new Date(today.setHours(0, 30, 0, 0));
     const timeToday = SunCalc.getMoonTimes(today, this.location.latitude, this.location.longitude);
     // moon highest
-    const moonHighest = this._getMoonHighest(timeToday.rise, timeToday.set);
+    const moonHighest = this._getMoonHighest(timeToday.highest as Date);
     // current moon
 
     // time markers
@@ -172,8 +171,12 @@ export class Moon {
     // dataset
 
     let dataWithXY = this._getDataAltitude(startTime);
-    const changedIndexWithHighest = this._getClosestIndex(moonHighest.rawData.x, dataWithXY);
-    dataWithXY[changedIndexWithHighest] = moonHighest.rawData;
+
+    if (moonHighest.rawData.y >= 0) {
+      const changedIndexWithHighest = this._getClosestIndex(moonHighest.rawData.x, dataWithXY);
+      dataWithXY[changedIndexWithHighest] = moonHighest.rawData;
+    }
+
     dataWithXY = dataWithXY.sort((a, b) => a.x - b.x);
 
     const timeLabels = Object.values(dataWithXY).map((item) => item.x);
@@ -210,24 +213,18 @@ export class Moon {
     return timeMarkers;
   }
 
-  _getMoonHighest = (rise: number | Date, set: number | Date): Record<string, any> => {
+  _getMoonHighest = (highest: number | Date): Record<string, any> => {
     const { formatNumber } = this;
+    const time = new Date(highest);
+    const moonTransitPosition = SunCalc.getMoonPosition(time, this.location.latitude, this.location.longitude);
 
-    const moonTransit = SunCalc.moonTransit(rise, set, this.location.latitude, this.location.longitude);
-    const { main } = moonTransit;
-    const moonTransitTime = new Date(main || 0);
-    const moonTransitPosition = SunCalc.getMoonPosition(
-      moonTransitTime,
-      this.location.latitude,
-      this.location.longitude
-    );
     const altitude = `${formatNumber(moonTransitPosition.altitudeDegrees)}°`;
     const azimuth = formatNumber(moonTransitPosition.azimuthDegrees);
     const cardinal = this.convertCardinal(moonTransitPosition.azimuthDegrees);
     const direction = `${azimuth}° ${cardinal}`;
-    const formatedTime = this.formatTime(moonTransitTime);
+    const formatedTime = this.formatTime(time);
     const rawData = {
-      x: moonTransitTime.getTime(),
+      x: time.getTime(),
       y: Number(moonTransitPosition.altitudeDegrees.toFixed(2)),
     };
 

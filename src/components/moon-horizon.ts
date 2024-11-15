@@ -24,7 +24,7 @@ import styles from '../css/style.css';
 import { ChartColors } from '../types';
 import { MOON_RISE_ICON, MOON_SET_ICON } from '../utils/moon-pic';
 
-const HOVER_TIMEOUT = 50;
+const HOVER_TIMEOUT = 200;
 
 @customElement('moon-horizon')
 export class MoonHorizon extends LitElement {
@@ -207,12 +207,12 @@ export class MoonHorizon extends LitElement {
           // Hover on point
           onHover: (_event, elements) => {
             if (elements.length > 0) {
-              this.hoverOnChart = elements.length > 0;
+              this.hoverOnChart = true;
               const element = elements[0];
               const xTimeNum = element.element.getProps(['raw'], true).raw.x;
               this.handlePointHover(xTimeNum);
 
-              this._chart?.update();
+              this._chart?.update('none');
             }
           },
           onClick: (_event, elements) => {
@@ -364,7 +364,6 @@ export class MoonHorizon extends LitElement {
           ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? 1.2 : 1,
       },
       radius: () => (this.hoverOnChart ? 1.2 : 0),
-      usePointStyle: true,
       pointHoverRadius: 3,
       pointHoverBackgroundColor: secondaryTextColor,
       pointHoverBorderWidth: 2,
@@ -401,7 +400,8 @@ export class MoonHorizon extends LitElement {
 
     const { moonHighest } = this.todayData;
     const highestBody = moonHighest.contentBody;
-    const highestIndex = this.todayData.altitudeValues.indexOf(moonHighest.rawData.y);
+    const highestIndex =
+      moonHighest.rawData.y >= 0 ? this.todayData.altitudeValues.indexOf(moonHighest.rawData.y) : null;
     const ticksOptions = {
       color: secondaryTextColor,
     };
@@ -609,7 +609,7 @@ export class MoonHorizon extends LitElement {
   private timeMarkerPlugin = (): Plugin => {
     const timeMarkers = this.moon.timeMarkers;
     const { secondaryTextColor, fillColor } = this.cssColors;
-
+    const textFontSize = '12px Arial';
     // Pre-load SVG images as Image objects
     const moonUpSvg = new Image();
     const moonDownSvg = new Image();
@@ -622,6 +622,7 @@ export class MoonHorizon extends LitElement {
       encodeURIComponent(MOON_SET_ICON.replace('currentcolor', secondaryTextColor));
 
     const getMaxValueText = (ctx: CanvasRenderingContext2D, isUp: string, formatedTime: string, direction: string) => {
+      ctx.font = textFontSize;
       const setRiseWidth = ctx.measureText(isUp).width;
       const timeWidth = ctx.measureText(formatedTime).width;
       const directionWidth = ctx.measureText(direction).width;
@@ -640,7 +641,6 @@ export class MoonHorizon extends LitElement {
       textAlign: CanvasTextAlign
     ) => {
       ctx.save();
-
       // Draw the chevron arrow (up or down)
       ctx.beginPath();
       ctx.moveTo(x - 5, y); // Starting point for the left edge
@@ -672,19 +672,12 @@ export class MoonHorizon extends LitElement {
 
       ctx.fillStyle = secondaryTextColor;
       ctx.textAlign = textAlign;
-      ctx.font = '12px Arial';
+      ctx.font = textFontSize;
       ctx.filter = this.hoverOnChart ? 'opacity(0.4)' : 'opacity(1)';
       // Load and draw the SVG based on `isUp`
       const imgToDraw = isUp ? moonUpSvg : moonDownSvg;
       const timeWidth = ctx.measureText(formatedTime).width;
-      let iconOffset: number = 0;
-
-      // Determine `iconOffset` based on `textAlign`
-      if (textAlign === 'start') {
-        iconOffset = xOffset + timeWidth + 5; // Icon placed to the right of the text
-      } else if (textAlign === 'end') {
-        iconOffset = xOffset - timeWidth - 22; // Icon placed to the left of the text (accounting for the icon width)
-      }
+      const iconOffset = textAlign === 'start' ? xOffset + timeWidth + 5 : xOffset - timeWidth - 22;
 
       // Draw the time and direction text
       if (isUp) {
@@ -701,7 +694,7 @@ export class MoonHorizon extends LitElement {
 
     return {
       id: 'timeMarkerPlugin',
-      beforeDatasetDraw(chart: Chart) {
+      afterDatasetsDraw(chart: Chart) {
         const timeDataSet = chart.getDatasetMeta(1);
         if (timeDataSet.type === null || timeDataSet.hidden) return;
         const {
@@ -754,7 +747,7 @@ export class MoonHorizon extends LitElement {
       id: 'highestAltitudePlugin',
       afterDatasetsDraw(chart: Chart) {
         const dataSet = chart.getDatasetMeta(0);
-        if (!showHighest || dataSet.hidden) return;
+        if (!showHighest || dataSet.hidden || yValue <= 0) return;
         const point = dataSet.data[yIndex];
         point.options.pointHoverBorderWidth = 4;
         point.options.pointHoverRadius = 4;

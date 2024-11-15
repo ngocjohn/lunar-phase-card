@@ -136,7 +136,7 @@ export class LunarPhaseCard extends LitElement {
 
     if (header) {
       const sizes = header.getBoundingClientRect();
-      console.log(JSON.stringify(sizes, null, 2));
+      // console.log(JSON.stringify(sizes, null, 2));
     }
   }
 
