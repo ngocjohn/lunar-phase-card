@@ -1,5 +1,4 @@
 import { Calendar } from '@fullcalendar/core';
-import allLocales from '@fullcalendar/core/locales-all';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { LitElement, html, TemplateResult, CSSResultGroup, css } from 'lit';
@@ -68,7 +67,6 @@ export class MoonPhaseCalendar extends LitElement {
       plugins: [dayGridPlugin, interactionPlugin],
       initialView: 'dayGridMonth',
       fixedWeekCount: false,
-      locales: allLocales,
       locale: this.card.selectedLanguage,
       customButtons: {
         closeCalendar: {

@@ -1,6 +1,4 @@
 import { mdiClose } from '@mdi/js';
-import { ICity } from 'country-state-city';
-import { City } from 'country-state-city';
 import { LitElement, TemplateResult, CSSResultGroup, html, nothing, css } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
@@ -18,6 +16,7 @@ export class MoonEditorSearch extends LitElement {
   @property({ attribute: false }) _editor!: LunarPhaseCardEditor;
   @state() _searchValue: string = '';
   @state() _searchResults: SearchResults[] = [];
+  private _debounceTimer: number | null = null;
 
   static get styles(): CSSResultGroup {
     return [editorStyles];
@@ -30,7 +29,7 @@ export class MoonEditorSearch extends LitElement {
         .aria-label=${'Search'}
         .placeholder=${'Search for a location, e.g. "London, UK"'}
         .value=${this._searchValue || ''}
-        @input=${(ev: Event) => this._handleSearchInput(ev)}
+        @keyup=${(ev: Event) => this._handleSearchInput(ev)}
       >
       </ha-textfield>
       ${this._searchValue !== ''
@@ -59,7 +58,7 @@ export class MoonEditorSearch extends LitElement {
     }
     const results = this._searchResults.map((result) => {
       return html`<li class="search-item" @click=${() => this._handleSearchResult(result)}>
-        ${result.display_name || result.name} ${result.countryCode ? `(${result.countryCode})` : ''}
+        ${result.display_name}
       </li> `;
     });
 
@@ -70,13 +69,7 @@ export class MoonEditorSearch extends LitElement {
 
   private _handleSearchResult(result: SearchResults): void {
     console.log('search result', result);
-    const resultCity = {
-      name: result.display_name || result.name,
-      latitude: result.lat || result.latitude,
-      longitude: result.lon || result.longitude,
-    };
-
-    const { name, latitude, longitude } = resultCity;
+    const { lat: latitude, lon: longitude, name: display_name } = result;
 
     const event = new CustomEvent('location-update', {
       detail: {
@@ -106,36 +99,33 @@ export class MoonEditorSearch extends LitElement {
     }
   }
 
-  private async _handleSearchInput(ev: Event): Promise<void> {
+  private _handleSearchInput(ev: Event): void {
     ev.stopPropagation();
     const target = ev.target as HTMLInputElement;
     this._searchValue = target.value;
-    await new Promise((resolve) => setTimeout(resolve, 50));
-    this._refreshSearchResults(this._searchValue);
+
+    // Clear any previous timer
+    if (this._debounceTimer) {
+      clearTimeout(this._debounceTimer);
+    }
+
+    // Set a new timer to trigger search after 300ms of inactivity
+    this._debounceTimer = window.setTimeout(() => {
+      this._refreshSearchResults(this._searchValue);
+    }, 700);
   }
 
   private async _refreshSearchResults(searchValue: string): Promise<void> {
     const searchValueTrimmed = searchValue.trim();
-    let searchResults = this.getMatchingCities(searchValueTrimmed) as ICity[];
-
-    if (searchResults.length === 0) {
-      searchResults = await getCoordinates(searchValueTrimmed);
-      if (searchResults.length === 0) {
-        this._setSettingsAlert('No results found', true);
-      }
+    if (searchValueTrimmed.length < 2) {
+      return;
     }
+
+    const searchResults = await getCoordinates(searchValueTrimmed);
 
     if (searchResults) {
       this._searchResults = searchResults as SearchResults[];
     }
-  }
-
-  private getMatchingCities(startsWith: string): ICity[] {
-    const range = 10;
-    const cities = City.getAllCities();
-    cities.sort((a, b) => a.name.localeCompare(b.name));
-    const filteredCities = cities.filter((city) => city.name.toLowerCase().startsWith(startsWith.toLowerCase()));
-    return filteredCities.slice(0, range);
   }
 
   private _clearSearch(): void {

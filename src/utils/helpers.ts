@@ -287,11 +287,12 @@ export async function getAddressFromOpenStreet(lat: number, lon: number): Promis
 }
 
 export async function getCoordinates(query: string): Promise<SearchResults[]> {
-  const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=jsonv2&limit=5`;
+  const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=jsonv2&limit=5&featureType=city`;
 
   try {
     const response = await fetch(url);
     const data = await response.json();
+    console.log('getCoordinates', data);
     if (response.ok) {
       const results = data.map((result: any) => ({
         display_name: result.display_name,
@@ -299,7 +300,7 @@ export async function getCoordinates(query: string): Promise<SearchResults[]> {
         lat: parseFloat(result.lat),
         lon: parseFloat(result.lon),
       }));
-      console.log('Coordinates fetched:', results);
+      // console.log('Coordinates fetched:', results);
       return results;
     } else {
       // throw new Error('Failed to fetch coordinates');

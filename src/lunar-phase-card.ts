@@ -1,10 +1,10 @@
-import { LovelaceCardEditor, formatDate, FrontendLocaleData, TimeFormat } from 'custom-card-helpers';
+import { LovelaceCardEditor, formatDate, FrontendLocaleData, TimeFormat, HomeAssistant } from 'custom-card-helpers';
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 // Local types
-import { HomeAssistantExtended as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
+import { LunarPhaseCardConfig, defaultConfig } from './types';
 
 // Helpers
 import { BLUE_BG, PageType, MoonState, ICON } from './const';
@@ -129,8 +129,14 @@ export class LunarPhaseCard extends LitElement {
 
   private measureCard(): void {
     const card = this.shadowRoot?.querySelector('ha-card') as HTMLElement;
+    const header = this.shadowRoot?.getElementById('lpc-header') as HTMLElement;
     if (card) {
       this._cardWidth = card.clientWidth;
+    }
+
+    if (header) {
+      const sizes = header.getBoundingClientRect();
+      console.log(JSON.stringify(sizes, null, 2));
     }
   }
 
@@ -331,7 +337,7 @@ export class LunarPhaseCard extends LitElement {
     }
 
     return html`
-      <div class="lunar-card-header">
+      <div class="lunar-card-header" id="lpc-header">
         <h1>${headerContent}</h1>
         <div class="action-btns">
           ${buttons.map(
@@ -353,9 +359,11 @@ export class LunarPhaseCard extends LitElement {
     if (!this.moon) return;
     const { moonPic } = this.moon.moonImage;
     const animateClass = !this.isEditorPreview ? 'moon-image animate' : 'moon-image';
-    const southernHemisphere = this.config.southern_hemisphere || false;
-    return html` <div class=${animateClass} ?calendar=${this._isCalendar}>
-      <img src=${moonPic} class="rotatable" ?southern=${southernHemisphere} />
+
+    const southernHemisphere = this.config.southern_hemisphere ?? false;
+
+    return html` <div id="moon-image" class="moon-image" ?calendar=${this._isCalendar}>
+      <img src=${moonPic} ?southern=${southernHemisphere} />
     </div>`;
   }
 

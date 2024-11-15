@@ -1,119 +1,119 @@
 {
-  "name": "Nederlands",
-  "nativeName": "Dutch",
-  "card": {
-    "phase": {
-      "firstQuarterMoon": "Eerste kwartier",
-      "fullMoon": "Volle maan",
-      "thirdQuarterMoon": "Laatste kwartier",
-      "newMoon": "Nieuwe maan",
-      "waxingCrescentMoon": "Wassende halve maan",
-      "waxingGibbousMoon": "Wassende maan",
-      "waningCrescentMoon": "Afnemende halve maan",
-      "waningGibbousMoon": "Afnemende maan"
+    "name": "Nederlands",
+    "nativeName": "Dutch",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Eerste kwartier",
+            "fullMoon": "Volle maan",
+            "thirdQuarterMoon": "Laatste kwartier",
+            "newMoon": "Nieuwe maan",
+            "waxingCrescentMoon": "Wassende halve maan",
+            "waxingGibbousMoon": "Wassende maan",
+            "waningCrescentMoon": "Afnemende halve maan",
+            "waningGibbousMoon": "Afnemende maan"
+        },
+        "illumination": "Verlichting ",
+        "illuminated": " Verlicht ",
+        "moonRise": " Maanopkomst",
+        "moonSet": "Maanondergang",
+        "moonHigh": "Hoogste punt",
+        "moonAge": "Leeftijd",
+        "distance": "Afstand",
+        "azimuth": "Azimut",
+        "altitude": " Hoogte ",
+        "fullMoon": "Volle Maan",
+        "newMoon": "Nieuwe maan",
+        "relativeTime": {
+            "days": "dagen",
+            "justNow": "nu",
+            "minutesAgo": "{0} minute geleden",
+            "hoursAgo": "{0} uren geleden",
+            "inMinutes": "in {0} minuten",
+            "inHours": "in {0} uur"
+        },
+        "position": "Positie",
+        "direction": "Richting",
+        "cardinalShort": {
+            "N": "N",
+            "NNE": "NNO",
+            "NE": "NO",
+            "ENE": "ONO",
+            "E": "O",
+            "ESE": "OSO",
+            "SE": "ZO",
+            "SSE": "ZZO",
+            "S": "Z",
+            "SSW": "ZZW",
+            "SW": "ZW",
+            "WSW": "WZW",
+            "W": "W",
+            "WNW": "WNW",
+            "NW": "NW",
+            "NNW": "NNW"
+        },
+        "underHorizon": "Maan onder de horizon",
+        "overHorizon": "Maan boven de horizon",
+        "horizonTitle": "De maan van vandaag",
+        "currentTime": "Huidige tijd"
     },
-    "illumination": "Verlichting ",
-    "illuminated": " Verlicht ",
-    "moonRise": " Maanopkomst",
-    "moonSet": "Maanondergang",
-    "moonHigh": "Hoogste punt",
-    "moonAge": "Leeftijd",
-    "distance": "Afstand",
-    "azimuth": "Azimut",
-    "altitude": " Hoogte ",
-    "fullMoon": "Volle Maan",
-    "newMoon": "Nieuwe maan",
-    "relativeTime": {
-      "days": "dagen",
-      "justNow": "nu",
-      "minutesAgo": "{0} minute geleden",
-      "hoursAgo": "{0} uren geleden",
-      "inMinutes": "in {0} minuten",
-      "inHours": "in {0} uur"
-    },
-    "position": "Positie",
-    "direction": "Richting",
-    "cardinalShort": {
-      "N": "N",
-      "NNE": "NNO",
-      "NE": "NO",
-      "ENE": "ONO",
-      "E": "O",
-      "ESE": "OSO",
-      "SE": "ZO",
-      "SSE": "ZZO",
-      "S": "Z",
-      "SSW": "ZZW",
-      "SW": "ZW",
-      "WSW": "WZW",
-      "W": "W",
-      "WNW": "WNW",
-      "NW": "NW",
-      "NNW": "NNW"
-    },
-    "underHorizon": "Maan onder de horizon",
-    "overHorizon": "Maan boven de horizon",
-    "horizonTitle": "De maan van vandaag",
-    "currentTime": "Huidige tijd"
-  },
-  "editor": {
-    "viewConfig": {
-      "title": "Taal en weergave",
-      "description": "Configureer taal en achtergrond"
-    },
-    "baseConfig": {
-      "title": " Breedtegraad en lengtegraad",
-      "description": "Configuratie voor breedte- en lengtegraad"
-    },
-    "optionsConfig": {
-      "useDefault": " Gebruik systeem",
-      "useEntity": "Gebruik entity",
-      "useCustom": " Gebruik aangepast "
-    },
-    "fontOptions": {
-      "title": " Aanpassing van lettertypen ",
-      "description": "Configureer lettergrootte en kleur",
-      "hideLabel": " Label verbergen",
-      "headerFontConfig": {
-        "title": " Koptekst lettertype",
-        "description": "Stel koptekst lettertype in"
-      },
-      "labelFontConfig": {
-        "title": "Label lettertype",
-        "description": "Stel lettertype labels in"
-      },
-      "headerFontSize": "Header font grootte",
-      "headerFontColor": "Header font kleur",
-      "headerFontStyle": "Header font stijl",
-      "labelFontSize": "Label font grootte",
-      "labelFontColor": "Label font kleur",
-      "labelFontStyle": "Label font stijl",
-      "valueFontSize": "Waarde font grootte"
-    },
-    "graphConfig": {
-      "title": "Grafiekaanpassing",
-      "description": "Stel een configuratie in voor de grafiek"
-    },
-    "compactView": "Compacte weergave",
-    "showBackground": "toon achtergrond",
-    "timeFormat": "12-uur formaat",
-    "mileUnit": "Mijleenheid",
-    "yTicks": "Y-axis ticks",
-    "xTicks": "X-axis ticks",
-    "showTime": "Tijdmarkeringen van opkomst/ondergang",
-    "showCurrent": "Huidige positie van de Maan",
-    "showLegend": "Toon legenda",
-    "showHighest": "Toon hoogste Maanpositie",
-    "placeHolder": {
-      "latitude": "Enter breedtegraad",
-      "longitude": "Enter lengtegraad",
-      "customBackground": "URL of path naar afbeelding",
-      "language": "Seleceer taal",
-      "moonPosition": "Selecteer maanpositie op de kaart",
-      "defaultCard": "Selecteer standaardkaart",
-      "yTicksPosition": "Positie van Y-asmarkeringen",
-      "legendPosition": "Positie van de legenda",
-      "legendAlign": "Uitlijning van de legenda"
+    "editor": {
+        "viewConfig": {
+            "title": "Taal en weergave",
+            "description": "Configureer taal en achtergrond"
+        },
+        "baseConfig": {
+            "title": " Breedtegraad en lengtegraad",
+            "description": "Configuratie voor breedte- en lengtegraad"
+        },
+        "optionsConfig": {
+            "useDefault": " Gebruik systeem",
+            "useEntity": "Gebruik entity",
+            "useCustom": " Gebruik aangepast "
+        },
+        "fontOptions": {
+            "title": " Aanpassing van lettertypen ",
+            "description": "Configureer lettergrootte en kleur",
+            "hideLabel": " Label verbergen",
+            "headerFontConfig": {
+                "title": " Koptekst lettertype",
+                "description": "Stel koptekst lettertype in"
+            },
+            "labelFontConfig": {
+                "title": "Label lettertype",
+                "description": "Stel lettertype labels in"
+            },
+            "headerFontSize": "Header font grootte",
+            "headerFontColor": "Header font kleur",
+            "headerFontStyle": "Header font stijl",
+            "labelFontSize": "Label font grootte",
+            "labelFontColor": "Label font kleur",
+            "labelFontStyle": "Label font stijl",
+            "valueFontSize": "Waarde font grootte"
+        },
+        "graphConfig": {
+            "title": "Grafiekaanpassing",
+            "description": "Stel een configuratie in voor de grafiek"
+        },
+        "compactView": "Compacte weergave",
+        "showBackground": "toon achtergrond",
+        "timeFormat": "12-uur formaat",
+        "mileUnit": "Mijleenheid",
+        "yTicks": "Y-axis ticks",
+        "xTicks": "X-axis ticks",
+        "showTime": "Tijdmarkeringen van opkomst/ondergang",
+        "showCurrent": "Huidige positie van de Maan",
+        "showLegend": "Toon legenda",
+        "showHighest": "Toon hoogste Maanpositie",
+        "placeHolder": {
+            "latitude": "Enter breedtegraad",
+            "longitude": "Enter lengtegraad",
+            "customBackground": "URL of path naar afbeelding",
+            "language": "Seleceer taal",
+            "moonPosition": "Selecteer maanpositie op de kaart",
+            "defaultCard": "Selecteer standaardkaart",
+            "yTicksPosition": "Positie van Y-asmarkeringen",
+            "legendPosition": "Positie van de legenda",
+            "legendAlign": "Uitlijning van de legenda"
+        }
     }
-  }
 }

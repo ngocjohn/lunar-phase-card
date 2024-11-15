@@ -3,19 +3,13 @@ import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues }
 import { customElement, property, state } from 'lit/decorators.js';
 
 // Custom card helpers
-import { fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
+import { fireEvent, LovelaceCardEditor, HomeAssistant } from 'custom-card-helpers';
 
 import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES } from './const';
 import { CUSTOM_BG } from './const';
 import editorcss from './css/editor.css';
 import { languageOptions, localize } from './localize/localize';
-import {
-  HomeAssistantExtended as HomeAssistant,
-  LunarPhaseCardConfig,
-  FontCustomStyles,
-  defaultConfig,
-  LocationAddress,
-} from './types';
+import { LunarPhaseCardConfig, FontCustomStyles, defaultConfig, LocationAddress } from './types';
 import { generateConfig } from './utils/ha-helper';
 import { compareConfig, getAddressFromOpenStreet } from './utils/helpers';
 import { loadHaComponents, stickyPreview, _saveConfig } from './utils/loader';
@@ -99,6 +93,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   private getLocation = () => {
     this.updateComplete.then(async () => {
+      console.log('getLocation');
       const { latitude, longitude } = this._config;
       if (latitude && longitude) {
         const location = await getAddressFromOpenStreet(latitude, longitude);
@@ -680,7 +675,12 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     };
     this._config = { ...this._config, ...newConfig };
     fireEvent(this, 'config-changed', { config: this._config });
-    this.getLocation();
+    if (this._searchLocation) {
+      setTimeout(() => {
+        this._searchLocation = false;
+        this.getLocation();
+      }, 1500);
+    }
   }
 
   private _handleValueChange(event: any): void {

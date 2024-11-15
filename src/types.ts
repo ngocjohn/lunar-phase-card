@@ -1,38 +1,7 @@
-import { ICity } from 'country-state-city';
 // Cutom card helpers:
-import { LovelaceCardConfig, Themes, HomeAssistant, Theme } from 'custom-card-helpers';
-import { HassEntity } from 'home-assistant-js-websocket';
+import { LovelaceCardConfig } from 'custom-card-helpers';
 
 import { PageType } from './const';
-
-export interface ModeSpecificTheme {
-  light: Partial<Theme>;
-  dark: Partial<Theme>;
-}
-
-export interface ExtendedTheme extends Theme {
-  modes?: ModeSpecificTheme;
-}
-
-export interface ExtendedThemes extends Themes {
-  darkMode: boolean;
-  default_theme: string;
-  theme: string;
-  themes: {
-    [key: string]: ExtendedTheme;
-  };
-}
-
-/**
- * HomeAssistantExtended extends the existing HomeAssistant interface with additional properties.
- */
-
-export type HomeAssistantExtended = HomeAssistant & {
-  themes: ExtendedThemes;
-  formatEntityState: (stateObj: HassEntity) => string;
-  formatAttributeName: (entityId: string, attribute: string) => string;
-  formatEntityAttributeValue: (entityId: string, attribute: string) => string;
-};
 
 export type FontSizeOptions = 'auto' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
 export type FontTextTransformOptions = 'none' | 'capitalize' | 'uppercase' | 'lowercase';
@@ -168,16 +137,9 @@ export type LocationAddress = {
 };
 
 export type SearchResults = {
+  addresstype: string;
   display_name: string;
   name: string;
   lat: number;
   lon: number;
-} & ICity;
-
-export type ResultItem = SearchResults & {
-  name: string;
-  countryCode: string;
-  stateCode: string;
-  latitude?: string | null;
-  longitude?: string | null;
 };

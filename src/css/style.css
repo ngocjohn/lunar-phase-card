@@ -175,12 +175,6 @@ h1 {
   filter: grayscale(1) brightness(1) drop-shadow(2px 2px 6px rgba(255, 255, 255, 0.2))
 }
 
-.moon-image img.rotatable {
-  transform-origin: center center;
-  will-change: transform;
-  transition: transform 0.5s ease;
-  /* Smooth rotation */
-}
 
 @keyframes fadeIn {
   0% {
