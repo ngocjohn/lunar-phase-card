@@ -26,7 +26,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   @state() private _activeTabIndex?: number;
   @state() _activeGraphEditor = false;
 
-  @state() private _location!: LocationAddress;
   @state() private _searchLocation: boolean = false;
 
   public async setConfig(config: LunarPhaseCardConfig): Promise<void> {
@@ -50,7 +49,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     super.firstUpdated(changedProps);
     await new Promise((resolve) => setTimeout(resolve, 0));
     this._handleFirstConfig(this._config);
-    this.getLocation();
   }
 
   protected updated(_changedProperties: PropertyValues): void {
@@ -67,6 +65,14 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private async _handleFirstConfig(config: LunarPhaseCardConfig): Promise<void> {
+    if (!config.location) {
+      console.log('No location found, fetching location');
+      const location = await getAddressFromOpenStreet(config.latitude, config.longitude);
+      config = { ...config, location };
+      this._config = { ...config };
+      fireEvent(this, 'config-changed', { config: this._config });
+    }
+
     const isValid = compareConfig({ ...defaultConfig }, { ...config });
     if (!isValid) {
       console.log('Invalid config, generating new config');
@@ -79,8 +85,13 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       console.log('Config is valid');
     }
   }
+
   private get selectedLanguage(): string {
     return this._config?.selected_language || this.hass?.language;
+  }
+
+  private get location(): LocationAddress {
+    return this._config?.location || { city: '', country: '' };
   }
 
   private localize = (string: string, search = '', replace = ''): string => {
@@ -97,7 +108,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       const { latitude, longitude } = this._config;
       if (latitude && longitude) {
         const location = await getAddressFromOpenStreet(latitude, longitude);
-        this._location = location;
+        this._config = { ...this._config, location };
+        fireEvent(this, 'config-changed', { config: this._config });
       }
     });
   };
@@ -195,7 +207,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private _renderLocation(): TemplateResult {
-    const location = this._location || { country: '', city: '' };
+    const location = this.location;
 
     const markerStyle = `color: var(--secondary-text-color); margin-right: 0.5rem;`;
     const headerStyle = `border: none; min-height: auto;`;

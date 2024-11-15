@@ -48,6 +48,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   southern_hemisphere?: boolean;
   latitude: number;
   longitude: number;
+  location?: LocationAddress;
   font_customize: FontCustomStyles;
   graph_config?: HorizonGraphConfig;
   cardId?: string;
