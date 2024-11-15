@@ -86,6 +86,8 @@ export default [
     },
     watch: {
       exclude: 'node_modules/**',
+      buildDelay: 1000,
+      include: 'src/**/*',
     },
   },
 ];

@@ -18,7 +18,7 @@
     "rootDir": "./src",
     "typeRoots": ["./node_modules/@types", "./src/declarations.d.ts"],
     "sourceMap": true,
-    "plugins": [{ "name": "typescript-plugin-css-modules" }, { "name": "ts-lit-plugin" }]
+    "plugins": [{ "name": "ts-lit-plugin" }]
   },
-  "include": ["src/*", "src/**/*"]
+  "include": ["src/**/*"]
 }
