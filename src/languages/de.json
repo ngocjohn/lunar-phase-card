@@ -3,14 +3,14 @@
     "nativeName": "Deutsch",
     "card": {
         "phase": {
-            "firstQuarterMoon": "Erstes Viertel",
+            "firstQuarterMoon": "Zunehmender Halbmond",
             "fullMoon": "Vollmond",
-            "thirdQuarterMoon": "Letztes Viertel",
+            "thirdQuarterMoon": "Abnehmender Halbmond",
             "newMoon": "Neumond",
-            "waxingCrescentMoon": "Zunehmende Sichel",
-            "waxingGibbousMoon": "Zunehmender Halbmond",
-            "waningCrescentMoon": "Abnehmender Halbmond",
-            "waningGibbousMoon": "Abnehmende Sichel"
+            "waxingCrescentMoon": "Zunehmender Sichelmond",
+            "waxingGibbousMoon": "Zunehm. Dreiviertelmond",
+            "waningCrescentMoon": "Abnehmender Sichelmond",
+            "waningGibbousMoon": "Abnehm. Dreiviertelmond"
         },
         "illumination": "Beleuchtung",
         "illuminated": "beleuchtet",
@@ -20,9 +20,9 @@
         "moonAge": "Alter",
         "distance": "Entfernung",
         "azimuth": "Azimut",
-        "altitude": "Höhe",
-        "fullMoon": "Nächster Vollmond",
-        "newMoon": "Nächster Neumond",
+        "altitude": "Elevation",
+        "fullMoon": "Vollmond",
+        "newMoon": "Neumond",
         "relativeTime": {
             "days": "Tage",
             "justNow": "jetzt",
