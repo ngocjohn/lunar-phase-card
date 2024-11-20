@@ -24,7 +24,7 @@ import './components/moon-phase-calendar';
 // styles
 import style from './css/style.css';
 
-const BASE_REFRESH_INTERVAL = 15 * 1000;
+const BASE_REFRESH_INTERVAL = 60 * 1000;
 const LOADING_TIMEOUT = 1500;
 
 @customElement('lunar-phase-card')
@@ -44,12 +44,12 @@ export class LunarPhaseCard extends LitElement {
   @property({ type: Object }) protected moon!: Moon;
   @state() _activeCard: PageType | null = null;
   @state() selectedDate: Date | undefined;
-  @state() _refreshInterval: number | undefined;
 
   @state() _calendarPopup: boolean = false;
-  @state() _state: MoonState = MoonState.READY;
   @state() _resizeInitiated = false;
   @state() public _cardWidth = 0;
+  @state() private _state: MoonState = MoonState.READY;
+  @state() private _refreshInterval: number | undefined;
 
   @state() _activeEditorPage?: PageType;
   @state() _resizeObserver: ResizeObserver | null = null;
@@ -83,13 +83,14 @@ export class LunarPhaseCard extends LitElement {
       window.LunarCard = this;
       window.Moon = this.moon;
     }
+    this.startRefreshInterval();
+
     if (isEditorMode(this)) {
       document.addEventListener('toggle-graph-editor', (ev) => this._handleEditorEvent(ev as CustomEvent));
     }
     if (!this._resizeInitiated && !this._resizeObserver) {
       this.delayedAttachResizeObserver();
     }
-    this.startRefreshInterval();
   }
 
   disconnectedCallback(): void {
@@ -107,16 +108,14 @@ export class LunarPhaseCard extends LitElement {
   }
 
   attachResizeObserver(): void {
-    if (this._resizeObserver) {
-      return;
-    }
-    this._resizeObserver = new ResizeObserver(() => {
+    const ro = new ResizeObserver(() => {
       this.measureCard();
     });
 
     const card = this.shadowRoot?.querySelector('ha-card') as HTMLElement;
     if (card) {
-      this._resizeObserver.observe(card);
+      ro.observe(card);
+      this._resizeObserver = ro;
     }
   }
 
@@ -132,11 +131,7 @@ export class LunarPhaseCard extends LitElement {
     const header = this.shadowRoot?.getElementById('lpc-header') as HTMLElement;
     if (card) {
       this._cardWidth = card.clientWidth;
-    }
-
-    if (header) {
-      const sizes = header.getBoundingClientRect();
-      // console.log(JSON.stringify(sizes, null, 2));
+      // console.log('card width', this._cardWidth);
     }
   }
 
@@ -257,19 +252,25 @@ export class LunarPhaseCard extends LitElement {
     if (this._refreshInterval !== undefined) {
       clearInterval(this._refreshInterval);
     }
-
+    // Calculate the remaining time until the next full minute
+    const now = new Date();
+    const remainingMs = (60 - now.getSeconds()) * 1000;
     // Set up a new interval
-    this._refreshInterval = window.setInterval(() => {
-      if (this._activeCard === PageType.BASE || this._activeCard === PageType.HORIZON) {
-        this._state = MoonState.LOADING;
-        setTimeout(() => {
-          this._state = MoonState.READY;
-        }, LOADING_TIMEOUT);
-        this.requestUpdate();
-      } else {
-        this.clearRefreshInterval();
-      }
-    }, BASE_REFRESH_INTERVAL);
+    setTimeout(() => {
+      this._refreshInterval = window.setInterval(() => {
+        if (this._activeCard === PageType.BASE || this._activeCard === PageType.HORIZON) {
+          if (this._state !== MoonState.LOADING) {
+            this._state = MoonState.LOADING;
+            setTimeout(() => {
+              // console.log('Refresh interval triggered');
+              this._state = MoonState.READY;
+              this.requestUpdate();
+            }, LOADING_TIMEOUT);
+          }
+        }
+      }, BASE_REFRESH_INTERVAL);
+      // console.log('Triggering first refresh');
+    }, remainingMs);
   }
 
   private clearRefreshInterval() {
@@ -437,7 +438,12 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderHorizon(): TemplateResult | void {
-    return html`<moon-horizon .hass=${this.hass} .moon=${this.moon} .card=${this as any}></moon-horizon>`;
+    return html`<moon-horizon
+      .hass=${this.hass}
+      .moon=${this.moon}
+      .card=${this as any}
+      .cardWidth=${this._cardWidth}
+    ></moon-horizon>`;
   }
 
   private updateDate(action?: 'next' | 'prev') {

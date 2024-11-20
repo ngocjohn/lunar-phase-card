@@ -31,6 +31,7 @@ export class MoonHorizon extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) moon!: Moon;
   @property({ attribute: false }) card!: LunarPhaseCard;
+  @property({ type: Number }) cardWidth = 0;
 
   @state() _chart!: Chart;
   @state() moreInfo = false;
@@ -39,8 +40,6 @@ export class MoonHorizon extends LitElement {
 
   @state() private _timeAnimationFrame: number | null = null;
   @state() private _lastTime: string | null = null;
-  @state() _resizeInitiated = false;
-  @state() _resizeObserver: ResizeObserver | null = null;
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -59,8 +58,15 @@ export class MoonHorizon extends LitElement {
 
   protected async firstUpdated(changedProps: PropertyValues): Promise<void> {
     super.firstUpdated(changedProps);
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 20));
     this.setupChart();
+  }
+
+  protected updated(changedProps: PropertyValues): void {
+    super.updated(changedProps);
+    if (changedProps.has('cardWidth')) {
+      this._chart?.update('resize');
+    }
   }
 
   static get styles(): CSSResultGroup {
@@ -84,6 +90,7 @@ export class MoonHorizon extends LitElement {
         .moon-horizon canvas {
           width: 100%;
           height: 100%;
+          display: block;
         }
 
         .moon-data-wrapper {
@@ -137,6 +144,7 @@ export class MoonHorizon extends LitElement {
     plugins.push(this.timeMarkerPlugin());
     plugins.push(this.moonMarkerPlugin());
     plugins.push(this.highestAltitudePlugin());
+    plugins.push(this.expandChartArea());
     return plugins;
   }
 
@@ -178,8 +186,9 @@ export class MoonHorizon extends LitElement {
         data: data,
         options: {
           ...options,
-          resizeDelay: 1000,
-          aspectRatio: 2,
+          responsive: true, // Make sure chart is responsive
+          maintainAspectRatio: false, // Allow dynamic resizing
+          resizeDelay: 0, // Adjust delay for smoother resizing
           scales: {
             ...options.scales,
             x: {
@@ -222,13 +231,6 @@ export class MoonHorizon extends LitElement {
               // console.log('Clicked on', dataIndex, element);
             }
           },
-          onResize: (_chart, size) => {
-            // Resize the chart if the width has changed
-            if (this.card._cardWidth !== size.width) {
-              _chart.resize();
-              _chart.update('none');
-            }
-          },
         },
 
         plugins: [...customPlugins],
@@ -250,7 +252,7 @@ export class MoonHorizon extends LitElement {
   protected render(): TemplateResult {
     return html`
       <div class="moon-horizon">
-        <canvas id="moonPositionChart" width=${this.card._cardWidth}></canvas>
+        <canvas id="moonPositionChart" width=${this.cardWidth}></canvas>
       </div>
       <div class="moon-data-wrapper">
         <div class="moon-data-header">
@@ -515,11 +517,9 @@ export class MoonHorizon extends LitElement {
     };
 
     const layout: ChartOptions['layout'] = {
+      autoPadding: false,
       padding: {
-        bottom: 10,
-        left: 4,
-        right: 4,
-        top: 10,
+        left: -8,
       },
     };
     // Options
@@ -755,6 +755,25 @@ export class MoonHorizon extends LitElement {
         point.options.radius = 4;
         chart.setActiveElements([{ datasetIndex: 0, index: yIndex }]);
         chart.update('default');
+      },
+    };
+  };
+
+  private expandChartArea = (): Plugin => {
+    return {
+      id: 'expandChartArea',
+      beforeDraw: (chart: Chart) => {
+        chart.chartArea.left = 0;
+        chart.chartArea.right = chart.width;
+        chart.chartArea.top = 0;
+        chart.chartArea.bottom = chart.height;
+      },
+
+      afterUpdate: (chart: Chart) => {
+        chart.chartArea.left = 0;
+        chart.chartArea.right = chart.width;
+        chart.chartArea.top = 0;
+        chart.chartArea.bottom = chart.height;
       },
     };
   };
