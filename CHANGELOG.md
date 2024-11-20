@@ -1,3 +1,20 @@
+<a id="v1.8.1"></a>
+# [v1.8.1](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.8.1) - 2024-11-20
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.8.1 -->
+
+## What's Changed
+### Other Changes
+* Update de.json to fix the moon phase labels by [@NoRi2909](https://github.com/NoRi2909) in [#43](https://github.com/ngocjohn/lunar-phase-card/pull/43)
+
+## New Contributors
+* [@NoRi2909](https://github.com/NoRi2909) made their first contribution in [#43](https://github.com/ngocjohn/lunar-phase-card/pull/43)
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.8.0...v1.8.1
+
+[Changes][v1.8.1]
+
+
 <a id="v1.8.0"></a>
 # [v1.8.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.8.0) - 2024-11-15
 
@@ -11,7 +28,7 @@ You can now switch to a southern hemisphere view of the moon phases. This option
 * **Search function to get coordinates by city and country**  in [#41](https://github.com/ngocjohn/lunar-phase-card/pull/41)
 A new feature that allows users to search for a location by entering the city and country. This returns the corresponding latitude and longitude, making it easier to configure location-based data.
 
-* **Chart configuration options** such as displaying x/y labels, current moon position, legends, and more by [@ngocjohn](https://github.com/ngocjohn)
+* **Chart configuration options** such as displaying x/y labels, current moon position, legends, and more 
 Users can now configure the appearance of the moon phase chart with options like showing or hiding axis labels, displaying the current moon position, and toggling chart legends for a more customized view.
 
 ### Fixes 🐛
@@ -233,6 +250,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.8.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.8.0...v1.8.1
 [v1.8.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.7.2...v1.8.0
 [v1.7.2]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.7.1...v1.7.2
 [v1.7.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.7.0...v1.7.1
