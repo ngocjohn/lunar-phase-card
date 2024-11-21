@@ -128,7 +128,6 @@ export class LunarPhaseCard extends LitElement {
 
   private measureCard(): void {
     const card = this.shadowRoot?.querySelector('ha-card') as HTMLElement;
-    const header = this.shadowRoot?.getElementById('lpc-header') as HTMLElement;
     if (card) {
       this._cardWidth = card.clientWidth;
       // console.log('card width', this._cardWidth);
@@ -359,7 +358,6 @@ export class LunarPhaseCard extends LitElement {
   private renderMoonImage(): TemplateResult | void {
     if (!this.moon) return;
     const { moonPic } = this.moon.moonImage;
-    const animateClass = !this.isEditorPreview ? 'moon-image animate' : 'moon-image';
 
     const southernHemisphere = this.config.southern_hemisphere ?? false;
 

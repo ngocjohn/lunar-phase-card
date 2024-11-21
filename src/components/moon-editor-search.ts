@@ -1,5 +1,5 @@
 import { mdiClose } from '@mdi/js';
-import { LitElement, TemplateResult, CSSResultGroup, html, nothing, css } from 'lit';
+import { LitElement, TemplateResult, CSSResultGroup, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { SearchResults } from '../types';
@@ -69,7 +69,7 @@ export class MoonEditorSearch extends LitElement {
 
   private _handleSearchResult(result: SearchResults): void {
     console.log('search result', result);
-    const { lat: latitude, lon: longitude, name: display_name } = result;
+    const { lat: latitude, lon: longitude } = result;
 
     const event = new CustomEvent('location-update', {
       detail: {
