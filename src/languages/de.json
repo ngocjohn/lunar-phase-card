@@ -8,9 +8,9 @@
             "thirdQuarterMoon": "Abnehmender Halbmond",
             "newMoon": "Neumond",
             "waxingCrescentMoon": "Zunehmender Sichelmond",
-            "waxingGibbousMoon": "Zunehm. Dreiviertelmond",
+            "waxingGibbousMoon": "Zunehmender Dreiviertelmond",
             "waningCrescentMoon": "Abnehmender Sichelmond",
-            "waningGibbousMoon": "Abnehm. Dreiviertelmond"
+            "waningGibbousMoon": "Abnehmender Dreiviertelmond"
         },
         "illumination": "Beleuchtung",
         "illuminated": "beleuchtet",
@@ -71,39 +71,39 @@
             "useCustom": "Benutzerdefinierte Einstellungen verwenden "
         },
         "fontOptions": {
-            "title": "Schriftartanpassungen",
+            "title": "Schriftartanpassung",
             "description": "Schriftgröße und -farbe festlegen",
             "hideLabel": "Beschriftung ausblenden",
             "headerFontConfig": {
-                "title": "Schriftart der Überschrift",
-                "description": "Schriftartkonfiguration der Überschrift"
+                "title": "Überschrift",
+                "description": "Schrift der Überschrift anpassen"
             },
             "labelFontConfig": {
-                "title": "Schriftart des Labels",
-                "description": "Schriftartkonfiguration des Labels"
+                "title": "Labels",
+                "description": "Schrift der Labels anpassen"
             },
             "headerFontSize": "Schriftgröße der Überschrift",
             "headerFontColor": "Schriftfarbe der Überschrift",
             "headerFontStyle": "Schriftstil der Überschrift",
-            "labelFontSize": "Schriftgröße des Labels",
-            "labelFontColor": "Schriftfarbe des Labels",
-            "labelFontStyle": "Schriftstil des Labels",
-            "valueFontSize": "Schriftgröße der ausgegebenen Werte"
+            "labelFontSize": "Schriftgröße der Label",
+            "labelFontColor": "Schriftfarbe der Label",
+            "labelFontStyle": "Schriftstil der Label",
+            "valueFontSize": "Schriftgröße der Werte"
         },
         "graphConfig": {
-            "title": "Grafikanpassung",
-            "description": "Konfiguration für den Graphen festlegen"
+            "title": "Diagramm-Anpassung",
+            "description": "Konfiguration für das Diagramm einstellen"
         },
         "compactView": "Kompakte Ansicht",
         "showBackground": "Hintergrund anzeigen",
         "timeFormat": "12-Stunden-Zeitformat",
-        "mileUnit": "Meileneinheit",
-        "yTicks": "Y-axis ticks",
-        "xTicks": "X-axis ticks",
-        "showTime": "Markierungen für Auf-/Untergangszeiten",
+        "mileUnit": "Meilen als Maßeinheit",
+        "yTicks": "Y-Achse beschriften",
+        "xTicks": "X-Achse beschriften",
+        "showTime": "Zeitmarken für Auf-/Untergang",
         "showCurrent": "Aktuelle Mondposition",
-        "showLegend": "Legende anzeigen",
-        "showHighest": "Höchste Mondposition anzeigen",
+        "showLegend": "Legende einblenden",
+        "showHighest": "Kulmination einblenden",
         "placeHolder": {
             "latitude": "Breitengrad eingeben",
             "longitude": "Längengrad eingeben",
@@ -111,7 +111,7 @@
             "language": "Sprachauswahl",
             "moonPosition": "Mondposition auf der Karte auswählen",
             "defaultCard": "Standardkarte auswählen",
-            "yTicksPosition": "Position der Y-Achsenmarkierungen",
+            "yTicksPosition": "Position der Y-Beschriftung",
             "legendPosition": "Position der Legende",
             "legendAlign": "Ausrichtung der Legende"
         }
