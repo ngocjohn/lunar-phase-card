@@ -1,4 +1,4 @@
-import { FrontendLocaleData, TimeFormat, HomeAssistant, LovelaceCardConfig } from 'custom-card-helpers';
+import { FrontendLocaleData, TimeFormat, HomeAssistant } from 'custom-card-helpers';
 
 import { LocationAddress, LunarPhaseCardConfig, SearchResults } from '../types';
 import { MOON_IMAGES } from './moon-pic';

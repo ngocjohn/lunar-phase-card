@@ -72,17 +72,31 @@ const plugins = [
 export default [
   {
     input: 'src/lunar-phase-card.ts',
-    output: {
-      dir: './dist',
-      format: 'es',
-      sourcemap: dev ? true : false,
-      inlineDynamicImports: true,
-      banner: custombanner,
-    },
+    output: [
+      {
+        dir: './dist',
+        format: 'es',
+        sourcemap: dev ? true : false,
+        inlineDynamicImports: true,
+        banner: custombanner,
+      },
+      {
+        dir: './build',
+        format: 'es',
+        sourcemap: false,
+        inlineDynamicImports: true,
+        banner: custombanner,
+      },
+    ],
     plugins: [...plugins],
-    moduleContext: {
-      'node_modules/@formatjs/intl-utils/lib/src/diff.js': 'window',
-      'node_modules/@formatjs/intl-utils/lib/src/resolve-locale.js': 'window',
+    moduleContext: (id) => {
+      const thisAsWindowForModules = [
+        'node_modules/@formatjs/intl-utils/lib/src/diff.js',
+        'node_modules/@formatjs/intl-utils/lib/src/resolve-locale.js',
+      ];
+      if (thisAsWindowForModules.some((id_) => id.trimRight().endsWith(id_))) {
+        return 'window';
+      }
     },
     watch: {
       exclude: 'node_modules/**',

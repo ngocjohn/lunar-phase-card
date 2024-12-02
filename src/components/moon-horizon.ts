@@ -224,13 +224,6 @@ export class MoonHorizon extends LitElement {
               this._chart?.update('none');
             }
           },
-          onClick: (_event, elements) => {
-            if (elements.length > 0) {
-              const element = elements[0];
-              const dataIndex = element.index;
-              // console.log('Clicked on', dataIndex, element);
-            }
-          },
         },
 
         plugins: [...customPlugins],
