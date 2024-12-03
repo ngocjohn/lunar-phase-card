@@ -88,6 +88,7 @@ export default [
         banner: custombanner,
       },
     ],
+    external: ['Vibrant'],
     plugins: [...plugins],
     moduleContext: (id) => {
       const thisAsWindowForModules = [
