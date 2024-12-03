@@ -75,6 +75,8 @@ export const enum CHART_DATA {
 }
 // TODAY_FILL = '#316474', // green bg
 // NEXTDAY_FILL = '#044258', // green bg
+// TODAY_FILL = '#47546b', // Original
+// NEXTDAY_FILL = '#3d4b63', // Original
 
 export const enum CHART_COLOR {
   TODAY_FILL = '#47546b', // Original

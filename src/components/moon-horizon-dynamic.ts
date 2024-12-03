@@ -12,10 +12,11 @@ import { DateTime } from 'luxon';
 // Local imports
 import { CHART_COLOR, CHART_DATA } from '../const';
 import { LunarPhaseCard } from '../lunar-phase-card';
+import extractColorData from '../utils/extractColorData.js';
+import { hexToRgba } from '../utils/helpers';
 import { Moon } from '../utils/moon';
 // Styles
 import styles from '../css/style.css';
-import { hexToRgba } from '../utils/helpers';
 
 @customElement('moon-horizon-dynamic')
 export class MoonHorizonDynamic extends LitElement {
@@ -25,10 +26,14 @@ export class MoonHorizonDynamic extends LitElement {
   @property({ type: Number }) cardWidth: number = 0;
   @property({ type: Number }) cardHeight: number = 0;
 
+  @state() public _todayColor: string = '';
+  @state() public _nextDayColor: string = '';
+
   @state() dynamicChart!: Chart;
 
   protected async firstUpdated(): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, 0));
+    await this.extractColorData();
     this.initChart();
   }
 
@@ -62,12 +67,18 @@ export class MoonHorizonDynamic extends LitElement {
           position: absolute;
           bottom: 0;
           left: 0;
+          -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+          background: transparent !important;
           width: 100%;
           height: 100%;
-          backdrop-filter: blur(6px);
           pointer-events: none;
-          box-sizing: border-box;
+          overflow: hidden;
           z-index: 1;
+          isolation: isolate;
+          box-sizing: border-box;
+          border-radius: 24px;
+          will-change: backdrop-filter;
         }
 
         #dynamic-chart {
@@ -208,7 +219,7 @@ export class MoonHorizonDynamic extends LitElement {
     const chartData = this.todayData.chartData;
     const values = [...Object.values(chartData).map((data) => data.moon)];
     const minMax = {
-      suggestedMin: Math.round(Math.min(...values) - 30),
+      suggestedMin: Math.round(Math.min(...values) - 10),
       suggestedMax: Math.round(Math.max(...values) + 30),
     };
     const SHARED_TICKS_Y = {
@@ -320,13 +331,14 @@ export class MoonHorizonDynamic extends LitElement {
         } = chart;
         const xLabel = chart.scales.x.getPixelForValue(index);
         const yLabel = chart.scales.y.getPixelForValue(chartData[index].moon);
+        const lineColor = hexToRgba(CHART_COLOR.STROKE_LINE, 0.7);
         ctx.font = '12px Arial';
         const width = ctx.measureText(nowText).width;
 
         // Draw the dashed line and label for the current time
         ctx.save();
         ctx.beginPath();
-        ctx.strokeStyle = CHART_COLOR.STROKE_LINE;
+        ctx.strokeStyle = lineColor;
         ctx.setLineDash([2, 4]);
         ctx.lineWidth = 1;
         ctx.moveTo(xLabel, yLabel);
@@ -366,6 +378,7 @@ export class MoonHorizonDynamic extends LitElement {
 
   private _midnightPosition(): Plugin {
     const { SECONDARY_TEXT } = this.CSS_COLOR;
+    const { _todayColor, _nextDayColor } = this;
     const fontSize = '12px Arial';
     const { chartData } = this.todayData;
     const timeLabels = chartData.map((data) => data.timeLabel);
@@ -386,8 +399,8 @@ export class MoonHorizonDynamic extends LitElement {
     };
 
     const fillColor = {
-      today: dayOffset === 0 ? CHART_COLOR.NEXTDAY_FILL : CHART_COLOR.TODAY_FILL,
-      nextDay: dayOffset === 0 ? CHART_COLOR.TODAY_FILL : CHART_COLOR.NEXTDAY_FILL,
+      today: dayOffset === 0 ? _nextDayColor : _todayColor,
+      nextDay: dayOffset === 0 ? _todayColor : _nextDayColor,
     };
 
     const closestTimeIndex = timeLabels.findIndex(
@@ -561,6 +574,21 @@ export class MoonHorizonDynamic extends LitElement {
       },
     };
   };
+  async extractColorData(): Promise<void> {
+    const custom_background = this.card.config?.custom_background;
+    if (!custom_background || !this.card.config.show_background) {
+      this._todayColor = CHART_COLOR.TODAY_FILL;
+      this._nextDayColor = CHART_COLOR.NEXTDAY_FILL;
+      return;
+    }
+
+    try {
+      [this._todayColor, this._nextDayColor] = await extractColorData(custom_background);
+    } catch (error) {
+      this._todayColor = CHART_COLOR.TODAY_FILL;
+      this._nextDayColor = CHART_COLOR.NEXTDAY_FILL;
+    }
+  }
 }
 
 declare global {
