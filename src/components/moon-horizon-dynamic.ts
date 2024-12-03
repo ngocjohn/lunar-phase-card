@@ -1,4 +1,3 @@
-/* eslint-disable unused-imports/no-unused-imports */
 // Lit
 import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
