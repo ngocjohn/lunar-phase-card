@@ -54,12 +54,19 @@
         "underHorizon": "Månen under horisonten",
         "overHorizon": "Månen over horisonten",
         "horizonTitle": "Dagens Måne",
-        "currentTime": "Nuværende tid"
+        "currentTime": "Nuværende tid",
+        "common": {
+            "now": "Nu"
+        }
     },
     "editor": {
         "viewConfig": {
             "title": "Sprog og visningstilstand",
-            "description": "Indstil en konfiguration for sprog og baggrund"
+            "description": "Indstil en konfiguration for sprog og baggrund",
+            "customBackground": {
+                "title": "Brugerdefineret baggrund",
+                "description": "Indstil en konfiguration for brugerdefineret baggrund"
+            }
         },
         "baseConfig": {
             "title": "Bredde og længdegrad",
@@ -92,12 +99,25 @@
         },
         "graphConfig": {
             "title": "Graf tilpasning",
-            "description": "Indstil en konfiguration for grafen"
+            "description": "Indstil en konfiguration for grafen",
+            "type": {
+                "title": "Graftype",
+                "description": "Vælg en graftype"
+            },
+            "visibility": {
+                "title": "Synlighedsindstillinger",
+                "description": "Skjul eller vis specifikke elementer"
+            },
+            "customization": {
+                "title": "Tilpasningsmuligheder",
+                "description": "Tilpas grafen"
+            }
         },
         "compactView": "Kompakt udsigt",
         "showBackground": "Vis baggrund",
         "timeFormat": "12-timers tidsformat",
         "mileUnit": "Milenhed",
+        "hideHeader": "Skjul header",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Markører for opgang/nedgang",
@@ -113,7 +133,8 @@
             "defaultCard": "Vælg standardkort",
             "yTicksPosition": "Position for Y-akse markeringer",
             "legendPosition": "Position for legenden",
-            "legendAlign": "Justering af legenden"
+            "legendAlign": "Justering af legenden",
+            "graphType": "Graftype"
         }
     }
 }

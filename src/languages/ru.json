@@ -54,12 +54,19 @@
         "underHorizon": "Луна под горизонтом",
         "overHorizon": "Луна над горизонтом",
         "horizonTitle": "Луна сегодня",
-        "currentTime": "Текущее время"
+        "currentTime": "Текущее время",
+        "common": {
+            "now": "Сейчас"
+        }
     },
     "editor": {
         "viewConfig": {
             "title": "Язык и режим отображения",
-            "description": "Настройка языка и фона"
+            "description": "Настройка языка и фона",
+            "customBackground": {
+                "title": "Пользовательский фон",
+                "description": "Настройте пользовательский фон"
+            }
         },
         "baseConfig": {
             "title": "Широта и долгота",
@@ -92,12 +99,25 @@
         },
         "graphConfig": {
             "title": "Настройка графика",
-            "description": "Установите конфигурацию для графика"
+            "description": "Установите конфигурацию для графика",
+            "type": {
+                "title": "Тип графика",
+                "description": "Выберите тип графика"
+            },
+            "visibility": {
+                "title": "Опции видимости",
+                "description": "Скрыть или показать определенные элементы"
+            },
+            "customization": {
+                "title": "Опции настройки",
+                "description": "Настройте график"
+            }
         },
         "compactView": "Компактный вид",
         "showBackground": "Показать фон",
         "timeFormat": "12-часовой формат времени",
         "mileUnit": "Единица измерения миль",
+        "hideHeader": "Скрыть заголовок",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Маркеры времени восхода/заката",
@@ -113,7 +133,8 @@
             "defaultCard": "Выберите карту по умолчанию",
             "yTicksPosition": "Положение меток на оси Y",
             "legendPosition": "Положение легенды",
-            "legendAlign": "Выравнивание легенды"
+            "legendAlign": "Выравнивание легенды",
+            "graphType": "Тип графика"
         }
     }
 }

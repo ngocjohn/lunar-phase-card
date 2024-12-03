@@ -54,12 +54,19 @@
         "underHorizon": "Luna bajo el horizonte",
         "overHorizon": "Luna sobre el horizonte",
         "horizonTitle": "Luna de hoy",
-        "currentTime": "Hora actual"
+        "currentTime": "Hora actual",
+        "common": {
+            "now": "Ahora"
+        }
     },
     "editor": {
         "viewConfig": {
             "title": "Idioma y modo de vista",
-            "description": "Configurar idioma y fondo"
+            "description": "Configurar idioma y fondo",
+            "customBackground": {
+                "title": "Fondo personalizado",
+                "description": "Configura un fondo personalizado"
+            }
         },
         "baseConfig": {
             "title": "Latitud y Longitud",
@@ -92,12 +99,25 @@
         },
         "graphConfig": {
             "title": "Personalización del gráfico",
-            "description": "Configura una configuración para el gráfico"
+            "description": "Configura una configuración para el gráfico",
+            "type": {
+                "title": "Tipo de gráfico",
+                "description": "Selecciona un tipo de gráfico"
+            },
+            "visibility": {
+                "title": "Opciones de visibilidad",
+                "description": "Oculta o muestra elementos específicos"
+            },
+            "customization": {
+                "title": "Opciones de personalización",
+                "description": "Personaliza el gráfico"
+            }
         },
         "compactView": "Vista compacta",
         "showBackground": "Mostrar fondo",
         "timeFormat": "Formato de 12 horas",
         "mileUnit": "Unidad de milla",
+        "hideHeader": "Ocultar encabezado",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Marcadores de tiempo de salida/puesta",
@@ -113,7 +133,8 @@
             "defaultCard": "Seleccionar tarjeta predeterminada",
             "yTicksPosition": "Posición de marcas en el eje Y",
             "legendPosition": "Posición de la leyenda",
-            "legendAlign": "Alineación de la leyenda"
+            "legendAlign": "Alineación de la leyenda",
+            "graphType": "Tipo de gráfico"
         }
     }
 }

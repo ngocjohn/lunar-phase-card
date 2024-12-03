@@ -88,6 +88,7 @@ export default [
         banner: custombanner,
       },
     ],
+    external: ['Vibrant'],
     plugins: [...plugins],
     moduleContext: (id) => {
       const thisAsWindowForModules = [
@@ -97,6 +98,14 @@ export default [
       if (thisAsWindowForModules.some((id_) => id.trimRight().endsWith(id_))) {
         return 'window';
       }
+    },
+    onwarn: (warning, warn) => {
+      // Ignore circular dependency warnings
+      if (warning.code === 'CIRCULAR_DEPENDENCY') {
+        return;
+      }
+      // Use default warning behavior for everything else
+      warn(warning);
     },
     watch: {
       exclude: 'node_modules/**',

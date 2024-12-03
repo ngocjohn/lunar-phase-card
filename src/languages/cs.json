@@ -54,12 +54,19 @@
         "underHorizon": "Měsíc pod horizontem",
         "overHorizon": "Měsíc nad horizontem",
         "horizonTitle": "Dnešní Měsíc",
-        "currentTime": "Aktuální čas"
+        "currentTime": "Aktuální čas",
+        "common": {
+            "now": "Teď"
+        }
     },
     "editor": {
         "viewConfig": {
             "title": "Jazyk a zobrazení",
-            "description": "Nastavte konfiguraci pro jazyk a pozadí"
+            "description": "Nastavte konfiguraci pro jazyk a pozadí",
+            "customBackground": {
+                "title": "Vlastní pozadí",
+                "description": "Nastavte konfiguraci vlastního pozadí"
+            }
         },
         "baseConfig": {
             "title": "Zeměpisná šířka a délka",
@@ -92,12 +99,25 @@
         },
         "graphConfig": {
             "title": "Přizpůsobení grafu",
-            "description": "Nastavte konfiguraci grafu"
+            "description": "Nastavte konfiguraci grafu",
+            "type": {
+                "title": "Typ grafu",
+                "description": "Vyberte typ grafu"
+            },
+            "visibility": {
+                "title": "Možnosti viditelnosti",
+                "description": "Skrýt nebo zobrazit konkrétní prvky"
+            },
+            "customization": {
+                "title": "Možnosti přizpůsobení",
+                "description": "Přizpůsobte graf"
+            }
         },
         "compactView": "Kompaktní zobrazení",
         "showBackground": "Zobrazit pozadí",
         "timeFormat": "12-hodinový formát času",
         "mileUnit": "Jednotka míle",
+        "hideHeader": "Skrýt záhlaví",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Značky času východu/západu",
@@ -113,7 +133,8 @@
             "defaultCard": "Vyberte výchozí kartu",
             "yTicksPosition": "Pozice značek na ose Y",
             "legendPosition": "Pozice legendy",
-            "legendAlign": "Zarovnání legendy"
+            "legendAlign": "Zarovnání legendy",
+            "graphType": "Typ grafu"
         }
     }
 }

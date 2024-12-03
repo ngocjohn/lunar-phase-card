@@ -28,6 +28,7 @@ ha-card {
   background-color: var(--card-background-color);
   letter-spacing: 0.5px;
   padding: 0;
+  border: none;
   --primary-text-color: var(--lunar-card-label-font-color, var(--primary-text-color));
   --swiper-theme-color: var(--lunar-card-label-font-color, var(--primary-text-color));
 }
@@ -53,11 +54,15 @@ ha-card.--reverse .lunar-card-content {
 
 
 ha-card.--default-header .lunar-card-content {
-  padding: 8px 12px 12px
+  padding: 0.5rem;
 }
 
 ha-card.--default-header .lunar-card-header {
   margin-top: 8px;
+}
+
+ha-card.--horizon.--dynamic-graph .lunar-card-content {
+  padding: 0;
 }
 
 ha-card.--horizon .lunar-card-content {
@@ -70,6 +75,7 @@ ha-card>.loading {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 4;
 }
 
 ha-card>.loading[hidden] {
@@ -93,7 +99,8 @@ ha-card>.loading[hidden] {
 
 
 
-ha-card.--background h1 {
+ha-card.--background h1,
+ha-card.--background .moon-phase-name {
   color: var(--lunar-card-header-font-color, #e1e1e1);
 }
 
@@ -346,6 +353,13 @@ section {
   font-weight: 600;
   justify-content: space-evenly;
   text-wrap-mode: nowrap;
+}
+
+.date-row>.date-name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .date-input-label {

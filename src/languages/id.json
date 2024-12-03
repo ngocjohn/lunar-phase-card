@@ -54,12 +54,19 @@
         "underHorizon": "Bulan di bawah horizon",
         "overHorizon": "Bulan di atas horizon",
         "horizonTitle": "Bulan Hari Ini",
-        "currentTime": "Waktu saat ini"
+        "currentTime": "Waktu saat ini",
+        "common": {
+            "now": "Sekarang"
+        }
     },
     "editor": {
         "viewConfig": {
             "title": "Bahasa dan mode tampilan",
-            "description": "Tetapkan konfigurasi untuk bahasa dan latar belakang"
+            "description": "Tetapkan konfigurasi untuk bahasa dan latar belakang",
+            "customBackground": {
+                "title": "Latar belakang khusus",
+                "description": "Atur konfigurasi untuk latar belakang khusus"
+            }
         },
         "baseConfig": {
             "title": "Lintang dan Bujur",
@@ -92,12 +99,25 @@
         },
         "graphConfig": {
             "title": "Kustomisasi grafik",
-            "description": "Atur konfigurasi untuk grafik"
+            "description": "Atur konfigurasi untuk grafik",
+            "type": {
+                "title": "Jenis grafik",
+                "description": "Pilih jenis grafik"
+            },
+            "visibility": {
+                "title": "Opsi visibilitas",
+                "description": "Sembunyikan atau tampilkan elemen tertentu"
+            },
+            "customization": {
+                "title": "Opsi kustomisasi",
+                "description": "Sesuaikan grafik"
+            }
         },
         "compactView": "Tampilan kompak",
         "showBackground": "Tampilkan gambar latar belakang",
         "timeFormat": "Format waktu 12 jam",
         "mileUnit": "Satuan mil",
+        "hideHeader": "Sembunyikan header",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Penanda waktu terbit/terbenam",
@@ -113,7 +133,8 @@
             "defaultCard": "Pilih kartu default",
             "yTicksPosition": "Posisi penanda sumbu Y",
             "legendPosition": "Posisi legenda",
-            "legendAlign": "Perataan legenda"
+            "legendAlign": "Perataan legenda",
+            "graphType": "Jenis grafik"
         }
     }
 }

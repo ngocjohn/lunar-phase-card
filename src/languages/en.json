@@ -54,12 +54,20 @@
         "underHorizon": "Moon under horizon",
         "overHorizon": "Moon over horizon",
         "horizonTitle": "Today's Moon",
-        "currentTime": "Current time"
+        "currentTime": "Current time",
+        "common": {
+            "now": "Now"
+        },
+        "elevation": "Elevation"
     },
     "editor": {
         "viewConfig": {
             "title": "Language and view mode",
-            "description": "Set a configuration for language and background"
+            "description": "Set a configuration for language and background",
+            "customBackground": {
+                "title": "Background",
+                "description": "Set a configuration for custom background"
+            }
         },
         "baseConfig": {
             "title": "Latitude and Longitude",
@@ -92,12 +100,25 @@
         },
         "graphConfig": {
             "title": "Graph customization",
-            "description": "Set a configuration for graph"
+            "description": "Set a configuration for graph",
+            "type": {
+                "title": "Graph type",
+                "description": "Select a graph type"
+            },
+            "visibility": {
+                "title": "Visibility options",
+                "description": "Hide or show specific elements"
+            },
+            "customization": {
+                "title": "Customization options",
+                "description": "Customize the graph"
+            }
         },
         "compactView": "Compact view",
         "showBackground": "Show background",
         "timeFormat": "12-hour time format",
         "mileUnit": "Mile unit",
+        "hideHeader": "Hide header",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Set/Rise time markers",
@@ -113,7 +134,8 @@
             "defaultCard": "Select default card",
             "yTicksPosition": "Y-axis ticks position",
             "legendPosition": "Legend position",
-            "legendAlign": "Legend align"
+            "legendAlign": "Legend align",
+            "graphType": "Graph type"
         }
     }
 }

@@ -1,8 +1,10 @@
 import * as SunCalc from '@noim/suncalc3';
 import { FrontendLocaleData, formatNumber, relativeTime, formatTime } from 'custom-card-helpers';
+import { DateTime } from 'luxon';
 
+import { CHART_DATA } from '../const';
 import { localize } from '../localize/localize';
-import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location } from '../types';
+import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location, DynamicChartData } from '../types';
 import { MOON_IMAGES } from '../utils/moon-pic';
 import { convertKmToMiles, compareTime } from './helpers';
 
@@ -40,6 +42,11 @@ export class Moon {
     const numberValue = num.toFixed(decimal);
     return formatNumber(numberValue, this.locale);
   };
+
+  public get _dynamicDate(): Date {
+    const now = DateTime.now();
+    return now.toJSDate();
+  }
 
   get _moonTime(): SunCalc.IMoonTimes {
     return SunCalc.getMoonTimes(this._date, this.location.latitude, this.location.longitude);
@@ -212,6 +219,115 @@ export class Moon {
     const timeMarkers = ['rise', 'set'].map((key) => this.timeDataSet(key));
     return timeMarkers;
   }
+
+  get calendarEvents() {
+    const events: { title: string; start: string; allDay: boolean }[] = [];
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    for (let i = 1; i <= daysInMonth; i++) {
+      const day = new Date(year, month, i);
+      const moonIlumin = SunCalc.getMoonIllumination(day);
+      const phaseEmoji = moonIlumin.phase.emoji;
+      const phaseAge = this.formatNumber(moonIlumin.phaseValue * 29.53);
+
+      events.push({
+        title: `${phaseEmoji} ${phaseAge}`,
+        start: day.toISOString().split('T')[0],
+        allDay: true,
+      });
+    }
+    return events;
+  }
+
+  get _dynamicChartData(): DynamicChartData {
+    const now = this._dynamicDate;
+    const offsetTime = new Date(now);
+    offsetTime.setHours(now.getHours() - CHART_DATA.OFFSET_TIME, now.getMinutes());
+
+    const startTime = offsetTime;
+    const chartData = this._getDynamicDataAltitude(startTime);
+    const moonTimes = this._getDynamicMoonTime(startTime);
+    const moonIluumination = SunCalc.getMoonIllumination(startTime);
+    const moonData = SunCalc.getMoonData(now, this.location.latitude, this.location.longitude);
+
+    const dataResult = {
+      chartData,
+      times: {
+        moon: moonTimes,
+      },
+      moonIllumination: moonIluumination,
+      moonData,
+    };
+    return dataResult;
+  }
+
+  get timeData() {
+    return {
+      moon: this._getTimeData('moon'),
+    };
+  }
+
+  private _getDynamicDataAltitude = (startTime: Date) => {
+    const step = 5;
+    const location = this.location;
+    const stepSize = step * 60 * 1000;
+    const timeRange = 24 * 60 * 60 * 1000;
+    const steps = timeRange / stepSize;
+    const result: { timeLabel: number; moon: number }[] = [];
+    for (let i = 0; i < steps; i++) {
+      const time = new Date(startTime.getTime() + i * stepSize);
+      const moonPosition = SunCalc.getMoonPosition(time, location.latitude, location.longitude).altitudeDegrees;
+      result.push({
+        timeLabel: time.getTime(),
+        moon: Number(moonPosition.toFixed(2)),
+      });
+    }
+    return result;
+  };
+
+  private _getDynamicMoonTime(startTime: Date): number[] {
+    const location = this.location;
+    const nextDay = new Date(startTime);
+    nextDay.setDate(nextDay.getDate() + 1);
+    const todayMoonTimes = SunCalc.getMoonTimes(startTime, location.latitude, location.longitude);
+    const tomorrowMoonTimes = SunCalc.getMoonTimes(nextDay, location.latitude, location.longitude);
+    return [todayMoonTimes.rise, todayMoonTimes.set, tomorrowMoonTimes.rise, tomorrowMoonTimes.set].map((time) =>
+      new Date(time).getTime()
+    );
+  }
+
+  private _getTimeData = (
+    type: 'moon' | 'sun'
+  ): { time: string; index: number; opacity: number; originalTime: number }[] => {
+    const timeLabels = this._dynamicChartData.chartData.map((data) => data.timeLabel);
+    const inrange = (time: number): boolean => {
+      const startTime = timeLabels[0];
+      const endTime = timeLabels[timeLabels.length - 1];
+      return time >= startTime && time <= endTime;
+    };
+
+    const closestTime = (time: number): number => {
+      const closest = timeLabels.reduce((prev, curr) => (Math.abs(curr - time) < Math.abs(prev - time) ? curr : prev));
+      return closest;
+    };
+
+    const isPast = (time: number): Boolean => {
+      return new Date(closestTime(time)) < this._date ? true : false;
+    };
+
+    const times = this._dynamicChartData.times[type];
+    return times
+      .filter((time: number) => inrange(time))
+      .map((time: number) => ({
+        time: formatTime(new Date(time), this.locale),
+        index: timeLabels.indexOf(closestTime(time)),
+        opacity: isPast(time) ? 0.5 : 1,
+        originalTime: time,
+      }));
+  };
 
   _getMoonHighest = (highest: number | Date): Record<string, any> => {
     const { formatNumber } = this;
@@ -393,28 +509,6 @@ export class Moon {
     });
     return data.indexOf(closest);
   };
-
-  get calendarEvents() {
-    const events: { title: string; start: string; allDay: boolean }[] = [];
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    for (let i = 1; i <= daysInMonth; i++) {
-      const day = new Date(year, month, i);
-      const moonIlumin = SunCalc.getMoonIllumination(day);
-      const phaseEmoji = moonIlumin.phase.emoji;
-      const phaseAge = this.formatNumber(moonIlumin.phaseValue * 29.53);
-
-      events.push({
-        title: `${phaseEmoji} ${phaseAge}`,
-        start: day.toISOString().split('T')[0],
-        allDay: true,
-      });
-    }
-    return events;
-  }
 
   // Helper method to generate events for a specific date range
   getEventsForRange(start: Date, end: Date): { title: string; start: string; allDay: boolean }[] {

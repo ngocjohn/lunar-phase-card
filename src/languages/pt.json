@@ -54,12 +54,19 @@
         "underHorizon": "Lua abaixo do horizonte",
         "overHorizon": "Lua acima do horizonte",
         "horizonTitle": "Lua de hoje",
-        "currentTime": "Hora atual"
+        "currentTime": "Hora atual",
+        "common": {
+            "now": "Agora"
+        }
     },
     "editor": {
         "viewConfig": {
             "title": "Idioma e modo de visualização",
-            "description": "Definir uma configuração para idioma e plano de fundo"
+            "description": "Definir uma configuração para idioma e plano de fundo",
+            "customBackground": {
+                "title": "Fundo personalizado",
+                "description": "Defina uma configuração para um fundo personalizado"
+            }
         },
         "baseConfig": {
             "title": "Latitude e Longitude",
@@ -92,12 +99,25 @@
         },
         "graphConfig": {
             "title": "Personalização do gráfico",
-            "description": "Defina uma configuração para o gráfico"
+            "description": "Defina uma configuração para o gráfico",
+            "type": {
+                "title": "Tipo de gráfico",
+                "description": "Selecione um tipo de gráfico"
+            },
+            "visibility": {
+                "title": "Opções de visibilidade",
+                "description": "Ocultar ou mostrar elementos específicos"
+            },
+            "customization": {
+                "title": "Opções de personalização",
+                "description": "Personalize o gráfico"
+            }
         },
         "compactView": "Visualização compacta",
         "showBackground": "Mostrar plano de fundo",
         "timeFormat": "Formato de 12 horas",
         "mileUnit": "Unidade de milha",
+        "hideHeader": "Ocultar cabeçalho",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Marcadores de tempo de nascer/pôr do sol",
@@ -113,7 +133,8 @@
             "defaultCard": "Selecionar cartão padrão",
             "yTicksPosition": "Posição das marcas do eixo Y",
             "legendPosition": "Posição da legenda",
-            "legendAlign": "Alinhamento da legenda"
+            "legendAlign": "Alinhamento da legenda",
+            "graphType": "Tipo de gráfico"
         }
     }
 }
