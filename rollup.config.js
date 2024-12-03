@@ -98,6 +98,14 @@ export default [
         return 'window';
       }
     },
+    onwarn: (warning, warn) => {
+      // Ignore circular dependency warnings
+      if (warning.code === 'CIRCULAR_DEPENDENCY') {
+        return;
+      }
+      // Use default warning behavior for everything else
+      warn(warning);
+    },
     watch: {
       exclude: 'node_modules/**',
       buildDelay: 1000,

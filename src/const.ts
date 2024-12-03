@@ -67,3 +67,25 @@ export const ICON = {
   RESTORE: mdiRestore,
   WEATHER: mdiWeatherNight,
 };
+
+export const enum CHART_DATA {
+  OFFSET_TIME = 6,
+  BORDER_WIDTH_BOLD = 1.2,
+  BORDER_WIDTH_LIGHT = 1,
+}
+// TODAY_FILL = '#316474', // green bg
+// NEXTDAY_FILL = '#044258', // green bg
+
+export const enum CHART_COLOR {
+  TODAY_FILL = '#47546b', // Original
+  NEXTDAY_FILL = '#3d4b63', // Original
+  STROKE_LINE = '#7a8eaa',
+  SECONDARY_TEXT = '#9b9b9b',
+  PRIMARY_TEXT = '#e1e1e1',
+  SUN_LINE_BOLD = '#f4da95',
+  SUN_LINE_LIGHT = '#b4ae95',
+  MOON_LINE_BOLD = '#fefffeaa',
+  MOON_LINE_LIGHT = '#b9c0ca',
+  MOON_SHADOW = '#161616',
+  TOOLTIP_BACKGROUND = '#1f1f1f',
+}

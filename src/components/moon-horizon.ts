@@ -706,7 +706,7 @@ export class MoonHorizon extends LitElement {
 
             const yPosition = y.getPixelForValue(0);
 
-            const lineOffset = isUp ? Math.round((yPosition - top) / 2) : Math.round((bottom - yPosition) / 2);
+            const lineOffset = isUp ? Math.round((yPosition - top) / 3) : Math.round((bottom - yPosition) / 2);
             const maxTextWidth = getMaxValueText(ctx, isUp ? 'Rise' : 'Set', formatedTime, direction);
 
             let textAlign: CanvasTextAlign = 'start';

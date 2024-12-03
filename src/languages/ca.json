@@ -54,12 +54,19 @@
         "underHorizon": "Lluna sota l'horitzó",
         "overHorizon": "Lluna sobre l'horitzó",
         "horizonTitle": "Lluna d'avui",
-        "currentTime": "Hora actual"
+        "currentTime": "Hora actual",
+        "common": {
+            "now": "Ara"
+        }
     },
     "editor": {
         "viewConfig": {
             "title": "Llenguatge i mode de vista",
-            "description": "Estableix una configuració per l'idioma i el fons"
+            "description": "Estableix una configuració per l'idioma i el fons",
+            "customBackground": {
+                "title": "Fons personalitzat",
+                "description": "Estableix una configuració per a un fons personalitzat"
+            }
         },
         "baseConfig": {
             "title": "Latitud i longitud",
@@ -92,12 +99,25 @@
         },
         "graphConfig": {
             "title": "Personalització del gràfic",
-            "description": "Configura una configuració per al gràfic"
+            "description": "Configura una configuració per al gràfic",
+            "type": {
+                "title": "Tipus de gràfic",
+                "description": "Selecciona un tipus de gràfic"
+            },
+            "visibility": {
+                "title": "Opcions de visibilitat",
+                "description": "Amaga o mostra elements específics"
+            },
+            "customization": {
+                "title": "Opcions de personalització",
+                "description": "Personalitza el gràfic"
+            }
         },
         "compactView": "Vista compacta",
         "showBackground": "Mostra el fons",
         "timeFormat": "Format del temps de 12 hores",
         "mileUnit": "Unitat de milla",
+        "hideHeader": "Amaga la capçalera",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Marcadors de temps de sortida/posta",
@@ -113,7 +133,8 @@
             "defaultCard": "Selecciona la targeta per defecte",
             "yTicksPosition": "Posició de les marques de l'eix Y",
             "legendPosition": "Posició de la llegenda",
-            "legendAlign": "Alineació de la llegenda"
+            "legendAlign": "Alineació de la llegenda",
+            "graphType": "Tipus de gràfic"
         }
     }
 }

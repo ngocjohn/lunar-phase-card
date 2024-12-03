@@ -27,6 +27,7 @@
     "chart.js": "^4.4.5",
     "custom-card-helpers": "^1.7.2",
     "lit": "^3.1.4",
+    "luxon": "^3.5.0",
     "swiper": "^11.1.14"
   },
   "devDependencies": {
@@ -37,6 +38,7 @@
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-terser": "^0.4.4",
+    "@types/luxon": "^3.4.2",
     "@types/node": "^22.9.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",

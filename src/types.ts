@@ -1,3 +1,4 @@
+import { IMoonData, IMoonIllumination } from '@noim/suncalc3';
 // Cutom card helpers:
 import { LovelaceCardConfig } from 'custom-card-helpers';
 
@@ -18,6 +19,7 @@ export interface FontCustomStyles {
 export type DefaultPage = 'calendar' | 'base' | 'horizon';
 
 export interface HorizonGraphConfig {
+  graph_type?: 'default' | 'dynamic';
   y_ticks?: boolean;
   x_ticks?: boolean;
   show_time?: boolean;
@@ -42,6 +44,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   '12hr_format'?: boolean;
   mile_unit?: boolean;
   number_decimals?: number;
+  hide_header?: boolean;
   default_card?: PageType.BASE | PageType.CALENDAR | PageType.HORIZON;
   selected_language: string;
   moon_position?: 'left' | 'right';
@@ -65,11 +68,13 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   compact_view: true,
   '12hr_format': false,
   mile_unit: false,
+  hide_header: false,
   default_card: PageType.BASE,
   moon_position: 'left',
   southern_hemisphere: false,
   number_decimals: 2,
   graph_config: {
+    graph_type: 'default',
     y_ticks: false,
     x_ticks: true,
     show_time: true,
@@ -143,4 +148,16 @@ export type SearchResults = {
   name: string;
   lat: number;
   lon: number;
+};
+
+export type DynamicChartData = {
+  chartData: {
+    timeLabel: number;
+    moon: number;
+  }[];
+  times: {
+    moon: number[];
+  };
+  moonIllumination: IMoonIllumination;
+  moonData: IMoonData;
 };

@@ -54,12 +54,19 @@
         "underHorizon": "Mond unter dem Horizont",
         "overHorizon": "Mond über dem Horizont",
         "horizonTitle": "Heutiger Mond",
-        "currentTime": "Aktuelle Zeit"
+        "currentTime": "Aktuelle Zeit",
+        "common": {
+            "now": "Jetzt"
+        }
     },
     "editor": {
         "viewConfig": {
             "title": "Sprach- und Ansichtsmodus",
-            "description": "Einstellung der Sprache und des Hintergrunds"
+            "description": "Einstellung der Sprache und des Hintergrunds",
+            "customBackground": {
+                "title": "Benutzerdefinierter Hintergrund",
+                "description": "Konfiguration für benutzerdefinierten Hintergrund festlegen"
+            }
         },
         "baseConfig": {
             "title": "Breiten- und Längengrad",
@@ -92,12 +99,25 @@
         },
         "graphConfig": {
             "title": "Diagramm-Anpassung",
-            "description": "Konfiguration für das Diagramm einstellen"
+            "description": "Konfiguration für das Diagramm einstellen",
+            "type": {
+                "title": "Grafiktyp",
+                "description": "Wählen Sie einen Grafiktyp aus"
+            },
+            "visibility": {
+                "title": "Sichtbarkeitsoptionen",
+                "description": "Spezifische Elemente ausblenden oder anzeigen"
+            },
+            "customization": {
+                "title": "Anpassungsoptionen",
+                "description": "Passen Sie die Grafik an"
+            }
         },
         "compactView": "Kompakte Ansicht",
         "showBackground": "Hintergrund anzeigen",
         "timeFormat": "12-Stunden-Zeitformat",
         "mileUnit": "Meilen als Maßeinheit",
+        "hideHeader": "Header ausblenden",
         "yTicks": "Y-Achse beschriften",
         "xTicks": "X-Achse beschriften",
         "showTime": "Zeitmarken für Auf-/Untergang",
@@ -113,7 +133,8 @@
             "defaultCard": "Standardkarte auswählen",
             "yTicksPosition": "Position der Y-Beschriftung",
             "legendPosition": "Position der Legende",
-            "legendAlign": "Ausrichtung der Legende"
+            "legendAlign": "Ausrichtung der Legende",
+            "graphType": "Grafiktyp"
         }
     }
 }

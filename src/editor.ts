@@ -326,6 +326,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       { label: 'showBackground', configValue: 'show_background' },
       { label: 'timeFormat', configValue: '12hr_format' },
       { label: 'mileUnit', configValue: 'mile_unit' },
+      { label: 'hideHeader', configValue: 'hide_header' },
     ];
 
     const viewOptions = html`
@@ -388,6 +389,15 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private _renderGraphConfig(): TemplateResult {
+    const subheader = (key: string) => {
+      const title = this.localize(`editor.graphConfig.${key}.title`);
+      const desc = this.localize(`editor.graphConfig.${key}.description`);
+      return html`<div class="sub-config-type">
+        <span class="title">${title}</span>
+        <span class="desc">${desc}</span>
+      </div>`;
+    };
+
     const viewItemMap = [
       { label: 'yTicks', configValue: 'y_ticks' },
       { label: 'xTicks', configValue: 'x_ticks' },
@@ -414,6 +424,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       );
     };
 
+    const graphType = [{ items: ['default', 'dynamic'], label: 'graphType', value: 'graph_type' }];
+
     const comboBoxes = [
       { items: ['top', 'bottom'], label: 'legendPosition', value: 'legend_position' },
       { items: ['start', 'center', 'end'], label: 'legendAlign', value: 'legend_align' },
@@ -422,6 +434,16 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
     const yTicksPosition = html`
       ${comboBoxes.map((item) =>
+        generateComboBox(
+          item.items.map((i) => ({ value: i, label: i.charAt(0).toUpperCase() + i.slice(1) })),
+          item.label,
+          item.value
+        )
+      )}
+    `;
+
+    const graphTypeSelector = html`
+      ${graphType.map((item) =>
         generateComboBox(
           item.items.map((i) => ({ value: i, label: i.charAt(0).toUpperCase() + i.slice(1) })),
           item.label,
@@ -456,19 +478,21 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
     const graphConfig = html`
       <div class="sub-config-wrapper">
-        <div class="sub-config-type">
-          <span class="title">Visibility options</span>
-          <span class="desc">Hide or show specific elements</span>
-        </div>
-        <div class="sub-config-content">${checkBoxes}</div>
+        ${subheader('type')}
+        <div class="sub-config-content">${graphTypeSelector}</div>
       </div>
-      <div class="sub-config-wrapper">
-        <div class="sub-config-type">
-          <span class="title">Customize options</span>
-          <span class="desc">Customize the graph</span>
-        </div>
-        <div class="sub-config-content">${yTicksPosition} ${numberSelector}</div>
-      </div>
+      ${this._config?.graph_config?.graph_type === 'default'
+        ? html`
+            <div class="sub-config-wrapper">
+              ${subheader('visibility')}
+              <div class="sub-config-content">${checkBoxes}</div>
+            </div>
+            <div class="sub-config-wrapper">
+              ${subheader('customization')}
+              <div class="sub-config-content">${yTicksPosition} ${numberSelector}</div>
+            </div>
+          `
+        : ''}
     `;
 
     return this.contentTemplate('graphConfig', 'graphConfig', 'mdi:chart-bell-curve', graphConfig);
@@ -524,8 +548,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     const backgroundContainer = html`
       <div class="sub-config-wrapper">
         <div class="sub-config-type">
-          <span class="title">Background</span>
-          <span class="desc">Customize the background</span>
+          <span class="title">${this.localize(`editor.viewConfig.customBackground.title`)}</span>
+          <span class="desc">${this.localize(`editor.viewConfig.customBackground.description`)}</span>
         </div>
         <div class="sub-config-content">${backgroundOptions}</div>
         <div class="sub-config-content">${customBackgroundInput}</div>

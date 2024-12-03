@@ -54,12 +54,19 @@
         "underHorizon": "Mesiac pod horizontom",
         "overHorizon": "Mesiac nad horizontom",
         "horizonTitle": "Dnešný Mesiac",
-        "currentTime": "Aktuálny čas"
+        "currentTime": "Aktuálny čas",
+        "common": {
+            "now": "Teraz"
+        }
     },
     "editor": {
         "viewConfig": {
             "title": "Jazyk a režim zobrazenia",
-            "description": "Nastavte konfiguráciu pre jazyk a pozadie"
+            "description": "Nastavte konfiguráciu pre jazyk a pozadie",
+            "customBackground": {
+                "title": "Vlastné pozadie",
+                "description": "Nastavte konfiguráciu vlastného pozadia"
+            }
         },
         "baseConfig": {
             "title": "Zemepisná šírka a dĺžka",
@@ -92,12 +99,25 @@
         },
         "graphConfig": {
             "title": "Prispôsobenie grafu",
-            "description": "Nastavte konfiguráciu pre graf"
+            "description": "Nastavte konfiguráciu pre graf",
+            "type": {
+                "title": "Typ grafu",
+                "description": "Vyberte typ grafu"
+            },
+            "visibility": {
+                "title": "Možnosti viditeľnosti",
+                "description": "Skryť alebo zobraziť konkrétne prvky"
+            },
+            "customization": {
+                "title": "Možnosti prispôsobenia",
+                "description": "Prispôsobte graf"
+            }
         },
         "compactView": "Kompaktný pohľad",
         "showBackground": "Zobraziť pozadie",
         "timeFormat": "12-hodinový formát času",
         "mileUnit": "Jednotka míle",
+        "hideHeader": "Skryť hlavičku",
         "yTicks": "Y-axis ticks",
         "xTicks": "X-axis ticks",
         "showTime": "Značky času východu/západu",
@@ -113,7 +133,8 @@
             "defaultCard": "Vyberte predvolenú kartu",
             "yTicksPosition": "Pozícia značiek na osi Y",
             "legendPosition": "Pozícia legendy",
-            "legendAlign": "Zarovnanie legendy"
+            "legendAlign": "Zarovnanie legendy",
+            "graphType": "Typ grafu"
         }
     }
 }
