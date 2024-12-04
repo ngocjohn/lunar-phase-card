@@ -1,11 +1,15 @@
 import Vibrant from 'node-vibrant/dist/vibrant';
+import tinycolor from 'tinycolor2';
 
 const extractColorData = (palette) => {
-  const colors = [];
+  const colors = {};
   for (const [key, value] of Object.entries(palette)) {
     // console.log(key, value.getHex());
-    if (key === 'Vibrant' || key === 'DarkMuted') {
-      colors.push(value.getHex());
+    if (key === 'Vibrant') {
+      const todayFillColor = value.getHex();
+      const nextDayFillColor = tinycolor(todayFillColor).darken(10).toHexString();
+      colors.todayFillColor = todayFillColor;
+      colors.nextDayFillColor = nextDayFillColor;
     }
   }
   // console.log(colors);

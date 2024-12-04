@@ -2,6 +2,7 @@ import {
   mdiCalendarMonthOutline,
   mdiCalendarSearch,
   mdiChartBellCurve,
+  mdiChevronDown,
   mdiChevronLeft,
   mdiChevronRight,
   mdiMoonFull,
@@ -10,8 +11,7 @@ import {
   mdiWeatherNight,
 } from '@mdi/js';
 
-import { version, repository } from '../package.json';
-import background from './images/bkg.png';
+import { version } from '../package.json';
 import blueBackground from './images/blue-bg.png';
 import { FontSizeOptions, FontTextTransformOptions } from './types';
 
@@ -21,11 +21,8 @@ const BACKGROUND_URL = (index: number) => `${PIC_URL}moon_bg_${index}.png`;
 
 export const CUSTOM_BG = [blueBackground, BACKGROUND_URL(1), BACKGROUND_URL(2), BACKGROUND_URL(3)];
 
-export const REPOSITORY = repository.repo;
 export const CARD_VERSION = `v${version}`;
-export const BASE_REFRESH_INTERVAL = 15 * 1000;
 
-export const BACKGROUND = background;
 export const BLUE_BG = blueBackground;
 
 export const FONTSIZES: FontSizeOptions[] = ['auto', 'small', 'medium', 'large', 'x-large', 'xx-large'];
@@ -58,13 +55,14 @@ export const enum MoonState {
 
 export const ICON = {
   CALENDAR: mdiCalendarMonthOutline,
-  SEARCH: mdiCalendarSearch,
   CHART: mdiChartBellCurve,
+  CHEVRON_DOWN: mdiChevronDown,
   LEFT: mdiChevronLeft,
-  RIGHT: mdiChevronRight,
   MOONFULL: mdiMoonFull,
   MOONNEW: mdiMoonNew,
   RESTORE: mdiRestore,
+  RIGHT: mdiChevronRight,
+  SEARCH: mdiCalendarSearch,
   WEATHER: mdiWeatherNight,
 };
 

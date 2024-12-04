@@ -8,6 +8,7 @@ import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location, Dyna
 import { MOON_IMAGES } from '../utils/moon-pic';
 import { convertKmToMiles, compareTime } from './helpers';
 
+// Moon class
 export class Moon {
   readonly _date: Date;
   readonly location: Location;

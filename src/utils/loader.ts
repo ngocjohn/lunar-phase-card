@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LovelaceConfig } from 'custom-card-helpers';
 
-import { REPOSITORY } from '../const';
 import { LunarPhaseCardConfig } from '../types';
-export interface HuiRootElement extends HTMLElement {
+
+interface HuiRootElement extends HTMLElement {
   lovelace: {
     config: LovelaceConfig;
     current_view: number;
@@ -28,15 +28,6 @@ export const loadHaComponents = () => {
   }
 };
 
-export const loadCustomElement = async <T = any>(name: string) => {
-  const Component = customElements.get(name) as T;
-  if (Component) {
-    return Component;
-  }
-  await customElements.whenDefined(name);
-  return customElements.get(name) as T;
-};
-
 export const stickyPreview = () => {
   // Change the default preview element to be sticky
   const root = document.querySelector('body > home-assistant')?.shadowRoot;
@@ -48,53 +39,7 @@ export const stickyPreview = () => {
   }
 };
 
-export async function fetchLatestReleaseTag() {
-  const apiUrl = `https://api.github.com/repos/${REPOSITORY}/releases/latest`;
-
-  try {
-    const response = await fetch(apiUrl);
-    if (response.ok) {
-      const data = await response.json();
-      const releaseTag = data.tag_name;
-      console.log('Latest release tag:', releaseTag);
-      return releaseTag;
-    } else {
-      console.error('Failed to fetch the latest release tag:', response.statusText);
-    }
-  } catch (error) {
-    console.error('Error fetching the latest release tag:', error);
-  }
-}
-
-export function isCardInEditMode(cardElement: HTMLElement) {
-  let parent1Class: string | undefined = undefined;
-  let parent2Class: string | undefined = undefined;
-
-  if (cardElement) {
-    const parentElement = cardElement.offsetParent;
-    if (parentElement) {
-      parent1Class = ((parentElement as HTMLElement).className || '').trim();
-
-      const parentParentElement = parentElement.parentElement;
-      if (parentParentElement) {
-        parent2Class = ((parentParentElement as HTMLElement).className || '').trim();
-      }
-    }
-  } else {
-    console.log('Card element not found');
-  }
-
-  let inEditMode = false;
-  if (parent1Class === 'element-preview') {
-    inEditMode = true;
-  } else if (parent2Class === 'gui-editor') {
-    inEditMode = true;
-  }
-  console.log('Card in edit mode:', inEditMode);
-  return inEditMode;
-}
-
-export const getLovelace = () => {
+const getLovelace = () => {
   const root = document.querySelector('home-assistant')?.shadowRoot?.querySelector('home-assistant-main')?.shadowRoot;
 
   const resolver =
@@ -114,7 +59,7 @@ export const getLovelace = () => {
   return null;
 };
 
-export const getDialogEditor = () => {
+const getDialogEditor = () => {
   const root = document.querySelector('home-assistant')?.shadowRoot;
   const editor = root?.querySelector('hui-dialog-edit-card');
   if (editor) {

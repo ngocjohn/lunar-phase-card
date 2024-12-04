@@ -41,24 +41,9 @@ export class MoonHorizon extends LitElement {
   @state() private _timeAnimationFrame: number | null = null;
   @state() private _lastTime: string | null = null;
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    window.MoonCard = this;
-    setTimeout(() => {
-      if (this._chart) {
-        window.Chart = this._chart;
-      }
-    }, 100);
-  }
-
-  disconnectedCallback(): void {
-    this.cancelTimeAnimationFrame();
-    super.disconnectedCallback();
-  }
-
   protected async firstUpdated(changedProps: PropertyValues): Promise<void> {
     super.firstUpdated(changedProps);
-    await new Promise((resolve) => setTimeout(resolve, 20));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     this.setupChart();
   }
 
@@ -575,18 +560,19 @@ export class MoonHorizon extends LitElement {
       beforeDraw(chart: Chart) {
         const {
           ctx,
-          chartArea: { top, right, left },
+          chartArea: { top, right, left, bottom },
           scales: { x, y },
         } = chart as Chart;
         const midX = x.getPixelForValue(0);
         const fillTop = y.getPixelForValue(0);
-        const gradient = ctx.createLinearGradient(midX, top, midX, fillTop);
+        const gradientHeight = (bottom - top) * 0.2;
+        const gradient = ctx.createLinearGradient(midX, top, midX, top - gradientHeight);
         gradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
         gradient.addColorStop(1, fillColor);
         // Draw the fill color above the horizon
         ctx.save();
         ctx.fillStyle = gradient;
-        ctx.fillRect(midX, top, right - midX, fillTop - top);
+        ctx.fillRect(midX, top - gradientHeight, right - midX, gradientHeight);
         ctx.restore();
         ctx.beginPath();
         ctx.fillStyle = secondaryTextColor;
@@ -775,9 +761,5 @@ export class MoonHorizon extends LitElement {
 declare global {
   interface HTMLElementTagNameMap {
     'moon-horizon': MoonHorizon;
-  }
-  interface Window {
-    MoonCard: MoonHorizon;
-    Chart: Chart;
   }
 }

@@ -13,10 +13,11 @@ import styles from '../css/style.css';
 @customElement('moon-phase-calendar')
 export class MoonPhaseCalendar extends LitElement {
   @property({ attribute: false }) card!: LunarPhaseCard;
-  @state() moon!: Moon;
+  @property({ attribute: false }) moon!: Moon;
 
   @state() calendar!: Calendar;
   @state() cardWidth = 500;
+
   static get styles(): CSSResultGroup {
     return [
       styles,

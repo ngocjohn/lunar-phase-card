@@ -16,9 +16,8 @@ export interface FontCustomStyles {
   label_font_color: string;
   hide_label: boolean;
 }
-export type DefaultPage = 'calendar' | 'base' | 'horizon';
 
-export interface HorizonGraphConfig {
+interface HorizonGraphConfig {
   graph_type?: 'default' | 'dynamic';
   y_ticks?: boolean;
   x_ticks?: boolean;

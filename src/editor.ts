@@ -194,10 +194,10 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
             ${this._config?.use_default
               ? this._renderUseDefault()
               : this._config?.use_custom
-                ? this._renderCustomLatLong()
-                : this._config?.use_entity
-                  ? this._renderEntityPicker()
-                  : ''}
+              ? this._renderCustomLatLong()
+              : this._config?.use_entity
+              ? this._renderEntityPicker()
+              : ''}
           </div>
 
           <div class="comboboxes">${radios} ${southern}</div>
@@ -417,7 +417,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       return this._haComboBox(
         items,
         `placeHolder.${labelKey}`,
-        this._config?.graph_config?.[valueKey] || '',
+        this._config?.graph_config?.[valueKey] ?? defaultConfig.graph_config?.[valueKey],
         valueKey,
         false,
         'graph_config'
@@ -481,7 +481,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         ${subheader('type')}
         <div class="sub-config-content">${graphTypeSelector}</div>
       </div>
-      ${this._config?.graph_config?.graph_type === 'default'
+      ${this._config?.graph_config?.graph_type === 'default' || !this._config?.graph_config?.graph_type
         ? html`
             <div class="sub-config-wrapper">
               ${subheader('visibility')}
@@ -577,8 +577,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
           type === 'color'
             ? FONTCOLORS.map((color) => ({ value: color, label: color }))
             : type === 'size'
-              ? FONTSIZES.map((size) => ({ value: size, label: size }))
-              : FONTSTYLES.map((style) => ({ value: style, label: style }));
+            ? FONTSIZES.map((size) => ({ value: size, label: size }))
+            : FONTSTYLES.map((style) => ({ value: style, label: style }));
 
         return this._haComboBox(
           items,
@@ -688,14 +688,18 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   private _tempCheckBox = (labelKey: string, configValueKey: string, configKey?: string): TemplateResult => {
     const checkedValue = configKey ? this._config?.[configKey]?.[configValueKey] : this._config?.[configValueKey];
-    return html` <ha-formfield .label=${this.localize(`editor.${labelKey}`)} class="checkbox">
-      <ha-checkbox
-        .configKey=${configKey}
-        .checked=${checkedValue}
-        .configValue=${configValueKey}
-        @change=${this._handleValueChange}
-      ></ha-checkbox>
-    </ha-formfield>`;
+    return html` <ha-selector
+      .hass=${this.hass}
+      .value=${checkedValue}
+      .configValue=${configValueKey}
+      .label=${this.localize(`editor.${labelKey}`)}
+      .required=${false}
+      .configKey=${configKey}
+      .selector=${{
+        boolean: {},
+      }}
+      @value-changed=${this._handleValueChange}
+    ></ha-selector>`;
   };
 
   /* ----------------------------- HANDLER METHODS ---------------------------- */

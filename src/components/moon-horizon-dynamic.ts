@@ -25,8 +25,7 @@ export class MoonHorizonDynamic extends LitElement {
   @property({ type: Number }) cardWidth: number = 0;
   @property({ type: Number }) cardHeight: number = 0;
 
-  @state() public _todayColor: string = '';
-  @state() public _nextDayColor: string = '';
+  @state() public _midnightColor: Record<string, string> = {};
 
   @state() dynamicChart!: Chart;
 
@@ -346,7 +345,7 @@ export class MoonHorizonDynamic extends LitElement {
 
         // Draw the time label below the line
         ctx.font = '12px Arial';
-        ctx.fillStyle = CHART_COLOR.SECONDARY_TEXT;
+        ctx.fillStyle = CHART_COLOR.PRIMARY_TEXT;
         ctx.fillText(nowText, xLabel - width / 2, bottom - 10);
         ctx.restore();
       },
@@ -377,7 +376,7 @@ export class MoonHorizonDynamic extends LitElement {
 
   private _midnightPosition(): Plugin {
     const { SECONDARY_TEXT } = this.CSS_COLOR;
-    const { _todayColor, _nextDayColor } = this;
+    const { todayFill, nextDayFill } = this._midnightColor;
     const fontSize = '12px Arial';
     const { chartData } = this.todayData;
     const timeLabels = chartData.map((data) => data.timeLabel);
@@ -389,17 +388,19 @@ export class MoonHorizonDynamic extends LitElement {
     todayMidnight.setHours(0, 0, 0, 0);
     todayMidnight.setDate(now.getDate() + dayOffset);
 
-    const todayLabelDate = new Date(todayMidnight);
-    if (dayOffset === 0) todayLabelDate.setDate(todayLabelDate.getDate() - 1);
+    let todayLabel: Date = new Date(now);
+    if (dayOffset === 0) {
+      todayLabel.setDate(todayLabel.getDate() - 1);
+    }
 
     const labels = {
-      today: formatDateShort(todayLabelDate, this._locale),
+      today: formatDateShort(todayLabel, this._locale),
       nextDay: formatDateShort(todayMidnight, this._locale),
     };
 
     const fillColor = {
-      today: dayOffset === 0 ? _nextDayColor : _todayColor,
-      nextDay: dayOffset === 0 ? _todayColor : _nextDayColor,
+      today: dayOffset === 0 ? nextDayFill : todayFill,
+      nextDay: dayOffset === 0 ? todayFill : nextDayFill,
     };
 
     const closestTimeIndex = timeLabels.findIndex(
@@ -573,19 +574,27 @@ export class MoonHorizonDynamic extends LitElement {
       },
     };
   };
+
   async extractColorData(): Promise<void> {
     const custom_background = this.card.config?.custom_background;
     if (!custom_background || !this.card.config.show_background) {
-      this._todayColor = CHART_COLOR.TODAY_FILL;
-      this._nextDayColor = CHART_COLOR.NEXTDAY_FILL;
-      return;
+      this._midnightColor = {
+        todayFill: CHART_COLOR.TODAY_FILL,
+        nextDayFill: CHART_COLOR.NEXTDAY_FILL,
+      };
     }
 
     try {
-      [this._todayColor, this._nextDayColor] = await extractColorData(custom_background);
+      const data = await extractColorData(custom_background);
+      this._midnightColor = {
+        todayFill: data.todayFillColor,
+        nextDayFill: data.nextDayFillColor,
+      };
     } catch (error) {
-      this._todayColor = CHART_COLOR.TODAY_FILL;
-      this._nextDayColor = CHART_COLOR.NEXTDAY_FILL;
+      this._midnightColor = {
+        todayFill: CHART_COLOR.TODAY_FILL,
+        nextDayFill: CHART_COLOR.NEXTDAY_FILL,
+      };
     }
   }
 }

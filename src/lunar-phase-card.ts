@@ -10,18 +10,20 @@ import { LunarPhaseCardConfig, defaultConfig } from './types';
 import { BLUE_BG, PageType, MoonState, ICON } from './const';
 import { localize } from './localize/localize';
 import { generateConfig } from './utils/ha-helper';
-import { getDefaultConfig } from './utils/helpers';
+import { _handleOverflow, getDefaultConfig } from './utils/helpers';
 import { isEditorMode } from './utils/loader';
 
 // components
 import { LunarBaseData } from './components/moon-data';
 import { MoonHorizon } from './components/moon-horizon';
 import { MoonHorizonDynamic } from './components/moon-horizon-dynamic';
+import { MoonStarField } from './components/moon-star-field';
 import { Moon } from './utils/moon';
 import './components/moon-data';
 import './components/moon-horizon';
 import './components/moon-horizon-dynamic';
 import './components/moon-phase-calendar';
+import './components/moon-star-field';
 
 // styles
 import style from './css/style.css';
@@ -45,9 +47,10 @@ export class LunarPhaseCard extends LitElement {
   @property({ attribute: false }) config!: LunarPhaseCardConfig;
   @state() moon!: Moon;
   @state() private _activeCard: PageType | null = null;
-  @state() selectedDate: Date | undefined;
+  @state() public selectedDate: Date | undefined;
 
   @state() _calendarPopup: boolean = false;
+  @state() _calendarInfo: boolean = false;
   @state() _resizeInitiated = false;
 
   @state() _connected = false;
@@ -63,6 +66,7 @@ export class LunarPhaseCard extends LitElement {
   @query('lunar-base-data') _data!: LunarBaseData;
   @query('moon-horizon') _moonHorizon!: MoonHorizon;
   @query('moon-horizon-dynamic') _moonHorizonDynamic!: MoonHorizonDynamic;
+  @query('moon-star-field') _starField!: MoonStarField;
 
   // https://lit.dev/docs/components/styles/
   static get styles(): CSSResultGroup {
@@ -118,15 +122,24 @@ export class LunarPhaseCard extends LitElement {
       this._resizeInitiated = true;
     }, 0);
   }
+
   attachResizeObserver(): void {
     const ro = new ResizeObserver((entries) => {
       this._resizeEntries = entries;
       this.measureCard();
+      _handleOverflow(this);
     });
 
     const card = this.shadowRoot?.querySelector('ha-card') as HTMLElement;
     if (card) {
       ro.observe(card);
+      this._resizeObserver = ro;
+    }
+    const headerEl = this.shadowRoot?.getElementById('lpc-header') as HTMLElement;
+    const headerTitle = headerEl?.querySelector('h1') as HTMLElement;
+    if (headerEl && headerTitle) {
+      ro.observe(headerEl as Element);
+      ro.observe(headerTitle as Element);
       this._resizeObserver = ro;
     }
   }
@@ -183,8 +196,16 @@ export class LunarPhaseCard extends LitElement {
         }
       }
     }
-
     return true;
+  }
+
+  protected updated(changedProps: PropertyValues): void {
+    super.updated(changedProps);
+    if (changedProps.has('selectedDate') && this.selectedDate !== undefined && this._activeCard) {
+      if ([PageType.BASE, PageType.CALENDAR].includes(this._activeCard)) {
+        _handleOverflow(this as any);
+      }
+    }
   }
 
   get hass(): HomeAssistant {
@@ -313,13 +334,14 @@ export class LunarPhaseCard extends LitElement {
           <ha-circular-progress indeterminate size="tiny"></ha-circular-progress>
         </div>
         ${this.config.hide_header ? nothing : header}
-        <div class="lunar-card-content">
+        <div class="lunar-card-content" id="main-content">
           ${choose(card, [
             [PageType.BASE, () => this.renderBaseCard()],
             [PageType.CALENDAR, () => this.renderCalendar()],
             [PageType.HORIZON, () => this.renderHorizon()],
           ])}
         </div>
+        <moon-star-field ._card=${this as any}></moon-star-field>
       </ha-card>
     `;
   }
@@ -354,8 +376,10 @@ export class LunarPhaseCard extends LitElement {
 
     return html`
       <div class="lunar-card-header" id="lpc-header">
-        <h1>${headerContent}</h1>
-        <div class="action-btns">
+        <div class="header-title" ?full=${this.config.hide_header}>
+          <h1>${headerContent}</h1>
+        </div>
+        <div class="action-btns" ?hidden=${this.config.hide_header}>
           ${buttons.map(
             (btn) => html`
               <ha-icon-button
@@ -377,7 +401,12 @@ export class LunarPhaseCard extends LitElement {
 
     const southernHemisphere = this.config.southern_hemisphere ?? false;
 
-    return html` <div id="moon-image" class="moon-image" ?calendar=${this._isCalendar}>
+    return html` <div
+      id="moon-image"
+      class="moon-image"
+      ?calendar=${this._isCalendar}
+      ?compact=${this.config.compact_view}
+    >
       <img src=${moonPic} ?southern=${southernHemisphere} />
     </div>`;
   }
@@ -435,7 +464,7 @@ export class LunarPhaseCard extends LitElement {
     // Initialize selectedDate to today if it is not already set
     const isToday = this._date.toDateString() === new Date().toDateString();
     const dateInput = html` <div class="date-input-wrapper">
-      <ha-icon-button .path=${ICON.CALENDAR} @click=${() => (this._calendarPopup = true)}> </ha-icon-button>
+      <ha-icon-button .path=${ICON.CALENDAR} @click="${() => this._handleCalendarPopup()}"> </ha-icon-button>
 
       <div class="date-row">
         <ha-icon-button .path=${ICON.LEFT} @click=${() => this.updateDate('prev')}> </ha-icon-button>
@@ -444,10 +473,18 @@ export class LunarPhaseCard extends LitElement {
         </div>
         <ha-icon-button .path=${ICON.RIGHT} @click=${() => this.updateDate('next')}> </ha-icon-button>
       </div>
+
       <ha-icon-button
         .disabled=${!this.selectedDate}
         .path=${ICON.RESTORE}
         @click=${() => (this.selectedDate = undefined)}
+      >
+      </ha-icon-button>
+      <ha-icon-button
+        class="calendar-info-btn"
+        .path=${ICON.CHEVRON_DOWN}
+        @click=${() => (this._calendarInfo = !this._calendarInfo)}
+        ?active=${this._calendarInfo}
       >
       </ha-icon-button>
     </div>`;
@@ -457,9 +494,23 @@ export class LunarPhaseCard extends LitElement {
         <div class="calendar-mini-popup" ?hidden=${!this._calendarPopup}>
           <moon-phase-calendar .card=${this as any} .moon=${this.moon}></moon-phase-calendar>
         </div>
-        <div class="calendar-wrapper">${this.renderMoonImage()}${dateInput}${this.renderMoonData()}</div>
+        <div class="calendar-wrapper">
+          ${this.renderMoonImage()}${dateInput}
+          <div class="calendar-info" show=${this._calendarInfo}>${this.renderMoonData()}</div>
+        </div>
       </div>
     `;
+  }
+
+  private _handleCalendarPopup() {
+    if (!this._calendarInfo) {
+      this._calendarInfo = true;
+      setTimeout(() => {
+        this._calendarPopup = !this._calendarPopup;
+      }, 100);
+    } else {
+      this._calendarPopup = !this._calendarPopup;
+    }
   }
 
   private renderHorizon(): TemplateResult | void {
@@ -520,15 +571,15 @@ export class LunarPhaseCard extends LitElement {
       '--lunar-card-header-font-color': fontOptions.header_font_color
         ? fontOptions.header_font_color
         : this._showBackground
-          ? '#e1e1e1'
-          : 'var(--primary-text-color)',
+        ? '#e1e1e1'
+        : 'var(--primary-text-color)',
       '--lunar-card-label-font-size': fontOptions.label_font_size,
       '--lunar-card-label-text-transform': fontOptions.label_font_style,
       '--lunar-card-label-font-color': fontOptions.label_font_color
         ? fontOptions.label_font_color
         : this._showBackground
-          ? '#e1e1e1'
-          : 'var(--primary-text-color)',
+        ? '#e1e1e1'
+        : 'var(--primary-text-color)',
       '--swiper-theme-color': `var(--lunar-card-label-font-color, var(--primary-color))`,
       '--lunar-background-image': `url(${background})`,
       '--lunar-fill-color': this._showBackground ? 'rgba(255,255,255,0.12157)' : 'var(--divider-color)',
@@ -544,16 +595,41 @@ export class LunarPhaseCard extends LitElement {
 
   private getGridRowSize(): number {
     const isCompact = this.config.compact_view;
+    const isBase = this._activeCard === PageType.BASE;
+    const isHorizon = this._activeCard === PageType.HORIZON;
     const isCalendar = this._activeCard === PageType.CALENDAR;
-    let gridRowSize = 2; // 1 = 56px + gutter 8px
-    if (!isCompact) gridRowSize += 2;
-    if (isCalendar) gridRowSize += 6;
+    const isHeaderHidden = this.config.hide_header;
+    const isCalendarInfo = this._calendarInfo;
+    const isChartInfo = this._moonHorizon?.moreInfo;
+    let gridRowSize = 0;
+    if (isCompact && isBase) {
+      gridRowSize += 2;
+    } else if (isBase && !isCompact) {
+      gridRowSize += 4;
+    } else if (isHorizon) {
+      gridRowSize += 6;
+      if (isChartInfo) {
+        gridRowSize += 2;
+      }
+    } else if (isCalendar) {
+      gridRowSize += 6;
+      if (isCalendarInfo) {
+        gridRowSize += 4;
+      }
+    } else {
+      gridRowSize += 4;
+    }
+
+    if (isHeaderHidden) {
+      gridRowSize -= 1;
+    }
     return gridRowSize;
   }
 
   public getLayoutOptions() {
     const gridRowSize = this.getGridRowSize();
     return {
+      grid_rows: 3,
       grid_min_rows: gridRowSize,
       grid_max_rows: 8,
       grid_columns: 4,
@@ -562,7 +638,6 @@ export class LunarPhaseCard extends LitElement {
   }
 
   public getCardSize(): number {
-    // return this.getGridRowSize();
     return 4;
   }
 }
