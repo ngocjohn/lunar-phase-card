@@ -208,7 +208,6 @@ export class MoonHorizon extends LitElement {
             const element = elements[0];
             const xTimeNum = element.element.getProps(['raw'], true).raw.x;
             this.handlePointHover(xTimeNum);
-
             this._chart?.update('none');
           }
         },
@@ -227,8 +226,6 @@ export class MoonHorizon extends LitElement {
         this.card.selectedDate = undefined;
       }
     });
-    ctx.addEventListener('touchend', this._handleTouch.bind(this), { passive: false });
-    ctx.addEventListener('touchmove', this._handleTouch.bind(this), { passive: false });
     ctx.addEventListener('touchend', this._onChartTouchEnd.bind(this));
   }
 
@@ -765,31 +762,18 @@ export class MoonHorizon extends LitElement {
     };
   };
 
-  private _handleTouch(event: TouchEvent): void {
-    event.preventDefault();
-  }
-
   private _onChartTouchEnd(event: TouchEvent): void {
     const touch = event.changedTouches[0];
     const canvas = this.shadowRoot!.getElementById('moonPositionChart') as HTMLCanvasElement;
+    const chart = this._chart;
 
-    // Check if touch ended outside the chart
-    if (touch && canvas) {
-      const rect = canvas.getBoundingClientRect();
-      const isTouchOutsideChart =
-        touch.clientX < rect.left ||
-        touch.clientX > rect.right ||
-        touch.clientY < rect.top ||
-        touch.clientY > rect.bottom;
-
-      if (isTouchOutsideChart && this._chart) {
-        this._chart?.tooltip?.setActiveElements([], { x: 0, y: 0 });
-        this._chart?.setActiveElements([]);
-        this._chart?.update();
-        // Reset the selected date
-        if (this.card.selectedDate !== undefined) {
-          this.card.selectedDate = undefined;
-        }
+    if (touch && canvas && chart) {
+      chart?.tooltip?.setActiveElements([], { x: 0, y: 0 });
+      chart?.setActiveElements([]);
+      chart?.update();
+      // Reset the selected date
+      if (this.card.selectedDate !== undefined) {
+        this.card.selectedDate = undefined;
       }
     }
   }
