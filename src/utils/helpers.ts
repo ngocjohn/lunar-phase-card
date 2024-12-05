@@ -181,53 +181,46 @@ export const hexToRgba = (hex: string, alpha: number): string => {
 };
 
 export function _handleOverflow(card: LunarPhaseCard): void {
-  const target = card.shadowRoot?.querySelector('h1') as HTMLElement;
-  if (!target) return;
+  if (!card) return;
+  const lpcHeader = card.shadowRoot?.getElementById('lpc-header') as HTMLElement;
+  const headerEl = lpcHeader?.querySelector('.header-title') as HTMLElement;
+  const titleEl = headerEl?.querySelector('h1') as HTMLElement;
+  if (!headerEl || !titleEl) return;
 
-  const clientWidth = target.clientWidth;
-  const scrollWidth = target.scrollWidth;
+  const clientWidth = headerEl.clientWidth;
+  const scrollWidth = titleEl.scrollWidth;
   const overflow = scrollWidth > clientWidth;
-  target.classList.remove('marquee');
   if (overflow) {
     // If there's overflow, calculate the font size that fits within bounds
-    console.log('overflow', overflow, target.textContent);
-    const textContent = target.textContent || '';
-    const maxFontSize = 24;
-    const minFontSize = 20;
-    const targetFontSize = parseInt(window.getComputedStyle(target).fontSize, 10);
-    console.log('targetFontSize', targetFontSize);
+    const textContent = titleEl?.textContent || '';
+    const targetFontSize = parseInt(window.getComputedStyle(titleEl).fontSize, 10);
+    const hasMarquee = titleEl.classList.contains('marquee'); //
+
+    const minFontSize = 19;
+
     // Create a temporary span to calculate text width
     const tempSpan = document.createElement('span');
     tempSpan.style.position = 'absolute';
     tempSpan.style.visibility = 'hidden';
     tempSpan.style.whiteSpace = 'nowrap';
-    tempSpan.textContent = textContent;
+    tempSpan.textContent = textContent || '';
     document.body.appendChild(tempSpan);
 
-    let fontSize = maxFontSize;
-    let fitsWithinBounds = false;
-
+    // Try to fit the text within the bounds
+    let fontSize = targetFontSize;
     while (fontSize > minFontSize) {
       tempSpan.style.fontSize = `${fontSize}px`;
       const spanWidth = tempSpan.scrollWidth;
-      if (clientWidth - spanWidth > 15 && targetFontSize !== fontSize) {
-        fitsWithinBounds = true;
-        console.log('new fontSize', fontSize, spanWidth, clientWidth);
+      if (clientWidth - spanWidth > 45) {
+        if (hasMarquee) {
+          titleEl.classList.remove('marquee');
+        }
         break;
       }
       fontSize -= 1;
     }
 
-    target.style.fontSize = `${fontSize}px`;
+    titleEl.style.fontSize = `${fontSize}px`;
     document.body.removeChild(tempSpan);
-
-    if (!fitsWithinBounds) {
-      const isRealOverflow = target.scrollWidth > target.clientWidth;
-      if (isRealOverflow) {
-        target.classList.add('marquee');
-      } else {
-        return;
-      }
-    }
   }
 }

@@ -55,9 +55,9 @@ ha-card.--reverse .lunar-card-content {
 }
 
 
-ha-card.--default-header .lunar-card-content {
+/* ha-card.--default-header .lunar-card-content {
   padding: 0.5rem;
-}
+} */
 
 /* ha-card.--default-header .lunar-card-header {
   padding-top: 8px;
@@ -68,10 +68,10 @@ ha-card.--horizon.--dynamic-graph .lunar-card-content {
   transition: none;
 }
 
-ha-card.--horizon .lunar-card-content {
+/* ha-card.--horizon .lunar-card-content {
   display: block;
   padding: 8px 0 12px;
-}
+} */
 
 ha-card>.loading {
   display: block;
@@ -89,14 +89,15 @@ ha-card>.loading[hidden] {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* width: 100%; */
 }
 
 .lunar-card-header>.header-title {
   display: block;
   white-space: nowrap;
-  /* overflow: hidden; */
+  overflow: hidden;
   text-overflow: ellipsis;
-  flex: 1;
+  /* flex: 1; */
   max-width: 70%;
 }
 
@@ -108,7 +109,7 @@ ha-card>.loading[hidden] {
 .marquee {
   display: inline-block;
   animation: marquee 6s linear 1s infinite;
-  overflow: visible !important;
+  /* overflow: visible !important; */
   animation-iteration-count: 3;
   /* left: 100%; */
 }
@@ -148,7 +149,7 @@ ha-card.--background .moon-phase-name {
 }
 
 .--default-header h1 {
-  margin-inline: var(--lunar-card-padding);
+  margin-left: var(--lunar-card-padding);
 }
 
 h1 {
@@ -187,6 +188,7 @@ h1 {
 
 .lunar-card-content {
   display: flex;
+  /* flex-wrap: wrap; */
   padding: 0;
   justify-content: center;
   align-items: center;
@@ -209,6 +211,8 @@ h1 {
   margin: 8px;
   flex-shrink: 0;
   z-index: 4;
+  height: fit-content;
+  align-self: center;
 }
 
 .moon-image[compact] {
@@ -354,11 +358,12 @@ section {
   overflow: hidden;
 }
 
-.calendar-container .calendar-mini-popup {
+.calendar-container>.calendar-mini-popup {
   display: block;
   position: absolute;
-  top: 0%;
-  left: 0%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
   z-index: 1;
@@ -408,9 +413,9 @@ ha-icon-button.calendar-info-btn[active] {
   display: flex;
   position: relative;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   color: var(--lunar-card-label-font-color);
-  backdrop-filter: blur(4px);
+  /* backdrop-filter: blur(4px); */
   background-color: rgba(0, 0, 0, 0.14);
   width: -webkit-fill-available;
   /* --mdc-icon-button-size: 24px; */
@@ -418,27 +423,28 @@ ha-icon-button.calendar-info-btn[active] {
 
 }
 
-.date-input-wrapper>ha-icon-button:nth-child(1) {
-  flex: 1;
+.inline-btns {
+  display: flex;
+  flex: 3;
+  justify-content: space-between;
+  color: var(--secondary-text-color);
 }
 
-.date-row {
-  display: inline-flex;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 400;
-  text-wrap-mode: nowrap;
-  flex: 2;
-
+.inline-btns>ha-icon-button:hover {
+  color: var(--primary-text-color);
 }
 
-.date-row>.date-name {
+
+
+.date-name {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 1.2rem;
-  margin-inline: 1rem;
+  flex: 3;
+  white-space: nowrap;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .date-name>span {

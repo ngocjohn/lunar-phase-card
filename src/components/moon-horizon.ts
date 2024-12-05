@@ -15,10 +15,10 @@ import {
   ScaleChartOptions,
 } from 'chart.js/auto';
 
+import { ICON } from '../const';
 import { LunarPhaseCard } from '../lunar-phase-card';
 // Local imports
 import { Moon } from '../utils/moon';
-
 // Styles
 import styles from '../css/style.css';
 import { ChartColors } from '../types';
@@ -31,7 +31,7 @@ export class MoonHorizon extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) moon!: Moon;
   @property({ attribute: false }) card!: LunarPhaseCard;
-  @property({ type: Number }) cardWidth = 0;
+  @property({ type: Number }) cardWidth: number = 0;
 
   @state() _chart!: Chart;
   @state() moreInfo = false;
@@ -43,19 +43,31 @@ export class MoonHorizon extends LitElement {
 
   protected async firstUpdated(changedProps: PropertyValues): Promise<void> {
     super.firstUpdated(changedProps);
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 20));
     this.setupChart();
   }
 
   protected updated(changedProps: PropertyValues): void {
     super.updated(changedProps);
     if (changedProps.has('cardWidth')) {
-      this._chart?.update('resize');
+      if (this._chart) {
+        this._chart.resize();
+      }
     }
   }
 
+  // protected shouldUpdate(_changedProperties: PropertyValues): boolean {
+  //   if (_changedProperties.has('cardWidth')) {
+  //     if (this._chart) {
+  //       this._chart.resize();
+  //     }
+  //   }
+  //   return true;
+  // }
+
   static get styles(): CSSResultGroup {
     return [
+      styles,
       css`
         .moon-horizon {
           display: block;
@@ -72,27 +84,31 @@ export class MoonHorizon extends LitElement {
           /* padding: 0 2px; */
         }
 
-        .moon-horizon canvas {
-          width: 100%;
-          height: 100%;
-          display: block;
-        }
-
         .moon-data-wrapper {
           display: flex;
           flex-direction: column;
-          backdrop-filter: blur(4px);
-          padding-inline: 12px;
+          background-color: rgba(0, 0, 0, 0.14);
+          /* backdrop-filter: blur(4px); */
         }
+
+        .moon-horizon canvas {
+          width: 100% !important;
+          height: auto !important;
+          position: relative;
+        }
+
         .moon-data-header {
-          display: inline-flex;
+          display: flex;
           justify-content: space-between;
-          align-items: end;
-          height: fit-content;
-          padding-left: 0.5rem;
+          align-items: center;
+          width: inherit;
+          height: auto;
           color: var(--lunar-card-label-font-color);
-          /* font-weight: 600; */
+          padding-left: 12px;
+          /* backdrop-filter: blur(4px); */
+          background-color: rgba(0, 0, 0, 0.14);
         }
+
         .moon-data[show='false'] {
           max-height: 0px;
           overflow: hidden;
@@ -100,22 +116,22 @@ export class MoonHorizon extends LitElement {
           opacity: 0;
         }
         .moon-data[show='true'] {
-          margin-top: 0.5rem;
+          /* margin-top: 0.5rem; */
           max-height: 500px;
           transition: all 0.4s ease-in-out;
           border-top: 1px solid var(--divider-color);
+          padding: 0 12px 12px;
         }
         .direction-icon {
           display: inline-block;
           transition: transform 0.4s ease-in-out;
         }
 
-        ha-icon[active] {
+        ha-icon-button[active] {
           transform: rotate(180deg);
           transition: transform 0.4s ease-in-out;
         }
       `,
-      styles,
     ];
   }
 
@@ -164,85 +180,84 @@ export class MoonHorizon extends LitElement {
     const options = this.chartOptions;
     // Plugins
     const customPlugins = this.plugins;
-    const ctx = this.shadowRoot?.querySelector('canvas') as HTMLCanvasElement;
-    if (ctx) {
-      this._chart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: {
-          ...options,
-          responsive: true, // Make sure chart is responsive
-          maintainAspectRatio: false, // Allow dynamic resizing
-          resizeDelay: 0, // Adjust delay for smoother resizing
-          scales: {
-            ...options.scales,
-            x: {
-              ...options.scales?.x,
-              alignToPixels: true,
-              ticks: {
-                ...options.scales?.x?.ticks,
+    const ctx = this.shadowRoot!.getElementById('moonPositionChart') as HTMLCanvasElement;
+    if (!ctx) return;
+    this._chart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: {
+        ...options,
+        responsive: true, // Make sure chart is responsive
+        maintainAspectRatio: false, // Allow dynamic resizing
+        resizeDelay: 0, // Adjust delay for smoother resizing
+        scales: {
+          ...options.scales,
+          x: {
+            ...options.scales?.x,
+            alignToPixels: true,
+            ticks: {
+              ...options.scales?.x?.ticks,
 
-                callback: function (value, index) {
-                  return index % 2 !== 0 ? this.getLabelForValue(Number(value)) : '';
-                },
-              },
-            },
-            y: {
-              ...options.scales?.y,
-              ticks: {
-                ...options.scales?.y?.ticks,
-                callback: function (value) {
-                  return value + '°';
-                },
+              callback: function (value, index) {
+                return index % 2 !== 0 ? this.getLabelForValue(Number(value)) : '';
               },
             },
           },
-
-          // Hover on point
-          onHover: (_event, elements) => {
-            if (elements.length > 0) {
-              this.hoverOnChart = true;
-              const element = elements[0];
-              const xTimeNum = element.element.getProps(['raw'], true).raw.x;
-              this.handlePointHover(xTimeNum);
-
-              this._chart?.update('none');
-            }
+          y: {
+            ...options.scales?.y,
+            ticks: {
+              ...options.scales?.y?.ticks,
+              callback: function (value) {
+                return value + '°';
+              },
+            },
           },
         },
 
-        plugins: [...customPlugins],
-      });
-      // Add event listeners
-      ctx.addEventListener('mouseout', () => {
-        this.hoverTimeout = window.setTimeout(() => {
-          this.hoverOnChart = false;
-          this._chart?.update();
-        }, HOVER_TIMEOUT);
-        // Reset the selected date
-        if (this.card.selectedDate !== undefined) {
-          this.card.selectedDate = undefined;
-        }
-      });
-    }
+        // Hover on point
+        onHover: (_event, elements) => {
+          if (elements.length > 0) {
+            this.hoverOnChart = true;
+            const element = elements[0];
+            const xTimeNum = element.element.getProps(['raw'], true).raw.x;
+            this.handlePointHover(xTimeNum);
+
+            this._chart?.update('none');
+          }
+        },
+      },
+
+      plugins: [...customPlugins],
+    });
+    // Add event listeners
+    ctx.addEventListener('mouseout', () => {
+      this.hoverTimeout = window.setTimeout(() => {
+        this.hoverOnChart = false;
+        this._chart?.update();
+      }, HOVER_TIMEOUT);
+      // Reset the selected date
+      if (this.card.selectedDate !== undefined) {
+        this.card.selectedDate = undefined;
+      }
+    });
   }
 
   protected render(): TemplateResult {
     return html`
       <div class="moon-horizon">
-        <canvas id="moonPositionChart" width=${this.cardWidth}></canvas>
+        <canvas id="moonPositionChart" width="${this.cardWidth}"></canvas>
+      </div>
+      <div class="moon-data-header">
+        ${this.renderHeaderTime()}
+        <ha-icon-button
+          class="click-shrink"
+          .path=${ICON.CHEVRON_DOWN}
+          @click=${() => (this.moreInfo = !this.moreInfo)}
+          ?active=${this.moreInfo}
+        >
+        </ha-icon-button>
       </div>
       <div class="moon-data-wrapper">
-        <div class="moon-data-header">
-          ${this.renderHeaderTime()}
-          <ha-icon
-            class="click-shrink"
-            @click=${() => (this.moreInfo = !this.moreInfo)}
-            icon=${'mdi:chevron-down'}
-            ?active=${this.moreInfo}
-          >
-          </ha-icon>
-        </div>
         <div class="moon-data" show=${this.moreInfo}>${this.renderDataItem()}</div>
       </div>
     `;
@@ -498,6 +513,7 @@ export class MoonHorizon extends LitElement {
       autoPadding: false,
       padding: {
         left: -8,
+        right: -8,
       },
     };
     // Options

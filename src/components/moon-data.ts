@@ -19,6 +19,10 @@ export class LunarBaseData extends LitElement {
       mainStyles,
       unsafeCSS(swiperStyleCss),
       css`
+        #moon-data-container {
+          padding-inline: 12px;
+        }
+
         .moon-phase-name {
           font-size: 1.5rem;
           padding: 0.5rem;
