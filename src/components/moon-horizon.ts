@@ -1,5 +1,5 @@
 import { formatDateTime, HomeAssistant, formatDateTimeWithSeconds } from 'custom-card-helpers';
-import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues } from 'lit';
+import { LitElement, html, CSSResultGroup, TemplateResult, css } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 
 import type { ChartDataset } from 'chart.js/auto';
@@ -41,29 +41,10 @@ export class MoonHorizon extends LitElement {
   @state() private _timeAnimationFrame: number | null = null;
   @state() private _lastTime: string | null = null;
 
-  protected async firstUpdated(changedProps: PropertyValues): Promise<void> {
-    super.firstUpdated(changedProps);
+  protected async firstUpdated(): Promise<void> {
     await new Promise((resolve) => setTimeout(resolve, 20));
     this.setupChart();
   }
-
-  protected updated(changedProps: PropertyValues): void {
-    super.updated(changedProps);
-    if (changedProps.has('cardWidth')) {
-      if (this._chart) {
-        this._chart.resize();
-      }
-    }
-  }
-
-  // protected shouldUpdate(_changedProperties: PropertyValues): boolean {
-  //   if (_changedProperties.has('cardWidth')) {
-  //     if (this._chart) {
-  //       this._chart.resize();
-  //     }
-  //   }
-  //   return true;
-  // }
 
   static get styles(): CSSResultGroup {
     return [
@@ -84,17 +65,17 @@ export class MoonHorizon extends LitElement {
           /* padding: 0 2px; */
         }
 
+        #moonPositionChart {
+          width: 100% !important;
+          height: 100% !important;
+          position: relative;
+        }
+
         .moon-data-wrapper {
           display: flex;
           flex-direction: column;
           background-color: rgba(0, 0, 0, 0.14);
           /* backdrop-filter: blur(4px); */
-        }
-
-        .moon-horizon canvas {
-          width: 100% !important;
-          height: auto !important;
-          position: relative;
         }
 
         .moon-data-header {
@@ -135,11 +116,11 @@ export class MoonHorizon extends LitElement {
     ];
   }
 
-  private get todayData() {
+  get todayData() {
     return this.moon.todayData;
   }
 
-  private get plugins(): Plugin[] {
+  get plugins(): Plugin[] {
     const plugins: Plugin[] = [];
     plugins.push(this.fillTopPlugin());
     plugins.push(this.timeMarkerPlugin());
@@ -149,15 +130,15 @@ export class MoonHorizon extends LitElement {
     return plugins;
   }
 
-  private get chartData(): ChartData {
+  get chartData(): ChartData {
     return this._getChartData();
   }
 
-  private get chartOptions(): ChartOptions {
+  get chartOptions(): ChartOptions {
     return this._chartOptions();
   }
 
-  private get cssColors(): ChartColors {
+  get cssColors(): ChartColors {
     const cssColors = getComputedStyle(this) as CSSStyleDeclaration;
     return {
       primaryTextColor: cssColors.getPropertyValue('--lunar-card-label-font-color'),
@@ -187,9 +168,6 @@ export class MoonHorizon extends LitElement {
       data: data,
       options: {
         ...options,
-        responsive: true, // Make sure chart is responsive
-        maintainAspectRatio: false, // Allow dynamic resizing
-        resizeDelay: 0, // Adjust delay for smoother resizing
         scales: {
           ...options.scales,
           x: {
@@ -214,6 +192,15 @@ export class MoonHorizon extends LitElement {
           },
         },
 
+        onResize: () => {
+          const width = this.cardWidth;
+          const height = this.cardWidth / 2;
+          if (this._chart) {
+            this._chart.canvas.width = width;
+            this._chart.canvas.height = height;
+            this._chart.update();
+          }
+        },
         // Hover on point
         onHover: (_event, elements) => {
           if (elements.length > 0) {
@@ -240,6 +227,9 @@ export class MoonHorizon extends LitElement {
         this.card.selectedDate = undefined;
       }
     });
+    ctx.addEventListener('touchend', this._handleTouch.bind(this), { passive: false });
+    ctx.addEventListener('touchmove', this._handleTouch.bind(this), { passive: false });
+    ctx.addEventListener('touchend', this._onChartTouchEnd.bind(this));
   }
 
   protected render(): TemplateResult {
@@ -519,12 +509,14 @@ export class MoonHorizon extends LitElement {
     // Options
     const options = {} as ChartOptions;
 
-    options.responsive = true;
     options.interaction = {
       intersect: false,
       mode: 'nearest',
       axis: 'xy',
     };
+    options.responsive = true;
+    options.maintainAspectRatio = false;
+    options.resizeDelay = 50;
     options.scales = scales as ScaleChartOptions;
     options.plugins = plugins;
     options.layout = layout;
@@ -772,6 +764,35 @@ export class MoonHorizon extends LitElement {
       },
     };
   };
+
+  private _handleTouch(event: TouchEvent): void {
+    event.preventDefault();
+  }
+
+  private _onChartTouchEnd(event: TouchEvent): void {
+    const touch = event.changedTouches[0];
+    const canvas = this.shadowRoot!.getElementById('moonPositionChart') as HTMLCanvasElement;
+
+    // Check if touch ended outside the chart
+    if (touch && canvas) {
+      const rect = canvas.getBoundingClientRect();
+      const isTouchOutsideChart =
+        touch.clientX < rect.left ||
+        touch.clientX > rect.right ||
+        touch.clientY < rect.top ||
+        touch.clientY > rect.bottom;
+
+      if (isTouchOutsideChart && this._chart) {
+        this._chart?.tooltip?.setActiveElements([], { x: 0, y: 0 });
+        this._chart?.setActiveElements([]);
+        this._chart?.update();
+        // Reset the selected date
+        if (this.card.selectedDate !== undefined) {
+          this.card.selectedDate = undefined;
+        }
+      }
+    }
+  }
 }
 
 declare global {

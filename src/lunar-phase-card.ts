@@ -3,6 +3,7 @@ import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothi
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 // Local types
 import { LunarPhaseCardConfig, defaultConfig } from './types';
 
@@ -320,7 +321,7 @@ export class LunarPhaseCard extends LitElement {
     const card = !this._activeCard ? this._defaultCard : this._activeCard;
     const header = !this.config.compact_view || [PageType.HORIZON].includes(card) ? this.renderHeader() : nothing;
     return html`
-      <ha-card class=${this._computeClasses()}>
+      <ha-card class=${this._computeClasses()} style=${this._computeHeight()}>
         <div class="loading" ?hidden=${this._state !== MoonState.LOADING}>
           <ha-circular-progress indeterminate size="tiny"></ha-circular-progress>
         </div>
@@ -550,6 +551,13 @@ export class LunarPhaseCard extends LitElement {
     this._activeCard = this._activeCard === page ? this._defaultCard : page;
   };
 
+  private _computeHeight() {
+    if (!this._activeCard) return;
+    const width = this._cardWidth;
+    const height = [PageType.BASE].includes(this._activeCard) && !this.config.compact_view ? width * 0.5 : '';
+    return styleMap({ minHeight: height ? `${height}px` : '' });
+  }
+
   private _computeClasses() {
     const reverse = this.config.moon_position === 'right';
     const compactHeader = Boolean(this.config.compact_view && this._activeCard === PageType.BASE);
@@ -595,49 +603,6 @@ export class LunarPhaseCard extends LitElement {
       }
     });
   }
-
-  private getGridRowSize(): number {
-    const isCompact = this.config.compact_view;
-    const isBase = this._activeCard === PageType.BASE;
-    const isHorizon = this._activeCard === PageType.HORIZON;
-    const isCalendar = this._activeCard === PageType.CALENDAR;
-    const isHeaderHidden = this.config.hide_header;
-    const isCalendarInfo = this._calendarInfo;
-    const isChartInfo = this._moonHorizon?.moreInfo;
-    let gridRowSize = 0;
-    if (isCompact && isBase) {
-      gridRowSize += 2;
-    } else if (isBase && !isCompact) {
-      gridRowSize += 4;
-    } else if (isHorizon) {
-      gridRowSize += 6;
-      if (isChartInfo) {
-        gridRowSize += 2;
-      }
-    } else if (isCalendar) {
-      gridRowSize += 6;
-      if (isCalendarInfo) {
-        gridRowSize += 4;
-      }
-    } else {
-      gridRowSize += 4;
-    }
-
-    if (isHeaderHidden) {
-      gridRowSize -= 1;
-    }
-    return gridRowSize;
-  }
-
-  // public getLayoutOptions() {
-  //   const gridRowSize = this.getGridRowSize();
-  //   return {
-  //     grid_rows: gridRowSize,
-  //     grid_min_rows: gridRowSize,
-  //     grid_columns: 4,
-  //     grid_min_columns: 4,
-  //   };
-  // }
 
   public getCardSize(): number {
     return 4;

@@ -45,6 +45,15 @@ export class MoonHorizonDynamic extends LitElement {
     return true;
   }
 
+  protected updated(_changedProperties: PropertyValues): void {
+    if (_changedProperties.has('cardWidth')) {
+      const newHeight = this.cardWidth / 2;
+      if (this.dynamicChart) {
+        this.dynamicChart.resize(this.cardWidth, newHeight);
+      }
+    }
+  }
+
   static get styles(): CSSResultGroup {
     return [
       styles,
@@ -143,6 +152,10 @@ export class MoonHorizonDynamic extends LitElement {
 
     const ctx = this.shadowRoot!.getElementById('dynamic-chart') as HTMLCanvasElement;
     if (!ctx) return;
+    // Add event listeners for touch interactions
+    ctx.addEventListener('touchstart', this._onChartTouchStart.bind(this), { passive: false });
+    ctx.addEventListener('touchmove', this._onChartTouchMove.bind(this), { passive: false });
+    ctx.addEventListener('touchend', this._onChartTouchEnd.bind(this));
 
     this.dynamicChart = new Chart(ctx, {
       type: 'line',
@@ -152,6 +165,36 @@ export class MoonHorizonDynamic extends LitElement {
       },
       plugins: plugins,
     });
+  }
+
+  private _onChartTouchStart(event: TouchEvent): void {
+    event.preventDefault(); // Prevent page scrolling when touching the chart
+  }
+
+  private _onChartTouchMove(event: TouchEvent): void {
+    event.preventDefault(); // Prevent page scrolling during touch move
+  }
+
+  private _onChartTouchEnd(event: TouchEvent): void {
+    const touch = event.changedTouches[0];
+    const canvas = this.shadowRoot!.getElementById('dynamic-chart') as HTMLCanvasElement;
+
+    // Check if touch ended outside the chart
+    if (touch && canvas) {
+      const rect = canvas.getBoundingClientRect();
+      const isTouchOutsideChart =
+        touch.clientX < rect.left ||
+        touch.clientX > rect.right ||
+        touch.clientY < rect.top ||
+        touch.clientY > rect.bottom;
+
+      if (isTouchOutsideChart && this.dynamicChart) {
+        console.log('Touch ended outside the chart');
+        this.dynamicChart?.tooltip?.setActiveElements([], { x: 0, y: 0 });
+        this.dynamicChart?.setActiveElements([]);
+        this.dynamicChart?.update();
+      }
+    }
   }
 
   protected render(): TemplateResult {
@@ -290,14 +333,15 @@ export class MoonHorizonDynamic extends LitElement {
     options.interaction = {
       intersect: false,
       mode: 'index',
-      axis: 'xy',
+      axis: 'x',
     };
     options.responsive = true;
     options.maintainAspectRatio = false;
-    options.resizeDelay = 100;
+    options.resizeDelay = 50;
     options.layout = layout;
     options.scales = scales;
     options.plugins = plugins;
+    options.events = ['mousemove', 'mouseout', 'touchstart', 'touchmove'];
 
     return options;
   }

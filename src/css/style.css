@@ -41,6 +41,7 @@ ha-card.--background {
   background-repeat: no-repeat;
   background-image: var(--lunar-background-image);
   transition: all 0.5s ease;
+  place-content: space-between;
   --primary-text-color: var(--lunar-card-label-font-color, #e1e1e1);
   --swiper-theme-color: var(--lunar-card-label-font-color, #e1e1e1);
 }
