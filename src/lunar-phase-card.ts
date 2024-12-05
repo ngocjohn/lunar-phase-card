@@ -9,7 +9,7 @@ import { LunarPhaseCardConfig, defaultConfig } from './types';
 
 // Helpers
 import { BLUE_BG, PageType, MoonState, ICON } from './const';
-import { localize } from './localize/localize';
+import { dayFormatter, localize } from './localize/localize';
 import { generateConfig } from './utils/ha-helper';
 import { _handleOverflow, getDefaultConfig } from './utils/helpers';
 import { isEditorMode } from './utils/loader';
@@ -456,6 +456,7 @@ export class LunarPhaseCard extends LitElement {
   private renderCalendar(): TemplateResult | void {
     // Initialize selectedDate to today if it is not already set
     const isToday = this._date.toDateString() === new Date().toDateString();
+    const todayToLocale = dayFormatter(0, this.selectedLanguage);
     const dateInput = html` <div class="date-input-wrapper">
       <div class="inline-btns">
         <ha-icon-button .path=${ICON.CALENDAR} @click="${() => this._handleCalendarPopup()}"> </ha-icon-button>
@@ -469,7 +470,7 @@ export class LunarPhaseCard extends LitElement {
         <ha-icon-button .path=${ICON.LEFT} @click=${() => this.updateDate('prev')}> </ha-icon-button>
       </div>
       <div class="date-name">
-        ${formatDate(this._date, this._locale)} ${isToday ? html`<span>Today</span>` : nothing}
+        ${formatDate(this._date, this._locale)} ${isToday ? html`<span>${todayToLocale}</span>` : nothing}
       </div>
 
       <div class="inline-btns">

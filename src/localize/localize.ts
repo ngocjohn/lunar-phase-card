@@ -22,3 +22,8 @@ export function localize(string: string, lang: string, search = '', replace = ''
   }
   return translated;
 }
+
+export function dayFormatter(day: number, lang: string): string {
+  const dayFormat = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
+  return dayFormat.format(day, 'day');
+}
