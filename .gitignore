@@ -22,3 +22,4 @@ dist/lunar-phase-card.js.map
 scripts/convert-img-base.js
 build/
 .hass-config/
+scripts/update-bug-template.js
