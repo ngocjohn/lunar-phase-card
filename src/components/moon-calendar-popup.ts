@@ -14,8 +14,10 @@ export class MoonCalendarPopup extends LitElement {
   @property({ attribute: false }) moon!: Moon;
   @state() viewDate = DateTime.local().startOf('month');
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
+  protected async firstUpdated(_changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(_changedProperties);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    this._setEventListeners();
   }
 
   static get styles(): CSSResultGroup {
@@ -62,7 +64,7 @@ export class MoonCalendarPopup extends LitElement {
         .calendar-header__year {
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-start;
         }
 
         #calendar-grid {
@@ -73,7 +75,11 @@ export class MoonCalendarPopup extends LitElement {
           cursor: default;
           gap: 2px 4px;
         }
-
+        @media screen and (max-width: 800px) {
+          #calendar-grid {
+            grid-template-rows: auto;
+          }
+        }
         .day-of-week {
           text-align: center;
           font-weight: 500;
@@ -100,21 +106,27 @@ export class MoonCalendarPopup extends LitElement {
         }
         .calendar-day > .day-num {
           text-align: right;
-          padding-inline-end: 0.5rem;
+          padding-inline-end: 0.2rem;
         }
 
         .calendar-day.today {
           outline: 2px solid var(--accent-color);
         }
 
+        .calendar-day > .day-symbol {
+          font-size: 1.5em;
+          padding: 0.05em;
+          text-align: center;
+        }
+
         ha-icon-button {
           color: var(--secondary-text-color);
-        }
-        ha-icon-button:hover {
-          color: var(--primary-text-color);
-        }
-        ha-icon-button:active {
-          color: var(--accent-color);
+          &:hover {
+            color: var(--primary-text-color);
+          }
+          &:active {
+            color: var(--accent-color);
+          }
         }
       `,
     ];
@@ -123,25 +135,28 @@ export class MoonCalendarPopup extends LitElement {
   protected render(): TemplateResult {
     const backgroundClass = this.card.config?.show_background ? '--background' : nothing;
     const viewDate = this.viewDate;
+    const monthLocale = viewDate.setLocale(this.card._locale.language).toFormat('LLLL');
+
+    const renderNavButton = (icon: string, action: () => void): TemplateResult => html`
+      <ha-icon-button .path=${icon} @click=${action}></ha-icon-button>
+    `;
+
     return html`
       <div id="lunar-calendar" class=${backgroundClass}>
         <div class="calendar-header">
-          <ha-icon-button
-            .path=${ICON.CLOSE}
-            @click=${() => {
-              this.card._calendarPopup = false;
-              this.viewDate = DateTime.local().startOf('month');
-            }}
-          ></ha-icon-button>
-          <div class="calendar-header__month">
-            <ha-icon-button .path=${ICON.LEFT} @click=${() => this._handleMonthChange('prev')}></ha-icon-button>
-            <span>${viewDate.toFormat('MMMM')}</span>
-            <ha-icon-button .path=${ICON.RIGHT} @click=${() => this._handleMonthChange('next')}></ha-icon-button>
-          </div>
+          ${renderNavButton(ICON.CLOSE, () => {
+            this.card._calendarPopup = false;
+            this.viewDate = DateTime.local().startOf('month');
+          })}
           <div class="calendar-header__year">
-            <ha-icon-button .path=${ICON.LEFT} @click=${() => this._handleYearChange('prev')}></ha-icon-button>
+            ${renderNavButton(ICON.LEFT, () => this._updateCalendarDate('years', 'prev'))}
             <span>${viewDate.year}</span>
-            <ha-icon-button .path=${ICON.RIGHT} @click=${() => this._handleYearChange('next')}></ha-icon-button>
+            ${renderNavButton(ICON.RIGHT, () => this._updateCalendarDate('years', 'next'))}
+          </div>
+          <div class="calendar-header__month">
+            ${renderNavButton(ICON.LEFT, () => this._updateCalendarDate('months', 'prev'))}
+            <span>${monthLocale}</span>
+            ${renderNavButton(ICON.RIGHT, () => this._updateCalendarDate('months', 'next'))}
           </div>
         </div>
         ${this._renderCalendarGrid()}
@@ -161,8 +176,7 @@ export class MoonCalendarPopup extends LitElement {
 
     // Empty divs with total number of filler days
 
-    const fillerDays = // eslint-disable-next-line unused-imports/no-unused-vars
-      Array.from({ length: numberOfFillerDays }, (_) => html`<div></div>`);
+    const fillerDays = Array.from({ length: numberOfFillerDays }, () => html`<div></div>`);
 
     const renderDayItem = (day: number): TemplateResult => {
       const date = viewDate.set({ day });
@@ -172,9 +186,9 @@ export class MoonCalendarPopup extends LitElement {
       const moonPhaseIcon = this.moon._getEmojiForPhase(date.toJSDate());
 
       return html`
-        <div class=${dayClass} @click=${() => this._handleDateSelect(date.toJSDate())}>
+        <div title="${moonPhase}" class=${dayClass} @click=${() => this._handleDateSelect(date.toJSDate())}>
           <div class="day-num">${label}</div>
-          <div title=${moonPhase}>${moonPhaseIcon}</div>
+          <div class="day-symbol">${moonPhaseIcon}</div>
         </div>
       `;
     };
@@ -184,6 +198,19 @@ export class MoonCalendarPopup extends LitElement {
         ${dayOfWeek} ${fillerDays} ${Array.from({ length: daysInMonth }, (_, i) => renderDayItem(i + 1))}
       </div>
     `;
+  }
+
+  private _setEventListeners(): void {
+    const grid = this.shadowRoot?.getElementById('calendar-grid');
+    if (grid) {
+      // close popup if is clicked to empty space
+      grid.addEventListener('click', (e) => {
+        if (e.target === grid) {
+          this.card._calendarPopup = false;
+          this.viewDate = DateTime.local().startOf('month');
+        }
+      });
+    }
   }
 
   private _getDaysOfWeek(): string[] {
@@ -206,16 +233,9 @@ export class MoonCalendarPopup extends LitElement {
     }, 300);
   }
 
-  private _handleMonthChange(type: 'prev' | 'next'): void {
-    this.viewDate = type === 'prev' ? this.viewDate.minus({ months: 1 }) : this.viewDate.plus({ months: 1 });
+  private _updateCalendarDate(type: 'months' | 'years', action: 'prev' | 'next'): void {
+    this.viewDate = action === 'prev' ? this.viewDate.minus({ [type]: 1 }) : this.viewDate.plus({ [type]: 1 });
     this.requestUpdate();
-    console.log(this.viewDate);
-  }
-
-  private _handleYearChange(type: 'prev' | 'next'): void {
-    this.viewDate = type === 'prev' ? this.viewDate.minus({ years: 1 }) : this.viewDate.plus({ years: 1 });
-    this.requestUpdate();
-    console.log(this.viewDate);
   }
 }
 declare global {
