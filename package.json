@@ -19,9 +19,6 @@
   "module": "lunar-phase-card.js",
   "license": "MIT",
   "dependencies": {
-    "@fullcalendar/core": "^6.1.15",
-    "@fullcalendar/daygrid": "^6.1.15",
-    "@fullcalendar/interaction": "^6.1.15",
     "@mdi/js": "^7.4.47",
     "@noim/suncalc3": "^2.0.5",
     "chart.js": "^4.4.5",

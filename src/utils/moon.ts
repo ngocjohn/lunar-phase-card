@@ -1,6 +1,6 @@
 import * as SunCalc from '@noim/suncalc3';
 import { FrontendLocaleData, formatNumber, relativeTime, formatTime } from 'custom-card-helpers';
-import { DateTime } from 'luxon';
+import { DateTime, WeekdayNumbers } from 'luxon';
 
 import { CHART_DATA } from '../const';
 import { localize } from '../localize/localize';
@@ -16,6 +16,7 @@ export class Moon {
   readonly locale: FrontendLocaleData;
   readonly useMiles: boolean;
   readonly lang: string;
+  public dateTime: typeof DateTime;
 
   constructor(data: { date: Date; config: LunarPhaseCardConfig; locale: FrontendLocaleData }) {
     this._date = data.date;
@@ -24,6 +25,7 @@ export class Moon {
     this.location = { latitude: data.config.latitude, longitude: data.config.longitude } as Location;
     this.locale = data.locale;
     this.useMiles = this.config.mile_unit || false;
+    this.dateTime = DateTime;
   }
 
   private localize = (string: string, search = '', replace = ''): string => {
@@ -57,6 +59,9 @@ export class Moon {
     return SunCalc.getMoonData(this._date, this.location.latitude, this.location.longitude);
   }
 
+  get _moonIllimination(): SunCalc.IMoonIllumination {
+    return SunCalc.getMoonIllumination(this._date);
+  }
   get moonTransit() {
     const riseTime = this._moonTime.rise;
     const setTime = this._moonTime.set;
@@ -536,4 +541,24 @@ export class Moon {
     // set to storage
     localStorage.setItem('moonImages', JSON.parse(JSON.stringify(moonImages)));
   };
+
+  _getDaysOfWeek(lang: string): string[] {
+    const daysOfTheWeek = Array.from({ length: 7 }, (_, i) => {
+      return DateTime.local()
+        .set({ weekday: (i + 1) as WeekdayNumbers })
+        .setLocale(lang)
+        .toFormat('ccc');
+    });
+    return daysOfTheWeek;
+  }
+
+  _getEmojiForPhase(date: Date): string {
+    const moonIllumination = SunCalc.getMoonIllumination(date);
+    return moonIllumination.phase.emoji;
+  }
+
+  _getPhaseNameForPhase(date: Date): string {
+    const moonIllumination = SunCalc.getMoonIllumination(date);
+    return this.localize(`card.phase.${moonIllumination.phase.id}`);
+  }
 }

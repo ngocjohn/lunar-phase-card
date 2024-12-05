@@ -5,6 +5,7 @@ import {
   mdiChevronDown,
   mdiChevronLeft,
   mdiChevronRight,
+  mdiClose,
   mdiMoonFull,
   mdiMoonNew,
   mdiRestore,
@@ -64,6 +65,7 @@ export const ICON = {
   RIGHT: mdiChevronRight,
   SEARCH: mdiCalendarSearch,
   WEATHER: mdiWeatherNight,
+  CLOSE: mdiClose,
 };
 
 export const enum CHART_DATA {
