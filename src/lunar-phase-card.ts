@@ -11,7 +11,7 @@ import { LunarPhaseCardConfig, defaultConfig } from './types';
 import { BLUE_BG, PageType, MoonState, ICON } from './const';
 import { dayFormatter, localize } from './localize/localize';
 import { generateConfig } from './utils/ha-helper';
-import { _handleOverflow, getDefaultConfig } from './utils/helpers';
+import { _handleOverflow, _setEventListeners, getDefaultConfig } from './utils/helpers';
 import { isEditorMode } from './utils/loader';
 
 // components
@@ -47,7 +47,7 @@ export class LunarPhaseCard extends LitElement {
   @state() _hass!: HomeAssistant;
   @property({ attribute: false }) config!: LunarPhaseCardConfig;
   @state() moon!: Moon;
-  @state() private _activeCard: PageType | null = null;
+  @state() public _activeCard: PageType | null = null;
   @state() public selectedDate: Date | undefined;
 
   @state() _calendarPopup: boolean = false;
@@ -171,6 +171,7 @@ export class LunarPhaseCard extends LitElement {
     super.firstUpdated(_changedProperties);
     this._handleFirstRender();
     await new Promise((resolve) => setTimeout(resolve, 0));
+    _setEventListeners(this as any);
     this._computeStyles();
     this.measureCard();
   }
@@ -318,15 +319,21 @@ export class LunarPhaseCard extends LitElement {
       return html``;
     }
     this.createMoon();
+    // const isHeaderHidden = this.config?.hide_header;
     const card = !this._activeCard ? this._defaultCard : this._activeCard;
     const header = !this.config.compact_view || [PageType.HORIZON].includes(card) ? this.renderHeader() : nothing;
+    const shouldAddPadding = [PageType.BASE].includes(card) && !this.config.compact_view;
+
     return html`
       <ha-card class=${this._computeClasses()} style=${this._computeHeight()}>
-        <div class="loading" ?hidden=${this._state !== MoonState.LOADING}>
-          <ha-circular-progress indeterminate size="tiny"></ha-circular-progress>
-        </div>
+        <ha-circular-progress
+          indeterminate
+          size="tiny"
+          class="loading"
+          ?hidden=${this._state !== MoonState.LOADING}
+        ></ha-circular-progress>
         ${this.config.hide_header || [PageType.CALENDAR].includes(card) ? nothing : header}
-        <div class="lunar-card-content" id="main-content">
+        <div class="lunar-card-content" id="main-content" ?padding=${shouldAddPadding}>
           ${choose(card, [
             [PageType.BASE, () => this.renderBaseCard()],
             [PageType.CALENDAR, () => this.renderCalendar()],
@@ -523,7 +530,6 @@ export class LunarPhaseCard extends LitElement {
       .moon=${this.moon}
       .card=${this as any}
       .cardWidth=${this._cardWidth}
-      .cardHeight=${this._cardHeight}
     ></moon-horizon-dynamic>`;
 
     return html`
@@ -552,24 +558,48 @@ export class LunarPhaseCard extends LitElement {
     this._activeCard = this._activeCard === page ? this._defaultCard : page;
   };
 
+  _switchPage(action: 'next' | 'prev') {
+    const cardElement = this.shadowRoot?.getElementById('main-content');
+    if (!this._activeCard || !cardElement) return;
+    const pages = [PageType.BASE, PageType.CALENDAR, PageType.HORIZON];
+    const currentIndex = pages.indexOf(this._activeCard);
+    let newIndex = currentIndex;
+    if (action === 'next') {
+      newIndex = currentIndex + 1;
+    } else if (action === 'prev') {
+      newIndex = currentIndex - 1;
+    }
+    if (newIndex < 0) {
+      newIndex = pages.length - 1;
+    } else if (newIndex >= pages.length) {
+      newIndex = 0;
+    }
+    cardElement.style.animation = 'none';
+    setTimeout(() => {
+      this._activeCard = pages[newIndex];
+      cardElement.style.animation = 'fadeIn 400ms ease-in-out';
+    }, 300);
+  }
+
   private _computeHeight() {
     if (!this._activeCard) return;
+    const isCompact = this.config.compact_view;
+    const isHeaderHidden = this.config?.hide_header;
     const width = this._cardWidth;
-    const height = [PageType.BASE].includes(this._activeCard) && !this.config.compact_view ? width * 0.5 : '';
+    const height = [PageType.BASE].includes(this._activeCard) && !isCompact && !isHeaderHidden ? width * 0.5 : '';
     return styleMap({ minHeight: height ? `${height}px` : '' });
   }
 
   private _computeClasses() {
+    const isHeaderHidden = this.config?.hide_header;
     const reverse = this.config.moon_position === 'right';
     const compactHeader = Boolean(this.config.compact_view && this._activeCard === PageType.BASE);
     const dynamicGraph = this.config.graph_config?.graph_type === 'dynamic';
     return classMap({
       '--background': this._showBackground,
-      '--flex-col': this._isCalendar,
       '--reverse': reverse && !this._isCalendar,
-      '--compact-header': compactHeader,
-      '--default-header': !compactHeader,
-      '--horizon': this._activeCard === PageType.HORIZON,
+      '--default-header': !compactHeader && !isHeaderHidden,
+      '--horizon': this._activeCard === PageType.HORIZON && !dynamicGraph,
       '--dynamic-graph': this._activeCard === PageType.HORIZON && dynamicGraph,
     });
   }
