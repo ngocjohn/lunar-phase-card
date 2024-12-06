@@ -23,15 +23,14 @@ export class MoonHorizonDynamic extends LitElement {
   @property({ attribute: false }) moon!: Moon;
   @property({ attribute: false }) card!: LunarPhaseCard;
   @property({ type: Number }) cardWidth: number = 0;
-  @property({ type: Number }) cardHeight: number = 0;
 
   @state() public _midnightColor: Record<string, string> = {};
 
   @state() dynamicChart!: Chart;
 
   protected async firstUpdated(): Promise<void> {
-    await new Promise((resolve) => setTimeout(resolve, 0));
     await this.extractColorData();
+    await new Promise((resolve) => setTimeout(resolve, 0));
     this.initChart();
   }
 
@@ -46,12 +45,18 @@ export class MoonHorizonDynamic extends LitElement {
   }
 
   protected updated(_changedProperties: PropertyValues): void {
-    if (_changedProperties.has('cardWidth')) {
-      const newHeight = this.cardWidth / 2;
+    if (!this.card.config || !this.moon) return;
+    if (_changedProperties.has('cardWidth') && this.cardWidth > 0) {
       if (this.dynamicChart) {
-        this.dynamicChart.resize(this.cardWidth, newHeight);
+        this.dynamicChart.resize(this.cardWidth, this.cardHeight);
       }
     }
+  }
+
+  get cardHeight(): number {
+    let height = this.cardWidth * 0.5;
+    height = this.card.config.hide_header ? height : height - 48;
+    return height;
   }
 
   static get styles(): CSSResultGroup {
@@ -119,10 +124,10 @@ export class MoonHorizonDynamic extends LitElement {
   }
 
   get chartPlugins(): Plugin[] {
+    const expandChartArea = this._expandChartArea();
     const nowPosition = this._nowPosition();
     const midnightPositon = this._midnightPosition();
     const timeMarkers = this._timesMarkersPlugin();
-    const expandChartArea = this._expandChartArea();
     return [nowPosition, midnightPositon, timeMarkers, expandChartArea];
   }
 
@@ -180,7 +185,7 @@ export class MoonHorizonDynamic extends LitElement {
     return html`
       <div id="horizon-dynamic-chart">
         <div id="blur-overlay"></div>
-        <canvas id="dynamic-chart" width="${this.cardWidth}"></canvas>
+        <canvas id="dynamic-chart" width="${this.cardWidth}" height="${this.cardHeight}"></canvas>
       </div>
     `;
   }
@@ -454,11 +459,13 @@ export class MoonHorizonDynamic extends LitElement {
     return {
       id: 'midnightLine',
       beforeDraw: (chart: Chart) => {
-        const {
-          ctx,
-          chartArea: { left, right, bottom, top },
-        } = chart;
+        const { ctx, chartArea, scales } = chart;
 
+        // Ensure chartArea and scales are available
+        if (!chartArea || !scales.x || !scales.y) {
+          return;
+        }
+        const { left, right, bottom, top } = chartArea;
         const midX = chart.scales.x.getPixelForValue(closestTimeIndex);
         const midY = chart.scales.y.getPixelForValue(0);
         const gradientHeight = (bottom - top) * 0.8;
@@ -582,17 +589,13 @@ export class MoonHorizonDynamic extends LitElement {
   private _expandChartArea = (): Plugin => {
     return {
       id: 'expandChartArea',
-      beforeDraw: (chart: Chart) => {
-        chart.chartArea.left = 0;
+      beforeRender: (chart: Chart) => {
         chart.chartArea.right = chart.width;
-        chart.chartArea.top = 0;
         chart.chartArea.bottom = chart.height;
       },
 
       afterUpdate: (chart: Chart) => {
-        chart.chartArea.left = 0;
         chart.chartArea.right = chart.width;
-        chart.chartArea.top = 0;
         chart.chartArea.bottom = chart.height;
       },
     };

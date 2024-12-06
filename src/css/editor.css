@@ -208,8 +208,9 @@ img.bg-thumbnail {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  position: absolute;
+  /* position: absolute; */
   bottom: auto;
+  padding: 1rem 0;
 }
 
 .version .update {

@@ -16,18 +16,50 @@ export class LunarBaseData extends LitElement {
 
   static get styles(): CSSResultGroup {
     return [
-      mainStyles,
-      unsafeCSS(swiperStyleCss),
       css`
-        #moon-data-container {
-          padding-inline: 12px;
+        section {
+          display: block;
+          width: 100%;
+          height: auto;
+          overflow: hidden;
         }
 
+        .swiper-container {
+          width: 100%;
+          height: 100%;
+          display: block;
+          backdrop-filter: blur(4px);
+        }
+        .swiper-wrapper {
+          width: 100%;
+          height: 100%;
+        }
+        .swiper-slide {
+          display: block;
+          width: fit-content;
+        }
+
+        .swiper-pagination {
+          position: relative !important;
+        }
+
+        .swiper-pagination-bullet {
+          background-color: var(--swiper-theme-color);
+          transition: all 0.3s ease-in-out !important;
+        }
+
+        .swiper-pagination-bullet-active {
+          width: 12px !important;
+          border-radius: 0.5rem !important;
+          opacity: 0.7;
+        }
         .moon-phase-name {
           font-size: 1.5rem;
-          padding: 0.5rem;
+          padding-block: 0.5rem;
         }
       `,
+      mainStyles,
+      unsafeCSS(swiperStyleCss),
     ];
   }
 

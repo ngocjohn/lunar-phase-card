@@ -1,5 +1,5 @@
 import { formatDateTime, HomeAssistant, formatDateTimeWithSeconds } from 'custom-card-helpers';
-import { LitElement, html, CSSResultGroup, TemplateResult, css } from 'lit';
+import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 
 import type { ChartDataset } from 'chart.js/auto';
@@ -42,10 +42,16 @@ export class MoonHorizon extends LitElement {
   @state() private _lastTime: string | null = null;
 
   protected async firstUpdated(): Promise<void> {
-    await new Promise((resolve) => setTimeout(resolve, 20));
+    await new Promise((resolve) => setTimeout(resolve, 10));
     this.setupChart();
   }
 
+  protected shouldUpdate(_changedProperties: PropertyValues): boolean {
+    if (_changedProperties.has('cardWidth')) {
+      this._chart?.resize();
+    }
+    return true;
+  }
   static get styles(): CSSResultGroup {
     return [
       styles,
