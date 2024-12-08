@@ -81,6 +81,7 @@ export const enum CHART_DATA {
 export const enum CHART_COLOR {
   TODAY_FILL = '#47546b', // Original
   NEXTDAY_FILL = '#3d4b63', // Original
+  FILL_ABOVE = '#47546b33',
   STROKE_LINE = '#7a8eaa',
   SECONDARY_TEXT = '#9b9b9b',
   PRIMARY_TEXT = '#e1e1e1',

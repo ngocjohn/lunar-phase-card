@@ -4,7 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { LunarPhaseCard } from '../lunar-phase-card';
 
 @customElement('moon-star-field')
-export class MoonStarField extends LitElement {
+export class LunarStarField extends LitElement {
   @property({ attribute: false }) _card!: LunarPhaseCard;
   @state() public count: number = 30;
 

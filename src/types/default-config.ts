@@ -1,0 +1,43 @@
+import { PageType } from '../const';
+import { LunarPhaseCardConfig } from './config';
+
+export const defaultConfig: Partial<LunarPhaseCardConfig> = {
+  type: 'custom:lunar-phase-card',
+  entity: '',
+  use_default: true,
+  use_custom: false,
+  use_entity: false,
+  show_background: true,
+  selected_language: 'en',
+  compact_view: true,
+  '12hr_format': false,
+  mile_unit: false,
+  hide_header: false,
+  default_card: PageType.BASE,
+  moon_position: 'left',
+  southern_hemisphere: false,
+  number_decimals: 2,
+  graph_config: {
+    graph_type: 'default',
+    y_ticks: false,
+    x_ticks: true,
+    show_time: true,
+    show_current: true,
+    show_legend: true,
+    show_highest: true,
+    y_ticks_position: 'left',
+    y_ticks_step_size: 30,
+    legend_position: 'top',
+    legend_align: 'center',
+    time_step_size: 30,
+  },
+  font_customize: {
+    header_font_size: 'x-large',
+    header_font_style: 'capitalize',
+    header_font_color: '',
+    label_font_size: 'auto',
+    label_font_style: 'none',
+    label_font_color: '',
+    hide_label: false,
+  },
+};

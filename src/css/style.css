@@ -149,7 +149,7 @@ ha-card>.loading[hidden] {
 ha-card.--background h1,
 ha-card.--background .moon-phase-name {
   color: var(--lunar-card-header-font-color, #e1e1e1);
-  text-shadow: 2px 2px 4px var(--card-background-color);
+  /* text-shadow: 2px 2px 4px var(--card-background-color); */
 }
 
 .--default-header h1 {

@@ -1,35 +1,38 @@
 // Lit
 import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-
+import tinycolor from 'tinycolor2';
 // Custom Card helpers
-import { FrontendLocaleData, HomeAssistant, formatDateShort, formatTime } from 'custom-card-helpers';
+import { FrontendLocaleData, formatDateShort, formatTime } from 'custom-card-helpers';
 // Chart.js
 import { Chart, ChartData, ChartOptions, Plugin, ScriptableLineSegmentContext } from 'chart.js/auto';
 // DateTime
 import { DateTime } from 'luxon';
 // Local imports
+
 import { CHART_COLOR, CHART_DATA } from '../const';
 import { LunarPhaseCard } from '../lunar-phase-card';
-import extractColorData from '../utils/extractColorData.js';
+import { FILL_COLORS, HA as HomeAssistant } from '../types';
+import extract_color from '../utils/extract_color';
 import { hexToRgba } from '../utils/helpers';
 import { Moon } from '../utils/moon';
 // Styles
 import styles from '../css/style.css';
 
-@customElement('moon-horizon-dynamic')
-export class MoonHorizonDynamic extends LitElement {
+@customElement('lunar-horizon-dynamic')
+export class LunarHorizonDynamic extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) moon!: Moon;
   @property({ attribute: false }) card!: LunarPhaseCard;
   @property({ type: Number }) cardWidth: number = 0;
 
-  @state() public _midnightColor: Record<string, string> = {};
+  @state() public fillColors!: FILL_COLORS;
 
   @state() dynamicChart!: Chart;
+  @state() tinyColor = tinycolor;
 
   protected async firstUpdated(): Promise<void> {
-    await this.extractColorData();
+    this.fillColors = await this.extractColorData();
     await new Promise((resolve) => setTimeout(resolve, 0));
     this.initChart();
   }
@@ -201,7 +204,8 @@ export class MoonHorizonDynamic extends LitElement {
       tension: 0.2,
       borderWidth: 1,
     };
-    const { PRIMARY_TEXT, SECONDARY_TEXT, fillBelowColor, fillColor, fillBelowLineColor } = this.CSS_COLOR;
+    const { PRIMARY_TEXT, SECONDARY_TEXT, fillBelowColor, fillBelowLineColor } = this.CSS_COLOR;
+    const fillAbove = this.fillColors.fillAbove;
     const BORDER_COLORS = {
       BOLD: isBackground ? CHART_COLOR.MOON_LINE_BOLD : PRIMARY_TEXT,
       LIGHT: isBackground ? fillBelowLineColor : SECONDARY_TEXT,
@@ -214,7 +218,7 @@ export class MoonHorizonDynamic extends LitElement {
       data: moonData,
       fill: {
         target: { value: 0 }, // Fill area above 0° altitude
-        above: fillColor,
+        above: fillAbove,
         below: fillBelowColor,
       },
       segment: {
@@ -357,14 +361,14 @@ export class MoonHorizonDynamic extends LitElement {
         } = chart;
         const xLabel = chart.scales.x.getPixelForValue(index);
         const yLabel = chart.scales.y.getPixelForValue(chartData[index].moon);
-        const lineColor = hexToRgba(CHART_COLOR.STROKE_LINE, 0.7);
+        // const lineColor = hexToRgba(CHART_COLOR.STROKE_LINE, 0.7);
         ctx.font = '12px Arial';
         const width = ctx.measureText(nowText).width;
 
         // Draw the dashed line and label for the current time
         ctx.save();
         ctx.beginPath();
-        ctx.strokeStyle = lineColor;
+        ctx.strokeStyle = CHART_COLOR.STROKE_LINE;
         ctx.setLineDash([2, 4]);
         ctx.lineWidth = 1;
         ctx.moveTo(xLabel, yLabel);
@@ -404,7 +408,7 @@ export class MoonHorizonDynamic extends LitElement {
 
   private _midnightPosition(): Plugin {
     const { SECONDARY_TEXT } = this.CSS_COLOR;
-    const { todayFill, nextDayFill } = this._midnightColor;
+    const { today: todayFill, nextDay: nextDayFill } = this.fillColors;
     const fontSize = '12px Arial';
     const { chartData } = this.todayData;
     const timeLabels = chartData.map((data) => data.timeLabel);
@@ -508,8 +512,23 @@ export class MoonHorizonDynamic extends LitElement {
       },
     };
   }
+
+  private _getReadAbleColor() {
+    const todayColor = this.fillColors.today;
+
+    const allColors: string[] = [];
+    for (const color in tinycolor.names) {
+      allColors.push(color);
+    }
+    const readAbleColors = tinycolor.mostReadable(todayColor, allColors);
+    const baseColor = tinycolor(readAbleColors);
+    const lightColor = baseColor.clone().setAlpha(0.2).toString();
+
+    return { baseColor: baseColor.setAlpha(0.4).toString(), lightColor };
+  }
+
   private _timesMarkersPlugin(): Plugin {
-    const { SECONDARY_TEXT, PRIMARY_TEXT } = this.CSS_COLOR;
+    const labelColors = this._getReadAbleColor();
     const fontSize = {
       primary: '0.9rem Arial',
       secondary: '0.8rem Arial',
@@ -570,7 +589,7 @@ export class MoonHorizonDynamic extends LitElement {
       times.forEach((time) => {
         const xPos = x.getPixelForValue(time.index);
         const yPos = y.getPixelForValue(0);
-        const color = isPast(time.originalTime) ? hexToRgba(SECONDARY_TEXT, 0.5) : hexToRgba(PRIMARY_TEXT, 0.8);
+        const color = isPast(time.originalTime) ? labelColors.lightColor : labelColors.baseColor;
         const relativeTime = isPast(time.originalTime) ? '' : calculateDuration(time.originalTime);
         drawPoint(ctx, xPos, yPos, color, time.time, lineHeight, relativeTime);
       });
@@ -590,44 +609,39 @@ export class MoonHorizonDynamic extends LitElement {
     return {
       id: 'expandChartArea',
       beforeRender: (chart: Chart) => {
-        chart.chartArea.right = chart.width;
-        chart.chartArea.bottom = chart.height;
+        chart.chartArea.right = this.cardWidth;
+        chart.chartArea.bottom = this.cardHeight;
       },
 
       afterUpdate: (chart: Chart) => {
-        chart.chartArea.right = chart.width;
-        chart.chartArea.bottom = chart.height;
+        chart.chartArea.right = this.cardWidth;
+        chart.chartArea.bottom = this.cardHeight;
       },
     };
   };
 
-  async extractColorData(): Promise<void> {
+  async extractColorData(): Promise<FILL_COLORS> {
+    const defaultColors = {
+      today: CHART_COLOR.TODAY_FILL,
+      nextDay: CHART_COLOR.NEXTDAY_FILL,
+      fillAbove: CHART_COLOR.FILL_ABOVE,
+    };
     const custom_background = this.card.config?.custom_background;
     if (!custom_background || this.card.config.show_background === false) {
-      this._midnightColor = {
-        todayFill: CHART_COLOR.TODAY_FILL,
-        nextDayFill: CHART_COLOR.NEXTDAY_FILL,
-      };
-      return;
+      return defaultColors;
     }
 
     try {
-      const data = await extractColorData(custom_background);
-      this._midnightColor = {
-        todayFill: data.todayFillColor,
-        nextDayFill: data.nextDayFillColor,
-      };
+      const data = await extract_color(custom_background);
+      return data;
     } catch (error) {
-      this._midnightColor = {
-        todayFill: CHART_COLOR.TODAY_FILL,
-        nextDayFill: CHART_COLOR.NEXTDAY_FILL,
-      };
+      return defaultColors;
     }
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'moon-horizon-dynamic': MoonHorizonDynamic;
+    'lunar-horizon-dynamic': LunarHorizonDynamic;
   }
 }

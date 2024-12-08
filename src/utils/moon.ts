@@ -4,9 +4,14 @@ import { DateTime, WeekdayNumbers } from 'luxon';
 
 import { CHART_DATA } from '../const';
 import { localize } from '../localize/localize';
-import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, Location, DynamicChartData } from '../types';
+import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, DynamicChartData } from '../types';
 import { MOON_IMAGES } from '../utils/moon-pic';
 import { convertKmToMiles, compareTime } from './helpers';
+
+type Location = {
+  latitude: number;
+  longitude: number;
+};
 
 // Moon class
 export class Moon {
@@ -155,7 +160,7 @@ export class Moon {
       moonHighest: createMoonTime('moonHigh', new Date(highest as Date)),
       nextFullMoon: createItem('fullMoon', shortTime(fullMoon.value)),
       nextNewMoon: createItem('newMoon', shortTime(newMoon.value)),
-      direction: createItem('direction', formatted.azimuth, '°', cardinal),
+      direction: createItem('azimuth', formatted.azimuth, '°', cardinal),
       position: createItem('position', localize(`card.${altitudeDegrees > 0 ? 'overHorizon' : 'underHorizon'}`)),
     };
   }

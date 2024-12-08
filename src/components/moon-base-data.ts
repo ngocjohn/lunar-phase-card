@@ -55,7 +55,7 @@ export class LunarBaseData extends LitElement {
         }
         .moon-phase-name {
           font-size: 1.5rem;
-          padding-block: 0.5rem;
+          padding-block: 1rem;
         }
       `,
       mainStyles,

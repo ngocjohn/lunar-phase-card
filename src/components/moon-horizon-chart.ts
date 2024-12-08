@@ -26,8 +26,8 @@ import { MOON_RISE_ICON, MOON_SET_ICON } from '../utils/moon-pic';
 
 const HOVER_TIMEOUT = 200;
 
-@customElement('moon-horizon')
-export class MoonHorizon extends LitElement {
+@customElement('lunar-horizon-chart')
+export class LunarHorizonChart extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) moon!: Moon;
   @property({ attribute: false }) card!: LunarPhaseCard;
@@ -787,6 +787,6 @@ export class MoonHorizon extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'moon-horizon': MoonHorizon;
+    'lunar-horizon-chart': LunarHorizonChart;
   }
 }

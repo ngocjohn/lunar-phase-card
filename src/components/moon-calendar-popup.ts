@@ -8,8 +8,8 @@ import { Moon } from '../utils/moon';
 // styles
 import styles from '../css/style.css';
 
-@customElement('moon-calendar-popup')
-export class MoonCalendarPopup extends LitElement {
+@customElement('lunar-calendar-popup')
+export class LunarCalendarPopup extends LitElement {
   @property({ attribute: false }) card!: LunarPhaseCard;
   @property({ attribute: false }) moon!: Moon;
   @state() viewDate = DateTime.local().startOf('month');
@@ -70,7 +70,7 @@ export class MoonCalendarPopup extends LitElement {
         #calendar-grid {
           display: grid;
           grid-template-columns: repeat(7, 1fr);
-          grid-template-rows: repeat(7, 1fr);
+          /* grid-template-rows: repeat(7, 1fr); */
           padding: 0.5em;
           cursor: default;
           gap: 2px 4px;
@@ -240,6 +240,6 @@ export class MoonCalendarPopup extends LitElement {
 }
 declare global {
   interface HTMLElementTagNameMap {
-    'moon-calendar-popup': MoonCalendarPopup;
+    'lunar-calendar-popup': LunarCalendarPopup;
   }
 }

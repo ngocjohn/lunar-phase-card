@@ -241,7 +241,6 @@ export function _setEventListeners(card: LunarPhaseCard): void {
 
   const pressDown = (e: TouchEvent | MouseEvent) => {
     const target = e.target as HTMLElement;
-    console.log('pressDown', target.tagName);
     if (target.tagName === 'LUNAR-BASE-DATA') return;
     e.stopImmediatePropagation();
     if (e instanceof TouchEvent) {

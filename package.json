@@ -21,6 +21,7 @@
   "dependencies": {
     "@mdi/js": "^7.4.47",
     "@noim/suncalc3": "^2.0.5",
+    "@vibrant/color": "^3.2.1-alpha.1",
     "chart.js": "^4.4.5",
     "custom-card-helpers": "^1.7.2",
     "lit": "^3.1.4",
