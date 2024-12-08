@@ -1,5 +1,6 @@
 <a name="readme-top"></a>
-[![HACS](https://github.com/ngocjohn/lunar-phase-card/actions/workflows/validate.yaml/badge.svg)](https://github.com/ngocjohn/lunar-phase-card/actions/workflows/validate.yaml) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/ngocjohn/lunar-phase-card/total?style=flat&logo=homeassistantcommunitystore&logoSize=auto&label=Downloads&color=%2318BCF2) ![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/ngocjohn/lunar-phase-card/latest/total?style=flat&logo=homeassistantcommunitystore&logoSize=auto)
+
+[![hacs][hacs-validate]][hacs-validate-link] ![total-downloads] ![latest-downloads]
 
 # 🌘 Lunar Phase Card
 
@@ -37,6 +38,7 @@
 
 
 
+
 ### Supported Localization
 
 <details>
@@ -58,18 +60,23 @@
 | `ru` | Русский | Русский |
 | `sk` | Slovak | Slovenčina |
 
-</details></details>
+</details></details></details>
 
 
 ### View options
 * Default view
-![Default card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-default-view.gif)
+![Default card][header-default-card]
+![Default no header][no-header-default-card]
 * Calendar card
-![Calendar card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-calendar.gif)
+![Calendar card][header-calendar-card]
+![Calendar no header][no-header-calendar]
 * Horizon graph
-![Horizon card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-graph-info-new.gif)
+![Dynamic card no header][no-header-dynamic-graph]
+![Horizon card][header-horizon-graph]
+![Horizon card no header][no-header-horizon-graph]
 * Compact view
-![Compact card](https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact-view.png)
+![Compact card][header-compact-card]
+![Compact card no header][no-header-compact-card]
 
 
 
@@ -85,7 +92,7 @@
 https://github.com/ngocjohn/lunar-phase-card
 ```
 
-3. Select `Lovelace`
+3. Select `Dashboard`
 1. Press add icon and search for `Lunar Phase Card`
 1. Select Lunar Phase Card repo and install
 1. Force refresh the Home Assistant page `Ctrl` + `F5` / `Shift` + `⌘` + `R`
@@ -113,11 +120,7 @@ https://github.com/ngocjohn/lunar-phase-card
 
 <p style="text-align: justify;">All options can be configured in the GUI editor. To configure the Lunar Phase Card, you can use the following parameters in your Lovelace configuration:</p>
 
-<p align="center">
-  <a href="./assets/card-ui-editor.gif">
-    <img src="https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/ui-editor.gif" alt="Card UI Editor">
-  </a>
-</p>
+![Card config editor][card-config-editor]
 
 | Name                | Type    | Requirement | Description                                                           |
 | ------------------- | ------- | ----------- | --------------------------------------------------------------------- |
@@ -130,13 +133,45 @@ https://github.com/ngocjohn/lunar-phase-card
 | `compact_view`      | boolean | Optional    | Whether to display the card in a compact view. Defaults to `false`.   |
 | `12hr_format`       | boolean | Optional    | Whether to display time in 12-hour format. Defaults to `false`.       |
 | `mile_unit`         | boolean | Optional    | Whether to display distance in miles. Defaults to `false`.            |
-| `custom_background` | string  | Optional    | URL of a custom background image for the card.                        |
+| `hide_header`       | boolean | Optional    | Whether to hide the header of the card. Defaults to `false`.          |
+| `default_card`      | string  | Optional    | Default view of the card. Options: `base`, `calendar`, `horizon`. Defaults to `base`. |
+| `moon_position`     | string  | Optional    | Position of the moon image. Options: `left`, `right`. Defaults to `left`. |
+| `southern_hemisphere` | boolean | Optional  | Adjusts the moon orientation for southern hemisphere users. Defaults to `false`. |
+| `number_decimals`   | number  | Optional    | Number of decimals for numerical values. Defaults to `2`.             |
 | `selected_language` | string  | Optional    | ISO code of the language to be used. Defaults to system or `en`.      |
 | `latitude`          | number  | Optional    | The latitude for which to calculate the lunar phase.                  |
 | `longitude`         | number  | Optional    | The longitude for which to calculate the lunar phase.                 |
-
+| `font_customize`    | object  | Optional    | Customize fonts for the card. See below for details.                  |
+| `graph_config`      | object  | Optional    | Configuration for the chart. See below for details.                   |
 > [!NOTE]
 > The `entity` parameter is not required. It refers to the entity ID from the Lunar Card Custom component, which can be installed [here](https://github.com/ngocjohn/lunar-phase). If the `entity` is not defined, the card will use the default latitude and longitude from the system configuration.
+### Font Customization Options
+| Name                  | Type    | Description                                                               |
+| --------------------- | ------- | ------------------------------------------------------------------------- |
+| `header_font_size`    | string  | Font size for the header. Options: `auto`, `small`, `medium`, `large`, `x-large`, `xx-large`. Defaults to `x-large`. |
+| `header_font_style`   | string  | Text style for the header. Options: `none`, `capitalize`, `uppercase`, `lowercase`. Defaults to `capitalize`. |
+| `header_font_color`   | string  | Color for the header text.                                                |
+| `label_font_size`     | string  | Font size for labels. Options: `auto`, `small`, `medium`, `large`, `x-large`, `xx-large`. Defaults to `auto`. |
+| `label_font_style`    | string  | Text style for labels. Options: `none`, `capitalize`, `uppercase`, `lowercase`. Defaults to `none`. |
+| `label_font_color`    | string  | Color for label text.                                                     |
+| `hide_label`          | boolean | Whether to hide labels on the card. Defaults to `false`.                  |
+
+### Chart Configuration Options
+| Name                  | Type    | Description                                                               |
+| --------------------- | ------- | ------------------------------------------------------------------------- |
+| `graph_type`          | string  | Type of the graph. Options: `default`, `dynamic`. Defaults to `default`.  |
+| `y_ticks`             | boolean | Whether to show y-axis ticks. Defaults to `false`.                        |
+| `x_ticks`             | boolean | Whether to show x-axis ticks. Defaults to `false`.                        |
+| `show_time`           | boolean | Whether to show time labels on the chart. Defaults to `true`.             |
+| `show_current`        | boolean | Whether to show the current moon position. Defaults to `true`.            |
+| `show_legend`         | boolean | Whether to show the chart legend. Defaults to `true`.                     |
+| `show_highest`        | boolean | Whether to show the highest moon point. Defaults to `true`.               |
+| `y_ticks_position`    | string  | Position of the y-axis ticks. Options: `left`, `right`. Defaults to `left`.|
+| `y_ticks_step_size`   | number  | Step size for y-axis ticks. Defaults to `30`.                             |
+| `legend_position`     | string  | Position of the legend. Options: `top`, `bottom`. Defaults to `top`.      |
+| `legend_align`        | string  | Alignment of the legend. Options: `start`, `center`, `end`. Defaults to `center`. |
+| `time_step_size`      | number  | Step size for time labels. Defaults to `30`.                              |
+
 
 ### Example Configuration
 
@@ -144,18 +179,43 @@ Here's an example configuration for the Lunar Phase Card:
 
 ```yaml
 type: custom:lunar-phase-card
-entity: sensor.your_moon_phase_sensor
-use_system: true
-use_entity: false
+entity: ""
+use_default: true
 use_custom: false
+use_entity: false
 show_background: true
-compact_view: true
+selected_language: en
+compact_view: false
 12hr_format: false
 mile_unit: false
-custom_background: '/local/images/moon_background.jpg'
-selected_language: 'en'
-latitude: 48.8566
-longitude: 2.3522
+hide_header: false
+default_card: base
+moon_position: left
+southern_hemisphere: false
+number_decimals: 2
+graph_config:
+  y_ticks: false
+  x_ticks: false
+  show_time: true
+  show_current: true
+  show_legend: true
+  show_highest: true
+  y_ticks_position: left
+  y_ticks_step_size: 30
+  legend_position: top
+  legend_align: center
+  time_step_size: 30
+  graph_type: default
+font_customize:
+  header_font_size: x-large
+  header_font_style: capitalize
+  header_font_color: ""
+  label_font_size: auto
+  label_font_style: none
+  label_font_color: ""
+  hide_label: false
+latitude: 50.0874654
+longitude: 14.4212535
 ```
 
 ## Contribution Guidelines
@@ -169,3 +229,21 @@ We welcome contributions and are grateful for your support in improving this pro
 [https://github.com/ngocjohn/](https://github.com/ngocjohn/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!--IMAGES-->
+[header-default-card]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-default-view.gif
+[no-header-default-card]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/no_header_default.gif
+[header-calendar-card]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-header-calendar.gif
+[no-header-calendar]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/no_header_calendar.gif
+[header-horizon-graph]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-header-horizon-graph.gif
+[no-header-horizon-graph]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/no_header_horizon_graph.gif
+[no-header-dynamic-graph]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/no_header_dynamic_graph.gif
+[header-compact-card]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact-view.png
+[no-header-compact-card]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/no_header_compact.png
+[card-config-editor]:https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-config-editor.gif
+
+<!--BADGES-->
+[hacs-validate]: https://github.com/ngocjohn/lunar-phase-card/actions/workflows/validate.yaml/badge.svg
+[hacs-validate-link]: https://github.com/ngocjohn/lunar-phase-card/actions/workflows/validate.yaml
+[total-downloads]: https://img.shields.io/github/downloads/ngocjohn/lunar-phase-card/total?style=flat&logo=homeassistantcommunitystore&logoSize=auto&label=Downloads&color=%2318BCF2
+[latest-downloads]:https://img.shields.io/github/downloads/ngocjohn/lunar-phase-card/latest/total?style=flat&logo=homeassistantcommunitystore&logoSize=auto
