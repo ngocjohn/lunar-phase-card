@@ -81,11 +81,12 @@ ha-select {
 }
 
 .sub-config-type {
-  /* color: var(--secondary-text-color); */
   display: flex;
   padding: 8px;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .sub-config-type .title {

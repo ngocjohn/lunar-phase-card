@@ -603,11 +603,12 @@ export class MoonHorizonDynamic extends LitElement {
 
   async extractColorData(): Promise<void> {
     const custom_background = this.card.config?.custom_background;
-    if (!custom_background || !this.card.config.show_background) {
+    if (!custom_background || this.card.config.show_background === false) {
       this._midnightColor = {
         todayFill: CHART_COLOR.TODAY_FILL,
         nextDayFill: CHART_COLOR.NEXTDAY_FILL,
       };
+      return;
     }
 
     try {

@@ -55,6 +55,7 @@ export class LunarPhaseCard extends LitElement {
   @state() _resizeInitiated = false;
 
   @state() _connected = false;
+  @state() _cardReady = false;
   @state() private _state: MoonState = MoonState.READY;
   @state() private _refreshInterval: number | undefined;
 
@@ -158,13 +159,7 @@ export class LunarPhaseCard extends LitElement {
     if (!isEditorMode(this)) {
       return;
     }
-
-    const isHorizon = event.detail.activeGraphEditor;
-    if (isHorizon) {
-      this._activeCard = PageType.HORIZON;
-    } else {
-      return;
-    }
+    this._handleFirstRender();
   }
 
   protected async firstUpdated(_changedProperties: PropertyValues): Promise<void> {
@@ -250,24 +245,29 @@ export class LunarPhaseCard extends LitElement {
 
   private _handleFirstRender() {
     if (isEditorMode(this)) {
+      this._cardReady = false;
       const activeGraphEditor = this.isGraphEditor;
       if (activeGraphEditor && this._activeCard !== PageType.HORIZON) {
         this._activeCard = PageType.HORIZON;
+        this._cardReady = true;
       } else if (!activeGraphEditor && this._defaultCard === PageType.HORIZON) {
         this._activeCard = PageType.BASE;
         setTimeout(() => {
           this._activeCard = PageType.HORIZON;
-        }, 150);
+        }, 200);
+        this._cardReady = true;
       } else {
         this._activeCard = this._defaultCard;
+        this._cardReady = true;
       }
     } else {
       this._activeCard = this._defaultCard;
+      this._cardReady = true;
     }
   }
 
   private get isGraphEditor(): Boolean {
-    const value = localStorage.getItem('activeGraphEditor');
+    const value = sessionStorage.getItem('activeGraphEditor');
     return value === 'true';
   }
 
@@ -315,7 +315,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   protected render(): TemplateResult {
-    if (!this._hass || !this.config) {
+    if (!this._hass || !this.config || !this._cardReady) {
       return html``;
     }
     this.createMoon();

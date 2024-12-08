@@ -34,6 +34,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   connectedCallback(): void {
     super.connectedCallback();
+    sessionStorage.removeItem('activeGraphEditor');
     void loadHaComponents();
     void stickyPreview();
     if (process.env.ROLLUP_WATCH === 'true') {
@@ -42,6 +43,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   disconnectedCallback(): void {
+    sessionStorage.removeItem('activeGraphEditor');
     super.disconnectedCallback();
   }
 
@@ -56,11 +58,11 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     if (_changedProperties.has('_activeTabIndex')) {
       if (this._activeTabIndex === 3) {
         this._activeGraphEditor = true;
-        this._toggleGraphEditor();
       } else {
         this._activeGraphEditor = false;
       }
-      this.setLocalStorageItem('activeGraphEditor', this._activeGraphEditor);
+      this._setToStorage('activeGraphEditor', this._activeGraphEditor);
+      this._toggleGraphEditor();
     }
   }
 
@@ -98,8 +100,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     return localize(string, this.selectedLanguage, search, replace);
   };
 
-  private setLocalStorageItem(key: string, value: any): void {
-    localStorage.setItem(key, JSON.stringify(value));
+  private _setToStorage(key: string, value: any): void {
+    sessionStorage.setItem(key, JSON.stringify(value));
   }
 
   private getLocation = () => {
@@ -506,7 +508,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
             <img src=${CUSTOM_BG[i]} class="bg-thumbnail" slot="label" />
             <ha-radio
               .checked=${this._config?.custom_background === CUSTOM_BG[i] ||
-              (this._config?.custom_background === undefined && i === 0)}
+              (this._config?.custom_background === undefined && i === null) ||
+              (this._config?.show_background && this._config?.custom_background === undefined && i === 0)}
               .value=${i}
               .configKey=${'custom_bg'}
               @change=${this._handleValueChange}
