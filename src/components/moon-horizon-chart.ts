@@ -42,7 +42,7 @@ export class LunarHorizonChart extends LitElement {
   @state() private _lastTime: string | null = null;
 
   protected async firstUpdated(): Promise<void> {
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 50));
     this.setupChart();
   }
 

@@ -24,7 +24,8 @@ export class LunarHorizonDynamic extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) moon!: Moon;
   @property({ attribute: false }) card!: LunarPhaseCard;
-  @property({ type: Number }) cardWidth: number = 0;
+
+  @state() private cardWidth: number = 500;
 
   @state() public fillColors!: FILL_COLORS;
 
@@ -48,8 +49,7 @@ export class LunarHorizonDynamic extends LitElement {
   }
 
   protected updated(_changedProperties: PropertyValues): void {
-    if (!this.card.config || !this.moon) return;
-    if (_changedProperties.has('cardWidth') && this.cardWidth > 0) {
+    if (_changedProperties.has('cardWidth')) {
       if (this.dynamicChart) {
         this.dynamicChart.resize(this.cardWidth, this.cardHeight);
       }
@@ -59,6 +59,7 @@ export class LunarHorizonDynamic extends LitElement {
   get cardHeight(): number {
     let height = this.cardWidth * 0.5;
     height = this.card.config.hide_header ? height : height - 48;
+    console.log('height dynamic', height);
     return height;
   }
 
@@ -325,7 +326,7 @@ export class LunarHorizonDynamic extends LitElement {
     };
     options.responsive = true;
     options.maintainAspectRatio = false;
-    options.resizeDelay = 50;
+    options.resizeDelay = 100;
     options.layout = layout;
     options.scales = scales;
     options.plugins = plugins;
