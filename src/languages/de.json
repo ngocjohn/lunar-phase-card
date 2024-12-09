@@ -57,25 +57,26 @@
         "currentTime": "Aktuelle Zeit",
         "common": {
             "now": "Jetzt"
-        }
+        },
+        "elevation": "Elevation"
     },
     "editor": {
         "viewConfig": {
-            "title": "Sprach- und Ansichtsmodus",
+            "title": "Sprache und Darstellung",
             "description": "Einstellung der Sprache und des Hintergrunds",
             "customBackground": {
-                "title": "Benutzerdefinierter Hintergrund",
-                "description": "Konfiguration für benutzerdefinierten Hintergrund festlegen"
+                "title": "Hintergrund",
+                "description": "Einstellung für den Wunsch-Hintergrund"
             }
         },
         "baseConfig": {
             "title": "Breiten- und Längengrad",
-            "description": "Breiten- und Längengradkonfiguration"
+            "description": "Einstellung des Breiten- und Längengrades"
         },
         "optionsConfig": {
-            "useDefault": "Systemeinstellungen verwenden",
+            "useDefault": "Systemeinstellung verwenden",
             "useEntity": "Entität verwenden",
-            "useCustom": "Benutzerdefinierte Einstellungen verwenden "
+            "useCustom": "Eigene Einstellung"
         },
         "fontOptions": {
             "title": "Schriftartanpassung",
@@ -86,8 +87,8 @@
                 "description": "Schrift der Überschrift anpassen"
             },
             "labelFontConfig": {
-                "title": "Labels",
-                "description": "Schrift der Labels anpassen"
+                "title": "Label",
+                "description": "Schrift der Label anpassen"
             },
             "headerFontSize": "Schriftgröße der Überschrift",
             "headerFontColor": "Schriftfarbe der Überschrift",
@@ -101,20 +102,20 @@
             "title": "Diagramm-Anpassung",
             "description": "Konfiguration für das Diagramm einstellen",
             "type": {
-                "title": "Grafiktyp",
-                "description": "Wählen Sie einen Grafiktyp aus"
+                "title": "Diagrammtyp",
+                "description": "Typ des Diagramms auswählen"
             },
             "visibility": {
                 "title": "Sichtbarkeitsoptionen",
-                "description": "Spezifische Elemente ausblenden oder anzeigen"
+                "description": "Einzelne Elemente aus- oder einblenden"
             },
             "customization": {
                 "title": "Anpassungsoptionen",
-                "description": "Passen Sie die Grafik an"
+                "description": "Details des Diagramms anpassen"
             }
         },
         "compactView": "Kompakte Ansicht",
-        "showBackground": "Hintergrund anzeigen",
+        "showBackground": "Hintergrund einblenden",
         "timeFormat": "12-Stunden-Zeitformat",
         "mileUnit": "Meilen als Maßeinheit",
         "hideHeader": "Header ausblenden",
@@ -134,7 +135,7 @@
             "yTicksPosition": "Position der Y-Beschriftung",
             "legendPosition": "Position der Legende",
             "legendAlign": "Ausrichtung der Legende",
-            "graphType": "Grafiktyp"
+            "graphType": "Diagrammtyp"
         }
     }
 }
