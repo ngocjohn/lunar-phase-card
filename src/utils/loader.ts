@@ -46,7 +46,6 @@ export const stickyPreview = () => {
     position: 'sticky',
     top: '0',
     padding: '0',
-    justifyItems: 'center',
   });
 };
 
