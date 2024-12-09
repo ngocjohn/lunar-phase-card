@@ -187,7 +187,6 @@ export function _handleOverflow(card: LunarPhaseCard): void {
   const headerEl = lpcHeader?.querySelector('.header-title') as HTMLElement;
   const titleEl = headerEl?.querySelector('h1') as HTMLElement;
   if (!headerEl || !titleEl) return;
-
   const clientWidth = headerEl.clientWidth;
   const scrollWidth = titleEl.scrollWidth;
   const overflow = scrollWidth > clientWidth;

@@ -71,9 +71,9 @@ export class LunarCalendarPopup extends LitElement {
           display: grid;
           grid-template-columns: repeat(7, 1fr);
           /* grid-template-rows: repeat(7, 1fr); */
-          padding: 0.5em;
+          padding: 0.3em;
           cursor: default;
-          gap: 2px 4px;
+          /* gap: 2px 4px; */
         }
         @media screen and (max-width: 800px) {
           #calendar-grid {
@@ -146,6 +146,9 @@ export class LunarCalendarPopup extends LitElement {
         <div class="calendar-header">
           ${renderNavButton(ICON.CLOSE, () => {
             this.card._calendarPopup = false;
+            if (this.card._calendarInfo) {
+              this.card._calendarInfo = false;
+            }
             this.viewDate = DateTime.local().startOf('month');
           })}
           <div class="calendar-header__year">

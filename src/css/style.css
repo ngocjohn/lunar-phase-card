@@ -106,7 +106,7 @@ ha-card>.loading[hidden] {
 }
 
 .lunar-card-header>.header-title[full] {
-  max-width: 100%;
+  max-width: calc(100% - 8px);
   padding-top: 12px;
 }
 
@@ -209,14 +209,13 @@ h1 {
 .moon-image {
   display: flex;
   width: 100%;
-  max-width: 27%;
+  max-width: 150px;
   transition: transform 0.5s;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
-  /* max-width: 135px; */
   aspect-ratio: 1;
-  margin: 8px;
+  padding: 8px;
   flex-shrink: 0;
   z-index: 4;
   height: fit-content;
@@ -227,9 +226,10 @@ h1 {
   max-width: 24%;
 }
 
-.moon-image[calendar] {
+/*
+.moon-image[no-header][calendar] {
   max-width: 35%;
-}
+} */
 
 .moon-image img[southern] {
   transform: scaleX(-1) scaleY(-1);
@@ -468,7 +468,7 @@ button.date-input-btn:hover {
   width: 100%;
   flex-direction: column;
   gap: 0.5rem;
-  margin-inline-start: 8px;
+  margin-inline: 8px;
 }
 
 

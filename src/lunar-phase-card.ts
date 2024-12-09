@@ -163,10 +163,10 @@ export class LunarPhaseCard extends LitElement {
   protected async firstUpdated(_changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(_changedProperties);
     this._handleFirstRender();
+    this.measureCard();
     await new Promise((resolve) => setTimeout(resolve, 0));
     _setEventListeners(this as any);
     this._computeStyles();
-    this.measureCard();
   }
 
   protected shouldUpdate(changedProps: PropertyValues): boolean {
@@ -211,6 +211,10 @@ export class LunarPhaseCard extends LitElement {
     return this._activeCard === PageType.CALENDAR;
   }
 
+  get _headerHidden(): boolean {
+    return this.config.hide_header || false;
+  }
+
   get _locale(): FrontendLocaleData {
     const locale = this._hass.locale;
     const timeFormat = this.config['12hr_format'] ? TimeFormat.am_pm : TimeFormat.twenty_four;
@@ -236,6 +240,10 @@ export class LunarPhaseCard extends LitElement {
     return this.config.default_card || PageType.BASE;
   }
 
+  get _isCompactMode(): boolean {
+    return this.config.compact_view || false;
+  }
+
   get isEditorPreview(): boolean {
     const parentElementClassPreview = this.offsetParent?.classList.contains('element-preview');
     return parentElementClassPreview || false;
@@ -252,15 +260,23 @@ export class LunarPhaseCard extends LitElement {
         this._activeCard = PageType.BASE;
         setTimeout(() => {
           this._activeCard = PageType.HORIZON;
-        }, 200);
+        }, 150);
         this._cardReady = true;
       } else {
         this._activeCard = this._defaultCard;
         this._cardReady = true;
       }
     } else {
-      this._activeCard = this._defaultCard;
-      this._cardReady = true;
+      if (PageType.HORIZON === this._defaultCard) {
+        this._activeCard = PageType.BASE;
+        setTimeout(() => {
+          this._activeCard = PageType.HORIZON;
+        }, 0);
+        this._cardReady = true;
+      } else {
+        this._activeCard = this._defaultCard;
+        this._cardReady = true;
+      }
     }
   }
 
@@ -296,11 +312,11 @@ export class LunarPhaseCard extends LitElement {
       return;
     }
     if (this._state !== MoonState.LOADING) {
-      console.log('Refreshing data');
+      // console.log('Refreshing data');
       this._state = MoonState.LOADING;
       setTimeout(() => {
         this._state = MoonState.READY;
-        console.log('Data refreshed');
+        // console.log('Data refreshed');
       }, LOADING_TIMEOUT);
     }
   }
@@ -399,15 +415,25 @@ export class LunarPhaseCard extends LitElement {
     const { moonPic } = this.moon.moonImage;
 
     const southernHemisphere = this.config.southern_hemisphere ?? false;
-
     return html` <div
       id="moon-image"
       class="moon-image"
+      ?no-header=${this.config.hide_header}
       ?calendar=${this._isCalendar}
       ?compact=${this.config.compact_view}
+      style=${this._computeMoonImageStyles()}
     >
       <img src=${moonPic} ?southern=${southernHemisphere} />
     </div>`;
+  }
+
+  private _computeMoonImageStyles() {
+    if (!this._activeCard || this._activeCard === PageType.HORIZON) return;
+    const activeCard = this._activeCard;
+    const headerOffset = this._headerHidden ? 48 : 96;
+    const width = this._cardWidth;
+    let moonWidth = activeCard === PageType.CALENDAR ? width * 0.5 - headerOffset : width / 3.5;
+    return styleMap({ maxWidth: `${moonWidth}px` });
   }
 
   private renderMoonData(): TemplateResult {
@@ -584,14 +610,15 @@ export class LunarPhaseCard extends LitElement {
   private _computeHeight() {
     if (!this._activeCard) return;
     const isCompact = this.config.compact_view;
-    const isHeaderHidden = this.config?.hide_header;
+    const isHeaderHidden = this._headerHidden;
     const width = this._cardWidth;
     const height = [PageType.BASE].includes(this._activeCard) && !isCompact && !isHeaderHidden ? width * 0.5 : '';
-    return styleMap({ minHeight: height ? `${height}px` : '' });
+    const justify = [PageType.BASE].includes(this._activeCard) && !isCompact && !isHeaderHidden ? 'space-between' : '';
+    return styleMap({ minHeight: height ? `${height}px` : '', justifyContent: justify });
   }
 
   private _computeClasses() {
-    const isHeaderHidden = this.config?.hide_header;
+    const isHeaderHidden = this.config?.hide_header || false;
     const reverse = this.config.moon_position === 'right';
     const compactHeader = Boolean(this.config.compact_view && this._activeCard === PageType.BASE);
     const dynamicGraph = this.config.graph_config?.graph_type === 'dynamic';
@@ -601,6 +628,7 @@ export class LunarPhaseCard extends LitElement {
       '--default-header': !compactHeader && !isHeaderHidden,
       '--horizon': this._activeCard === PageType.HORIZON && !dynamicGraph,
       '--dynamic-graph': this._activeCard === PageType.HORIZON && dynamicGraph,
+      '--no-header': isHeaderHidden,
     });
   }
 
