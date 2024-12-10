@@ -124,6 +124,7 @@
         "showCurrent": "Aktuelle Mondposition",
         "showLegend": "Legende einblenden",
         "showHighest": "Kulmination einblenden",
+        "calendarModal": "Kalender-Popup",
         "placeHolder": {
             "latitude": "Breitengrad eingeben",
             "longitude": "Längengrad eingeben",

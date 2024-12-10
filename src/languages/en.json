@@ -57,8 +57,7 @@
         "currentTime": "Current time",
         "common": {
             "now": "Now"
-        },
-        "elevation": "Elevation"
+        }
     },
     "editor": {
         "viewConfig": {
@@ -125,6 +124,7 @@
         "showCurrent": "Current Moon position",
         "showLegend": "Display legend",
         "showHighest": "Display highest Moon position",
+        "calendarModal": "Calendar popup",
         "placeHolder": {
             "latitude": "Enter latitude",
             "longitude": "Enter longitude",

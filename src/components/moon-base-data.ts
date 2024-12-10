@@ -56,6 +56,7 @@ export class LunarBaseData extends LitElement {
         .moon-phase-name {
           font-size: 1.5rem;
           padding-block: 1rem;
+          white-space: nowrap;
         }
       `,
       mainStyles,
@@ -122,7 +123,18 @@ export class LunarBaseData extends LitElement {
 
   private _renderPhaseName(): TemplateResult {
     if (!this.moon.config.hide_header) return html``;
-    return html` <div class="moon-phase-name">${this.moon.phaseName}</div> `;
+    return html` <div class="moon-phase-name" style=${this._computeFontSize()}>${this.moon.phaseName}</div> `;
+  }
+
+  private _computeFontSize() {
+    const parentEl = this.shadowRoot?.querySelector('.moon-phase-name') as HTMLElement;
+    if (!parentEl) return;
+    const parentWidth = parentEl.clientWidth;
+    const scrollWidth = parentEl.scrollWidth;
+    const fontSize = parseFloat(window.getComputedStyle(parentEl).fontSize);
+    const ratio = parentWidth / scrollWidth;
+    const newFontSize = fontSize * ratio;
+    return `font-size: ${newFontSize}px`;
   }
 
   private _chunkObject = (obj: MoonData, size: number): MoonDataItem => {

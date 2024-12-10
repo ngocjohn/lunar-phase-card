@@ -124,6 +124,7 @@
         "showCurrent": "Текущее положение Луны",
         "showLegend": "Показать легенду",
         "showHighest": "Показать высшее положение Луны",
+        "calendarModal": "Календарь popup",
         "placeHolder": {
             "latitude": "Введите широту",
             "longitude": "Введите долготу",

@@ -124,6 +124,7 @@
         "showCurrent": "Posisi Bulan Saat Ini",
         "showLegend": "Tampilkan legenda",
         "showHighest": "Tampilkan posisi Bulan tertinggi",
+        "calendarModal": "Popup kalender",
         "placeHolder": {
             "latitude": "Masukkan garis lintang",
             "longitude": "Masukkan garis bujur",

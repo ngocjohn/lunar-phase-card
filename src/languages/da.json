@@ -124,6 +124,7 @@
         "showCurrent": "Nuværende måneposition",
         "showLegend": "Vis legend",
         "showHighest": "Vis højeste Måneposition",
+        "calendarModal": "Kalender popup",
         "placeHolder": {
             "latitude": "Indtast breddegrad",
             "longitude": "Indtast længdegrad",
