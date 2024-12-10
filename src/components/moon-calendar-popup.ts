@@ -47,7 +47,7 @@ export class LunarCalendarPopup extends LitElement {
           justify-content: space-between;
           align-items: center;
           font-weight: 600;
-          font-size: 1.3rem;
+          font-size: initial;
         }
 
         .calendar-header__month {

@@ -370,8 +370,8 @@ export class LunarPhaseCard extends LitElement {
     `;
   }
 
-  private renderCalendarDialog(): TemplateResult | void {
-    if (!this.config.calendar_modal || !this._dialogOpen) return;
+  private renderCalendarDialog(): TemplateResult | typeof nothing {
+    if (!this.config.calendar_modal || !this._dialogOpen) return nothing;
     const isGridMode = this.layout === 'grid';
     return html`<dialog id="calendar-dialog" ?grid=${isGridMode}>
       <div class="dialog-content" style="max-width: ${this._cardWidth}px">
@@ -412,7 +412,7 @@ export class LunarPhaseCard extends LitElement {
     return html`
       <div class="lunar-card-header" id="lpc-header">
         <div class="header-title" ?full=${this.config.hide_header}>
-          <h1>${headerContent}</h1>
+          <span class="title">${headerContent}</span>
         </div>
         <div class="action-btns" ?hidden=${this.config.hide_header}>
           ${buttons.map(
@@ -529,15 +529,15 @@ export class LunarPhaseCard extends LitElement {
     </div>`;
 
     return html`
+      <lunar-star-field ._card=${this as any}></lunar-star-field>
+
       <div class="calendar-container">
         ${this.config.hide_header ? nothing : this.renderHeader()}
         <div class="calendar-wrapper">
           ${this.renderMoonImage()}${dateInput}
           <div class="calendar-info" show=${this._calendarInfo}>${this.renderMoonData()}</div>
         </div>
-        <div class="calendar-mini-popup" ?hidden=${!this._calendarPopup}>
-          <lunar-calendar-popup .card=${this as any} .moon=${this.moon}></lunar-calendar-popup>
-        </div>
+        <div class="calendar-mini-popup" ?hidden=${!this._calendarPopup}></div>
       </div>
     `;
   }
