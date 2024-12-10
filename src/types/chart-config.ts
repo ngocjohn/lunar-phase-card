@@ -37,7 +37,10 @@ export type ChartColors = {
 export type DynamicChartData = {
   chartData: {
     timeLabel: number;
-    moon: number;
+    moon: {
+      altitude: number;
+      azimuth: string;
+    };
   }[];
   times: {
     moon: number[];

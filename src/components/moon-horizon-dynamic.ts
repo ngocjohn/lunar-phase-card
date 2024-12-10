@@ -162,6 +162,8 @@ export class LunarHorizonDynamic extends LitElement {
     const ctx = this.shadowRoot!.getElementById('dynamic-chart') as HTMLCanvasElement;
     if (!ctx) return;
 
+    ctx.addEventListener('touchstart', this._onChartTouchStart.bind(this), { passive: false });
+    ctx.addEventListener('touchmove', this._onChartTouchStart.bind(this), { passive: false });
     ctx.addEventListener('touchend', this._onChartTouchEnd.bind(this));
 
     this.dynamicChart = new Chart(ctx, {
@@ -174,6 +176,9 @@ export class LunarHorizonDynamic extends LitElement {
     });
   }
 
+  private _onChartTouchStart(event: TouchEvent): void {
+    event.preventDefault();
+  }
   private _onChartTouchEnd(event: TouchEvent): void {
     const touch = event.changedTouches[0];
     const canvas = this.shadowRoot!.getElementById('dynamic-chart') as HTMLCanvasElement;
@@ -213,7 +218,7 @@ export class LunarHorizonDynamic extends LitElement {
     };
     const chartData = this.todayData.chartData;
     const labels = chartData.map((data) => formatTime(new Date(data.timeLabel), this._locale));
-    const moonData = chartData.map((data) => data.moon);
+    const moonData = chartData.map((data) => data.moon.altitude);
     const moonDataset = {
       label: 'Moon',
       data: moonData,
@@ -242,12 +247,14 @@ export class LunarHorizonDynamic extends LitElement {
 
   private _getChartOptions(): ChartOptions {
     const elevationLabel = this.card.localize('card.altitude');
+    const azimuthLabel = this.card.localize('card.azimuth');
     const formatedTitle = (time: number) => {
       const dateStr = formatDateShort(new Date(time), this._locale);
       return `${dateStr}`;
     };
     const chartData = this.todayData.chartData;
-    const values = [...Object.values(chartData).map((data) => data.moon)];
+    const direction = chartData.map((data) => data.moon.azimuth);
+    const values = [...Object.values(chartData).map((data) => data.moon.altitude)];
     const minMax = {
       suggestedMin: Math.round(Math.min(...values) - 10),
       suggestedMax: Math.round(Math.max(...values) + 30),
@@ -312,8 +319,13 @@ export class LunarHorizonDynamic extends LitElement {
           return formatedDate;
         },
         label: function (tooltipItem) {
+          const itemIndex = tooltipItem.parsed.x;
+          const directionValue = direction[itemIndex];
           const value = Math.round(tooltipItem.parsed.y);
-          return `${elevationLabel}: ${value}°`;
+          const azimuth = `${azimuthLabel}: ${directionValue}`;
+          const elevation = `${elevationLabel}: ${value}°`;
+          const body = [elevation, azimuth];
+          return body;
         },
       },
     };
@@ -361,7 +373,7 @@ export class LunarHorizonDynamic extends LitElement {
           chartArea: { bottom },
         } = chart;
         const xLabel = chart.scales.x.getPixelForValue(index);
-        const yLabel = chart.scales.y.getPixelForValue(chartData[index].moon);
+        const yLabel = chart.scales.y.getPixelForValue(chartData[index].moon.altitude);
         // const lineColor = hexToRgba(CHART_COLOR.STROKE_LINE, 0.7);
         ctx.font = '12px Arial';
         const width = ctx.measureText(nowText).width;
@@ -395,7 +407,7 @@ export class LunarHorizonDynamic extends LitElement {
           const xPosition = x.getPixelForValue(index) - emojiSize.width / 2;
           const totalHeight = emojiSize.actualBoundingBoxAscent + emojiSize.actualBoundingBoxDescent;
           const yPosition =
-            y.getPixelForValue(chartData[index].moon) + emojiSize.actualBoundingBoxAscent - totalHeight / 2;
+            y.getPixelForValue(chartData[index].moon.altitude) + emojiSize.actualBoundingBoxAscent - totalHeight / 2;
 
           ctx.save();
           ctx.font = emojiFontSize;
@@ -598,7 +610,7 @@ export class LunarHorizonDynamic extends LitElement {
 
     return {
       id: 'timesMarkers',
-      afterDatasetDraw: (chart: Chart) => {
+      beforeDatasetDraw: (chart: Chart) => {
         const moonTimes = this.moon.timeData.moon;
 
         drawMarkers(chart, moonTimes, 20);

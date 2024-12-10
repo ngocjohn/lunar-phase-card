@@ -220,7 +220,7 @@ export class LunarHorizonChart extends LitElement {
         // Hover on point
         onHover: (_event, elements) => {
           if (elements.length > 0) {
-            this.hoverOnChart = true;
+            // this.hoverOnChart = true;
             const element = elements[0];
             const xTimeNum = element.element.getProps(['raw'], true).raw.x;
             this.handlePointHover(xTimeNum);
@@ -234,7 +234,7 @@ export class LunarHorizonChart extends LitElement {
     // Add event listeners
     ctx.addEventListener('mouseout', () => {
       this.hoverTimeout = window.setTimeout(() => {
-        this.hoverOnChart = false;
+        // this.hoverOnChart = false;
         this._chart?.update();
       }, HOVER_TIMEOUT);
       // Reset the selected date
@@ -242,6 +242,8 @@ export class LunarHorizonChart extends LitElement {
         this.card.selectedDate = undefined;
       }
     });
+    ctx.addEventListener('touchstart', this._onChartTouchStart.bind(this), { passive: false });
+    ctx.addEventListener('touchmove', this._onChartTouchStart.bind(this), { passive: false });
     ctx.addEventListener('touchend', this._onChartTouchEnd.bind(this));
   }
 
@@ -368,10 +370,11 @@ export class LunarHorizonChart extends LitElement {
         borderWidth: (ctx: ScriptableLineSegmentContext) =>
           ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? 1.2 : 1,
       },
-      radius: () => (this.hoverOnChart ? 1.2 : 0),
+      // radius: () => (this.hoverOnChart ? 1.2 : 0),
       pointHoverRadius: 3,
       pointHoverBackgroundColor: secondaryTextColor,
       pointHoverBorderWidth: 2,
+      radius: 0,
       spanGaps: true,
     };
 
@@ -781,6 +784,10 @@ export class LunarHorizonChart extends LitElement {
       },
     };
   };
+
+  private _onChartTouchStart(event: TouchEvent): void {
+    event.preventDefault();
+  }
 
   private _onChartTouchEnd(event: TouchEvent): void {
     const touch = event.changedTouches[0];
