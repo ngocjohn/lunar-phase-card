@@ -21,7 +21,7 @@ ha-card {
   overflow: hidden;
   display: flex;
   width: 100%;
-  height: auto;
+  height: fit-content;
   flex-direction: column;
   background-color: var(--card-background-color);
   letter-spacing: 0.5px;
@@ -37,7 +37,7 @@ ha-card.--background {
   background-repeat: no-repeat;
   background-image: var(--lunar-background-image);
   transition: all 0.5s ease;
-  place-content: space-between;
+  /* place-content: space-between; */
   --primary-text-color: var(--lunar-card-label-font-color, #e1e1e1);
   --swiper-theme-color: var(--lunar-card-label-font-color, #e1e1e1);
 }
@@ -147,20 +147,20 @@ ha-card>.loading[hidden] {
 
 
 
-ha-card.--background h1,
+ha-card.--background .title,
 ha-card.--background .moon-phase-name {
   color: var(--lunar-card-header-font-color, #e1e1e1);
   /* text-shadow: 2px 2px 4px var(--card-background-color); */
 }
 
-.--default-header h1 {
-  margin-left: var(--lunar-card-padding);
+.--default-header .title {
+  padding-left: var(--lunar-card-padding);
 }
 
-h1 {
+.title {
   color: var(--lunar-card-header-font-color, var(--primary-text-color));
   font-family: var(--ha-card-header-font-family, inherit);
-  display: block;
+  display: inline-block;
   margin-block-start: 0px;
   margin-block-end: 0px;
   font-weight: 400;
@@ -168,9 +168,6 @@ h1 {
   font-size: var(--lunar-card-header-font-size, x-large);
   line-height: 120%;
 }
-
-
-
 
 
 .btn-action {
@@ -204,6 +201,7 @@ h1 {
   font-size: var(--lunar-card-label-font-size, 14px);
   text-transform: var(--lunar-card-label-text-transform, none);
   transition: all 300ms ease-in-out;
+  position: relative;
 }
 
 
