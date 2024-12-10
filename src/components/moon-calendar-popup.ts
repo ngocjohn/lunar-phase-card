@@ -46,7 +46,7 @@ export class LunarCalendarPopup extends LitElement {
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
-          font-weight: 600;
+          /* font-weight: 600; */
           font-size: initial;
         }
 
