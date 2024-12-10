@@ -124,6 +124,7 @@
         "showCurrent": "Posizione attuale della Luna",
         "showLegend": "Mostra leggenda",
         "showHighest": "Mostra la posizione più alta della Luna",
+        "calendarModal": "Popup calendario",
         "placeHolder": {
             "latitude": "Inserisci Latitudine",
             "longitude": "Inserisci Longitudine",

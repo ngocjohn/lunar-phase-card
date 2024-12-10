@@ -43,6 +43,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   mile_unit?: boolean;
   number_decimals?: number;
   hide_header?: boolean;
+  calendar_modal?: boolean;
   default_card?: PageType.BASE | PageType.CALENDAR | PageType.HORIZON;
   selected_language: string;
   moon_position?: 'left' | 'right';

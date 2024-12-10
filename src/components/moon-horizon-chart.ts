@@ -46,12 +46,31 @@ export class LunarHorizonChart extends LitElement {
     this.setupChart();
   }
 
-  protected shouldUpdate(_changedProperties: PropertyValues): boolean {
+  protected updated(_changedProperties: PropertyValues): void {
     if (_changedProperties.has('cardWidth')) {
-      this._chart?.resize();
+      if (this._chart) {
+        this._chart.resize(this.cardWidth, this.cardHeight);
+      }
     }
-    return true;
   }
+
+  // protected shouldUpdate(_changedProperties: PropertyValues): boolean {
+  //   if (_changedProperties.has('moon')) {
+  //     if (this._chart) {
+  //       this._chart.data = this.chartData;
+  //       this._chart.update('none');
+  //     }
+  //   }
+  //   return true;
+  // }
+
+  get cardHeight(): number {
+    let height = this.cardWidth * 0.5 - 96;
+    height = this.card.config.hide_header ? height + 48 : height;
+
+    return height;
+  }
+
   static get styles(): CSSResultGroup {
     return [
       styles,
@@ -198,15 +217,6 @@ export class LunarHorizonChart extends LitElement {
           },
         },
 
-        onResize: () => {
-          const width = this.cardWidth;
-          const height = this.cardWidth / 2;
-          if (this._chart) {
-            this._chart.canvas.width = width;
-            this._chart.canvas.height = height;
-            this._chart.update();
-          }
-        },
         // Hover on point
         onHover: (_event, elements) => {
           if (elements.length > 0) {
@@ -236,10 +246,17 @@ export class LunarHorizonChart extends LitElement {
   }
 
   protected render(): TemplateResult {
+    const dataContainer = this.renderDataContainer();
     return html`
       <div class="moon-horizon">
-        <canvas id="moonPositionChart" width="${this.cardWidth}"></canvas>
+        <canvas id="moonPositionChart" width="${this.cardWidth}" height="${this.cardHeight}"></canvas>
       </div>
+      ${dataContainer}
+    `;
+  }
+
+  private renderDataContainer(): TemplateResult {
+    return html`
       <div class="moon-data-header">
         ${this.renderHeaderTime()}
         <ha-icon-button
@@ -397,8 +414,8 @@ export class LunarHorizonChart extends LitElement {
     // Scales
     const scales = {} as ScaleOptions;
     scales['y'] = {
-      suggestedMax: sugestedYMax + 30,
-      suggestedMin: sugestedYMin > -60 ? -60 : sugestedYMin,
+      suggestedMin: sugestedYMin,
+      suggestedMax: sugestedYMax,
       ticks: {
         ...ticksOptions,
         display: graphConfig?.y_ticks || false,
@@ -432,18 +449,15 @@ export class LunarHorizonChart extends LitElement {
     const plugins: ChartOptions['plugins'] = {};
 
     plugins['legend'] = {
-      display: graphConfig?.show_legend ?? true,
+      display: false,
       align: graphConfig?.legend_align || 'center',
       position: graphConfig?.legend_position || 'bottom',
       labels: {
         usePointStyle: false,
         boxWidth: 0,
         boxHeight: 0,
-        padding: 10,
+        padding: 4,
         color: secondaryTextColor,
-        font: {
-          size: 14,
-        },
       },
     };
 
@@ -703,7 +717,7 @@ export class LunarHorizonChart extends LitElement {
 
             const yPosition = y.getPixelForValue(0);
 
-            const lineOffset = isUp ? Math.round((yPosition - top) / 3) : Math.round((bottom - yPosition) / 2);
+            const lineOffset = isUp ? Math.round((yPosition - top) / 4) : Math.round((bottom - yPosition) / 2);
             const maxTextWidth = getMaxValueText(ctx, isUp ? 'Rise' : 'Set', formatedTime, direction);
 
             let textAlign: CanvasTextAlign = 'start';
@@ -754,16 +768,16 @@ export class LunarHorizonChart extends LitElement {
       id: 'expandChartArea',
       beforeDraw: (chart: Chart) => {
         chart.chartArea.left = 0;
-        chart.chartArea.right = chart.width;
+        chart.chartArea.right = this.cardWidth;
         chart.chartArea.top = 0;
-        chart.chartArea.bottom = chart.height;
+        chart.chartArea.bottom = this.cardHeight;
       },
 
       afterUpdate: (chart: Chart) => {
         chart.chartArea.left = 0;
-        chart.chartArea.right = chart.width;
+        chart.chartArea.right = this.cardWidth;
         chart.chartArea.top = 0;
-        chart.chartArea.bottom = chart.height;
+        chart.chartArea.bottom = this.cardHeight;
       },
     };
   };

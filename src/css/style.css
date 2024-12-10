@@ -9,6 +9,7 @@
   --lunar-card-label-font-size: 14px;
 }
 
+
 *,
 *::before,
 *::after {
@@ -20,7 +21,7 @@ ha-card {
   overflow: hidden;
   display: flex;
   width: 100%;
-  height: auto;
+  height: fit-content;
   flex-direction: column;
   background-color: var(--card-background-color);
   letter-spacing: 0.5px;
@@ -36,7 +37,7 @@ ha-card.--background {
   background-repeat: no-repeat;
   background-image: var(--lunar-background-image);
   transition: all 0.5s ease;
-  place-content: space-between;
+  /* place-content: space-between; */
   --primary-text-color: var(--lunar-card-label-font-color, #e1e1e1);
   --swiper-theme-color: var(--lunar-card-label-font-color, #e1e1e1);
 }
@@ -106,7 +107,7 @@ ha-card>.loading[hidden] {
 }
 
 .lunar-card-header>.header-title[full] {
-  max-width: calc(100% - 8px);
+  /* max-width: calc(100% - 8px); */
   padding-top: 12px;
 }
 
@@ -146,20 +147,20 @@ ha-card>.loading[hidden] {
 
 
 
-ha-card.--background h1,
+ha-card.--background .title,
 ha-card.--background .moon-phase-name {
   color: var(--lunar-card-header-font-color, #e1e1e1);
   /* text-shadow: 2px 2px 4px var(--card-background-color); */
 }
 
-.--default-header h1 {
-  margin-left: var(--lunar-card-padding);
+.--default-header .title {
+  padding-left: var(--lunar-card-padding);
 }
 
-h1 {
+.title {
   color: var(--lunar-card-header-font-color, var(--primary-text-color));
   font-family: var(--ha-card-header-font-family, inherit);
-  display: block;
+  display: inline-block;
   margin-block-start: 0px;
   margin-block-end: 0px;
   font-weight: 400;
@@ -167,9 +168,6 @@ h1 {
   font-size: var(--lunar-card-header-font-size, x-large);
   line-height: 120%;
 }
-
-
-
 
 
 .btn-action {
@@ -203,6 +201,7 @@ h1 {
   font-size: var(--lunar-card-label-font-size, 14px);
   text-transform: var(--lunar-card-label-text-transform, none);
   transition: all 300ms ease-in-out;
+  position: relative;
 }
 
 
@@ -210,6 +209,7 @@ h1 {
   display: flex;
   width: 100%;
   max-width: 150px;
+  min-width: 100px;
   transition: transform 0.5s;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -217,7 +217,7 @@ h1 {
   aspect-ratio: 1;
   padding: 8px;
   flex-shrink: 0;
-  z-index: 4;
+  /* z-index: 4; */
   height: fit-content;
   align-self: center;
 }
@@ -469,6 +469,7 @@ button.date-input-btn:hover {
   flex-direction: column;
   gap: 0.5rem;
   margin-inline: 8px;
+  overflow: hidden;
 }
 
 
@@ -533,4 +534,64 @@ button.date-input-btn:hover {
 .fade-in {
   animation: fadeIn 0.3s ease;
   position: relative;
+}
+
+@keyframes dialog-animation {
+  0% {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in {
+  animation: dialog-animation 0.5s ease-in-out;
+  animation-iteration-count: 1;
+}
+
+dialog#calendar-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* background-color: var(--mdc-dialog-scrim-color, rgba(0, 0, 0, .32)); */
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  padding: 0;
+}
+
+dialog#calendar-dialog[grid] {
+  position: fixed !important;
+}
+
+
+dialog#calendar-dialog .dialog-content {
+  display: block;
+  width: 100%;
+  justify-content: center;
+  /* aspect-ratio: 1; */
+  flex-direction: row;
+}
+
+@media screen and (max-width: 800px) {
+  dialog#calendar-dialog {
+    position: fixed;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  dialog#calendar-dialog .dialog-content {
+    min-width: 450px;
+  }
 }

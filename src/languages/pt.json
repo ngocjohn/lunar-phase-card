@@ -124,6 +124,7 @@
         "showCurrent": "Posição atual da Lua",
         "showLegend": "Mostrar legenda",
         "showHighest": "Exibir a posição mais alta da Lua",
+        "calendarModal": "Calendário popup",
         "placeHolder": {
             "latitude": "Inserir latitude",
             "longitude": "Inserir longitude",
