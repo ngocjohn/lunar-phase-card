@@ -406,8 +406,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       { label: 'xTicks', configValue: 'x_ticks' },
       { label: 'showTime', configValue: 'show_time' },
       { label: 'showCurrent', configValue: 'show_current' },
-      { label: 'showLegend', configValue: 'show_legend' },
-      { label: 'showHighest', configValue: 'show_highest' },
+      // { label: 'showLegend', configValue: 'show_legend' },
+      // { label: 'showHighest', configValue: 'show_highest' },
     ];
 
     const checkBoxes = html`
@@ -430,8 +430,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     const graphType = [{ items: ['default', 'dynamic'], label: 'graphType', value: 'graph_type' }];
 
     const comboBoxes = [
-      { items: ['top', 'bottom'], label: 'legendPosition', value: 'legend_position' },
-      { items: ['start', 'center', 'end'], label: 'legendAlign', value: 'legend_align' },
+      // { items: ['top', 'bottom'], label: 'legendPosition', value: 'legend_position' },
+      // { items: ['start', 'center', 'end'], label: 'legendAlign', value: 'legend_align' },
       { items: ['left', 'right'], label: 'yTicksPosition', value: 'y_ticks_position' },
     ];
 

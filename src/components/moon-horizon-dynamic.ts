@@ -94,6 +94,7 @@ export class LunarHorizonDynamic extends LitElement {
           box-sizing: border-box;
           border-radius: 24px;
           will-change: backdrop-filter;
+          margin: -2px;
         }
 
         #dynamic-chart {

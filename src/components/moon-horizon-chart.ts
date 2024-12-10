@@ -449,7 +449,7 @@ export class LunarHorizonChart extends LitElement {
     const plugins: ChartOptions['plugins'] = {};
 
     plugins['legend'] = {
-      display: graphConfig?.show_legend || false,
+      display: false,
       align: graphConfig?.legend_align || 'center',
       position: graphConfig?.legend_position || 'bottom',
       labels: {
