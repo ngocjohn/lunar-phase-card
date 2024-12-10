@@ -287,13 +287,19 @@ export class Moon {
     const stepSize = step * 60 * 1000;
     const timeRange = 24 * 60 * 60 * 1000;
     const steps = timeRange / stepSize;
-    const result: { timeLabel: number; moon: number }[] = [];
+    const result: { timeLabel: number; moon: { altitude: number; azimuth: string } }[] = [];
     for (let i = 0; i < steps; i++) {
       const time = new Date(startTime.getTime() + i * stepSize);
-      const moonPosition = SunCalc.getMoonPosition(time, location.latitude, location.longitude).altitudeDegrees;
+      const { altitudeDegrees, azimuthDegrees } = SunCalc.getMoonPosition(time, location.latitude, location.longitude);
+      const azimuth = this.formatNumber(azimuthDegrees);
+      const cardinal = this.convertCardinal(azimuthDegrees);
+      const direction = `${azimuth}° ${cardinal}`;
       result.push({
         timeLabel: time.getTime(),
-        moon: Number(moonPosition.toFixed(2)),
+        moon: {
+          altitude: Number(altitudeDegrees.toFixed(2)),
+          azimuth: direction,
+        },
       });
     }
     return result;
