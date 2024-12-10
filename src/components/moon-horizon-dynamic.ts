@@ -24,8 +24,7 @@ export class LunarHorizonDynamic extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) moon!: Moon;
   @property({ attribute: false }) card!: LunarPhaseCard;
-
-  @state() private cardWidth: number = 500;
+  @property({ type: Number }) public cardWidth!: number;
 
   @state() public fillColors!: FILL_COLORS;
 
@@ -49,6 +48,7 @@ export class LunarHorizonDynamic extends LitElement {
   }
 
   protected updated(_changedProperties: PropertyValues): void {
+    if (!this.card.config || !this.moon) return;
     if (_changedProperties.has('cardWidth')) {
       if (this.dynamicChart) {
         this.dynamicChart.resize(this.cardWidth, this.cardHeight);
@@ -59,7 +59,6 @@ export class LunarHorizonDynamic extends LitElement {
   get cardHeight(): number {
     let height = this.cardWidth * 0.5;
     height = this.card.config.hide_header ? height : height - 48;
-    console.log('height dynamic', height);
     return height;
   }
 
@@ -348,7 +347,7 @@ export class LunarHorizonDynamic extends LitElement {
     const index = timeLabels.indexOf(closestTime);
     return {
       id: 'nowLine',
-      beforeDatasetsDraw: (chart: Chart) => {
+      beforeDatasetDraw: (chart: Chart) => {
         const now = this._date;
         const closestTime = timeLabels.reduce((a, b) =>
           Math.abs(b - now.getTime()) < Math.abs(a - now.getTime()) ? b : a
@@ -383,7 +382,7 @@ export class LunarHorizonDynamic extends LitElement {
         ctx.restore();
       },
 
-      afterDatasetsDraw: (chart: Chart) => {
+      afterDatasetDraw: (chart: Chart) => {
         const dataSet = chart.getDatasetMeta(0);
         const {
           ctx,
@@ -609,7 +608,7 @@ export class LunarHorizonDynamic extends LitElement {
   private _expandChartArea = (): Plugin => {
     return {
       id: 'expandChartArea',
-      beforeRender: (chart: Chart) => {
+      afterRender: (chart: Chart) => {
         chart.chartArea.right = this.cardWidth;
         chart.chartArea.bottom = this.cardHeight;
       },

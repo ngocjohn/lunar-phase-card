@@ -42,6 +42,7 @@ export class LunarPhaseCard extends LitElement {
   @state() private _hass!: HomeAssistant;
   @property({ attribute: false }) config!: LunarPhaseCardConfig;
   @property({ attribute: false }) moon!: Moon;
+  @property({ type: String }) public layout?: string;
   @state() _activeCard: PageType | null = null;
   @state() selectedDate: Date | undefined;
 
@@ -59,10 +60,13 @@ export class LunarPhaseCard extends LitElement {
   @state() private _cardWidth: number = 0;
   @state() private _cardHeight: number = 0;
 
+  @state() public _dialogOpen!: boolean;
+
   @query('lunar-base-data') _data!: LunarBaseData;
   @query('lunar-horizon-chart') _moonHorizon!: LunarHorizonChart;
   @query('lunar-horizon-dynamic') _moonHorizonDynamic!: LunarHorizonDynamic;
   @query('moon-star-field') _starField!: LunarStarField;
+  @query('#calendar-dialog') _calendarDialog!: HTMLDialogElement;
 
   constructor() {
     super();
@@ -110,7 +114,6 @@ export class LunarPhaseCard extends LitElement {
     this.clearRefreshInterval();
     this.detachResizeObserver();
     this._connected = false;
-
     this._resizeInitiated = false;
     document.removeEventListener('toggle-graph-editor', (ev) => this._handleEditorEvent(ev as CustomEvent));
     super.disconnectedCallback();
@@ -193,6 +196,11 @@ export class LunarPhaseCard extends LitElement {
         _handleOverflow(this as any);
       }
     }
+    if (changedProps.has('_dialogOpen')) {
+      console.log('dialog open', this._dialogOpen);
+      this._attachEventListeners();
+      this.updateBodyScroll();
+    }
   }
 
   get hass(): HomeAssistant {
@@ -250,17 +258,19 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private _handleFirstRender() {
-    if (isEditorMode(this)) {
+    if (this.isEditorPreview) {
       this._cardReady = false;
       const activeGraphEditor = this.isGraphEditor;
       if (activeGraphEditor && this._activeCard !== PageType.HORIZON) {
         this._activeCard = PageType.HORIZON;
         this._cardReady = true;
       } else if (!activeGraphEditor && this._defaultCard === PageType.HORIZON) {
-        this._activeCard = PageType.BASE;
         setTimeout(() => {
-          this._activeCard = PageType.HORIZON;
-        }, 150);
+          this._activeCard = PageType.BASE;
+          setTimeout(() => {
+            this._activeCard = PageType.HORIZON;
+          }, 150);
+        }, 0);
         this._cardReady = true;
       } else {
         this._activeCard = this._defaultCard;
@@ -338,7 +348,6 @@ export class LunarPhaseCard extends LitElement {
     const card = !this._activeCard ? this._defaultCard : this._activeCard;
     const header = !this.config.compact_view || [PageType.HORIZON].includes(card) ? this.renderHeader() : nothing;
     const shouldAddPadding = [PageType.BASE].includes(card) && !this.config.compact_view;
-
     return html`
       <ha-card class=${this._computeClasses()} style=${this._computeHeight()}>
         <ha-circular-progress
@@ -357,7 +366,18 @@ export class LunarPhaseCard extends LitElement {
         </div>
         <lunar-star-field ._card=${this as any}></lunar-star-field>
       </ha-card>
+      ${this.renderCalendarDialog()}
     `;
+  }
+
+  private renderCalendarDialog(): TemplateResult | void {
+    if (!this.config.calendar_modal || !this._dialogOpen) return;
+    const isGridMode = this.layout === 'grid';
+    return html`<dialog id="calendar-dialog" ?grid=${isGridMode}>
+      <div class="dialog-content" style="max-width: ${this._cardWidth}px">
+        <lunar-calendar-popup .card=${this as any} .moon=${this.moon}></lunar-calendar-popup>
+      </div>
+    </dialog>`;
   }
 
   private renderBaseCard(): TemplateResult | void {
@@ -425,15 +445,6 @@ export class LunarPhaseCard extends LitElement {
     >
       <img src=${moonPic} ?southern=${southernHemisphere} />
     </div>`;
-  }
-
-  private _computeMoonImageStyles() {
-    if (!this._activeCard || this._activeCard === PageType.HORIZON) return;
-    const activeCard = this._activeCard;
-    const headerOffset = this._headerHidden ? 48 : 96;
-    const width = this._cardWidth;
-    let moonWidth = activeCard === PageType.CALENDAR ? width * 0.5 - headerOffset : width / 3.5;
-    return styleMap({ maxWidth: `${moonWidth}px` });
   }
 
   private renderMoonData(): TemplateResult {
@@ -532,14 +543,42 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private _handleCalendarPopup() {
-    if (!this._calendarInfo) {
-      this._calendarInfo = true;
-      setTimeout(() => {
-        this._calendarPopup = !this._calendarPopup;
-      }, 100);
+    if (this.config.calendar_modal) {
+      this._dialogOpen = !this._dialogOpen;
     } else {
-      this._calendarPopup = !this._calendarPopup;
+      if (!this._calendarInfo) {
+        this._calendarInfo = true;
+        setTimeout(() => {
+          this._calendarPopup = !this._calendarPopup;
+        }, 100);
+      } else {
+        this._calendarPopup = !this._calendarPopup;
+      }
     }
+  }
+
+  private _attachEventListeners() {
+    const dialog = this.shadowRoot?.getElementById('calendar-dialog') as HTMLDialogElement;
+    if (!dialog) return;
+    const dialogContent = dialog.querySelector('.dialog-content');
+    if (!dialogContent) return;
+    dialogContent.classList.toggle('slide-in');
+    console.log('dialog', dialog);
+    dialog.addEventListener('click', (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target === dialog) {
+        this._dialogOpen = false;
+      }
+    });
+  }
+  private updateBodyScroll(): void {
+    const body = document.querySelector('body') as HTMLElement;
+    if (this._dialogOpen) {
+      body.style.overflow = 'hidden';
+    } else {
+      body.style.overflow = '';
+    }
+    this.requestUpdate();
   }
 
   private renderHorizon(): TemplateResult {
@@ -617,6 +656,15 @@ export class LunarPhaseCard extends LitElement {
     return styleMap({ minHeight: height ? `${height}px` : '', justifyContent: justify });
   }
 
+  private _computeMoonImageStyles() {
+    if (!this._activeCard || this._activeCard === PageType.HORIZON) return;
+    const activeCard = this._activeCard;
+    const headerOffset = this._headerHidden ? 48 : 96;
+    const width = this._cardWidth;
+    let moonWidth = activeCard === PageType.CALENDAR ? width * 0.5 - headerOffset : width / 3.5;
+    return styleMap({ maxWidth: `${moonWidth}px` });
+  }
+
   private _computeClasses() {
     const isHeaderHidden = this.config?.hide_header || false;
     const reverse = this.config.moon_position === 'right';
@@ -664,7 +712,7 @@ export class LunarPhaseCard extends LitElement {
   }
 
   public getCardSize(): number {
-    return 4;
+    return 2;
   }
 }
 

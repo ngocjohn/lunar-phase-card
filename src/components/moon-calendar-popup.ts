@@ -25,7 +25,7 @@ export class LunarCalendarPopup extends LitElement {
       styles,
       css`
         #lunar-calendar {
-          max-width: 500px;
+          /* max-width: 500px; */
           margin: 0 auto;
           backdrop-filter: blur(10px);
           background: var(--ha-card-background-color, var(--secondary-background-color));
@@ -49,6 +49,7 @@ export class LunarCalendarPopup extends LitElement {
           font-weight: 600;
           font-size: 1.3rem;
         }
+
         .calendar-header__month {
           display: flex;
           align-items: center;
@@ -74,11 +75,6 @@ export class LunarCalendarPopup extends LitElement {
           padding: 0.3em;
           cursor: default;
           /* gap: 2px 4px; */
-        }
-        @media screen and (max-width: 800px) {
-          #calendar-grid {
-            grid-template-rows: auto;
-          }
         }
         .day-of-week {
           text-align: center;
@@ -128,6 +124,19 @@ export class LunarCalendarPopup extends LitElement {
             color: var(--accent-color);
           }
         }
+        @media screen and (max-width: 800px) {
+          #calendar-grid {
+            grid-template-rows: auto;
+          }
+          .calendar-header {
+            font-size: 1rem;
+            font-weight: 400;
+          }
+          .calendar-day > .day-symbol {
+            font-size: 1rem;
+            padding: 0;
+          }
+        }
       `,
     ];
   }
@@ -145,10 +154,7 @@ export class LunarCalendarPopup extends LitElement {
       <div id="lunar-calendar" class=${backgroundClass}>
         <div class="calendar-header">
           ${renderNavButton(ICON.CLOSE, () => {
-            this.card._calendarPopup = false;
-            if (this.card._calendarInfo) {
-              this.card._calendarInfo = false;
-            }
+            this._handleClose();
             this.viewDate = DateTime.local().startOf('month');
           })}
           <div class="calendar-header__year">
@@ -203,6 +209,17 @@ export class LunarCalendarPopup extends LitElement {
     `;
   }
 
+  private _handleClose(): void {
+    if (this.card.config.calendar_modal) {
+      this.card._dialogOpen = false;
+    } else {
+      this.card._calendarPopup = false;
+      if (this.card._calendarInfo) {
+        this.card._calendarInfo = false;
+      }
+    }
+  }
+
   private _setEventListeners(): void {
     const grid = this.shadowRoot?.getElementById('calendar-grid');
     if (grid) {
@@ -232,7 +249,7 @@ export class LunarCalendarPopup extends LitElement {
     this.card.selectedDate = date;
     setTimeout(() => {
       this.viewDate = DateTime.local().startOf('month');
-      this.card._calendarPopup = false;
+      this._handleClose();
     }, 300);
   }
 

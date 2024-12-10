@@ -124,6 +124,7 @@
         "showCurrent": "Position actuelle de la Lune",
         "showLegend": "Afficher la légende",
         "showHighest": "Afficher la position la plus haute de la Lune",
+        "calendarModal": "Calendrier popup",
         "placeHolder": {
             "latitude": "Entrer latitude",
             "longitude": "Entrer longitude",

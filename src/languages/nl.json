@@ -124,6 +124,7 @@
         "showCurrent": "Huidige positie van de Maan",
         "showLegend": "Toon legenda",
         "showHighest": "Toon hoogste Maanpositie",
+        "calendarModal": "Kalender popup",
         "placeHolder": {
             "latitude": "Enter breedtegraad",
             "longitude": "Enter lengtegraad",

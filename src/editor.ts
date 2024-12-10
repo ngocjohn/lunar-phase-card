@@ -329,6 +329,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       { label: 'timeFormat', configValue: '12hr_format' },
       { label: 'mileUnit', configValue: 'mile_unit' },
       { label: 'hideHeader', configValue: 'hide_header' },
+      { label: 'calendarModal', configValue: 'calendar_modal' },
     ];
 
     const viewOptions = html`

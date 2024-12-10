@@ -124,6 +124,7 @@
         "showCurrent": "Aktuálna poloha Mesiaca",
         "showLegend": "Zobraziť legendu",
         "showHighest": "Zobraziť najvyššiu polohu Mesiaca",
+        "calendarModal": "Kalendárové popup",
         "placeHolder": {
             "latitude": "Zadajte zemepisnú šírku",
             "longitude": "Zadajte zemepisnú dĺžku",
