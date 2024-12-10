@@ -134,6 +134,7 @@ https://github.com/ngocjohn/lunar-phase-card
 | `12hr_format`       | boolean | Optional    | Whether to display time in 12-hour format. Defaults to `false`.       |
 | `mile_unit`         | boolean | Optional    | Whether to display distance in miles. Defaults to `false`.            |
 | `hide_header`       | boolean | Optional    | Whether to hide the header of the card. Defaults to `false`.          |
+| `calendar_modal`    | boolean | Optional    | Whether to use calendar as modal popup. Defaults to `false`.          |
 | `default_card`      | string  | Optional    | Default view of the card. Options: `base`, `calendar`, `horizon`. Defaults to `base`. |
 | `moon_position`     | string  | Optional    | Position of the moon image. Options: `left`, `right`. Defaults to `left`. |
 | `southern_hemisphere` | boolean | Optional  | Adjusts the moon orientation for southern hemisphere users. Defaults to `false`. |
@@ -164,12 +165,9 @@ https://github.com/ngocjohn/lunar-phase-card
 | `x_ticks`             | boolean | Whether to show x-axis ticks. Defaults to `false`.                        |
 | `show_time`           | boolean | Whether to show time labels on the chart. Defaults to `true`.             |
 | `show_current`        | boolean | Whether to show the current moon position. Defaults to `true`.            |
-| `show_legend`         | boolean | Whether to show the chart legend. Defaults to `true`.                     |
 | `show_highest`        | boolean | Whether to show the highest moon point. Defaults to `true`.               |
 | `y_ticks_position`    | string  | Position of the y-axis ticks. Options: `left`, `right`. Defaults to `left`.|
 | `y_ticks_step_size`   | number  | Step size for y-axis ticks. Defaults to `30`.                             |
-| `legend_position`     | string  | Position of the legend. Options: `top`, `bottom`. Defaults to `top`.      |
-| `legend_align`        | string  | Alignment of the legend. Options: `start`, `center`, `end`. Defaults to `center`. |
 | `time_step_size`      | number  | Step size for time labels. Defaults to `30`.                              |
 
 
@@ -189,6 +187,7 @@ compact_view: false
 12hr_format: false
 mile_unit: false
 hide_header: false
+calendar_modal: false
 default_card: base
 moon_position: left
 southern_hemisphere: false
@@ -198,12 +197,9 @@ graph_config:
   x_ticks: false
   show_time: true
   show_current: true
-  show_legend: true
   show_highest: true
   y_ticks_position: left
   y_ticks_step_size: 30
-  legend_position: top
-  legend_align: center
   time_step_size: 30
   graph_type: default
 font_customize:
