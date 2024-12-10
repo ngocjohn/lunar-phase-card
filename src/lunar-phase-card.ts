@@ -651,8 +651,9 @@ export class LunarPhaseCard extends LitElement {
     const isCompact = this.config.compact_view;
     const isHeaderHidden = this._headerHidden;
     const width = this._cardWidth;
-    const height = [PageType.BASE].includes(this._activeCard) && !isCompact && !isHeaderHidden ? width * 0.5 : '';
-    const justify = [PageType.BASE].includes(this._activeCard) && !isCompact && !isHeaderHidden ? 'space-between' : '';
+    const height = [PageType.BASE].includes(this._activeCard) && !isCompact ? width * 0.5 : '';
+    const justify =
+      [PageType.BASE].includes(this._activeCard) && !isCompact && !isHeaderHidden ? 'space-between' : 'center';
     return styleMap({ minHeight: height ? `${height}px` : '', justifyContent: justify });
   }
 
