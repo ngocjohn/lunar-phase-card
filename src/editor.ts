@@ -205,7 +205,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
           <div class="comboboxes">${radios} ${southern}</div>
         `}`;
 
-    return this.contentTemplate('baseConfig', 'baseConfig', 'mdi:cog', contentWrapp);
+    return this.contentTemplate('baseConfig', 'baseConfig', 'mdi:longitude', contentWrapp);
   }
 
   private _renderLocation(): TemplateResult {

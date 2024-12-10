@@ -529,15 +529,15 @@ export class LunarPhaseCard extends LitElement {
     </div>`;
 
     return html`
-      <lunar-star-field ._card=${this as any}></lunar-star-field>
-
       <div class="calendar-container">
         ${this.config.hide_header ? nothing : this.renderHeader()}
         <div class="calendar-wrapper">
           ${this.renderMoonImage()}${dateInput}
           <div class="calendar-info" show=${this._calendarInfo}>${this.renderMoonData()}</div>
         </div>
-        <div class="calendar-mini-popup" ?hidden=${!this._calendarPopup}></div>
+        <div class="calendar-mini-popup" ?hidden=${!this._calendarPopup}>
+          <lunar-calendar-popup .card=${this as any} .moon=${this.moon}></lunar-calendar-popup>
+        </div>
       </div>
     `;
   }
