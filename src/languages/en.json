@@ -125,6 +125,7 @@
         "showCurrent": "Current Moon position",
         "showLegend": "Display legend",
         "showHighest": "Display highest Moon position",
+        "calendarModal": "Calendar popup",
         "placeHolder": {
             "latitude": "Enter latitude",
             "longitude": "Enter longitude",

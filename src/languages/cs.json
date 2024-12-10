@@ -124,6 +124,7 @@
         "showCurrent": "Aktuální poloha Měsíce",
         "showLegend": "Zobrazit legendu",
         "showHighest": "Zobrazit nejvyšší polohu Měsíce",
+        "calendarModal": "Kalendářové popup",
         "placeHolder": {
             "latitude": "Zadejte zeměpisnou šířku",
             "longitude": "Zadejte zeměpisnou délku",
