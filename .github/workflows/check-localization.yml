@@ -36,7 +36,9 @@ jobs:
         id: filtered-files
         run: |
           filtered_files=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | tr ' ' '\n' | grep '^src/languages/.*\.json$' || true)
-          echo "filtered_files=$filtered_files" >> $GITHUB_ENV
+          echo "filtered_files<<EOF" >> $GITHUB_ENV
+          echo "$filtered_files" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Run localization check
         id: check-localization
