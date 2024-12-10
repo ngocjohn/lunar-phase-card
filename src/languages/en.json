@@ -57,8 +57,7 @@
         "currentTime": "Current time",
         "common": {
             "now": "Now"
-        },
-        "elevation": "Elevation"
+        }
     },
     "editor": {
         "viewConfig": {
