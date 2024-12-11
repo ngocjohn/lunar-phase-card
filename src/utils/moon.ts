@@ -200,8 +200,8 @@ export class Moon {
     const timeLabels = Object.values(dataWithXY).map((item) => item.x);
     const altitudeValues = Object.values(dataWithXY).map((item) => item.y);
     const minMaxY = {
-      sugestedYMax: Math.round(Math.max(...altitudeValues) + 10),
-      sugestedYMin: Math.round(Math.min(...altitudeValues) - 10),
+      sugestedYMax: Math.round(Math.max(...altitudeValues)),
+      sugestedYMin: Math.round(Math.min(...altitudeValues)),
     };
 
     const dataCotent = {
