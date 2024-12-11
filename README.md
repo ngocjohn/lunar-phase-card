@@ -39,6 +39,7 @@
 
 
 
+
 ### Supported Localization
 
 <details>
@@ -60,7 +61,7 @@
 | `ru` | Русский | Русский |
 | `sk` | Slovak | Slovenčina |
 
-</details></details></details>
+</details>
 
 
 ### View options
