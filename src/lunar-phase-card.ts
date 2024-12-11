@@ -545,24 +545,14 @@ export class LunarPhaseCard extends LitElement {
       ${choose(
         graphType,
         [
-          ['dynamic', () => dynamicGraph],
           ['default', () => defaultGraph],
+          ['dynamic', () => dynamicGraph],
         ],
         () => defaultGraph
       )}
     `;
   }
 
-  private updateDate(action?: 'next' | 'prev') {
-    const date = new Date(this._date);
-    date.setHours(0, 0, 0, 0);
-    if (action === 'next') {
-      date.setDate(date.getDate() + 1);
-    } else if (action === 'prev') {
-      date.setDate(date.getDate() - 1);
-    }
-    this.selectedDate = date;
-  }
 
   private togglePage = (page: PageType) => {
     this._activeCard = this._activeCard === page ? this._defaultCard : page;
