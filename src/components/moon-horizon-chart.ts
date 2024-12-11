@@ -24,14 +24,14 @@ import styles from '../css/style.css';
 import { ChartColors } from '../types';
 import { MOON_RISE_ICON, MOON_SET_ICON } from '../utils/moon-pic';
 
-const HOVER_TIMEOUT = 200;
+const HOVER_TIMEOUT = 150;
 
 @customElement('lunar-horizon-chart')
 export class LunarHorizonChart extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) moon!: Moon;
   @property({ attribute: false }) card!: LunarPhaseCard;
-  @property({ type: Number }) cardWidth: number = 0;
+  @property({ type: Number }) public cardWidth!: number;
 
   @state() _chart!: Chart;
   @state() moreInfo = false;
@@ -42,15 +42,16 @@ export class LunarHorizonChart extends LitElement {
   @state() private _lastTime: string | null = null;
 
   protected async firstUpdated(): Promise<void> {
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise((resolve) => setTimeout(resolve, 50));
     this.setupChart();
   }
 
   protected updated(_changedProperties: PropertyValues): void {
-    if (_changedProperties.has('cardWidth')) {
+    if (!this.card.config || !this.moon) return;
+    if (_changedProperties.has('cardWidth') && this.cardWidth > 0) {
       if (this._chart) {
         this._chart.resize(this.cardWidth, this.cardHeight);
-        this._chart.update();
+        this._chart.update('none');
       }
     }
   }
@@ -58,7 +59,6 @@ export class LunarHorizonChart extends LitElement {
   get cardHeight(): number {
     let height = this.cardWidth * 0.5 - 96;
     height = this.card.config.hide_buttons ? height + 48 : height;
-
     return height;
   }
 
@@ -66,19 +66,17 @@ export class LunarHorizonChart extends LitElement {
     return [
       styles,
       css`
-        .moon-horizon {
+        #moon-horizon {
           display: block;
           position: relative;
-          margin: 0;
+          margin: 0 auto;
           width: 100%;
           height: 100%;
-          /* box-shadow: 0 0 6px #e1e0dd30; */
-          max-width: 900px;
-          backdrop-filter: blur(4px);
-          border-radius: 0;
-          /* border: 1px solid var(--divider-color); */
+          max-width: 1800px;
+          backdrop-filter: blur(2px);
           box-sizing: border-box;
-          /* padding: 0 2px; */
+          border-radius: inherit;
+          overflow: hidden;
         }
 
         #moonPositionChart {
@@ -137,13 +135,12 @@ export class LunarHorizonChart extends LitElement {
   }
 
   get plugins(): Plugin[] {
-    const plugins: Plugin[] = [];
-    plugins.push(this.fillTopPlugin());
-    plugins.push(this.timeMarkerPlugin());
-    plugins.push(this.moonMarkerPlugin());
-    plugins.push(this.highestAltitudePlugin());
-    plugins.push(this.expandChartArea());
-    return plugins;
+    const fillTopPlugin = this.fillTopPlugin();
+    const timeMarkerPlugin = this.timeMarkerPlugin();
+    const moonMarkerPlugin = this.moonMarkerPlugin();
+    const highestAltitudePlugin = this.highestAltitudePlugin();
+    const expandChartArea = this.expandChartArea();
+    return [fillTopPlugin, timeMarkerPlugin, moonMarkerPlugin, highestAltitudePlugin, expandChartArea];
   }
 
   get chartData(): ChartData {
@@ -218,6 +215,9 @@ export class LunarHorizonChart extends LitElement {
             this._chart?.update('none');
           }
         },
+        onClick: (_event, elements) => {
+          console.log('onClick', elements);
+        },
       },
 
       plugins: [...customPlugins],
@@ -241,7 +241,7 @@ export class LunarHorizonChart extends LitElement {
   protected render(): TemplateResult {
     const dataContainer = this.renderDataContainer();
     return html`
-      <div class="moon-horizon">
+      <div id="moon-horizon">
         <canvas id="moonPositionChart" width="${this.cardWidth}" height="${this.cardHeight}"></canvas>
       </div>
       ${dataContainer}
@@ -354,11 +354,11 @@ export class LunarHorizonChart extends LitElement {
           ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? 1.2 : 1,
       },
       // radius: () => (this.hoverOnChart ? 1.2 : 0),
-      pointHoverRadius: 3,
+      pointHoverRadius: 4,
       pointHoverBackgroundColor: secondaryTextColor,
       pointHoverBorderWidth: 2,
-      radius: 0,
-      spanGaps: true,
+      pointRadius: 0,
+
     };
 
     const timeDataset = {
@@ -498,8 +498,6 @@ export class LunarHorizonChart extends LitElement {
       padding: {
         left: -8,
         right: -8,
-        top: 0,
-        bottom: 0,
       },
     };
     // Options
@@ -507,16 +505,17 @@ export class LunarHorizonChart extends LitElement {
 
     options.interaction = {
       intersect: false,
-      mode: 'nearest',
-      axis: 'xy',
+      mode: 'index',
+      axis: 'x',
     };
     options.responsive = true;
     options.maintainAspectRatio = false;
-    options.resizeDelay = 50;
+    options.resizeDelay = 100;
+    // options.devicePixelRatio = 2;
     options.scales = scales as ScaleChartOptions;
     options.plugins = plugins;
     options.layout = layout;
-
+    options.events = ['mousemove', 'mouseout', 'touchstart', 'touchmove', 'click'];
     return options;
   };
 
@@ -757,17 +756,13 @@ export class LunarHorizonChart extends LitElement {
   private expandChartArea = (): Plugin => {
     return {
       id: 'expandChartArea',
-      beforeDraw: (chart: Chart) => {
-        chart.chartArea.left = 0;
+      beforeRender: (chart: Chart) => {
         chart.chartArea.right = this.cardWidth;
-        chart.chartArea.top = 0;
         chart.chartArea.bottom = this.cardHeight;
       },
 
       afterUpdate: (chart: Chart) => {
-        chart.chartArea.left = 0;
         chart.chartArea.right = this.cardWidth;
-        chart.chartArea.top = 0;
         chart.chartArea.bottom = this.cardHeight;
       },
     };
