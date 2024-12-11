@@ -59,22 +59,10 @@ ha-card.--reverse #main-content[padding] {
   padding-left: 1.2rem;
 }
 
-/* ha-card.--default-header .lunar-card-content {
-  padding: 0.5rem;
-} */
-
-/* ha-card.--default-header .lunar-card-header {
-  padding-top: 8px;
-} */
-
-ha-card.--dynamic-graph .lunar-card-content {
-  padding: 0;
-  transition: none;
-  /* display: block; */
-}
-
+ha-card.--dynamic-graph .lunar-card-content,
 ha-card.--horizon .lunar-card-content {
   display: block;
+  transition: none;
   /* padding: 8px 0 12px; */
 }
 
