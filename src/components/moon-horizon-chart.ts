@@ -54,19 +54,9 @@ export class LunarHorizonChart extends LitElement {
     }
   }
 
-  // protected shouldUpdate(_changedProperties: PropertyValues): boolean {
-  //   if (_changedProperties.has('moon')) {
-  //     if (this._chart) {
-  //       this._chart.data = this.chartData;
-  //       this._chart.update('none');
-  //     }
-  //   }
-  //   return true;
-  // }
-
   get cardHeight(): number {
     let height = this.cardWidth * 0.5 - 96;
-    height = this.card.config.hide_header ? height + 48 : height;
+    height = this.card.config.hide_buttons ? height + 48 : height;
 
     return height;
   }
@@ -220,7 +210,7 @@ export class LunarHorizonChart extends LitElement {
         // Hover on point
         onHover: (_event, elements) => {
           if (elements.length > 0) {
-            // this.hoverOnChart = true;
+            this.hoverOnChart = true;
             const element = elements[0];
             const xTimeNum = element.element.getProps(['raw'], true).raw.x;
             this.handlePointHover(xTimeNum);
@@ -234,7 +224,7 @@ export class LunarHorizonChart extends LitElement {
     // Add event listeners
     ctx.addEventListener('mouseout', () => {
       this.hoverTimeout = window.setTimeout(() => {
-        // this.hoverOnChart = false;
+        this.hoverOnChart = false;
         this._chart?.update();
       }, HOVER_TIMEOUT);
       // Reset the selected date
@@ -417,8 +407,8 @@ export class LunarHorizonChart extends LitElement {
     // Scales
     const scales = {} as ScaleOptions;
     scales['y'] = {
-      suggestedMin: sugestedYMin,
-      suggestedMax: sugestedYMax,
+      suggestedMin: sugestedYMin - 10,
+      suggestedMax: sugestedYMax + 10,
       ticks: {
         ...ticksOptions,
         display: graphConfig?.y_ticks || false,
@@ -453,15 +443,6 @@ export class LunarHorizonChart extends LitElement {
 
     plugins['legend'] = {
       display: false,
-      align: graphConfig?.legend_align || 'center',
-      position: graphConfig?.legend_position || 'bottom',
-      labels: {
-        usePointStyle: false,
-        boxWidth: 0,
-        boxHeight: 0,
-        padding: 4,
-        color: secondaryTextColor,
-      },
     };
 
     plugins['tooltip'] = {
@@ -524,6 +505,8 @@ export class LunarHorizonChart extends LitElement {
       padding: {
         left: -8,
         right: -8,
+        top: 0,
+        bottom: 0,
       },
     };
     // Options
@@ -616,7 +599,11 @@ export class LunarHorizonChart extends LitElement {
   private timeMarkerPlugin = (): Plugin => {
     const timeMarkers = this.moon.timeMarkers;
     const { secondaryTextColor, fillColor } = this.cssColors;
-    const textFontSize = '12px Arial';
+    const fontSize = {
+      primary: '0.9rem Arial',
+      secondary: '0.8rem Arial',
+    };
+    const minValue = this.todayData.minMaxY.sugestedYMin;
     // Pre-load SVG images as Image objects
     const moonUpSvg = new Image();
     const moonDownSvg = new Image();
@@ -629,9 +616,10 @@ export class LunarHorizonChart extends LitElement {
       encodeURIComponent(MOON_SET_ICON.replace('currentcolor', secondaryTextColor));
 
     const getMaxValueText = (ctx: CanvasRenderingContext2D, isUp: string, formatedTime: string, direction: string) => {
-      ctx.font = textFontSize;
+      ctx.font = fontSize.primary;
       const setRiseWidth = ctx.measureText(isUp).width;
       const timeWidth = ctx.measureText(formatedTime).width;
+      ctx.font = fontSize.secondary;
       const directionWidth = ctx.measureText(direction).width;
       return Math.max(setRiseWidth, timeWidth, directionWidth);
     };
@@ -679,7 +667,7 @@ export class LunarHorizonChart extends LitElement {
 
       ctx.fillStyle = secondaryTextColor;
       ctx.textAlign = textAlign;
-      ctx.font = textFontSize;
+      ctx.font = fontSize.primary;
       ctx.filter = this.hoverOnChart ? 'opacity(0.4)' : 'opacity(1)';
       // Load and draw the SVG based on `isUp`
       const imgToDraw = isUp ? moonUpSvg : moonDownSvg;
@@ -688,14 +676,18 @@ export class LunarHorizonChart extends LitElement {
 
       // Draw the time and direction text
       if (isUp) {
+        ctx.font = fontSize.secondary;
         ctx.fillText(direction, xOffset, y - lineOffset - 10);
+        ctx.font = fontSize.primary;
         ctx.fillText(formatedTime, xOffset, y - lineOffset - 27);
       } else {
+        ctx.font = fontSize.secondary;
         ctx.fillText(direction, xOffset, y + lineOffset + 27);
+        ctx.font = fontSize.primary;
         ctx.fillText(formatedTime, xOffset, y + lineOffset + 10);
       }
       // Draw the icon
-      ctx.drawImage(imgToDraw, iconOffset, isUp ? y - lineOffset - 37 : y + lineOffset - 5, 18, 18);
+      ctx.drawImage(imgToDraw, iconOffset, isUp ? y - lineOffset - 40 : y + lineOffset - 5, 18, 18);
       ctx.restore();
     };
 
@@ -706,7 +698,7 @@ export class LunarHorizonChart extends LitElement {
         if (timeDataSet.type === null || timeDataSet.hidden) return;
         const {
           ctx,
-          chartArea: { left, right, bottom, top },
+          chartArea: { left, right },
           scales: { x, y },
         } = chart;
         // Iterate over each time marker and draw if necessary
@@ -719,8 +711,10 @@ export class LunarHorizonChart extends LitElement {
             const xPosition = x.getPixelForValue(index) + 2;
 
             const yPosition = y.getPixelForValue(0);
+            const minYposition = y.getPixelForValue(minValue);
+            const lineOffset = Math.round((minYposition - yPosition) / 2);
 
-            const lineOffset = isUp ? Math.round((yPosition - top) / 4) : Math.round((bottom - yPosition) / 2);
+            // const lineOffset = isUp ? Math.round((yPosition - top) / 4) : Math.round((bottom - yPosition) / 2);
             const maxTextWidth = getMaxValueText(ctx, isUp ? 'Rise' : 'Set', formatedTime, direction);
 
             let textAlign: CanvasTextAlign = 'start';
