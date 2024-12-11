@@ -133,7 +133,7 @@ https://github.com/ngocjohn/lunar-phase-card
 | `compact_view`      | boolean | Optional    | Whether to display the card in a compact view. Defaults to `false`.   |
 | `12hr_format`       | boolean | Optional    | Whether to display time in 12-hour format. Defaults to `false`.       |
 | `mile_unit`         | boolean | Optional    | Whether to display distance in miles. Defaults to `false`.            |
-| `hide_header`       | boolean | Optional    | Whether to hide the header of the card. Defaults to `false`.          |
+| `hide_buttons`       | boolean | Optional    | Whether to hide the buttons in header. Defaults to `false`.          |
 | `calendar_modal`    | boolean | Optional    | Whether to use calendar as modal popup. Defaults to `false`.          |
 | `default_card`      | string  | Optional    | Default view of the card. Options: `base`, `calendar`, `horizon`. Defaults to `base`. |
 | `moon_position`     | string  | Optional    | Position of the moon image. Options: `left`, `right`. Defaults to `left`. |
@@ -186,7 +186,7 @@ selected_language: en
 compact_view: false
 12hr_format: false
 mile_unit: false
-hide_header: false
+hide_buttons: false
 calendar_modal: false
 default_card: base
 moon_position: left

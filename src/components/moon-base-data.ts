@@ -122,7 +122,7 @@ export class LunarBaseData extends LitElement {
   }
 
   private _renderPhaseName(): TemplateResult {
-    if (!this.moon.config.hide_header) return html``;
+    if (!this.moon.config.hide_buttons) return html``;
     return html` <div class="moon-phase-name" style=${this._computeFontSize()}>${this.moon.phaseName}</div> `;
   }
 
