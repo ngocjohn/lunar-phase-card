@@ -42,7 +42,7 @@ export class LunarHorizonChart extends LitElement {
   @state() private _lastTime: string | null = null;
 
   protected async firstUpdated(): Promise<void> {
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await new Promise((resolve) => setTimeout(resolve, 0));
     this.setupChart();
   }
 
@@ -50,6 +50,7 @@ export class LunarHorizonChart extends LitElement {
     if (_changedProperties.has('cardWidth')) {
       if (this._chart) {
         this._chart.resize(this.cardWidth, this.cardHeight);
+        this._chart.update();
       }
     }
   }
@@ -323,14 +324,6 @@ export class LunarHorizonChart extends LitElement {
     this.card.selectedDate = time;
   }
 
-  private cancelTimeAnimationFrame(): void {
-    // Cancel the animation frame when the component is disconnected
-    if (this._timeAnimationFrame) {
-      cancelAnimationFrame(this._timeAnimationFrame);
-      this._timeAnimationFrame = null;
-    }
-  }
-
   /* -------------------------------- DATASETS -------------------------------- */
 
   private _getChartData = (): ChartData => {
@@ -530,15 +523,16 @@ export class LunarHorizonChart extends LitElement {
   /* --------------------------------- PLUGINS -------------------------------- */
   private moonMarkerPlugin = (): Plugin => {
     const emoji = this.todayData.moonPhase.phase.emoji;
-    const emojiFontSize = '18px Arial';
+    const emojiFontSize = '1rem Arial';
     const { currentHourIndex, altitudeDegrees } = this.moon.currentMoonData;
     const showCurrent = this.card.config?.graph_config?.show_current ?? true;
     if (!showCurrent) return { id: 'moonMarkerPlugin' };
+    const hoverOnChart = this.hoverOnChart;
     return {
       id: 'moonMarkerPlugin',
       afterDatasetsDraw(chart: Chart) {
         const dataSet = chart.getDatasetMeta(0);
-        if (dataSet.hidden) return;
+        if (dataSet.hidden || hoverOnChart) return;
         const {
           ctx,
           scales: { x, y },
