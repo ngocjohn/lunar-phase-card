@@ -154,7 +154,7 @@ export class LunarCalendarPopup extends LitElement {
       <div id="lunar-calendar" class=${backgroundClass}>
         <div class="calendar-header">
           ${renderNavButton(ICON.CLOSE, () => {
-            this._handleClose();
+            this._dispatchEvent('close', {});
             this.viewDate = DateTime.local().startOf('month');
           })}
           <div class="calendar-header__year">
@@ -195,7 +195,11 @@ export class LunarCalendarPopup extends LitElement {
       const moonPhaseIcon = this.moon._getEmojiForPhase(date.toJSDate());
 
       return html`
-        <div title="${moonPhase}" class=${dayClass} @click=${() => this._handleDateSelect(date.toJSDate())}>
+        <div
+          title="${moonPhase}"
+          class=${dayClass}
+          @click=${() => this._dispatchEvent('date-select', { date: date.toJSDate() })}
+        >
           <div class="day-num">${label}</div>
           <div class="day-symbol">${moonPhaseIcon}</div>
         </div>
@@ -209,15 +213,17 @@ export class LunarCalendarPopup extends LitElement {
     `;
   }
 
-  private _handleClose(): void {
-    if (this.card.config.calendar_modal) {
-      this.card._dialogOpen = false;
-    } else {
-      this.card._calendarPopup = false;
-      if (this.card._calendarInfo) {
-        this.card._calendarInfo = false;
-      }
-    }
+  private _dispatchEvent(action: string, detail: any): void {
+    this.dispatchEvent(
+      new CustomEvent('calendar-action', {
+        detail: {
+          action,
+          ...detail,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   private _setEventListeners(): void {
@@ -226,7 +232,7 @@ export class LunarCalendarPopup extends LitElement {
       // close popup if is clicked to empty space
       grid.addEventListener('click', (e) => {
         if (e.target === grid) {
-          this.card._calendarPopup = false;
+          this._dispatchEvent('close', {});
           this.viewDate = DateTime.local().startOf('month');
         }
       });
@@ -242,15 +248,6 @@ export class LunarCalendarPopup extends LitElement {
         .toFormat('ccc');
     });
     return daysOfTheWeek;
-  }
-
-  private _handleDateSelect(date: Date): void {
-    // Update the selected date in the card
-    this.card.selectedDate = date;
-    setTimeout(() => {
-      this.viewDate = DateTime.local().startOf('month');
-      this._handleClose();
-    }, 300);
   }
 
   private _updateCalendarDate(type: 'months' | 'years', action: 'prev' | 'next'): void {
