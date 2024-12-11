@@ -18,12 +18,16 @@
   },
   "module": "lunar-phase-card.js",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.29.0",
+    "@google-cloud/translate": "^8.5.0",
     "@mdi/js": "^7.4.47",
     "@noim/suncalc3": "^2.0.5",
     "@vibrant/color": "^3.2.1-alpha.1",
     "chart.js": "^4.4.5",
     "custom-card-helpers": "^1.7.2",
+    "dotenv": "^16.4.7",
     "lit": "^3.1.4",
     "luxon": "^3.5.0",
     "node-vibrant": "^3.2.1-alpha.1",
@@ -65,6 +69,9 @@
     "lint": "eslint src/**/*.ts ",
     "rollup": "rollup -c",
     "update-lang": "node scripts/update-languages",
-    "import-lang": "node scripts/generate-lang-imports.js"
+    "import-lang": "node scripts/generate-lang-imports.js",
+    "add-missing-translations": "node scripts/add-missing-translations.js",
+    "translate-new-strings": "npx dotenvx run -- node scripts/translate-new-strings.js",
+    "update-missing": "npm run translate-new-strings && npm run add-missing-translations"
   }
 }

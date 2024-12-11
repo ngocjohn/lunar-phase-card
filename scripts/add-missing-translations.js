@@ -4,7 +4,7 @@ const path = require('path');
 
 // Paths
 const translationsDir = path.join(__dirname, '../src/languages');
-const missingTranslationsPath = path.join(__dirname, 'missing_translations.json');
+const missingTranslationsPath = path.join(__dirname, 'translated-missing.json');
 
 // Read missing translations JSON
 const missingTranslations = JSON.parse(fs.readFileSync(missingTranslationsPath, 'utf8'));
