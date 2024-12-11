@@ -608,7 +608,7 @@ export class LunarPhaseCard extends LitElement {
     const headerOffset = this._headerHidden ? 48 : 96;
     const width = this._cardWidth;
     let moonWidth = activeCard === PageType.CALENDAR ? width * 0.5 - headerOffset : width / 3.5;
-    return styleMap({ maxWidth: `${moonWidth}px` });
+    return styleMap({ maxWidth: `${moonWidth}px`, maxHeight: `${moonWidth}px` });
   }
 
   private _computeClasses() {
@@ -667,6 +667,7 @@ window.customCards.push({
   type: 'lunar-phase-card',
   name: 'Lunar Phase Card',
   preview: true,
+  documentationURL: 'https://github.com/ngocjohn/lunar-phase-card',
   description: 'A custom card to display the current lunar phase.',
 });
 
@@ -683,6 +684,7 @@ declare global {
     type: string;
     name: string;
     preview: boolean;
+    documentationURL: string;
     description: string;
   }
 
