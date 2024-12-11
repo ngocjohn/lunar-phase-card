@@ -1,5 +1,5 @@
 // Lit
-import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues } from 'lit';
+import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import tinycolor from 'tinycolor2';
 // Custom Card helpers
@@ -86,10 +86,10 @@ export class LunarHorizonDynamic extends LitElement {
           backdrop-filter: blur(4px);
           background: transparent !important;
           width: 100%;
-          height: 100%;
+          height: 60%;
           pointer-events: none;
           overflow: hidden;
-          z-index: 1;
+          z-index: 0;
           isolation: isolate;
           box-sizing: border-box;
           border-radius: 24px;
@@ -191,9 +191,10 @@ export class LunarHorizonDynamic extends LitElement {
   }
 
   protected render(): TemplateResult {
+    const useBackground = this.card.config.show_background;
     return html`
       <div id="horizon-dynamic-chart">
-        <div id="blur-overlay"></div>
+        ${useBackground ? html` <div id="blur-overlay"></div>` : nothing}
         <canvas id="dynamic-chart" width="${this.cardWidth}" height="${this.cardHeight}"></canvas>
       </div>
     `;
@@ -485,24 +486,27 @@ export class LunarHorizonDynamic extends LitElement {
         if (!chartArea || !scales.x || !scales.y) {
           return;
         }
+
         const { left, right, bottom, top } = chartArea;
-        const midX = chart.scales.x.getPixelForValue(closestTimeIndex);
-        const midY = chart.scales.y.getPixelForValue(0);
-        const gradientHeight = (bottom - top) * 0.8;
+        const midX = scales.x.getPixelForValue(closestTimeIndex);
+        const midY = scales.y.getPixelForValue(0);
+        const gradientHeight = (bottom - top) * 0.5;
 
         // Create gradients
         const createGradient = (startX: number, color: string) => {
           const gradient = ctx.createLinearGradient(startX, bottom, startX, bottom - gradientHeight);
-          gradient.addColorStop(0, hexToRgba(color, 0.8));
-          gradient.addColorStop(0.7, hexToRgba(color, 0.6));
+          gradient.addColorStop(0, hexToRgba(color, 1));
           gradient.addColorStop(1, hexToRgba(color, 0));
           return gradient;
         };
 
         ctx.save();
+
+        // Draw left gradient
         ctx.fillStyle = createGradient(left, fillColor.today);
         ctx.fillRect(left, bottom - gradientHeight, midX - left, gradientHeight);
 
+        // Draw right gradient
         ctx.fillStyle = createGradient(midX, fillColor.nextDay);
         ctx.fillRect(midX, bottom - gradientHeight, right - midX, gradientHeight);
 
@@ -524,6 +528,8 @@ export class LunarHorizonDynamic extends LitElement {
         ctx.stroke();
 
         ctx.restore();
+
+        // Draw labels for the markers
         drawLabels(ctx, midX, top);
       },
     };

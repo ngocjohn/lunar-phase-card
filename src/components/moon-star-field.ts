@@ -6,11 +6,20 @@ import { LunarPhaseCard } from '../lunar-phase-card';
 @customElement('lunar-star-field')
 export class LunarStarField extends LitElement {
   @property({ attribute: false }) _card!: LunarPhaseCard;
-  @state() private count: number = 30;
+  @state() _baseCardReady!: boolean;
+  @state() private count: number = 10;
 
   protected firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
-    this._createStarfield();
+  }
+
+  protected updated(_changedProperties: PropertyValues): void {
+    super.updated(_changedProperties);
+    if (_changedProperties.has('_baseCardReady') && this._baseCardReady) {
+      setTimeout(() => {
+        this._createStarfield();
+      }, 1000);
+    }
   }
 
   static get styles(): CSSResultGroup {
@@ -21,7 +30,7 @@ export class LunarStarField extends LitElement {
           top: 0;
           left: 0;
           width: 100%;
-          height: 20%;
+          height: 100%;
           pointer-events: none;
           overflow: hidden;
           z-index: 0;
@@ -56,6 +65,7 @@ export class LunarStarField extends LitElement {
     ];
   }
   protected render() {
+    if (!this._card._cardReady) return html``;
     return html`<div id="starfield"></div>`;
   }
 
@@ -72,7 +82,7 @@ export class LunarStarField extends LitElement {
 
       // Random position
       const x = Math.random() * starfield.offsetWidth;
-      const y = Math.random() * starfield.offsetHeight;
+      const y = (Math.random() * starfield.offsetHeight) / 4;
 
       // Random blink delay
       const delay = 3 + Math.random() * 3;
