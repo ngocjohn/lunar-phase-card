@@ -1,4 +1,4 @@
-import { LovelaceCardEditor, formatDate, FrontendLocaleData, TimeFormat } from 'custom-card-helpers';
+import { LovelaceCardEditor, FrontendLocaleData, TimeFormat } from 'custom-card-helpers';
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
@@ -9,13 +9,14 @@ import { HA as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './type
 
 // Helpers
 import { BLUE_BG, PageType, MoonState, ICON } from './const';
-import { dayFormatter, localize } from './localize/localize';
+import { localize } from './localize/localize';
 import { generateConfig } from './utils/ha-helper';
 import { _handleOverflow, _setEventListeners, getDefaultConfig } from './utils/helpers';
 import { isEditorMode } from './utils/loader';
 
 // components
 import { LunarBaseData } from './components/moon-base-data';
+import { LunarCalendarPage } from './components/moon-calendar-page';
 import { LunarHorizonChart } from './components/moon-horizon-chart';
 import { LunarHorizonDynamic } from './components/moon-horizon-dynamic';
 import { LunarStarField } from './components/moon-star-field';
@@ -45,13 +46,10 @@ export class LunarPhaseCard extends LitElement {
   @property({ type: String }) public layout?: string;
   @state() _activeCard: PageType | null = null;
   @state() selectedDate: Date | undefined;
-
-  @state() _calendarPopup: boolean = false;
-  @state() _calendarInfo: boolean = false;
-  @state() _resizeInitiated = false;
+  @state() _cardReady = false;
 
   @state() _connected = false;
-  @state() _cardReady = false;
+  @state() _resizeInitiated = false;
   @state() private _state: MoonState = MoonState.READY;
   @state() private _refreshInterval: number | undefined;
 
@@ -62,10 +60,11 @@ export class LunarPhaseCard extends LitElement {
 
   @state() public _dialogOpen!: boolean;
 
-  @query('lunar-base-data') _data!: LunarBaseData;
-  @query('lunar-horizon-chart') _moonHorizon!: LunarHorizonChart;
-  @query('lunar-horizon-dynamic') _moonHorizonDynamic!: LunarHorizonDynamic;
-  @query('moon-star-field') _starField!: LunarStarField;
+  @query('lunar-base-data') _DATA_SWIPER!: LunarBaseData;
+  @query('lunar-horizon-chart') _HORIZON_DEFAULT!: LunarHorizonChart;
+  @query('lunar-horizon-dynamic') _HORIZON_DYNAMIC!: LunarHorizonDynamic;
+  @query('lunar-calendar-page') _CALENDAR_PAGE!: LunarCalendarPage;
+  @query('lunar-star-field') _starField!: LunarStarField;
   @query('#calendar-dialog') _calendarDialog!: HTMLDialogElement;
 
   constructor() {
@@ -180,9 +179,6 @@ export class LunarPhaseCard extends LitElement {
         // console.log('base or horizon page, start interval, reset date, start refresh');
         if (this.selectedDate !== undefined) {
           this.selectedDate = undefined;
-        }
-        if (this._calendarPopup === true) {
-          this._calendarPopup = false;
         }
       }
     }
@@ -308,12 +304,15 @@ export class LunarPhaseCard extends LitElement {
     }
 
     const refreshData = () => {
+      if (!this._connected) {
+        this.clearRefreshInterval();
+        return;
+      }
       if (this._state !== MoonState.LOADING) {
-        console.log('Refreshing data');
         this._state = MoonState.LOADING;
         setTimeout(() => {
           this._state = MoonState.READY;
-          console.log('Data refreshed');
+          // console.log('Data refreshed', this.config?.cardId);
         }, LOADING_TIMEOUT);
       }
     };
@@ -324,25 +323,11 @@ export class LunarPhaseCard extends LitElement {
     // Set up a new interval
     setTimeout(() => {
       // Set up the regular interval to refresh every full minute
-      refreshData;
+      refreshData();
       this._refreshInterval = window.setInterval(() => {
-        refreshData;
+        refreshData();
       }, BASE_REFRESH_INTERVAL);
     }, remainingMs);
-  }
-
-  private refreshData() {
-    if (!this._connected) {
-      return;
-    }
-    if (this._state !== MoonState.LOADING) {
-      // console.log('Refreshing data');
-      this._state = MoonState.LOADING;
-      setTimeout(() => {
-        this._state = MoonState.READY;
-        // console.log('Data refreshed');
-      }, LOADING_TIMEOUT);
-    }
   }
 
   private clearRefreshInterval() {
@@ -377,7 +362,7 @@ export class LunarPhaseCard extends LitElement {
             [PageType.HORIZON, () => this.renderHorizon()],
           ])}
         </div>
-        <lunar-star-field ._card=${this as any}></lunar-star-field>
+        <lunar-star-field ._card=${this as any} ._baseCardReady=${this._cardReady}></lunar-star-field>
       </ha-card>
       ${this.renderCalendarDialog()}
     `;
@@ -388,13 +373,18 @@ export class LunarPhaseCard extends LitElement {
     const isGridMode = this.layout === 'grid';
     return html`<dialog id="calendar-dialog" ?grid=${isGridMode}>
       <div class="dialog-content" style="max-width: ${this._cardWidth}px">
-        <lunar-calendar-popup .card=${this as any} .moon=${this.moon}></lunar-calendar-popup>
+        <lunar-calendar-popup
+          .card=${this as any}
+          .moon=${this.moon}
+          @calendar-action=${(ev: CustomEvent) => this._CALENDAR_PAGE._handleCalAction(ev)}
+        ></lunar-calendar-popup>
       </div>
     </dialog>`;
   }
 
   private renderBaseCard(): TemplateResult | void {
-    return html` ${this.renderMoonImage()} ${this.renderMoonData()}`;
+    if (this._activeCard !== PageType.BASE) return;
+    return html`<div class="base-card">${this.renderMoonImage()} ${this.renderMoonData()}</div>`;
   }
 
   private createMoon() {
@@ -407,7 +397,7 @@ export class LunarPhaseCard extends LitElement {
     // console.log('createMoon');
   }
 
-  private renderHeader(): TemplateResult | void {
+  renderHeader(): TemplateResult | void {
     const headerContent =
       this._activeCard !== PageType.HORIZON ? this.moon?.phaseName : this.localize('card.horizonTitle');
 
@@ -425,7 +415,7 @@ export class LunarPhaseCard extends LitElement {
     return html`
       <div class="lunar-card-header" id="lpc-header">
         <div class="header-title" ?full=${this.config.hide_buttons}>
-          <span class="title">${headerContent}</span>
+          <span class="title" ?not-compact=${!this._isCompactMode}>${headerContent}</span>
         </div>
         <div class="action-btns" ?hidden=${this.config.hide_buttons}>
           ${buttons.map(
@@ -443,7 +433,7 @@ export class LunarPhaseCard extends LitElement {
     `;
   }
 
-  private renderMoonImage(): TemplateResult | void {
+  renderMoonImage(): TemplateResult | void {
     if (!this.moon) return;
     const { moonPic } = this.moon.moonImage;
 
@@ -460,7 +450,7 @@ export class LunarPhaseCard extends LitElement {
     </div>`;
   }
 
-  private renderMoonData(): TemplateResult {
+  renderMoonData(): TemplateResult {
     const compactView = this.config.compact_view && this._activeCard === PageType.BASE;
     const replacer = (key: string, value: any) => {
       if (['direction', 'position'].includes(key)) {
@@ -509,74 +499,16 @@ export class LunarPhaseCard extends LitElement {
     `;
   }
 
-  private renderCalendar(): TemplateResult | void {
-    // Initialize selectedDate to today if it is not already set
-    const isToday = this._date.toDateString() === new Date().toDateString();
-    const todayToLocale = dayFormatter(0, this.selectedLanguage);
-    const dateInput = html` <div class="date-input-wrapper">
-      <div class="inline-btns">
-        <ha-icon-button .path=${ICON.CALENDAR} @click="${() => this._handleCalendarPopup()}"> </ha-icon-button>
-        <ha-icon-button
-          .disabled=${!this.selectedDate}
-          .path=${ICON.RESTORE}
-          @click=${() => (this.selectedDate = undefined)}
-          style="visibility: ${!isToday ? 'visible' : 'hidden'}"
-        >
-        </ha-icon-button>
-        <ha-icon-button .path=${ICON.LEFT} @click=${() => this.updateDate('prev')}> </ha-icon-button>
-      </div>
-      <div class="date-name">
-        ${formatDate(this._date, this._locale)} ${isToday ? html`<span>${todayToLocale}</span>` : nothing}
-      </div>
-
-      <div class="inline-btns">
-        <ha-icon-button .path=${ICON.RIGHT} @click=${() => this.updateDate('next')}> </ha-icon-button>
-        <ha-icon-button
-          class="calendar-info-btn"
-          .path=${ICON.CHEVRON_DOWN}
-          @click=${() => (this._calendarInfo = !this._calendarInfo)}
-          ?active=${this._calendarInfo}
-        >
-        </ha-icon-button>
-      </div>
-    </div>`;
-
-    return html`
-      <div class="calendar-container">
-        ${this.config.hide_buttons ? nothing : this.renderHeader()}
-        <div class="calendar-wrapper">
-          ${this.renderMoonImage()}${dateInput}
-          <div class="calendar-info" show=${this._calendarInfo}>${this.renderMoonData()}</div>
-        </div>
-        <div class="calendar-mini-popup" ?hidden=${!this._calendarPopup}>
-          <lunar-calendar-popup .card=${this as any} .moon=${this.moon}></lunar-calendar-popup>
-        </div>
-      </div>
-    `;
+  private renderCalendar(): TemplateResult {
+    return html` <lunar-calendar-page .card=${this as any} .moon=${this.moon}></lunar-calendar-page> `;
   }
-
-  private _handleCalendarPopup() {
-    if (this.config.calendar_modal) {
-      this._dialogOpen = !this._dialogOpen;
-    } else {
-      if (!this._calendarInfo) {
-        this._calendarInfo = true;
-        setTimeout(() => {
-          this._calendarPopup = !this._calendarPopup;
-        }, 100);
-      } else {
-        this._calendarPopup = !this._calendarPopup;
-      }
-    }
-  }
-
   private _attachEventListeners() {
     const dialog = this.shadowRoot?.getElementById('calendar-dialog') as HTMLDialogElement;
     if (!dialog) return;
     const dialogContent = dialog.querySelector('.dialog-content');
     if (!dialogContent) return;
     dialogContent.classList.toggle('slide-in');
-    console.log('dialog', dialog);
+    // console.log('dialog', dialog);
     dialog.addEventListener('click', (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (target === dialog) {
