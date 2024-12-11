@@ -85,6 +85,10 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       fireEvent(this, 'config-changed', { config: this._config });
       await _saveConfig(cardId, this._config);
       console.log('Config is valid');
+    } else if (isValid && config.cardId !== undefined) {
+      this._config = { ...config, cardId: undefined };
+      fireEvent(this, 'config-changed', { config: this._config });
+      console.log('Config is valid, removing cardId', config.cardId);
     }
   }
 
