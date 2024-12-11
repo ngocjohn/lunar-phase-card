@@ -6,6 +6,9 @@ import tinycolor from 'tinycolor2';
 import { FrontendLocaleData, formatDateShort, formatTime } from 'custom-card-helpers';
 // Chart.js
 import { Chart, ChartData, ChartOptions, Plugin, ScriptableLineSegmentContext } from 'chart.js/auto';
+
+
+
 // DateTime
 import { DateTime } from 'luxon';
 // Local imports
@@ -343,10 +346,11 @@ export class LunarHorizonDynamic extends LitElement {
     options.responsive = true;
     options.maintainAspectRatio = false;
     options.resizeDelay = 100;
+    // options.devicePixelRatio = 2;
     options.layout = layout;
     options.scales = scales;
     options.plugins = plugins;
-    options.events = ['mousemove', 'mouseout', 'touchstart', 'touchmove'];
+    options.events = ['mousemove', 'mouseout', 'touchstart', 'touchmove', 'click'];
 
     return options;
   }
@@ -624,6 +628,8 @@ export class LunarHorizonDynamic extends LitElement {
       },
     };
   }
+
+
 
   private _expandChartArea = (): Plugin => {
     return {
