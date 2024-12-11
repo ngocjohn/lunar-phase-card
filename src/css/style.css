@@ -196,6 +196,7 @@ ha-card.--background .moon-phase-name {
 .base-card {
   display: flex;
   width: 100%;
+  align-items: center;
 }
 
 .moon-image {
@@ -203,6 +204,7 @@ ha-card.--background .moon-phase-name {
   width: 100%;
   max-width: 150px;
   min-width: 100px;
+  min-height: 100px;
   transition: transform 0.5s;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -211,8 +213,8 @@ ha-card.--background .moon-phase-name {
   padding: 8px;
   flex-shrink: 0;
   /* z-index: 4; */
-  height: fit-content;
-  align-self: center;
+  height: 100%;
+  /* align-self: center; */
 }
 
 .moon-image[compact] {
