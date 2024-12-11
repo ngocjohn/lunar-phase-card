@@ -13,13 +13,6 @@ export class LunarStarField extends LitElement {
     this._createStarfield();
   }
 
-  protected updated(_changedProperties: PropertyValues): void {
-    super.updated(_changedProperties);
-    if (_changedProperties.has('_card')) {
-      this._createStarfield();
-    }
-  }
-
   static get styles(): CSSResultGroup {
     return [
       css`
@@ -34,6 +27,7 @@ export class LunarStarField extends LitElement {
           z-index: 0;
         }
 
+        .big-star,
         .star {
           position: absolute;
           width: 2px;
@@ -42,6 +36,11 @@ export class LunarStarField extends LitElement {
           border-radius: 50%;
           opacity: 0;
           animation: blink 1s infinite ease-in-out;
+        }
+
+        .big-star {
+          width: 6px;
+          height: 6px;
         }
 
         @keyframes blink {
