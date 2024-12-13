@@ -14,6 +14,7 @@ import * as nl from '../languages/nl.json';
 import * as pt from '../languages/pt.json';
 import * as ru from '../languages/ru.json';
 import * as sk from '../languages/sk.json';
+import * as vi from '../languages/vi.json';
 
 const languages: any = {
   ca: ca,
@@ -30,6 +31,7 @@ const languages: any = {
   pt: pt,
   ru: ru,
   sk: sk,
+  vi: vi,
 };
 
 export const languageOptions = [
@@ -47,6 +49,7 @@ export const languageOptions = [
   { key: 'pt', name: pt.name, nativeName: pt.nativeName },
   { key: 'ru', name: ru.name, nativeName: ru.nativeName },
   { key: 'sk', name: sk.name, nativeName: sk.nativeName },
+  { key: 'vi', name: vi.name, nativeName: vi.nativeName },
 ];
 
 export { languages };
