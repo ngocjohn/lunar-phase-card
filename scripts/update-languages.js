@@ -102,7 +102,6 @@ const updatedEnData = updateWithBaseData(baseData, enData);
 
 // Write the updated English language data back to the file
 fs.writeFileSync(enFilePath, JSON.stringify(updatedEnData, null, 4), 'utf8');
-console.log(`Updated ${enFilePath} with new keys and values from ${baseFilePath}.`);
 
 // Function to process a single language file
 const processLanguageFile = (file) => {
@@ -130,7 +129,6 @@ const processLanguageFile = (file) => {
 
   // Write the updated data back to the file
   fs.writeFileSync(langFilePath, JSON.stringify(updatedData, null, 4), 'utf8');
-  console.log(`Updated ${file} with missing keys and removed extra keys.`);
 };
 
 // Process language files based on the argument
@@ -159,17 +157,17 @@ if (arg) {
     // Output the results
     if (Object.keys(missingTranslations).length === 0) {
       console.log('No missing translations found.');
+      // Delete the missing translations file if it exists
+      if (fs.existsSync(missingTranslationsFilePath)) {
+        fs.unlinkSync(missingTranslationsFilePath);
+        console.log('The missing_translations.json file has been deleted.');
+      }
     } else {
+      // Save the missing translations to a file
+      fs.writeFileSync(missingTranslationsFilePath, JSON.stringify(missingTranslations, null, 4), 'utf8');
       Object.keys(missingTranslations).forEach((lang) => {
-        console.log(`Missing translations in ${lang}:`);
-        missingTranslations[lang].forEach(({ key, value }) => {
-          console.log(` - ${key}: ${JSON.stringify(value)}`);
-        });
+        console.log(`Missing translations in ${lang}`);
       });
     }
-
-    // Save the missing translations to a file
-    fs.writeFileSync(missingTranslationsFilePath, JSON.stringify(missingTranslations, null, 4), 'utf8');
-    console.log('Missing translations have been saved to missing_translations.json.');
   });
 }

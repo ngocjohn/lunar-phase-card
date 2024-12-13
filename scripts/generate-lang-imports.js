@@ -11,20 +11,8 @@ const path = require('path');
 
 const languagesDir = path.resolve(__dirname, '../src/languages');
 const outputFilePath = path.resolve(__dirname, '../src/localize/languageImports.ts');
-const languageListPath = path.resolve(__dirname, '../src/localize/languageList.json');
 
 const currentFiles = fs.readdirSync(languagesDir).filter((file) => file.endsWith('.json'));
-let previousFiles = [];
-
-if (fs.existsSync(languageListPath)) {
-  previousFiles = JSON.parse(fs.readFileSync(languageListPath, 'utf8'));
-}
-
-const filesToRemove = previousFiles.filter((file) => !currentFiles.includes(file));
-const filesToAdd = currentFiles.filter((file) => !previousFiles.includes(file));
-
-// Update the languageList.json with the current list of files
-fs.writeFileSync(languageListPath, JSON.stringify(currentFiles, null, 2));
 
 // Generate imports for the current files
 const imports = currentFiles
@@ -66,8 +54,3 @@ export { languages };
 fs.writeFileSync(outputFilePath, content);
 
 console.log('Language imports generated successfully.');
-
-// Log files that were removed
-if (filesToRemove.length > 0) {
-  console.log('Removed files:', filesToRemove);
-}
