@@ -70,7 +70,7 @@
     "update-lang": "node scripts/update-languages",
     "import-lang": "node scripts/generate-lang-imports.js",
     "add-missing-translations": "node scripts/add-missing-translations.js",
-    "translate-new-strings": "npx dotenvx run -- node scripts/translate-new-strings.js",
+    "translate-new-strings": "npx dotenvx run -- node scripts/translate-new-strings.mjs",
     "update-missing": "npm run translate-new-strings && npm run add-missing-translations",
     "prepare": "husky install"
   }
