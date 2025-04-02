@@ -1,18 +1,9 @@
-import typescript from 'rollup-plugin-typescript2';
-import commonjs from '@rollup/plugin-commonjs';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import { babel } from '@rollup/plugin-babel';
 import terser from '@rollup/plugin-terser';
 import serve from 'rollup-plugin-serve';
-import json from '@rollup/plugin-json';
-import image from '@rollup/plugin-image';
-import postcss from 'rollup-plugin-postcss';
-import postcssPresetEnv from 'postcss-preset-env';
-import postcssLit from 'rollup-plugin-postcss-lit';
 import filesize from 'rollup-plugin-filesize';
 import replace from '@rollup/plugin-replace';
 import { version } from './package.json';
-import { logCardInfo } from './rollup.config.dev.mjs';
+import { logCardInfo, defaultPlugins } from './rollup.config.helper.mjs';
 
 const dev = process.env.ROLLUP_WATCH;
 const port = process.env.PORT || 8235;
@@ -40,55 +31,21 @@ const replaceOpts = {
   preventAssignment: true,
 };
 
-const plugins = [
-  nodeResolve({}),
-  commonjs(),
-  typescript(),
-  json(),
-  image(),
-  babel({
-    babelHelpers: 'bundled',
-    exclude: 'node_modules/**',
-  }),
-  postcss({
-    plugins: [
-      postcssPresetEnv({
-        stage: 1,
-        features: {
-          'nesting-rules': true,
-        },
-      }),
-    ],
-    extract: false,
-    inject: false,
-  }),
-  postcssLit(),
-  replace(replaceOpts),
-  dev && serve(serveopts),
-  !dev && terser(terserOpt),
-  !dev && filesize(),
-];
+const plugins = [replace(replaceOpts), dev && serve(serveopts), !dev && terser(terserOpt), !dev && filesize()];
 
 export default [
   {
     input: 'src/lunar-phase-card.ts',
     output: [
       {
-        dir: './dist',
+        file: dev ? 'dist/lunar-phase-card.js' : 'build/lunar-phase-card.js',
         format: 'es',
         sourcemap: dev ? true : false,
         inlineDynamicImports: true,
         banner: custombanner,
       },
-      {
-        dir: './build',
-        format: 'es',
-        sourcemap: false,
-        inlineDynamicImports: true,
-        banner: custombanner,
-      },
     ],
-    plugins: [...plugins],
+    plugins: [...plugins, ...defaultPlugins],
     moduleContext: (id) => {
       const thisAsWindowForModules = [
         'node_modules/@formatjs/intl-utils/lib/src/diff.js',
@@ -109,7 +66,6 @@ export default [
     watch: {
       exclude: 'node_modules/**',
       buildDelay: 1000,
-      include: 'src/**/*',
     },
   },
 ];
