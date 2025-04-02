@@ -37,6 +37,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   '12hr_format'?: boolean;
   calendar_modal?: boolean;
   compact_view?: boolean;
+  compact_mode?: 'default' | 'minimal';
   default_card?: PageType.BASE | PageType.CALENDAR | PageType.HORIZON;
   hide_buttons?: boolean;
   latitude: number;

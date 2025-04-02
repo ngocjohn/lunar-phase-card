@@ -4,15 +4,6 @@ import { customElement, property, query, state } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
-// Local types
-import { HA as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
-
-// Helpers
-import { BLUE_BG, PageType, MoonState, ICON } from './const';
-import { localize } from './localize/localize';
-import { generateConfig } from './utils/ha-helper';
-import { _handleOverflow, _setEventListeners, getDefaultConfig } from './utils/helpers';
-import { isEditorMode } from './utils/loader';
 
 // components
 import { LunarBaseData } from './components/moon-base-data';
@@ -20,10 +11,18 @@ import { LunarCalendarPage } from './components/moon-calendar-page';
 import { LunarHorizonChart } from './components/moon-horizon-chart';
 import { LunarHorizonDynamic } from './components/moon-horizon-dynamic';
 import { LunarStarField } from './components/moon-star-field';
-import { Moon } from './utils/moon';
-import './components';
+// Helpers
+import { BLUE_BG, PageType, MoonState, ICON } from './const';
 // styles
 import style from './css/style.css';
+import { localize } from './localize/localize';
+// Local types
+import { HA as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
+import { generateConfig } from './utils/ha-helper';
+import { _handleOverflow, _setEventListeners, getDefaultConfig } from './utils/helpers';
+import { isEditorMode } from './utils/loader';
+import './components';
+import { Moon } from './utils/moon';
 
 const BASE_REFRESH_INTERVAL = 60 * 1000;
 const LOADING_TIMEOUT = 1500;
@@ -384,7 +383,14 @@ export class LunarPhaseCard extends LitElement {
 
   private renderBaseCard(): TemplateResult | void {
     if (this._activeCard !== PageType.BASE) return;
-    return html`<div class="base-card">${this.renderMoonImage()} ${this.renderMoonData()}</div>`;
+    const { compact_view, compact_mode } = this.config;
+    const isMinimalMode = compact_view && compact_mode === 'minimal';
+
+    return html`<div class="base-card">
+      ${isMinimalMode
+        ? html` ${this.renderCompactMinimalView()}`
+        : html` ${this.renderMoonImage()} ${this.renderMoonData()}`}
+    </div>`;
   }
 
   private createMoon() {
@@ -499,6 +505,32 @@ export class LunarPhaseCard extends LitElement {
     `;
   }
 
+  private renderCompactMinimalView(): TemplateResult {
+    const moonData = this.moon.moonData;
+    const moonImage = this.renderMoonImage();
+    const phaseName = this.moon.phaseName;
+    const renderCompactItem = (key: string): TemplateResult => {
+      const { label, value } = moonData[key];
+      return html`
+        <div class="compact-item-minimal">
+          <span class="value">${label}</span>
+          <span class="label">${value}</span>
+        </div>
+      `;
+    };
+
+    return html`
+      <div class="compact-view-minimal">
+        ${renderCompactItem('moonSet')}
+        <div class="minimal-moon-image-container">
+          ${moonImage}
+          <span class="minimal-title">${phaseName}</span>
+        </div>
+        ${renderCompactItem('moonRise')}
+      </div>
+    `;
+  }
+
   private renderCalendar(): TemplateResult {
     return html` <lunar-calendar-page .card=${this as any} .moon=${this.moon}></lunar-calendar-page> `;
   }
@@ -553,7 +585,6 @@ export class LunarPhaseCard extends LitElement {
     `;
   }
 
-
   private togglePage = (page: PageType) => {
     this._activeCard = this._activeCard === page ? this._defaultCard : page;
   };
@@ -582,18 +613,17 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private _computeHeight() {
-    if (!this._activeCard) return;
     const isCompact = this.config.compact_view;
     const isHeaderHidden = this._headerHidden;
     const width = this._cardWidth;
-    const height = [PageType.BASE].includes(this._activeCard) && !isCompact ? width * 0.5 : '';
+    const height = [PageType.BASE].includes(this._activeCard!) && !isCompact ? width * 0.5 : '';
     const justify =
-      [PageType.BASE].includes(this._activeCard) && !isCompact && !isHeaderHidden ? 'space-between' : 'center';
+      [PageType.BASE].includes(this._activeCard!) && !isCompact && !isHeaderHidden ? 'space-between' : 'center';
     return styleMap({ minHeight: height ? `${height}px` : '', justifyContent: justify });
   }
 
   private _computeMoonImageStyles() {
-    if (!this._activeCard || this._activeCard === PageType.HORIZON) return;
+    // if (!this._activeCard || this._activeCard === PageType.HORIZON) return;
     const activeCard = this._activeCard;
     const headerOffset = this._headerHidden ? 48 : 96;
     const width = this._cardWidth;
