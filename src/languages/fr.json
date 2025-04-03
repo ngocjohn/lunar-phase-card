@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Fond personnalisé",
         "description": "Configurez un fond personnalisé"
+      },
+      "theme": {
+        "title": "Thème (facultatif)",
+        "description": "Choisissez un thème pour la carte"
+      },
+      "layout": {
+        "title": "Options de mise en page",
+        "description": "Modifier la mise en page de la carte"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Position de la légende",
       "legendAlign": "Alignement de la légende",
       "graphType": "Type de graphique",
-      "compactMode": "Mode compact"
+      "compactMode": "Mode compact",
+      "themeMode": "Mode thème"
     }
   }
 }

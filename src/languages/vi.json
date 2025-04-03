@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Nền",
         "description": "Đặt cấu hình cho nền tùy chỉnh"
+      },
+      "theme": {
+        "title": "Chủ đề (tùy chọn)",
+        "description": "Chọn chủ đề cho thẻ"
+      },
+      "layout": {
+        "title": "Tùy chọn bố cục",
+        "description": "Sửa đổi bố cục của thẻ"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Vị trí chú giải",
       "legendAlign": "Căn chỉnh chú giải",
       "graphType": "Loại đồ thị",
-      "compactMode": "Chế độ nhỏ gọn"
+      "compactMode": "Chế độ nhỏ gọn",
+      "themeMode": "Chế độ chủ đề"
     }
   }
 }

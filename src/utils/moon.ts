@@ -81,6 +81,18 @@ export class Moon {
     return this.localize(`card.phase.${this._moonData.illumination.phase.id}`);
   }
 
+  get nextPhase(): MoonDataItem {
+    const next = this._moonData.illumination.next;
+    const nextPhase = next.fullMoon.value < next.newMoon.value ? 'fullMoon' : 'newMoon';
+    const nextDate = new Date(next[nextPhase].value);
+    const _relativeTime = relativeTime(nextDate, this.locale);
+    const phaseName = this.localize(`card.phase.${nextPhase}`);
+    return {
+      label: phaseName,
+      value: _relativeTime,
+    };
+  }
+
   blankBeforeUnit = (unit: string): string => {
     if (unit === '°') {
       return '';

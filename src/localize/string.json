@@ -66,6 +66,14 @@
             "customBackground": {
                 "title": "Background",
                 "description": "Set a configuration for custom background"
+            },
+            "theme": {
+                "title": "Theme (optional)",
+                "description": "Choose a theme for the card"
+            },
+            "layout": {
+                "title": "Layout options",
+                "description": "Modify the layout of the card"
             }
         },
         "baseConfig": {
@@ -154,7 +162,8 @@
             "legendPosition": "Legend position",
             "legendAlign": "Legend align",
             "graphType": "Graph type",
-            "compactMode": "Compact mode"
+            "compactMode": "Compact mode",
+            "themeMode": "Theme mode"
         }
     }
 }

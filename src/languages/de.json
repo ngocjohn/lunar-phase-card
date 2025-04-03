@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Hintergrund",
         "description": "Einstellung für den Wunsch-Hintergrund"
+      },
+      "theme": {
+        "title": "Thema (optional)",
+        "description": "Wählen Sie ein Thema für die Karte"
+      },
+      "layout": {
+        "title": "Layout-Optionen",
+        "description": "Ändern des Layouts der Karte"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Position der Legende",
       "legendAlign": "Ausrichtung der Legende",
       "graphType": "Diagrammtyp",
-      "compactMode": "Kompakter Modus"
+      "compactMode": "Kompakter Modus",
+      "themeMode": "Theme-Modus"
     }
   }
 }

@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Fondo personalizado",
         "description": "Configura un fondo personalizado"
+      },
+      "theme": {
+        "title": "Tema (opcional)",
+        "description": "Elige un tema para la tarjeta"
+      },
+      "layout": {
+        "title": "Opciones de diseño",
+        "description": "Modificar el diseño de la tarjeta"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Posición de la leyenda",
       "legendAlign": "Alineación de la leyenda",
       "graphType": "Tipo de gráfico",
-      "compactMode": "Modo compacto"
+      "compactMode": "Modo compacto",
+      "themeMode": "Modo temático"
     }
   }
 }

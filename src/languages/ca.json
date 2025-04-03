@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Fons personalitzat",
         "description": "Estableix una configuració per a un fons personalitzat"
+      },
+      "theme": {
+        "title": "Tema (opcional)",
+        "description": "Trieu un tema per a la targeta"
+      },
+      "layout": {
+        "title": "Opcions de disseny",
+        "description": "Modificar el disseny de la targeta"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Posició de la llegenda",
       "legendAlign": "Alineació de la llegenda",
       "graphType": "Tipus de gràfic",
-      "compactMode": "Mode compacte"
+      "compactMode": "Mode compacte",
+      "themeMode": "Mode temàtic"
     }
   }
 }

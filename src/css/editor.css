@@ -87,6 +87,7 @@ ha-select {
   align-items: stretch;
   flex-direction: row;
   flex-wrap: wrap;
+  background-color: rgb(from var(--secondary-background-color) r g b / 0.5);
 }
 
 .sub-config-type .title {
@@ -96,6 +97,7 @@ ha-select {
 
 .sub-config-type .desc {
   font-weight: 400;
+  opacity: 0.7;
 }
 
 .right-icon {

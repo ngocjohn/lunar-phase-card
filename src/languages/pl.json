@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Tło",
         "description": "Konfiguracja niestandardowego tła"
+      },
+      "theme": {
+        "title": "Motyw (opcjonalnie)",
+        "description": "Wybierz motyw karty"
+      },
+      "layout": {
+        "title": "Opcje układu",
+        "description": "Modyfikowanie układu karty"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Pozycja legendy",
       "legendAlign": "Wyrównanie legendy",
       "graphType": "Typ wykresu",
-      "compactMode": "Tryb kompaktowy"
+      "compactMode": "Tryb kompaktowy",
+      "themeMode": "Tryb motywu"
     }
   }
 }
