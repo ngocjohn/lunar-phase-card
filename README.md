@@ -1,6 +1,6 @@
 <a name="readme-top"></a>
 
-[![hacs][hacs-validate]][hacs-validate-link] ![total-downloads] ![latest-downloads]
+[![hacs][hacs-default]][hacs-default-link] [![hacs][hacs-validate]][hacs-validate-link] ![total-downloads] ![latest-downloads] [![community-forum][forum-badge]][forum-url] [![buy_me_a_coffee][bmac-badge]][bmac-link]
 
 # 🌘 Lunar Phase Card
 
@@ -35,71 +35,79 @@
 - **Specific Date Lunar Information:** Option to display the moon information for a specific date.
 - **Multilingual Support**: The card includes various translations, making it accessible in multiple languages.
 
-
-
-
-
+<!--LOCALIZATION-CONTENT-START-->
 
 ### Supported Localization
 
 <details>
   <summary>The following languages are supported in this project</summary>
 
-| Language Code | Name     | Native Name     |
-| ------------- | ---------| ----------------|
-| `ca` | Catalan | Català |
-| `cs` | Czech | Čeština |
-| `da` | Danish | Dansk |
-| `de` | German | Deutsch |
-| `en` | English | English |
-| `es` | Spanish | Español |
-| `fr` | French | Français |
-| `id` | Indonesian | Bahasa Indonesia |
-| `it` | Italian | Italiano |
-| `nl` | Nederlands | Dutch |
-| `pt` | Portuguese | Português (Brasil) |
-| `ru` | Русский | Русский |
-| `sk` | Slovak | Slovenčina |
+| Language Code | Name                   | Native Name            |
+| ------------- | ---------------------- | ---------------------- |
+| `ca`     | Catalan          | Català          |
+| `cs`     | Czech          | Čeština          |
+| `da`     | Danish          | Dansk          |
+| `de`     | German          | Deutsch          |
+| `en`     | English          | English          |
+| `es`     | Spanish          | Español          |
+| `fr`     | French          | Français          |
+| `id`     | Indonesian          | Bahasa Indonesia          |
+| `it`     | Italian          | Italiano          |
+| `lt`     | Lithuanian          | Lietuvių          |
+| `nl`     | Nederlands          | Dutch          |
+| `pl`     | Polish          | Polski          |
+| `pt`     | Portuguese          | Português (Brasil)          |
+| `ru`     | Русский          | Русский          |
+| `sk`     | Slovak          | Slovenčina          |
+| `vi`     | Vietnamese          | Tiếng Việt          |
 
 </details>
-
+<!--LOCALIZATION-CONTENT-END-->
 
 ### View options
 * Default view
+
 ![Default card][header-default-card]
 ![Default no header][no-header-default-card]
+
 * Calendar card
+
 ![Calendar card][header-calendar-card]
 ![Calendar no header][no-header-calendar]
+
 * Horizon graph
+
 ![Dynamic card no header][no-header-dynamic-graph]
 ![Horizon card][header-horizon-graph]
 ![Horizon card no header][no-header-horizon-graph]
+
 * Compact view
+
 ![Compact card][header-compact-card]
 ![Compact card no header][no-header-compact-card]
 
+* Compact mode minimal
 
+![Compact minimal][compact-mode-minimal]
 
 
 ## Installation
 
 ### [HACS](https://hacs.xyz) (Home Assistant Community Store)
 
-1. Go to HACS page on your Home Assistant instance
-2. Add this repository via HACS Custom repositories [How to add Custom Repositories](https://hacs.xyz/docs/faq/custom_repositories/)
-
-```
-https://github.com/ngocjohn/lunar-phase-card
-```
-
-3. Select `Dashboard`
-1. Press add icon and search for `Lunar Phase Card`
-1. Select Lunar Phase Card repo and install
-1. Force refresh the Home Assistant page `Ctrl` + `F5` / `Shift` + `⌘` + `R`
-1. Add lunar-phase-card to your page
+Use this link to directly go to the repository in HACS
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=ngocjohn&repository=lunar-phase-card&category=plugin)
+
+or
+
+1. If HACS is not installed yet, download it following the instructions on [https://hacs.xyz/docs/use/#getting-started-with-hacs](https://hacs.xyz/docs/use/#getting-started-with-hacs)
+2. Open HACS in Home Assistant
+3. Search for `Lunar Phase Card`
+4. Click the download button. ⬇️
+5. Force refresh the Home Assistant page `Ctrl` + `F5` / `Shift` + `⌘` + `R`
+6. Add `lunar-phase-card` to your dashboard
+
 
 ### Manual
 
@@ -132,6 +140,7 @@ https://github.com/ngocjohn/lunar-phase-card
 | `use_custom`        | boolean | Optional    | Whether to use custom settings. Defaults to `false`.                  |
 | `show_background`   | boolean | Optional    | Whether to show the background image. Defaults to `false`.            |
 | `compact_view`      | boolean | Optional    | Whether to display the card in a compact view. Defaults to `false`.   |
+| `compact_mode`      | string  | Optional    | Mode for compact view. Options: `default`, `minimal`.                 |
 | `12hr_format`       | boolean | Optional    | Whether to display time in 12-hour format. Defaults to `false`.       |
 | `mile_unit`         | boolean | Optional    | Whether to display distance in miles. Defaults to `false`.            |
 | `hide_buttons`       | boolean | Optional    | Whether to hide the buttons in header. Defaults to `false`.          |
@@ -143,10 +152,14 @@ https://github.com/ngocjohn/lunar-phase-card
 | `selected_language` | string  | Optional    | ISO code of the language to be used. Defaults to system or `en`.      |
 | `latitude`          | number  | Optional    | The latitude for which to calculate the lunar phase.                  |
 | `longitude`         | number  | Optional    | The longitude for which to calculate the lunar phase.                 |
+| `hide_items`        | list    | Optional    | List of items to hide in data view                                    |
+| `theme`             | object  | Optional    | Apply theme on card.                                                  |
 | `font_customize`    | object  | Optional    | Customize fonts for the card. See below for details.                  |
 | `graph_config`      | object  | Optional    | Configuration for the chart. See below for details.                   |
+
 > [!NOTE]
 > The `entity` parameter is not required. It refers to the entity ID from the Lunar Card Custom component, which can be installed [here](https://github.com/ngocjohn/lunar-phase). If the `entity` is not defined, the card will use the default latitude and longitude from the system configuration.
+
 ### Font Customization Options
 | Name                  | Type    | Description                                                               |
 | --------------------- | ------- | ------------------------------------------------------------------------- |
@@ -219,6 +232,11 @@ longitude: 14.4212535
 
 We welcome contributions and are grateful for your support in improving this project. If you'd like to contribute, please follow our [Contribution Guidelines](docs/CONTRIBUTING.md) to get started.
 
+## Support
+If you like the card, consider supporting the developer
+
+<a href="https://www.buymeacoffee.com/ngocjohn" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 150px !important;" ></a>
+
 ---
 
 &copy; 2024 Viet Ngoc
@@ -238,9 +256,16 @@ We welcome contributions and are grateful for your support in improving this pro
 [header-compact-card]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact-view.png
 [no-header-compact-card]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/no_header_compact.png
 [card-config-editor]:https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-config-editor.gif
+[compact-mode-minimal]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact-minimal.gif
 
 <!--BADGES-->
+[hacs-default]: https://img.shields.io/badge/HACS-Default-blue?style=flat&logo=homeassistantcommunitystore&logoSize=auto
+[hacs-default-link]: https://my.home-assistant.io/redirect/hacs_repository/?owner=ngocjohn&repository=lunar-phase-card&category=plugin
 [hacs-validate]: https://github.com/ngocjohn/lunar-phase-card/actions/workflows/validate.yaml/badge.svg
 [hacs-validate-link]: https://github.com/ngocjohn/lunar-phase-card/actions/workflows/validate.yaml
 [total-downloads]: https://img.shields.io/github/downloads/ngocjohn/lunar-phase-card/total?style=flat&logo=homeassistantcommunitystore&logoSize=auto&label=Downloads&color=%2318BCF2
 [latest-downloads]:https://img.shields.io/github/downloads/ngocjohn/lunar-phase-card/latest/total?style=flat&logo=homeassistantcommunitystore&logoSize=auto
+[bmac-link]: https://www.buymeacoffee.com/ngocjohn
+[bmac-badge]: https://img.shields.io/badge/_-buy_me_a_coffee-F28834?style=flat&logo=buymeacoffee&labelColor=grey&color=%23F28834
+[forum-url]: https://community.home-assistant.io/t/lunar-phase-integration-for-home-assistant
+[forum-badge]: https://img.shields.io/badge/forum-community?style=flat&logo=homeassistant&label=community&color=blue
