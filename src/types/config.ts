@@ -31,13 +31,20 @@ interface HorizonGraphConfig {
   time_step_size?: number;
 }
 
+type ThemeMode = 'light' | 'dark' | 'auto';
+
+interface ThemeConfig {
+  selected_theme?: string;
+  theme_mode?: ThemeMode;
+}
+
 export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   type: string;
   entity?: string;
   '12hr_format'?: boolean;
   calendar_modal?: boolean;
-  compact_view?: boolean;
   compact_mode?: 'default' | 'minimal';
+  compact_view?: boolean;
   default_card?: PageType.BASE | PageType.CALENDAR | PageType.HORIZON;
   hide_buttons?: boolean;
   latitude: number;
@@ -51,6 +58,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   use_custom?: boolean;
   use_default?: boolean;
   use_entity?: boolean;
+  theme?: ThemeConfig;
   location?: LocationAddress;
   font_customize: FontCustomStyles;
   graph_config?: HorizonGraphConfig;

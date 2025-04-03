@@ -1,4 +1,4 @@
-import { LovelaceCardEditor, FrontendLocaleData, TimeFormat } from 'custom-card-helpers';
+import { LovelaceCardEditor, FrontendLocaleData, TimeFormat, formatDateTime } from 'custom-card-helpers';
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
@@ -18,7 +18,7 @@ import style from './css/style.css';
 import { localize } from './localize/localize';
 // Local types
 import { HA as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
-import { generateConfig } from './utils/ha-helper';
+import { applyTheme, generateConfig } from './utils/ha-helper';
 import { _handleOverflow, _setEventListeners, getDefaultConfig } from './utils/helpers';
 import { isEditorMode } from './utils/loader';
 import './components';
@@ -180,6 +180,9 @@ export class LunarPhaseCard extends LitElement {
           this.selectedDate = undefined;
         }
       }
+    }
+    if (changedProps.has('config') && this.config.theme?.selected_theme !== 'default') {
+      applyTheme(this, this._hass, this.config.theme?.selected_theme!, this.config.theme?.theme_mode);
     }
     return true;
   }
@@ -506,9 +509,9 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderCompactMinimalView(): TemplateResult {
-    const moonData = this.moon.moonData;
+    const { moonData, phaseName, nextPhase } = this.moon;
     const moonImage = this.renderMoonImage();
-    const phaseName = this.moon.phaseName;
+
     const renderCompactItem = (key: string): TemplateResult => {
       const { label, value } = moonData[key];
       return html`
@@ -519,17 +522,53 @@ export class LunarPhaseCard extends LitElement {
       `;
     };
 
+    const replacer = (key: string, value: any) =>
+      ['moonSet', 'moonRise', 'moonHighest', 'nextNewMoon', 'nextFullMoon'].includes(key) ? undefined : value;
+
+    const filteredData = JSON.parse(JSON.stringify(moonData, replacer));
+    const addedData = { ...filteredData, nextPhase };
+    const currentDate = new Date();
+    const timeStr = formatDateTime(currentDate, this._locale);
     return html`
       <div class="compact-view-minimal">
         ${renderCompactItem('moonSet')}
-        <div class="minimal-moon-image-container">
+        <div class="minimal-moon-image-container" @click=${this._toggleMinimalData}>
           ${moonImage}
           <span class="minimal-title">${phaseName}</span>
         </div>
         ${renderCompactItem('moonRise')}
       </div>
+
+      <div class="moon-data-minimal" ?hidden=${true} @click=${this._toggleMinimalData}>
+        <span>${timeStr}</span>
+        <lunar-base-data .moon=${this.moon} .moonData=${addedData} .chunkedLimit=${4}></lunar-base-data>
+      </div>
     `;
   }
+
+  private _toggleMinimalData = (e: Event): void => {
+    e.stopPropagation();
+
+    const root = this.shadowRoot;
+    if (!root) return;
+
+    const minimal = root.querySelector('.compact-view-minimal') as HTMLElement;
+    const details = root.querySelector('.moon-data-minimal') as HTMLElement;
+
+    if (!minimal || !details) return;
+
+    const showDetails = minimal.hasAttribute('hidden');
+
+    if (showDetails) {
+      details.setAttribute('hidden', '');
+      minimal.removeAttribute('hidden');
+      minimal.style.animation = 'fadeIn 400ms ease-in-out';
+    } else {
+      minimal.setAttribute('hidden', '');
+      details.removeAttribute('hidden');
+      details.style.animation = 'fadeIn 400ms ease-in-out';
+    }
+  };
 
   private renderCalendar(): TemplateResult {
     return html` <lunar-calendar-page .card=${this as any} .moon=${this.moon}></lunar-calendar-page> `;

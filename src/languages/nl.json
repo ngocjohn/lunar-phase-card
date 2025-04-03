@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Aangepaste achtergrond",
         "description": "Stel een configuratie in voor een aangepaste achtergrond"
+      },
+      "theme": {
+        "title": "Thema (optioneel)",
+        "description": "Kies een thema voor de kaart"
+      },
+      "layout": {
+        "title": "Lay-out opties",
+        "description": "De lay-out van de kaart wijzigen"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Positie van de legenda",
       "legendAlign": "Uitlijning van de legenda",
       "graphType": "Grafiektype",
-      "compactMode": "Compacte modus"
+      "compactMode": "Compacte modus",
+      "themeMode": "Thema modus"
     }
   }
 }

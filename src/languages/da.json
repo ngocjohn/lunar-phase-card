@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Brugerdefineret baggrund",
         "description": "Indstil en konfiguration for brugerdefineret baggrund"
+      },
+      "theme": {
+        "title": "Tema (valgfrit)",
+        "description": "Vælg et tema til kortet"
+      },
+      "layout": {
+        "title": "Indstillinger for layout",
+        "description": "Ændre kortets layout"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Position for legenden",
       "legendAlign": "Justering af legenden",
       "graphType": "Graftype",
-      "compactMode": "Kompakt tilstand"
+      "compactMode": "Kompakt tilstand",
+      "themeMode": "Tema-tilstand"
     }
   }
 }

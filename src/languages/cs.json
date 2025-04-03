@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Vlastní pozadí",
         "description": "Nastavte konfiguraci vlastního pozadí"
+      },
+      "theme": {
+        "title": "Motiv (volitelný)",
+        "description": "Vyberte motiv pro karty"
+      },
+      "layout": {
+        "title": "Možnosti rozvržení",
+        "description": "Úprava vzhledu vizitky"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Pozice legendy",
       "legendAlign": "Zarovnání legendy",
       "graphType": "Typ grafu",
-      "compactMode": "Kompaktní režim"
+      "compactMode": "Kompaktní režim",
+      "themeMode": "Režim motivu"
     }
   }
 }

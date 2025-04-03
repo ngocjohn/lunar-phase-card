@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Fonas",
         "description": "Nustatykite tinkintą fono"
+      },
+      "theme": {
+        "title": "Tema (pasirinktinai)",
+        "description": "Pasirinkite kortelės temą"
+      },
+      "layout": {
+        "title": "Išdėstymo parinktys",
+        "description": "Keisti kortelės išdėstymą"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Legendos padėtis",
       "legendAlign": "Legenda lygiavimas",
       "graphType": "Grafiko tipas",
-      "compactMode": "Kompaktiškas režimas"
+      "compactMode": "Kompaktiškas režimas",
+      "themeMode": "Temos režimas"
     }
   }
 }

@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Sfondo personalizzato",
         "description": "Imposta una configurazione per uno sfondo personalizzato"
+      },
+      "theme": {
+        "title": "Tema (opzionale)",
+        "description": "Scegli un tema per la carta"
+      },
+      "layout": {
+        "title": "Opzioni di layout",
+        "description": "Modificare il layout della scheda"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Posizione della legenda",
       "legendAlign": "Allineamento della legenda",
       "graphType": "Tipo di grafico",
-      "compactMode": "Modalità compatta"
+      "compactMode": "Modalità compatta",
+      "themeMode": "Modalità tema"
     }
   }
 }

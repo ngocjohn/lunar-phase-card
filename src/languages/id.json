@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Latar belakang khusus",
         "description": "Atur konfigurasi untuk latar belakang khusus"
+      },
+      "theme": {
+        "title": "Tema (opsional)",
+        "description": "Pilih tema untuk kartu"
+      },
+      "layout": {
+        "title": "Opsi tata letak",
+        "description": "Ubah tata letak kartu"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Posisi legenda",
       "legendAlign": "Perataan legenda",
       "graphType": "Jenis grafik",
-      "compactMode": "Mode kompak"
+      "compactMode": "Mode kompak",
+      "themeMode": "Mode tema"
     }
   }
 }

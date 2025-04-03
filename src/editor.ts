@@ -314,6 +314,17 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
   private _renderViewConfiguration(): TemplateResult {
     const content: TemplateResult[][] = [];
+
+    const langThemeContainer = this._renderLangTheme();
+    const customBackgroundInput = this._renderCustomBackground();
+    const layoutOpts = this._renderLayoutOpts();
+
+    content.push([langThemeContainer, layoutOpts, customBackgroundInput]);
+
+    return this.contentTemplate('viewConfig', 'viewConfig', 'mdi:image', html`${content}`);
+  }
+
+  private _renderLangTheme(): TemplateResult {
     const langOpts = [
       { key: 'system', name: 'System', nativeName: this.hass?.language },
       ...languageOptions.sort((a, b) => a.name.localeCompare(b.name)),
@@ -324,19 +335,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       value: lang.key,
       label: `${lang.name} (${lang.nativeName})`,
     }));
-
-    const viewItemMap = [
-      { label: 'compactView', configValue: 'compact_view' },
-      { label: 'showBackground', configValue: 'show_background' },
-      { label: 'timeFormat', configValue: '12hr_format' },
-      { label: 'mileUnit', configValue: 'mile_unit' },
-      { label: 'hideButtons', configValue: 'hide_buttons' },
-      { label: 'calendarModal', configValue: 'calendar_modal' },
-    ];
-
-    const viewOptions = html`
-      <div class="switches">${viewItemMap.map((item) => this._tempCheckBox(item.label, item.configValue))}</div>
-    `;
 
     // Create the ha-combo-box using the _haComboBox method
     const langComboBox = html`
@@ -360,6 +358,61 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       'default_card',
       false
     );
+
+    // Theme options
+    const theme = this._config?.theme || {};
+    const themeOptions = [
+      { value: 'light', label: 'Light' },
+      { value: 'dark', label: 'Dark' },
+      { value: 'auto', label: 'Auto' },
+    ];
+    const themeMode = theme?.theme_mode || 'auto';
+    const themePicker = html`
+      <ha-selector
+        .hass=${this.hass}
+        .value=${theme?.selected_theme ?? 'default'}
+        .configValue=${'selected_theme'}
+        .configKey=${'theme'}
+        .selector=${{ theme: { include_default: true } }}
+        @value-changed=${this._handleValueChange}
+      >
+      </ha-selector>
+    `;
+    const themeModePicker = this._haComboBox(
+      themeOptions,
+      'placeHolder.themeMode',
+      themeMode,
+      'theme_mode',
+      false,
+      'theme'
+    );
+
+    return html` <div class="comboboxes">
+      ${langComboBox} ${defaultCard}
+      </div>
+      <div class="sub-config-wrapper">
+        <div class="sub-config-type">
+          <span class="title">${this.localize(`editor.viewConfig.theme.title`)}</span>
+          <span class="desc">${this.localize(`editor.viewConfig.theme.description`)}</span>
+        </div>
+        <div class="sub-config-content">${themePicker} ${themeModePicker}</div>
+      </div>
+    </div>`;
+  }
+
+  private _renderLayoutOpts(): TemplateResult {
+    const viewItemMap = [
+      { label: 'compactView', configValue: 'compact_view' },
+      { label: 'showBackground', configValue: 'show_background' },
+      { label: 'timeFormat', configValue: '12hr_format' },
+      { label: 'mileUnit', configValue: 'mile_unit' },
+      { label: 'hideButtons', configValue: 'hide_buttons' },
+      { label: 'calendarModal', configValue: 'calendar_modal' },
+    ];
+
+    const viewOptions = html`
+      <div class="switches">${viewItemMap.map((item) => this._tempCheckBox(item.label, item.configValue))}</div>
+    `;
 
     const moonPositon = this._haComboBox(
       [
@@ -397,15 +450,15 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       @value-changed=${this._handleValueChange}
     ></ha-selector>`;
 
-    const customBackgroundInput = this._renderCustomBackground();
+    const comboboxex = html` <div class="comboboxes">${compactMode} ${moonPositon} ${numberDecimals}</div> `;
 
-    const comboboxex = html`
-      <div class="comboboxes">${langComboBox} ${defaultCard} ${compactMode} ${moonPositon} ${numberDecimals}</div>
-    `;
-
-    content.push([viewOptions, comboboxex, customBackgroundInput]);
-
-    return this.contentTemplate('viewConfig', 'viewConfig', 'mdi:image', html`${content}`);
+    return html`<div class="sub-config-wrapper">
+      <div class="sub-config-type">
+        <span class="title">${this.localize(`editor.viewConfig.layout.title`)}</span>
+        <span class="desc">${this.localize(`editor.viewConfig.layout.description`)}</span>
+      </div>
+      ${viewOptions} ${comboboxex}
+    </div>`;
   }
 
   private _renderGraphConfig(): TemplateResult {
@@ -791,6 +844,13 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     } else if (configKey === 'custom_bg') {
       value = event.target.value;
       updates.custom_background = value === 0 ? undefined : CUSTOM_BG[value];
+    } else if (configKey === 'theme') {
+      const theme = this._config?.theme || defaultConfig.theme;
+      updates.theme = {
+        ...theme,
+        [configValue]: value,
+      };
+      console.log('theme', updates.theme);
     } else if (configValue === 'entity') {
       const attribute = this.hass.states[value].attributes;
       updates.latitude = attribute.latitude ?? attribute.location.latitude;

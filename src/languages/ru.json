@@ -66,6 +66,14 @@
       "customBackground": {
         "title": "Пользовательский фон",
         "description": "Настройте пользовательский фон"
+      },
+      "theme": {
+        "title": "Тема (по желанию)",
+        "description": "Выберите тему для открытки"
+      },
+      "layout": {
+        "title": "Варианты планировки",
+        "description": "Изменение макета карточки"
       }
     },
     "baseConfig": {
@@ -154,7 +162,8 @@
       "legendPosition": "Положение легенды",
       "legendAlign": "Выравнивание легенды",
       "graphType": "Тип графика",
-      "compactMode": "Компактный режим"
+      "compactMode": "Компактный режим",
+      "themeMode": "Режим темы"
     }
   }
 }

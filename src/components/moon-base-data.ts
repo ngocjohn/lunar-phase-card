@@ -12,6 +12,7 @@ import { Moon } from '../utils/moon';
 export class LunarBaseData extends LitElement {
   @property({ attribute: false }) moon!: Moon;
   @property({ attribute: false }) moonData!: MoonData;
+  @property({ attribute: false }) chunkedLimit: number = 5;
   @state() swiper: Swiper | null = null;
 
   static get styles(): CSSResultGroup {
@@ -95,7 +96,7 @@ export class LunarBaseData extends LitElement {
   protected render(): TemplateResult {
     // const newMoonData = this.baseMoonData;
     const baseMoonData = (this.moonData as MoonData) || {};
-    const chunkedData = this._chunkObject(baseMoonData, 5);
+    const chunkedData = this._chunkObject(baseMoonData, this.chunkedLimit);
     const dataContainer = Object.keys(chunkedData).map((key) => {
       return html`
         <div class="swiper-slide">
@@ -127,8 +128,7 @@ export class LunarBaseData extends LitElement {
   }
 
   private _computeFontSize() {
-    const parentEl = this.shadowRoot?.querySelector('.moon-phase-name') as HTMLElement;
-    if (!parentEl) return;
+    const parentEl = this.shadowRoot!.querySelector('.moon-phase-name') as HTMLElement;
     const parentWidth = parentEl.clientWidth;
     const scrollWidth = parentEl.scrollWidth;
     const fontSize = parseFloat(window.getComputedStyle(parentEl).fontSize);
