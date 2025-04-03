@@ -1,6 +1,6 @@
-name: Bug report
-description: File a bug report. 🐞
-title: "[Bug] "
+name: 🐞 Bug report
+description: File a bug report.
+title: "[Bug]: "
 labels: ["bug"]
 assignees: ['ngocjohn']
 
@@ -50,6 +50,24 @@ body:
         - v1.1.1-beta
         - v1.1.0
         - v1.0.0
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Card Configuration
+      description: Your card YAML configuration
+      render: yaml
+      placeholder: |
+        type: custom:lunar-phase-card
+        entity: ""
+        use_default: true
+        use_custom: false
+        use_entity: false
+        show_background: true
+        selected_language: en
+        compact_view: false
+        # Your configuration here
     validations:
       required: true
 
