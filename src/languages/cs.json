@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Přizpůsobení rozvržení",
-      "description": "Úprava vzhledu vizitky"
+      "description": "Úprava vzhledu vizitky",
+      "hiddenItems": {
+        "title": "Skryté položky",
+        "description": "Výběr položek, které chcete skrýt v zobrazení dat"
+      }
     },
     "compactView": "Kompaktní zobrazení",
     "showBackground": "Zobrazit pozadí",

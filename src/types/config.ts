@@ -58,6 +58,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   use_custom?: boolean;
   use_default?: boolean;
   use_entity?: boolean;
+  hide_items?: string[];
   theme?: ThemeConfig;
   location?: LocationAddress;
   font_customize: FontCustomStyles;

@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Personalització del disseny",
-      "description": "Modificar el disseny de la targeta"
+      "description": "Modificar el disseny de la targeta",
+      "hiddenItems": {
+        "title": "Elements ocults",
+        "description": "Seleccionar els elements que voleu amagar a la visualització de dades"
+      }
     },
     "compactView": "Vista compacta",
     "showBackground": "Mostra el fons",

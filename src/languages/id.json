@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Kustomisasi tata letak",
-      "description": "Ubah tata letak kartu"
+      "description": "Ubah tata letak kartu",
+      "hiddenItems": {
+        "title": "Item tersembunyi",
+        "description": "Pilih item untuk disembunyikan dalam tampilan data"
+      }
     },
     "compactView": "Tampilan kompak",
     "showBackground": "Tampilkan gambar latar belakang",

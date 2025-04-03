@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Personnalisation de la mise en page",
-      "description": "Modifier la mise en page de la carte"
+      "description": "Modifier la mise en page de la carte",
+      "hiddenItems": {
+        "title": "Objets cachés",
+        "description": "Sélectionner les éléments à masquer dans la vue des données"
+      }
     },
     "compactView": "Affichage compact",
     "showBackground": "Afficher fond d'écran",

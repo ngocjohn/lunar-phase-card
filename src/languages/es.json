@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Personalización del diseño",
-      "description": "Modificar el diseño de la tarjeta"
+      "description": "Modificar el diseño de la tarjeta",
+      "hiddenItems": {
+        "title": "Objetos ocultos",
+        "description": "Seleccionar los elementos que se van a ocultar en la vista de datos"
+      }
     },
     "compactView": "Vista compacta",
     "showBackground": "Mostrar fondo",

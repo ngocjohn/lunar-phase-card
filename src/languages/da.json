@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Tilpasning af layout",
-      "description": "Ændre kortets layout"
+      "description": "Ændre kortets layout",
+      "hiddenItems": {
+        "title": "Skjulte genstande",
+        "description": "Vælg elementer, der skal skjules i datavisning"
+      }
     },
     "compactView": "Kompakt udsigt",
     "showBackground": "Vis baggrund",
