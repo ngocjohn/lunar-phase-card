@@ -123,12 +123,18 @@ export class LunarBaseData extends LitElement {
   }
 
   private _renderPhaseName(): TemplateResult {
-    if (!this.moon.config.hide_buttons) return html``;
+    if (
+      !this.moon.config.hide_buttons ||
+      (this.moon.config.compact_view && this.moon.config.compact_mode === 'minimal')
+    ) {
+      return html``;
+    }
     return html` <div class="moon-phase-name" style=${this._computeFontSize()}>${this.moon.phaseName}</div> `;
   }
 
   private _computeFontSize() {
-    const parentEl = this.shadowRoot!.querySelector('.moon-phase-name') as HTMLElement;
+    const parentEl = this.shadowRoot?.querySelector('.moon-phase-name') as HTMLElement;
+    if (!parentEl) return '';
     const parentWidth = parentEl.clientWidth;
     const scrollWidth = parentEl.scrollWidth;
     const fontSize = parseFloat(window.getComputedStyle(parentEl).fontSize);

@@ -121,6 +121,10 @@
         "description": "Настройте график"
       }
     },
+    "layoutConfig": {
+      "title": "Настройка макета",
+      "description": "Изменение макета карточки"
+    },
     "compactView": "Компактный вид",
     "showBackground": "Показать фон",
     "timeFormat": "12-часовой формат времени",

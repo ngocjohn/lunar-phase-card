@@ -121,6 +121,10 @@
         "description": "Personnalisez le graphique"
       }
     },
+    "layoutConfig": {
+      "title": "Personnalisation de la mise en page",
+      "description": "Modifier la mise en page de la carte"
+    },
     "compactView": "Affichage compact",
     "showBackground": "Afficher fond d'écran",
     "timeFormat": "Format 12h",

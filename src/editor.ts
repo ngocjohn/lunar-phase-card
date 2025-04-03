@@ -16,12 +16,20 @@ import { compareConfig, getAddressFromOpenStreet } from './utils/helpers';
 import './components/moon-editor-search';
 import { loadHaComponents, stickyPreview, _saveConfig } from './utils/loader';
 
+enum TAB {
+  LATLNG = 0,
+  APPEARANCE = 1,
+  LAYOUT = 2,
+  FONT = 3,
+  GRAPH = 4,
+}
+
 @customElement('lunar-phase-card-editor')
 export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass!: HomeAssistant;
 
   @state() _config!: LunarPhaseCardConfig;
-  @state() private _activeTabIndex?: number;
+  @state() private _activeTabIndex?: TAB;
   @state() _activeGraphEditor = false;
 
   @state() private _searchLocation: boolean = false;
@@ -54,7 +62,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   protected updated(_changedProperties: PropertyValues): void {
     super.updated(_changedProperties);
     if (_changedProperties.has('_activeTabIndex')) {
-      if (this._activeTabIndex === 3) {
+      if (this._activeTabIndex === TAB.GRAPH) {
         this._activeGraphEditor = true;
       } else {
         this._activeGraphEditor = false;
@@ -142,8 +150,12 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         content: this._renderBaseConfigSelector(),
       },
       {
-        label: 'View',
+        label: 'Appearance',
         content: this._renderViewConfiguration(),
+      },
+      {
+        label: 'Layout',
+        content: this._renderLayoutConfiguration(),
       },
       {
         label: 'Font',
@@ -156,7 +168,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     ];
 
     return this.TabBar({
-      activeTabIndex: this._activeTabIndex || 0,
+      activeTabIndex: this._activeTabIndex || TAB.LATLNG,
       onTabChange: (index) => (this._activeTabIndex = index),
       tabs: tabsConfig,
     });
@@ -317,9 +329,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
     const langThemeContainer = this._renderLangTheme();
     const customBackgroundInput = this._renderCustomBackground();
-    const layoutOpts = this._renderLayoutOpts();
 
-    content.push([langThemeContainer, layoutOpts, customBackgroundInput]);
+    content.push([langThemeContainer, customBackgroundInput]);
 
     return this.contentTemplate('viewConfig', 'viewConfig', 'mdi:image', html`${content}`);
   }
@@ -387,45 +398,10 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       'theme'
     );
 
-    return html` <div class="comboboxes">
-      ${langComboBox} ${defaultCard}
-      </div>
-      <div class="sub-config-wrapper">
-        <div class="sub-config-type">
-          <span class="title">${this.localize(`editor.viewConfig.theme.title`)}</span>
-          <span class="desc">${this.localize(`editor.viewConfig.theme.description`)}</span>
-        </div>
-        <div class="sub-config-content">${themePicker} ${themeModePicker}</div>
-      </div>
-    </div>`;
-  }
-
-  private _renderLayoutOpts(): TemplateResult {
-    const viewItemMap = [
-      { label: 'compactView', configValue: 'compact_view' },
-      { label: 'showBackground', configValue: 'show_background' },
-      { label: 'timeFormat', configValue: '12hr_format' },
-      { label: 'mileUnit', configValue: 'mile_unit' },
+    const compactNhide = [
       { label: 'hideButtons', configValue: 'hide_buttons' },
-      { label: 'calendarModal', configValue: 'calendar_modal' },
+      { label: 'compactView', configValue: 'compact_view' },
     ];
-
-    const viewOptions = html`
-      <div class="switches">${viewItemMap.map((item) => this._tempCheckBox(item.label, item.configValue))}</div>
-    `;
-
-    const moonPositon = this._haComboBox(
-      [
-        { value: 'left', label: 'Left' },
-        { value: 'right', label: 'Right' },
-      ],
-      'placeHolder.moonPosition',
-      this._config?.moon_position || 'left',
-      'moon_position',
-      false,
-      undefined,
-      this._config?.compact_mode === 'minimal' && this._config.compact_view!
-    );
 
     const compactMode = this._haComboBox(
       [
@@ -440,6 +416,112 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       !this._config?.compact_view
     );
 
+    const moonPositon = this._haComboBox(
+      [
+        { value: 'left', label: 'Left' },
+        { value: 'right', label: 'Right' },
+      ],
+      'placeHolder.moonPosition',
+      this._config?.moon_position || 'left',
+      'moon_position',
+      false,
+      undefined,
+      this._config?.compact_mode === 'minimal' && this._config.compact_view!
+    );
+
+    const viewOptions = html`
+      <div class="switches">${compactNhide.map((item) => this._tempCheckBox(item.label, item.configValue))}</div>
+    `;
+
+    const comboboxex = html` <div class="comboboxes">${moonPositon}${compactMode}</div> `;
+
+    return html` <div class="comboboxes">
+      ${langComboBox} ${defaultCard}
+      </div>
+      ${viewOptions}
+      ${comboboxex}
+      <div class="sub-config-wrapper">
+        <div class="sub-config-type">
+          <span class="title">${this.localize(`editor.viewConfig.theme.title`)}</span>
+          <span class="desc">${this.localize(`editor.viewConfig.theme.description`)}</span>
+        </div>
+        <div class="sub-config-content">${themePicker} ${themeModePicker}</div>
+      </div>
+    </div>`;
+  }
+
+  private _renderCustomBackground(): TemplateResult {
+    const showBackground = this._tempCheckBox('showBackground', 'show_background');
+    const backgroundOptions = html`
+      ${Array.from({ length: CUSTOM_BG.length }).map(
+        (_, i) => html`
+          <ha-formfield>
+            <img src=${CUSTOM_BG[i]} class="bg-thumbnail" slot="label" />
+            <ha-radio
+              .checked=${this._config?.custom_background === CUSTOM_BG[i] ||
+              (this._config?.custom_background === undefined && i === null) ||
+              (this._config?.show_background && this._config?.custom_background === undefined && i === 0)}
+              .value=${i}
+              .configKey=${'custom_bg'}
+              @change=${this._handleValueChange}
+              .disabled=${this._config?.show_background === false}
+            ></ha-radio>
+          </ha-formfield>
+        `
+      )}
+    `;
+
+    const customBackgroundInput = html`
+      <div class="custom-background-wrapper">
+        <ha-textfield
+          .label=${this.localize('editor.placeHolder.customBackground')}
+          .configValue=${'custom_background'}
+          .value=${this._config?.custom_background || ''}
+          @change=${this._handleValueChange}
+        ></ha-textfield>
+        ${!this._config?.custom_background
+          ? html`
+              <ha-button @click=${() => this.shadowRoot?.getElementById('file-upload-new')?.click()}>
+                Upload
+              </ha-button>
+              <input
+                type="file"
+                id="file-upload-new"
+                class="file-input"
+                @change=${this._handleFilePicked.bind(this)}
+                accept="image/*"
+              />
+            `
+          : html`
+              <div class="right-icon">
+                <ha-icon icon="mdi:delete" @click=${this.handleRemoveBackground}></ha-icon>
+              </div>
+            `}
+      </div>
+    `;
+
+    const backgroundContainer = html`
+      <div class="sub-config-wrapper">
+        <div class="sub-config-type">
+          <span class="title">${this.localize(`editor.viewConfig.customBackground.title`)}</span>
+          <span class="desc">${this.localize(`editor.viewConfig.customBackground.description`)}</span>
+        </div>
+        <div class="comboboxes">${showBackground}</div>
+        <div class="sub-config-content">${backgroundOptions}</div>
+        <div class="sub-config-content">${customBackgroundInput}</div>
+      </div>
+    `;
+
+    return backgroundContainer;
+  }
+
+  private _renderLayoutConfiguration(): TemplateResult {
+    const viewItemMap = [
+      { label: 'timeFormat', configValue: '12hr_format' },
+      { label: 'mileUnit', configValue: 'mile_unit' },
+      { label: 'calendarModal', configValue: 'calendar_modal' },
+    ];
+
     const numberDecimals = html` <ha-selector
       .hass=${this.hass}
       .value=${this._config?.number_decimals as number}
@@ -450,15 +532,13 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       @value-changed=${this._handleValueChange}
     ></ha-selector>`;
 
-    const comboboxex = html` <div class="comboboxes">${compactMode} ${moonPositon} ${numberDecimals}</div> `;
-
-    return html`<div class="sub-config-wrapper">
-      <div class="sub-config-type">
-        <span class="title">${this.localize(`editor.viewConfig.layout.title`)}</span>
-        <span class="desc">${this.localize(`editor.viewConfig.layout.description`)}</span>
+    const viewOptions = html`
+      <div class="switches">
+        ${viewItemMap.map((item) => this._tempCheckBox(item.label, item.configValue))}${numberDecimals}
       </div>
-      ${viewOptions} ${comboboxex}
-    </div>`;
+    `;
+
+    return this.contentTemplate('layoutConfig', 'layoutConfig', 'mdi:format-list-bulleted', viewOptions);
   }
 
   private _renderGraphConfig(): TemplateResult {
@@ -569,68 +649,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     `;
 
     return this.contentTemplate('graphConfig', 'graphConfig', 'mdi:chart-bell-curve', graphConfig);
-  }
-
-  private _renderCustomBackground(): TemplateResult {
-    const backgroundOptions = html`
-      ${Array.from({ length: CUSTOM_BG.length }).map(
-        (_, i) => html`
-          <ha-formfield>
-            <img src=${CUSTOM_BG[i]} class="bg-thumbnail" slot="label" />
-            <ha-radio
-              .checked=${this._config?.custom_background === CUSTOM_BG[i] ||
-              (this._config?.custom_background === undefined && i === null) ||
-              (this._config?.show_background && this._config?.custom_background === undefined && i === 0)}
-              .value=${i}
-              .configKey=${'custom_bg'}
-              @change=${this._handleValueChange}
-            ></ha-radio>
-          </ha-formfield>
-        `
-      )}
-    `;
-
-    const customBackgroundInput = html`
-      <div class="custom-background-wrapper">
-        <ha-textfield
-          .label=${this.localize('editor.placeHolder.customBackground')}
-          .configValue=${'custom_background'}
-          .value=${this._config?.custom_background || ''}
-          @change=${this._handleValueChange}
-        ></ha-textfield>
-        ${!this._config?.custom_background
-          ? html`
-              <ha-button @click=${() => this.shadowRoot?.getElementById('file-upload-new')?.click()}>
-                Upload
-              </ha-button>
-              <input
-                type="file"
-                id="file-upload-new"
-                class="file-input"
-                @change=${this._handleFilePicked.bind(this)}
-                accept="image/*"
-              />
-            `
-          : html`
-              <div class="right-icon">
-                <ha-icon icon="mdi:delete" @click=${this.handleRemoveBackground}></ha-icon>
-              </div>
-            `}
-      </div>
-    `;
-
-    const backgroundContainer = html`
-      <div class="sub-config-wrapper">
-        <div class="sub-config-type">
-          <span class="title">${this.localize(`editor.viewConfig.customBackground.title`)}</span>
-          <span class="desc">${this.localize(`editor.viewConfig.customBackground.description`)}</span>
-        </div>
-        <div class="sub-config-content">${backgroundOptions}</div>
-        <div class="sub-config-content">${customBackgroundInput}</div>
-      </div>
-    `;
-
-    return backgroundContainer;
   }
 
   private _renderFontConfiguration(): TemplateResult {
@@ -845,7 +863,10 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       value = event.target.value;
       updates.custom_background = value === 0 ? undefined : CUSTOM_BG[value];
     } else if (configKey === 'theme') {
-      const theme = this._config?.theme || defaultConfig.theme;
+      const theme = { ...(this._config.theme || {}) };
+      if (theme![configValue] === value) {
+        return;
+      }
       updates.theme = {
         ...theme,
         [configValue]: value,

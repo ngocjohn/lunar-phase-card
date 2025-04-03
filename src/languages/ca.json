@@ -121,6 +121,10 @@
         "description": "Personalitza el gràfic"
       }
     },
+    "layoutConfig": {
+      "title": "Personalització del disseny",
+      "description": "Modificar el disseny de la targeta"
+    },
     "compactView": "Vista compacta",
     "showBackground": "Mostra el fons",
     "timeFormat": "Format del temps de 12 hores",

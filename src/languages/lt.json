@@ -121,6 +121,10 @@
         "description": "Tinkinti grafiką"
       }
     },
+    "layoutConfig": {
+      "title": "Maketo tinkinimas",
+      "description": "Keisti kortelės išdėstymą"
+    },
     "compactView": "Kompaktiškas vaizdas",
     "showBackground": "Rodyti foną",
     "timeFormat": "12 valandų laiko formatas",

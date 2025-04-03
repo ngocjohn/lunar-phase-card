@@ -121,6 +121,10 @@
                 "description": "Customize the graph"
             }
         },
+        "layoutConfig": {
+            "title": "Layout customization",
+            "description": "Modify the layout of the card"
+        },
         "compactView": "Compact view",
         "showBackground": "Show background",
         "timeFormat": "12-hour time format",

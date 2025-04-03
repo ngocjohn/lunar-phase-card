@@ -121,6 +121,10 @@
         "description": "Tilpas grafen"
       }
     },
+    "layoutConfig": {
+      "title": "Tilpasning af layout",
+      "description": "Ændre kortets layout"
+    },
     "compactView": "Kompakt udsigt",
     "showBackground": "Vis baggrund",
     "timeFormat": "12-timers tidsformat",

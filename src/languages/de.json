@@ -121,6 +121,10 @@
         "description": "Details des Diagramms anpassen"
       }
     },
+    "layoutConfig": {
+      "title": "Anpassung des Layouts",
+      "description": "Ändern des Layouts der Karte"
+    },
     "compactView": "Kompakte Ansicht",
     "showBackground": "Hintergrund einblenden",
     "timeFormat": "12-Stunden-Zeitformat",

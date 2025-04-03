@@ -121,6 +121,10 @@
         "description": "Prispôsobte graf"
       }
     },
+    "layoutConfig": {
+      "title": "Prispôsobenie rozloženia",
+      "description": "Úprava rozloženia karty"
+    },
     "compactView": "Kompaktný pohľad",
     "showBackground": "Zobraziť pozadie",
     "timeFormat": "12-hodinový formát času",

@@ -121,6 +121,10 @@
         "description": "Tùy chỉnh biểu đồ"
       }
     },
+    "layoutConfig": {
+      "title": "Tùy chỉnh bố cục",
+      "description": "Sửa đổi bố cục của thẻ"
+    },
     "compactView": "Chế độ xem nhỏ gọn",
     "showBackground": "Hiển thị nền",
     "timeFormat": "Định dạng thời gian 12 giờ",

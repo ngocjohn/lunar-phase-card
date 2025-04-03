@@ -121,6 +121,10 @@
         "description": "Personalizza il grafico"
       }
     },
+    "layoutConfig": {
+      "title": "Personalizzazione del layout",
+      "description": "Modificare il layout della scheda"
+    },
     "compactView": "Visualizzazione compatta",
     "showBackground": "Mostra sfondo",
     "timeFormat": "Formato a 12 ore",

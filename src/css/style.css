@@ -429,7 +429,7 @@ lunar-base-data {
   text-wrap: nowrap;
 }
 
-.compact-item .value {
+.compact-item span.value {
   color: var(--lunar-card-label-font-color);
   opacity: 0.8;
 }

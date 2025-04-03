@@ -121,6 +121,10 @@
         "description": "Dostosuj wykres"
       }
     },
+    "layoutConfig": {
+      "title": "Dostosowywanie układu",
+      "description": "Modyfikowanie układu karty"
+    },
     "compactView": "Kompaktowy widok",
     "showBackground": "Pokaż tło",
     "timeFormat": "Format czasu 12-godzinny",

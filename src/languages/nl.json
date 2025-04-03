@@ -121,6 +121,10 @@
         "description": "Pas de grafiek aan"
       }
     },
+    "layoutConfig": {
+      "title": "Lay-out aanpassen",
+      "description": "De lay-out van de kaart wijzigen"
+    },
     "compactView": "Compacte weergave",
     "showBackground": "toon achtergrond",
     "timeFormat": "12-uur formaat",

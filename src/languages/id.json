@@ -121,6 +121,10 @@
         "description": "Sesuaikan grafik"
       }
     },
+    "layoutConfig": {
+      "title": "Kustomisasi tata letak",
+      "description": "Ubah tata letak kartu"
+    },
     "compactView": "Tampilan kompak",
     "showBackground": "Tampilkan gambar latar belakang",
     "timeFormat": "Format waktu 12 jam",

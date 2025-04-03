@@ -73,7 +73,7 @@
       },
       "layout": {
         "title": "Možnosti rozvržení",
-        "description": "Úprava vzhledu vizitky"
+        "description": "Úprava vzhledu karty"
       }
     },
     "baseConfig": {
@@ -120,6 +120,10 @@
         "title": "Možnosti přizpůsobení",
         "description": "Přizpůsobte graf"
       }
+    },
+    "layoutConfig": {
+      "title": "Přizpůsobení rozvržení",
+      "description": "Úprava vzhledu vizitky"
     },
     "compactView": "Kompaktní zobrazení",
     "showBackground": "Zobrazit pozadí",

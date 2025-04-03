@@ -460,7 +460,8 @@ export class LunarPhaseCard extends LitElement {
   }
 
   renderMoonData(): TemplateResult {
-    const compactView = this.config.compact_view && this._activeCard === PageType.BASE;
+    const compactView =
+      this.config.compact_view && this.config?.compact_mode !== 'minimal' && this._activeCard === PageType.BASE;
     const replacer = (key: string, value: any) => {
       if (['direction', 'position'].includes(key)) {
         return undefined;

@@ -121,6 +121,10 @@
         "description": "Personaliza el gráfico"
       }
     },
+    "layoutConfig": {
+      "title": "Personalización del diseño",
+      "description": "Modificar el diseño de la tarjeta"
+    },
     "compactView": "Vista compacta",
     "showBackground": "Mostrar fondo",
     "timeFormat": "Formato de 12 horas",
