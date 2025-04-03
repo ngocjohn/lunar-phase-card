@@ -1,159 +1,160 @@
 {
-    "name": "Polish",
-    "nativeName": "Polski",
-    "card": {
-        "phase": {
-            "firstQuarterMoon": "Pierwsza kwadra",
-            "fullMoon": "Pełnia",
-            "thirdQuarterMoon": "Ostatnia kwadra",
-            "newMoon": "Nów",
-            "waxingCrescentMoon": "Przybierający sierp",
-            "waxingGibbousMoon": "Przybierający garb",
-            "waningCrescentMoon": "Malejący sierp",
-            "waningGibbousMoon": "Malejący garb"
-        },
-        "illumination": "Oświetlenie",
-        "illuminated": "Oświetlony",
-        "moonRise": "Wschód Księżyca",
-        "moonSet": "Zachód Księżyca",
-        "moonHigh": "Najwyższa pozycja Księżyca",
-        "moonAge": "Wiek Księżyca",
-        "distance": "Dystans",
-        "azimuth": "Azymut",
-        "altitude": "Wysokość",
-        "fullMoon": "Pełnia",
-        "newMoon": "Nów",
-        "relativeTime": {
-            "days": "dni",
-            "justNow": "teraz",
-            "minutesAgo": "{0} minut temu",
-            "hoursAgo": "{0} godzin temu",
-            "inMinutes": "za {0} minut",
-            "inHours": "za {0} godzin"
-        },
-        "position": "Pozycja",
-        "direction": "Kierunek",
-        "cardinalShort": {
-            "N": "P",
-            "NNE": "Pn-W",
-            "NE": "Pn-Wsch",
-            "ENE": "W-Pn",
-            "E": "W",
-            "ESE": "W-Pd",
-            "SE": "Pd-W",
-            "SSE": "Pd-PdW",
-            "S": "Płd",
-            "SSW": "Pd-Z",
-            "SW": "Pd-Z",
-            "WSW": "Z-Pd",
-            "W": "Z",
-            "WNW": "Z-Pn",
-            "NW": "Pn-Z",
-            "NNW": "Pn-PnZ"
-        },
-        "underHorizon": "Księżyc pod horyzontem",
-        "overHorizon": "Księżyc nad horyzontem",
-        "horizonTitle": "Dzisiejszy Księżyc",
-        "currentTime": "Aktualny czas",
-        "common": {
-            "now": "Teraz"
-        }
+  "name": "Polish",
+  "nativeName": "Polski",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Pierwsza kwadra",
+      "fullMoon": "Pełnia",
+      "thirdQuarterMoon": "Ostatnia kwadra",
+      "newMoon": "Nów",
+      "waxingCrescentMoon": "Przybierający sierp",
+      "waxingGibbousMoon": "Przybierający garb",
+      "waningCrescentMoon": "Malejący sierp",
+      "waningGibbousMoon": "Malejący garb"
     },
-    "editor": {
-        "viewConfig": {
-            "title": "Język i tryb widoku",
-            "description": "Ustawienia języka i tła",
-            "customBackground": {
-                "title": "Tło",
-                "description": "Konfiguracja niestandardowego tła"
-            }
-        },
-        "baseConfig": {
-            "title": "Szerokość i długość geograficzna",
-            "description": "Ustawienia szerokości i długości geograficznej"
-        },
-        "optionsConfig": {
-            "useDefault": "Użyj systemu",
-            "useEntity": "Użyj obiektu",
-            "useCustom": "Użyj niestandardowych"
-        },
-        "fontOptions": {
-            "title": "Dostosowanie czcionki",
-            "description": "Konfiguracja rozmiaru i koloru czcionki",
-            "hideLabel": "Ukryj etykietę",
-            "headerFontConfig": {
-                "title": "Czcionka nagłówka",
-                "description": "Konfiguracja czcionki nagłówka"
-            },
-            "labelFontConfig": {
-                "title": "Czcionka etykiety",
-                "description": "Konfiguracja czcionki etykiety"
-            },
-            "headerFontSize": "Rozmiar czcionki nagłówka",
-            "headerFontColor": "Kolor czcionki nagłówka",
-            "headerFontStyle": "Styl czcionki nagłówka",
-            "labelFontSize": "Rozmiar czcionki etykiety",
-            "labelFontColor": "Kolor czcionki etykiety",
-            "labelFontStyle": "Styl czcionki etykiety",
-            "valueFontSize": "Rozmiar czcionki wartości"
-        },
-        "graphConfig": {
-            "title": "Dostosowanie wykresu",
-            "description": "Konfiguracja wykresu",
-            "type": {
-                "title": "Typ wykresu",
-                "description": "Wybierz typ wykresu"
-            },
-            "visibility": {
-                "title": "Opcje widoczności",
-                "description": "Ukryj lub pokaż konkretne elementy"
-            },
-            "customization": {
-                "title": "Opcje dostosowania",
-                "description": "Dostosuj wykres"
-            }
-        },
-        "compactView": "Kompaktowy widok",
-        "showBackground": "Pokaż tło",
-        "timeFormat": "Format czasu 12-godzinny",
-        "mileUnit": "Jednostka w milach",
-        "yTicks": "Podziałki osi Y",
-        "xTicks": "Podziałki osi X",
-        "showTime": "Znaczniki czasu wschodu/zachodu",
-        "showCurrent": "Aktualna pozycja Księżyca",
-        "showLegend": "Pokaż legendę",
-        "showHighest": "Pokaż najwyższą pozycję Księżyca",
-        "calendarModal": "Okno popup kalendarza",
-        "hideButtons": "Ukryj przyciski",
-        "titleHelper": {
-            "compactView": "Pokaż kompaktowy widok",
-            "showBackground": "Pokaż tło",
-            "timeFormat": "Ustaw format czasu (12-godzinny lub 24-godzinny)",
-            "mileUnit": "Kilometry zostaną użyte, jeśli wyłączone",
-            "yTicks": "Pokaż podziałki osi Y",
-            "xTicks": "Pokaż podziałki osi X",
-            "showTime": "Pokaż znaczniki czasu wschodu/zachodu",
-            "showCurrent": "Pokaż aktualną pozycję Księżyca",
-            "showLegend": "Pokaż legendę",
-            "showHighest": "Pokaż najwyższą pozycję Księżyca",
-            "calendarModal": "Kalendarz zostanie wyświetlony w oknie popup",
-            "hideButtons": "Przyciski nagłówka zostaną ukryte",
-            "useDefault": "Użyj szerokości i długości geograficznej systemu",
-            "useEntity": "Użyj szerokości i długości geograficznej obiektu",
-            "useCustom": "Użyj niestandardowej szerokości i długości geograficznej",
-            "hideLabel": "Ukryj etykietę w kompaktowym widoku"
-        },
-        "placeHolder": {
-            "latitude": "Wprowadź szerokość geograficzną",
-            "longitude": "Wprowadź długość geograficzną",
-            "customBackground": "URL lub ścieżka do obrazu",
-            "language": "Wybierz język",
-            "moonPosition": "Wybierz pozycję Księżyca na karcie",
-            "defaultCard": "Wybierz domyślną kartę",
-            "yTicksPosition": "Pozycja podziałek osi Y",
-            "legendPosition": "Pozycja legendy",
-            "legendAlign": "Wyrównanie legendy",
-            "graphType": "Typ wykresu"
-        }
+    "illumination": "Oświetlenie",
+    "illuminated": "Oświetlony",
+    "moonRise": "Wschód Księżyca",
+    "moonSet": "Zachód Księżyca",
+    "moonHigh": "Najwyższa pozycja Księżyca",
+    "moonAge": "Wiek Księżyca",
+    "distance": "Dystans",
+    "azimuth": "Azymut",
+    "altitude": "Wysokość",
+    "fullMoon": "Pełnia",
+    "newMoon": "Nów",
+    "relativeTime": {
+      "days": "dni",
+      "justNow": "teraz",
+      "minutesAgo": "{0} minut temu",
+      "hoursAgo": "{0} godzin temu",
+      "inMinutes": "za {0} minut",
+      "inHours": "za {0} godzin"
+    },
+    "position": "Pozycja",
+    "direction": "Kierunek",
+    "cardinalShort": {
+      "N": "P",
+      "NNE": "Pn-W",
+      "NE": "Pn-Wsch",
+      "ENE": "W-Pn",
+      "E": "W",
+      "ESE": "W-Pd",
+      "SE": "Pd-W",
+      "SSE": "Pd-PdW",
+      "S": "Płd",
+      "SSW": "Pd-Z",
+      "SW": "Pd-Z",
+      "WSW": "Z-Pd",
+      "W": "Z",
+      "WNW": "Z-Pn",
+      "NW": "Pn-Z",
+      "NNW": "Pn-PnZ"
+    },
+    "underHorizon": "Księżyc pod horyzontem",
+    "overHorizon": "Księżyc nad horyzontem",
+    "horizonTitle": "Dzisiejszy Księżyc",
+    "currentTime": "Aktualny czas",
+    "common": {
+      "now": "Teraz"
     }
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Język i tryb widoku",
+      "description": "Ustawienia języka i tła",
+      "customBackground": {
+        "title": "Tło",
+        "description": "Konfiguracja niestandardowego tła"
+      }
+    },
+    "baseConfig": {
+      "title": "Szerokość i długość geograficzna",
+      "description": "Ustawienia szerokości i długości geograficznej"
+    },
+    "optionsConfig": {
+      "useDefault": "Użyj systemu",
+      "useEntity": "Użyj obiektu",
+      "useCustom": "Użyj niestandardowych"
+    },
+    "fontOptions": {
+      "title": "Dostosowanie czcionki",
+      "description": "Konfiguracja rozmiaru i koloru czcionki",
+      "hideLabel": "Ukryj etykietę",
+      "headerFontConfig": {
+        "title": "Czcionka nagłówka",
+        "description": "Konfiguracja czcionki nagłówka"
+      },
+      "labelFontConfig": {
+        "title": "Czcionka etykiety",
+        "description": "Konfiguracja czcionki etykiety"
+      },
+      "headerFontSize": "Rozmiar czcionki nagłówka",
+      "headerFontColor": "Kolor czcionki nagłówka",
+      "headerFontStyle": "Styl czcionki nagłówka",
+      "labelFontSize": "Rozmiar czcionki etykiety",
+      "labelFontColor": "Kolor czcionki etykiety",
+      "labelFontStyle": "Styl czcionki etykiety",
+      "valueFontSize": "Rozmiar czcionki wartości"
+    },
+    "graphConfig": {
+      "title": "Dostosowanie wykresu",
+      "description": "Konfiguracja wykresu",
+      "type": {
+        "title": "Typ wykresu",
+        "description": "Wybierz typ wykresu"
+      },
+      "visibility": {
+        "title": "Opcje widoczności",
+        "description": "Ukryj lub pokaż konkretne elementy"
+      },
+      "customization": {
+        "title": "Opcje dostosowania",
+        "description": "Dostosuj wykres"
+      }
+    },
+    "compactView": "Kompaktowy widok",
+    "showBackground": "Pokaż tło",
+    "timeFormat": "Format czasu 12-godzinny",
+    "mileUnit": "Jednostka w milach",
+    "yTicks": "Podziałki osi Y",
+    "xTicks": "Podziałki osi X",
+    "showTime": "Znaczniki czasu wschodu/zachodu",
+    "showCurrent": "Aktualna pozycja Księżyca",
+    "showLegend": "Pokaż legendę",
+    "showHighest": "Pokaż najwyższą pozycję Księżyca",
+    "calendarModal": "Okno popup kalendarza",
+    "hideButtons": "Ukryj przyciski",
+    "titleHelper": {
+      "compactView": "Pokaż kompaktowy widok",
+      "showBackground": "Pokaż tło",
+      "timeFormat": "Ustaw format czasu (12-godzinny lub 24-godzinny)",
+      "mileUnit": "Kilometry zostaną użyte, jeśli wyłączone",
+      "yTicks": "Pokaż podziałki osi Y",
+      "xTicks": "Pokaż podziałki osi X",
+      "showTime": "Pokaż znaczniki czasu wschodu/zachodu",
+      "showCurrent": "Pokaż aktualną pozycję Księżyca",
+      "showLegend": "Pokaż legendę",
+      "showHighest": "Pokaż najwyższą pozycję Księżyca",
+      "calendarModal": "Kalendarz zostanie wyświetlony w oknie popup",
+      "hideButtons": "Przyciski nagłówka zostaną ukryte",
+      "useDefault": "Użyj szerokości i długości geograficznej systemu",
+      "useEntity": "Użyj szerokości i długości geograficznej obiektu",
+      "useCustom": "Użyj niestandardowej szerokości i długości geograficznej",
+      "hideLabel": "Ukryj etykietę w kompaktowym widoku"
+    },
+    "placeHolder": {
+      "latitude": "Wprowadź szerokość geograficzną",
+      "longitude": "Wprowadź długość geograficzną",
+      "customBackground": "URL lub ścieżka do obrazu",
+      "language": "Wybierz język",
+      "moonPosition": "Wybierz pozycję Księżyca na karcie",
+      "defaultCard": "Wybierz domyślną kartę",
+      "yTicksPosition": "Pozycja podziałek osi Y",
+      "legendPosition": "Pozycja legendy",
+      "legendAlign": "Wyrównanie legendy",
+      "graphType": "Typ wykresu",
+      "compactMode": "Tryb kompaktowy"
+    }
+  }
 }

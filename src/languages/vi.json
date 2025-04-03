@@ -1,159 +1,160 @@
 {
-    "name": "Vietnamese",
-    "nativeName": "Tiếng Việt",
-    "card": {
-        "phase": {
-            "firstQuarterMoon": "Trăng hạ huyền",
-            "fullMoon": "Trăng tròn",
-            "thirdQuarterMoon": "Trăng thượng huyền",
-            "newMoon": "Trăng mới",
-            "waxingCrescentMoon": "Trăng tàn",
-            "waxingGibbousMoon": "Trăng khuyết cuối tháng",
-            "waningCrescentMoon": "Trăng khuyết đầu tháng",
-            "waningGibbousMoon": "Trăng tàn"
-        },
-        "illumination": "Chiếu sáng",
-        "illuminated": "Chiếu sáng",
-        "moonRise": "Trăng mọc",
-        "moonSet": "Trăng lặn",
-        "moonHigh": "Mặt trăng cao nhất",
-        "moonAge": "Tuổi trăng",
-        "distance": "Khoảng cách",
-        "azimuth": "Góc phương vị",
-        "altitude": "Đường cao",
-        "fullMoon": "Trăng tròn",
-        "newMoon": "Trăng non",
-        "relativeTime": {
-            "days": "Ngày",
-            "justNow": "Vừa rồi",
-            "minutesAgo": "{0} phút trước",
-            "hoursAgo": "{0} giờ trước",
-            "inMinutes": "trong {0} phút",
-            "inHours": "trong {0} giờ"
-        },
-        "position": "Vị trí",
-        "direction": "Hướng",
-        "cardinalShort": {
-            "N": "N",
-            "NNE": "BẮC",
-            "NE": "NE",
-            "ENE": "ÐÔNG",
-            "E": "E",
-            "ESE": "ÐÔNG",
-            "SE": "SE",
-            "SSE": "Tây bắc",
-            "S": "S",
-            "SSW": "Tây nam",
-            "SW": "Tây nam",
-            "WSW": "Tây nam",
-            "W": "W",
-            "WNW": "Tây bắc",
-            "NW": "Tây bắc",
-            "NNW": "Tây bắc"
-        },
-        "underHorizon": "Mặt trăng dưới đường chân trời",
-        "overHorizon": "Mặt trăng trên đường chân trời",
-        "horizonTitle": "Mặt trăng hôm nay",
-        "currentTime": "Thời gian hiện tại",
-        "common": {
-            "now": "Bây giờ"
-        }
+  "name": "Vietnamese",
+  "nativeName": "Tiếng Việt",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Trăng hạ huyền",
+      "fullMoon": "Trăng tròn",
+      "thirdQuarterMoon": "Trăng thượng huyền",
+      "newMoon": "Trăng mới",
+      "waxingCrescentMoon": "Trăng tàn",
+      "waxingGibbousMoon": "Trăng khuyết cuối tháng",
+      "waningCrescentMoon": "Trăng khuyết đầu tháng",
+      "waningGibbousMoon": "Trăng tàn"
     },
-    "editor": {
-        "viewConfig": {
-            "title": "Ngôn ngữ và chế độ xem",
-            "description": "Đặt cấu hình cho ngôn ngữ và nền",
-            "customBackground": {
-                "title": "Nền",
-                "description": "Đặt cấu hình cho nền tùy chỉnh"
-            }
-        },
-        "baseConfig": {
-            "title": "Vĩ độ và kinh độ",
-            "description": "Đặt cấu hình cho vĩ độ và kinh độ"
-        },
-        "optionsConfig": {
-            "useDefault": "Sử dụng hệ thống",
-            "useEntity": "Thực thể sử dụng",
-            "useCustom": "Sử dụng tùy chỉnh"
-        },
-        "fontOptions": {
-            "title": "Tùy chỉnh phông chữ",
-            "description": "Đặt cấu hình cho kích thước và màu phông chữ",
-            "hideLabel": "Ẩn nhãn",
-            "headerFontConfig": {
-                "title": "Phông chữ tiêu đề",
-                "description": "Đặt cấu hình cho phông chữ tiêu đề"
-            },
-            "labelFontConfig": {
-                "title": "Phông chữ nhãn",
-                "description": "Đặt cấu hình cho phông chữ nhãn"
-            },
-            "headerFontSize": "Kích thước phông chữ tiêu đề",
-            "headerFontColor": "Màu phông chữ tiêu đề",
-            "headerFontStyle": "Kiểu phông chữ tiêu đề",
-            "labelFontSize": "Kích thước phông chữ nhãn",
-            "labelFontColor": "Màu phông chữ nhãn",
-            "labelFontStyle": "Kiểu phông chữ nhãn",
-            "valueFontSize": "Kích thước phông chữ giá trị"
-        },
-        "graphConfig": {
-            "title": "Tùy chỉnh đồ thị",
-            "description": "Đặt cấu hình cho biểu đồ",
-            "type": {
-                "title": "Loại đồ thị",
-                "description": "Chọn loại biểu đồ"
-            },
-            "visibility": {
-                "title": "Tùy chọn hiển thị",
-                "description": "Ẩn hoặc hiển thị các yếu tố cụ thể"
-            },
-            "customization": {
-                "title": "Tùy chọn tùy chỉnh",
-                "description": "Tùy chỉnh biểu đồ"
-            }
-        },
-        "compactView": "Chế độ xem nhỏ gọn",
-        "showBackground": "Hiển thị nền",
-        "timeFormat": "Định dạng thời gian 12 giờ",
-        "mileUnit": "Đơn vị dặm",
-        "yTicks": "Tick trục Y",
-        "xTicks": "Tích lũy trục X",
-        "showTime": "Điểm đánh dấu thời gian đặt / tăng",
-        "showCurrent": "Vị trí Mặt trăng hiện tại",
-        "showLegend": "Hiển thị chú thích",
-        "showHighest": "Hiển thị vị trí Mặt trăng cao nhất",
-        "calendarModal": "Cửa sổ bật lên lịch",
-        "hideButtons": "Ẩn nút",
-        "titleHelper": {
-            "compactView": "Hiển thị chế độ xem nhỏ gọn",
-            "showBackground": "Hiển thị hình nền",
-            "timeFormat": "Đặt định dạng thời gian (12 giờ hoặc 24 giờ)",
-            "mileUnit": "Km sẽ được sử dụng nếu bị vô hiệu hóa",
-            "yTicks": "Hiển thị dấu tích trục Y",
-            "xTicks": "Hiển thị dấu tích trục X",
-            "showTime": "Hiển thị các điểm đánh dấu thời gian cài đặt / tăng",
-            "showCurrent": "Hiển thị vị trí Mặt trăng hiện tại",
-            "showLegend": "Hiển thị chú giải",
-            "showHighest": "Hiển thị vị trí Mặt trăng cao nhất",
-            "calendarModal": "Lịch sẽ được hiển thị trong một cửa sổ bật lên",
-            "hideButtons": "Các nút tiêu đề sẽ bị ẩn",
-            "useDefault": "Sử dụng vĩ độ và kinh độ hệ thống",
-            "useEntity": "Sử dụng vĩ độ và kinh độ thực thể",
-            "useCustom": "Sử dụng vĩ độ và kinh độ tùy chỉnh",
-            "hideLabel": "Ẩn nhãn trong chế độ xem nhỏ gọn"
-        },
-        "placeHolder": {
-            "latitude": "Nhập vĩ độ",
-            "longitude": "Nhập kinh độ",
-            "customBackground": "URL hoặc đường dẫn đến hình ảnh",
-            "language": "Chọn ngôn ngữ",
-            "moonPosition": "Chọn vị trí mặt trăng trên thẻ",
-            "defaultCard": "Chọn thẻ mặc định",
-            "yTicksPosition": "Vị trí tích tắc trục Y",
-            "legendPosition": "Vị trí chú giải",
-            "legendAlign": "Căn chỉnh chú giải",
-            "graphType": "Loại đồ thị"
-        }
+    "illumination": "Chiếu sáng",
+    "illuminated": "Chiếu sáng",
+    "moonRise": "Trăng mọc",
+    "moonSet": "Trăng lặn",
+    "moonHigh": "Mặt trăng cao nhất",
+    "moonAge": "Tuổi trăng",
+    "distance": "Khoảng cách",
+    "azimuth": "Góc phương vị",
+    "altitude": "Đường cao",
+    "fullMoon": "Trăng tròn",
+    "newMoon": "Trăng non",
+    "relativeTime": {
+      "days": "Ngày",
+      "justNow": "Vừa rồi",
+      "minutesAgo": "{0} phút trước",
+      "hoursAgo": "{0} giờ trước",
+      "inMinutes": "trong {0} phút",
+      "inHours": "trong {0} giờ"
+    },
+    "position": "Vị trí",
+    "direction": "Hướng",
+    "cardinalShort": {
+      "N": "N",
+      "NNE": "BẮC",
+      "NE": "NE",
+      "ENE": "ÐÔNG",
+      "E": "E",
+      "ESE": "ÐÔNG",
+      "SE": "SE",
+      "SSE": "Tây bắc",
+      "S": "S",
+      "SSW": "Tây nam",
+      "SW": "Tây nam",
+      "WSW": "Tây nam",
+      "W": "W",
+      "WNW": "Tây bắc",
+      "NW": "Tây bắc",
+      "NNW": "Tây bắc"
+    },
+    "underHorizon": "Mặt trăng dưới đường chân trời",
+    "overHorizon": "Mặt trăng trên đường chân trời",
+    "horizonTitle": "Mặt trăng hôm nay",
+    "currentTime": "Thời gian hiện tại",
+    "common": {
+      "now": "Bây giờ"
     }
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Ngôn ngữ và chế độ xem",
+      "description": "Đặt cấu hình cho ngôn ngữ và nền",
+      "customBackground": {
+        "title": "Nền",
+        "description": "Đặt cấu hình cho nền tùy chỉnh"
+      }
+    },
+    "baseConfig": {
+      "title": "Vĩ độ và kinh độ",
+      "description": "Đặt cấu hình cho vĩ độ và kinh độ"
+    },
+    "optionsConfig": {
+      "useDefault": "Sử dụng hệ thống",
+      "useEntity": "Thực thể sử dụng",
+      "useCustom": "Sử dụng tùy chỉnh"
+    },
+    "fontOptions": {
+      "title": "Tùy chỉnh phông chữ",
+      "description": "Đặt cấu hình cho kích thước và màu phông chữ",
+      "hideLabel": "Ẩn nhãn",
+      "headerFontConfig": {
+        "title": "Phông chữ tiêu đề",
+        "description": "Đặt cấu hình cho phông chữ tiêu đề"
+      },
+      "labelFontConfig": {
+        "title": "Phông chữ nhãn",
+        "description": "Đặt cấu hình cho phông chữ nhãn"
+      },
+      "headerFontSize": "Kích thước phông chữ tiêu đề",
+      "headerFontColor": "Màu phông chữ tiêu đề",
+      "headerFontStyle": "Kiểu phông chữ tiêu đề",
+      "labelFontSize": "Kích thước phông chữ nhãn",
+      "labelFontColor": "Màu phông chữ nhãn",
+      "labelFontStyle": "Kiểu phông chữ nhãn",
+      "valueFontSize": "Kích thước phông chữ giá trị"
+    },
+    "graphConfig": {
+      "title": "Tùy chỉnh đồ thị",
+      "description": "Đặt cấu hình cho biểu đồ",
+      "type": {
+        "title": "Loại đồ thị",
+        "description": "Chọn loại biểu đồ"
+      },
+      "visibility": {
+        "title": "Tùy chọn hiển thị",
+        "description": "Ẩn hoặc hiển thị các yếu tố cụ thể"
+      },
+      "customization": {
+        "title": "Tùy chọn tùy chỉnh",
+        "description": "Tùy chỉnh biểu đồ"
+      }
+    },
+    "compactView": "Chế độ xem nhỏ gọn",
+    "showBackground": "Hiển thị nền",
+    "timeFormat": "Định dạng thời gian 12 giờ",
+    "mileUnit": "Đơn vị dặm",
+    "yTicks": "Tick trục Y",
+    "xTicks": "Tích lũy trục X",
+    "showTime": "Điểm đánh dấu thời gian đặt / tăng",
+    "showCurrent": "Vị trí Mặt trăng hiện tại",
+    "showLegend": "Hiển thị chú thích",
+    "showHighest": "Hiển thị vị trí Mặt trăng cao nhất",
+    "calendarModal": "Cửa sổ bật lên lịch",
+    "hideButtons": "Ẩn nút",
+    "titleHelper": {
+      "compactView": "Hiển thị chế độ xem nhỏ gọn",
+      "showBackground": "Hiển thị hình nền",
+      "timeFormat": "Đặt định dạng thời gian (12 giờ hoặc 24 giờ)",
+      "mileUnit": "Km sẽ được sử dụng nếu bị vô hiệu hóa",
+      "yTicks": "Hiển thị dấu tích trục Y",
+      "xTicks": "Hiển thị dấu tích trục X",
+      "showTime": "Hiển thị các điểm đánh dấu thời gian cài đặt / tăng",
+      "showCurrent": "Hiển thị vị trí Mặt trăng hiện tại",
+      "showLegend": "Hiển thị chú giải",
+      "showHighest": "Hiển thị vị trí Mặt trăng cao nhất",
+      "calendarModal": "Lịch sẽ được hiển thị trong một cửa sổ bật lên",
+      "hideButtons": "Các nút tiêu đề sẽ bị ẩn",
+      "useDefault": "Sử dụng vĩ độ và kinh độ hệ thống",
+      "useEntity": "Sử dụng vĩ độ và kinh độ thực thể",
+      "useCustom": "Sử dụng vĩ độ và kinh độ tùy chỉnh",
+      "hideLabel": "Ẩn nhãn trong chế độ xem nhỏ gọn"
+    },
+    "placeHolder": {
+      "latitude": "Nhập vĩ độ",
+      "longitude": "Nhập kinh độ",
+      "customBackground": "URL hoặc đường dẫn đến hình ảnh",
+      "language": "Chọn ngôn ngữ",
+      "moonPosition": "Chọn vị trí mặt trăng trên thẻ",
+      "defaultCard": "Chọn thẻ mặc định",
+      "yTicksPosition": "Vị trí tích tắc trục Y",
+      "legendPosition": "Vị trí chú giải",
+      "legendAlign": "Căn chỉnh chú giải",
+      "graphType": "Loại đồ thị",
+      "compactMode": "Chế độ nhỏ gọn"
+    }
+  }
 }

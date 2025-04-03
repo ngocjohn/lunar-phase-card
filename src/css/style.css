@@ -26,7 +26,11 @@ ha-card {
   background-color: var(--card-background-color);
   letter-spacing: 0.5px;
   padding: 0;
-  border: none;
+
+  border-radius: var(--ha-card-border-radius, 12px);
+  border-width: var(--ha-card-border-width, 1px);
+  border-style: solid;
+  border-color: var(--ha-card-border-color, var(--divider-color, #e0e0e0));
   --primary-text-color: var(--lunar-card-label-font-color, var(--primary-text-color));
   --swiper-theme-color: var(--lunar-card-label-font-color, var(--primary-text-color));
   --mdc-ripple-press-opacity: 0;
@@ -38,6 +42,7 @@ ha-card.--background {
   background-repeat: no-repeat;
   background-image: var(--lunar-background-image);
   transition: all 0.5s ease;
+  border: none;
   /* place-content: space-between; */
   --primary-text-color: var(--lunar-card-label-font-color, #e1e1e1);
   --swiper-theme-color: var(--lunar-card-label-font-color, #e1e1e1);
@@ -48,7 +53,7 @@ ha-card.--background {
   gap: 1rem;
 } */
 
-ha-card.--reverse .lunar-card-content {
+ha-card.--reverse .lunar-card-content>.base-card {
   flex-direction: row-reverse;
 }
 
@@ -309,6 +314,7 @@ lunar-base-data {
   right: 1rem;
 }
 
+
 .compact-view {
   display: flex;
   width: 100%;
@@ -318,7 +324,61 @@ lunar-base-data {
   overflow: hidden;
 }
 
+.compact-view-minimal {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
 
+.compact-item-minimal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: var(--lunar-card-label-font-color, var(--primary-text-color));
+  flex: 0 0 30%;
+
+}
+
+.compact-item-minimal span.value {
+  font-size: var(--lunar-card-label-font-size, 14px);
+  font-weight: 400;
+  color: inherit;
+  text-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.compact-item-minimal span.label {
+  font-weight: 600;
+  color: var(--lunar-card-label-font-color);
+  text-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 1.2rem;
+  padding-top: 0.5rem;
+}
+
+.minimal-moon-image-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.minimal-title {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 8px;
+  text-transform: var(--lunar-card-header-text-transform, capitalize);
+  color: var(--lunar-card-header-font-color, var(--primary-text-color));
+
+}
 
 .moon-fraction {
   font-weight: inherit;
@@ -326,6 +386,7 @@ lunar-base-data {
   letter-spacing: 1.5px;
   line-height: 24px;
 }
+
 
 .compact-view-items {
   margin-block: 12px;

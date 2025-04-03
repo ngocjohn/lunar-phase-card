@@ -1,9 +1,9 @@
+import { mdiMagnify } from '@mdi/js';
+// Custom card helpers
+import { fireEvent, LovelaceCardEditor, HomeAssistant } from 'custom-card-helpers';
 /*  @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-
-// Custom card helpers
-import { fireEvent, LovelaceCardEditor, HomeAssistant } from 'custom-card-helpers';
 
 import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES } from './const';
 import { CUSTOM_BG } from './const';
@@ -12,11 +12,9 @@ import { languageOptions, localize } from './localize/localize';
 import { LunarPhaseCardConfig, FontCustomStyles, defaultConfig, LocationAddress } from './types';
 import { generateConfig } from './utils/ha-helper';
 import { compareConfig, getAddressFromOpenStreet } from './utils/helpers';
-import { loadHaComponents, stickyPreview, _saveConfig } from './utils/loader';
-
 // Components
 import './components/moon-editor-search';
-import { mdiMagnify } from '@mdi/js';
+import { loadHaComponents, stickyPreview, _saveConfig } from './utils/loader';
 
 @customElement('lunar-phase-card-editor')
 export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEditor {
@@ -371,7 +369,22 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       'placeHolder.moonPosition',
       this._config?.moon_position || 'left',
       'moon_position',
-      false
+      false,
+      undefined,
+      this._config?.compact_mode === 'minimal' && this._config.compact_view!
+    );
+
+    const compactMode = this._haComboBox(
+      [
+        { value: 'default', label: 'Default' },
+        { value: 'minimal', label: 'Minimal' },
+      ],
+      'placeHolder.compactMode',
+      this._config?.compact_mode || 'default',
+      'compact_mode',
+      false,
+      undefined,
+      !this._config?.compact_view
     );
 
     const numberDecimals = html` <ha-selector
@@ -387,7 +400,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     const customBackgroundInput = this._renderCustomBackground();
 
     const comboboxex = html`
-      <div class="comboboxes">${langComboBox} ${defaultCard} ${moonPositon} ${numberDecimals}</div>
+      <div class="comboboxes">${langComboBox} ${defaultCard} ${compactMode} ${moonPositon} ${numberDecimals}</div>
     `;
 
     content.push([viewOptions, comboboxex, customBackgroundInput]);
@@ -677,7 +690,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     valueKey: string,
     configValue: string,
     allowCustomValue = true,
-    configKey?: string
+    configKey?: string,
+    disabled?: boolean
   ): TemplateResult => {
     return html`
       <ha-combo-box
@@ -690,6 +704,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         .configKey=${configKey}
         .allowCustomValue=${allowCustomValue}
         @value-changed=${this._handleValueChange}
+        .disabled=${disabled ?? false}
       ></ha-combo-box>
     `;
   };

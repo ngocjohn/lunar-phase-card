@@ -1,159 +1,160 @@
 {
-    "name": "Slovak",
-    "nativeName": "Slovenčina",
-    "card": {
-        "phase": {
-            "firstQuarterMoon": "Prvá štvrtina",
-            "fullMoon": "Úplnok",
-            "thirdQuarterMoon": "Posledná štvrtina",
-            "newMoon": "Nov",
-            "waxingCrescentMoon": "Dorastajúci kosáčik",
-            "waxingGibbousMoon": "Dorastajúci mesiac",
-            "waningCrescentMoon": "Ubúdajúci kosáčik",
-            "waningGibbousMoon": "Ubúdajúci mesiac"
-        },
-        "illumination": "Osvetlenie",
-        "illuminated": "Osvetlené",
-        "moonRise": "Východ Mesiaca",
-        "moonSet": "Západ Mesiaca",
-        "moonHigh": "Najvyšší bod Mesiaca",
-        "moonAge": "Vek Mesiaca",
-        "distance": "Vzdialenosť",
-        "azimuth": "Azimut",
-        "altitude": "Nadmorská výška",
-        "fullMoon": "Úplnok",
-        "newMoon": "Nov",
-        "relativeTime": {
-            "days": "dní",
-            "justNow": "práve teraz",
-            "minutesAgo": "pred {0} minútami",
-            "hoursAgo": "pred {0} hodinami",
-            "inMinutes": "za {0} minút",
-            "inHours": "za {0} hodín"
-        },
-        "position": "Poloha",
-        "direction": "Smer",
-        "cardinalShort": {
-            "N": "S",
-            "NNE": "SSV",
-            "NE": "SV",
-            "ENE": "VSV",
-            "E": "V",
-            "ESE": "VJV",
-            "SE": "JV",
-            "SSE": "JJV",
-            "S": "J",
-            "SSW": "JJZ",
-            "SW": "JZ",
-            "WSW": "ZJZ",
-            "W": "Z",
-            "WNW": "ZSZ",
-            "NW": "SZ",
-            "NNW": "SSZ"
-        },
-        "underHorizon": "Mesiac pod horizontom",
-        "overHorizon": "Mesiac nad horizontom",
-        "horizonTitle": "Dnešný Mesiac",
-        "currentTime": "Aktuálny čas",
-        "common": {
-            "now": "Teraz"
-        }
+  "name": "Slovak",
+  "nativeName": "Slovenčina",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Prvá štvrtina",
+      "fullMoon": "Úplnok",
+      "thirdQuarterMoon": "Posledná štvrtina",
+      "newMoon": "Nov",
+      "waxingCrescentMoon": "Dorastajúci kosáčik",
+      "waxingGibbousMoon": "Dorastajúci mesiac",
+      "waningCrescentMoon": "Ubúdajúci kosáčik",
+      "waningGibbousMoon": "Ubúdajúci mesiac"
     },
-    "editor": {
-        "viewConfig": {
-            "title": "Jazyk a režim zobrazenia",
-            "description": "Nastavte konfiguráciu pre jazyk a pozadie",
-            "customBackground": {
-                "title": "Vlastné pozadie",
-                "description": "Nastavte konfiguráciu vlastného pozadia"
-            }
-        },
-        "baseConfig": {
-            "title": "Zemepisná šírka a dĺžka",
-            "description": "Nastavte konfiguráciu pre zemepisnú šírku a dĺžku"
-        },
-        "optionsConfig": {
-            "useDefault": "Použiť systémové",
-            "useEntity": "Použiť entitu",
-            "useCustom": "Použiť vlastné"
-        },
-        "fontOptions": {
-            "title": "Prispôsobenie písma",
-            "description": "Nastavte konfiguráciu pre veľkosť a farbu písma",
-            "hideLabel": "Skryť štítok",
-            "headerFontConfig": {
-                "title": "Písmo hlavičky",
-                "description": "Nastavte konfiguráciu pre písmo hlavičky"
-            },
-            "labelFontConfig": {
-                "title": "Písmo štítku",
-                "description": "Nastavte konfiguráciu pre písmo štítku"
-            },
-            "headerFontSize": "Veľkosť písma hlavičky",
-            "headerFontColor": "Farba písma hlavičky",
-            "headerFontStyle": "Štýl písma hlavičky",
-            "labelFontSize": "Veľkosť písma štítku",
-            "labelFontColor": "Farba písma štítku",
-            "labelFontStyle": "Štýl písma štítku",
-            "valueFontSize": "Veľkosť písma hodnoty"
-        },
-        "graphConfig": {
-            "title": "Prispôsobenie grafu",
-            "description": "Nastavte konfiguráciu pre graf",
-            "type": {
-                "title": "Typ grafu",
-                "description": "Vyberte typ grafu"
-            },
-            "visibility": {
-                "title": "Možnosti viditeľnosti",
-                "description": "Skryť alebo zobraziť konkrétne prvky"
-            },
-            "customization": {
-                "title": "Možnosti prispôsobenia",
-                "description": "Prispôsobte graf"
-            }
-        },
-        "compactView": "Kompaktný pohľad",
-        "showBackground": "Zobraziť pozadie",
-        "timeFormat": "12-hodinový formát času",
-        "mileUnit": "Jednotka míle",
-        "yTicks": "Y-axis ticks",
-        "xTicks": "X-axis ticks",
-        "showTime": "Značky času východu/západu",
-        "showCurrent": "Aktuálna poloha Mesiaca",
-        "showLegend": "Zobraziť legendu",
-        "showHighest": "Zobraziť najvyššiu polohu Mesiaca",
-        "calendarModal": "Kalendárové popup",
-        "hideButtons": "Skryť tlačidlá",
-        "titleHelper": {
-            "compactView": "Zobraziť kompaktný režim",
-            "showBackground": "Zobraziť pozadie",
-            "timeFormat": "Nastaviť formát času (12-hodinový alebo 24-hodinový)",
-            "mileUnit": "Kilometre sa použijú, ak je zakázané",
-            "yTicks": "Zobraziť značky na osi Y",
-            "xTicks": "Zobraziť značky na osi X",
-            "showTime": "Zobraziť značky času východu/západu",
-            "showCurrent": "Zobraziť aktuálnu polohu Mesiaca",
-            "showLegend": "Zobraziť legendu",
-            "showHighest": "Zobraziť najvyššiu polohu Mesiaca",
-            "calendarModal": "Kalendár sa zobrazí v kontextovom okne",
-            "hideButtons": "Tlačidlá hlavičky budú skryté",
-            "useDefault": "Použiť systémovú zemepisnú šírku a dĺžku",
-            "useEntity": "Použiť zemepisnú šírku a dĺžku entity",
-            "useCustom": "Použiť vlastnú zemepisnú šírku a dĺžku",
-            "hideLabel": "Skryť popis v kompaktnej zobrazení"
-        },
-        "placeHolder": {
-            "latitude": "Zadajte zemepisnú šírku",
-            "longitude": "Zadajte zemepisnú dĺžku",
-            "customBackground": "URL alebo cesta k obrázku",
-            "language": "Vyberte jazyk",
-            "moonPosition": "Vyberte polohu Mesiaca na karte",
-            "defaultCard": "Vyberte predvolenú kartu",
-            "yTicksPosition": "Pozícia značiek na osi Y",
-            "legendPosition": "Pozícia legendy",
-            "legendAlign": "Zarovnanie legendy",
-            "graphType": "Typ grafu"
-        }
+    "illumination": "Osvetlenie",
+    "illuminated": "Osvetlené",
+    "moonRise": "Východ Mesiaca",
+    "moonSet": "Západ Mesiaca",
+    "moonHigh": "Najvyšší bod Mesiaca",
+    "moonAge": "Vek Mesiaca",
+    "distance": "Vzdialenosť",
+    "azimuth": "Azimut",
+    "altitude": "Nadmorská výška",
+    "fullMoon": "Úplnok",
+    "newMoon": "Nov",
+    "relativeTime": {
+      "days": "dní",
+      "justNow": "práve teraz",
+      "minutesAgo": "pred {0} minútami",
+      "hoursAgo": "pred {0} hodinami",
+      "inMinutes": "za {0} minút",
+      "inHours": "za {0} hodín"
+    },
+    "position": "Poloha",
+    "direction": "Smer",
+    "cardinalShort": {
+      "N": "S",
+      "NNE": "SSV",
+      "NE": "SV",
+      "ENE": "VSV",
+      "E": "V",
+      "ESE": "VJV",
+      "SE": "JV",
+      "SSE": "JJV",
+      "S": "J",
+      "SSW": "JJZ",
+      "SW": "JZ",
+      "WSW": "ZJZ",
+      "W": "Z",
+      "WNW": "ZSZ",
+      "NW": "SZ",
+      "NNW": "SSZ"
+    },
+    "underHorizon": "Mesiac pod horizontom",
+    "overHorizon": "Mesiac nad horizontom",
+    "horizonTitle": "Dnešný Mesiac",
+    "currentTime": "Aktuálny čas",
+    "common": {
+      "now": "Teraz"
     }
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Jazyk a režim zobrazenia",
+      "description": "Nastavte konfiguráciu pre jazyk a pozadie",
+      "customBackground": {
+        "title": "Vlastné pozadie",
+        "description": "Nastavte konfiguráciu vlastného pozadia"
+      }
+    },
+    "baseConfig": {
+      "title": "Zemepisná šírka a dĺžka",
+      "description": "Nastavte konfiguráciu pre zemepisnú šírku a dĺžku"
+    },
+    "optionsConfig": {
+      "useDefault": "Použiť systémové",
+      "useEntity": "Použiť entitu",
+      "useCustom": "Použiť vlastné"
+    },
+    "fontOptions": {
+      "title": "Prispôsobenie písma",
+      "description": "Nastavte konfiguráciu pre veľkosť a farbu písma",
+      "hideLabel": "Skryť štítok",
+      "headerFontConfig": {
+        "title": "Písmo hlavičky",
+        "description": "Nastavte konfiguráciu pre písmo hlavičky"
+      },
+      "labelFontConfig": {
+        "title": "Písmo štítku",
+        "description": "Nastavte konfiguráciu pre písmo štítku"
+      },
+      "headerFontSize": "Veľkosť písma hlavičky",
+      "headerFontColor": "Farba písma hlavičky",
+      "headerFontStyle": "Štýl písma hlavičky",
+      "labelFontSize": "Veľkosť písma štítku",
+      "labelFontColor": "Farba písma štítku",
+      "labelFontStyle": "Štýl písma štítku",
+      "valueFontSize": "Veľkosť písma hodnoty"
+    },
+    "graphConfig": {
+      "title": "Prispôsobenie grafu",
+      "description": "Nastavte konfiguráciu pre graf",
+      "type": {
+        "title": "Typ grafu",
+        "description": "Vyberte typ grafu"
+      },
+      "visibility": {
+        "title": "Možnosti viditeľnosti",
+        "description": "Skryť alebo zobraziť konkrétne prvky"
+      },
+      "customization": {
+        "title": "Možnosti prispôsobenia",
+        "description": "Prispôsobte graf"
+      }
+    },
+    "compactView": "Kompaktný pohľad",
+    "showBackground": "Zobraziť pozadie",
+    "timeFormat": "12-hodinový formát času",
+    "mileUnit": "Jednotka míle",
+    "yTicks": "Y-axis ticks",
+    "xTicks": "X-axis ticks",
+    "showTime": "Značky času východu/západu",
+    "showCurrent": "Aktuálna poloha Mesiaca",
+    "showLegend": "Zobraziť legendu",
+    "showHighest": "Zobraziť najvyššiu polohu Mesiaca",
+    "calendarModal": "Kalendárové popup",
+    "hideButtons": "Skryť tlačidlá",
+    "titleHelper": {
+      "compactView": "Zobraziť kompaktný režim",
+      "showBackground": "Zobraziť pozadie",
+      "timeFormat": "Nastaviť formát času (12-hodinový alebo 24-hodinový)",
+      "mileUnit": "Kilometre sa použijú, ak je zakázané",
+      "yTicks": "Zobraziť značky na osi Y",
+      "xTicks": "Zobraziť značky na osi X",
+      "showTime": "Zobraziť značky času východu/západu",
+      "showCurrent": "Zobraziť aktuálnu polohu Mesiaca",
+      "showLegend": "Zobraziť legendu",
+      "showHighest": "Zobraziť najvyššiu polohu Mesiaca",
+      "calendarModal": "Kalendár sa zobrazí v kontextovom okne",
+      "hideButtons": "Tlačidlá hlavičky budú skryté",
+      "useDefault": "Použiť systémovú zemepisnú šírku a dĺžku",
+      "useEntity": "Použiť zemepisnú šírku a dĺžku entity",
+      "useCustom": "Použiť vlastnú zemepisnú šírku a dĺžku",
+      "hideLabel": "Skryť popis v kompaktnej zobrazení"
+    },
+    "placeHolder": {
+      "latitude": "Zadajte zemepisnú šírku",
+      "longitude": "Zadajte zemepisnú dĺžku",
+      "customBackground": "URL alebo cesta k obrázku",
+      "language": "Vyberte jazyk",
+      "moonPosition": "Vyberte polohu Mesiaca na karte",
+      "defaultCard": "Vyberte predvolenú kartu",
+      "yTicksPosition": "Pozícia značiek na osi Y",
+      "legendPosition": "Pozícia legendy",
+      "legendAlign": "Zarovnanie legendy",
+      "graphType": "Typ grafu",
+      "compactMode": "Kompaktný režim"
+    }
+  }
 }

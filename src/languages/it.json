@@ -1,159 +1,160 @@
 {
-    "name": "Italian",
-    "nativeName": "Italiano",
-    "card": {
-        "phase": {
-            "firstQuarterMoon": "Primo Quarto",
-            "fullMoon": "Luna piena",
-            "thirdQuarterMoon": "Ultimo Quarto",
-            "newMoon": "Luna nuova",
-            "waxingCrescentMoon": "Luna crescente",
-            "waxingGibbousMoon": "Gibbosa crescente",
-            "waningCrescentMoon": "Luna calante",
-            "waningGibbousMoon": "Gibbosa calante"
-        },
-        "illumination": "Illuminazione",
-        "illuminated": "Illuminata",
-        "moonRise": "Sorgere",
-        "moonSet": "Tramonto",
-        "moonHigh": "Luna all'altezza massima",
-        "moonAge": "Età della Luna",
-        "distance": "Distanza",
-        "azimuth": "Azimut",
-        "altitude": "Altitudine",
-        "fullMoon": "Luna piena",
-        "newMoon": "Luna nuova",
-        "relativeTime": {
-            "days": "giorni",
-            "justNow": "adesso",
-            "minutesAgo": "{0} minuti fa",
-            "hoursAgo": "{0} ore fa",
-            "inMinutes": "tra {0} minuti",
-            "inHours": "tra {0} ore"
-        },
-        "position": "Posizione",
-        "direction": "Direzione",
-        "cardinalShort": {
-            "N": "N",
-            "NNE": "NNE",
-            "NE": "NE",
-            "ENE": "ENE",
-            "E": "E",
-            "ESE": "ESE",
-            "SE": "SE",
-            "SSE": "SSE",
-            "S": "S",
-            "SSW": "SSO",
-            "SW": "SO",
-            "WSW": "OSO",
-            "W": "O",
-            "WNW": "ONO",
-            "NW": "NO",
-            "NNW": "NNO"
-        },
-        "underHorizon": "Luna sotto l'orizzonte",
-        "overHorizon": "Luna sopra l'orizzonte",
-        "horizonTitle": "La Luna di oggi",
-        "currentTime": "Ora attuale",
-        "common": {
-            "now": "Adesso"
-        }
+  "name": "Italian",
+  "nativeName": "Italiano",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Primo Quarto",
+      "fullMoon": "Luna piena",
+      "thirdQuarterMoon": "Ultimo Quarto",
+      "newMoon": "Luna nuova",
+      "waxingCrescentMoon": "Luna crescente",
+      "waxingGibbousMoon": "Gibbosa crescente",
+      "waningCrescentMoon": "Luna calante",
+      "waningGibbousMoon": "Gibbosa calante"
     },
-    "editor": {
-        "viewConfig": {
-            "title": "Lingua e visualizzazione",
-            "description": "Imposta una configurazione per lingua e sfondo",
-            "customBackground": {
-                "title": "Sfondo personalizzato",
-                "description": "Imposta una configurazione per uno sfondo personalizzato"
-            }
-        },
-        "baseConfig": {
-            "title": "Latitudine e Longitudine",
-            "description": "Imposta una configurazione per Latitudine e Longitudine"
-        },
-        "optionsConfig": {
-            "useDefault": "Sistema",
-            "useEntity": "Entità",
-            "useCustom": "Personalizzata"
-        },
-        "fontOptions": {
-            "title": "Personalizzazione carattere",
-            "description": "Imposta una configurazione per dimensione e colore carattere",
-            "hideLabel": "Nascondi etichetta",
-            "headerFontConfig": {
-                "title": "Carattere intestazione",
-                "description": "Imposta una configurazione per carattere intestazione"
-            },
-            "labelFontConfig": {
-                "title": "Carattere etichetta",
-                "description": "Imposta una configurazione per carattere etichetta"
-            },
-            "headerFontSize": "Dimensione carattere intestazione",
-            "headerFontColor": "Colore carattere intestazione",
-            "headerFontStyle": "Stile carattere intestazione",
-            "labelFontSize": "Dimensione carattere etichetta",
-            "labelFontColor": "Colore carattere etichetta",
-            "labelFontStyle": "Stile carattere etichetta",
-            "valueFontSize": "Valore dimensione carattere"
-        },
-        "graphConfig": {
-            "title": "Personalizzazione del grafico",
-            "description": "Imposta una configurazione per il grafico",
-            "type": {
-                "title": "Tipo di grafico",
-                "description": "Seleziona un tipo di grafico"
-            },
-            "visibility": {
-                "title": "Opzioni di visibilità",
-                "description": "Nascondi o mostra elementi specifici"
-            },
-            "customization": {
-                "title": "Opzioni di personalizzazione",
-                "description": "Personalizza il grafico"
-            }
-        },
-        "compactView": "Visualizzazione compatta",
-        "showBackground": "Mostra sfondo",
-        "timeFormat": "Formato a 12 ore",
-        "mileUnit": "Unità di miglio",
-        "yTicks": "Y-axis ticks",
-        "xTicks": "X-axis ticks",
-        "showTime": "Indicatori di tempo di alba/tramonto",
-        "showCurrent": "Posizione attuale della Luna",
-        "showLegend": "Mostra leggenda",
-        "showHighest": "Mostra la posizione più alta della Luna",
-        "calendarModal": "Popup calendario",
-        "hideButtons": "Nascondi pulsanti",
-        "titleHelper": {
-            "compactView": "Mostra una vista compatta",
-            "showBackground": "Mostra uno sfondo",
-            "timeFormat": "Imposta un formato orario (12 ore o 24 ore)",
-            "mileUnit": "Verranno utilizzati i chilometri se disabilitato",
-            "yTicks": "Mostra i tick dell'asse Y",
-            "xTicks": "Mostra i tick dell'asse X",
-            "showTime": "Mostra i marcatori dell'ora di alba/tramonto",
-            "showCurrent": "Mostra la posizione attuale della Luna",
-            "showLegend": "Mostra una legenda",
-            "showHighest": "Mostra la posizione più alta della Luna",
-            "calendarModal": "Il calendario verrà visualizzato in un popup",
-            "hideButtons": "I pulsanti dell'intestazione saranno nascosti",
-            "useDefault": "Usa latitudine e longitudine di sistema",
-            "useEntity": "Usa latitudine e longitudine dell'entità",
-            "useCustom": "Usa latitudine e longitudine personalizzate",
-            "hideLabel": "Nascondi etichetta in vista compatta"
-        },
-        "placeHolder": {
-            "latitude": "Inserisci Latitudine",
-            "longitude": "Inserisci Longitudine",
-            "customBackground": "URL o percorso dell'immagine",
-            "language": "Seleziona lingua",
-            "moonPosition": "Seleziona la posizione della luna sulla carta",
-            "defaultCard": "Seleziona la scheda predefinita",
-            "yTicksPosition": "Posizione delle tacche dell'asse Y",
-            "legendPosition": "Posizione della legenda",
-            "legendAlign": "Allineamento della legenda",
-            "graphType": "Tipo di grafico"
-        }
+    "illumination": "Illuminazione",
+    "illuminated": "Illuminata",
+    "moonRise": "Sorgere",
+    "moonSet": "Tramonto",
+    "moonHigh": "Luna all'altezza massima",
+    "moonAge": "Età della Luna",
+    "distance": "Distanza",
+    "azimuth": "Azimut",
+    "altitude": "Altitudine",
+    "fullMoon": "Luna piena",
+    "newMoon": "Luna nuova",
+    "relativeTime": {
+      "days": "giorni",
+      "justNow": "adesso",
+      "minutesAgo": "{0} minuti fa",
+      "hoursAgo": "{0} ore fa",
+      "inMinutes": "tra {0} minuti",
+      "inHours": "tra {0} ore"
+    },
+    "position": "Posizione",
+    "direction": "Direzione",
+    "cardinalShort": {
+      "N": "N",
+      "NNE": "NNE",
+      "NE": "NE",
+      "ENE": "ENE",
+      "E": "E",
+      "ESE": "ESE",
+      "SE": "SE",
+      "SSE": "SSE",
+      "S": "S",
+      "SSW": "SSO",
+      "SW": "SO",
+      "WSW": "OSO",
+      "W": "O",
+      "WNW": "ONO",
+      "NW": "NO",
+      "NNW": "NNO"
+    },
+    "underHorizon": "Luna sotto l'orizzonte",
+    "overHorizon": "Luna sopra l'orizzonte",
+    "horizonTitle": "La Luna di oggi",
+    "currentTime": "Ora attuale",
+    "common": {
+      "now": "Adesso"
     }
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Lingua e visualizzazione",
+      "description": "Imposta una configurazione per lingua e sfondo",
+      "customBackground": {
+        "title": "Sfondo personalizzato",
+        "description": "Imposta una configurazione per uno sfondo personalizzato"
+      }
+    },
+    "baseConfig": {
+      "title": "Latitudine e Longitudine",
+      "description": "Imposta una configurazione per Latitudine e Longitudine"
+    },
+    "optionsConfig": {
+      "useDefault": "Sistema",
+      "useEntity": "Entità",
+      "useCustom": "Personalizzata"
+    },
+    "fontOptions": {
+      "title": "Personalizzazione carattere",
+      "description": "Imposta una configurazione per dimensione e colore carattere",
+      "hideLabel": "Nascondi etichetta",
+      "headerFontConfig": {
+        "title": "Carattere intestazione",
+        "description": "Imposta una configurazione per carattere intestazione"
+      },
+      "labelFontConfig": {
+        "title": "Carattere etichetta",
+        "description": "Imposta una configurazione per carattere etichetta"
+      },
+      "headerFontSize": "Dimensione carattere intestazione",
+      "headerFontColor": "Colore carattere intestazione",
+      "headerFontStyle": "Stile carattere intestazione",
+      "labelFontSize": "Dimensione carattere etichetta",
+      "labelFontColor": "Colore carattere etichetta",
+      "labelFontStyle": "Stile carattere etichetta",
+      "valueFontSize": "Valore dimensione carattere"
+    },
+    "graphConfig": {
+      "title": "Personalizzazione del grafico",
+      "description": "Imposta una configurazione per il grafico",
+      "type": {
+        "title": "Tipo di grafico",
+        "description": "Seleziona un tipo di grafico"
+      },
+      "visibility": {
+        "title": "Opzioni di visibilità",
+        "description": "Nascondi o mostra elementi specifici"
+      },
+      "customization": {
+        "title": "Opzioni di personalizzazione",
+        "description": "Personalizza il grafico"
+      }
+    },
+    "compactView": "Visualizzazione compatta",
+    "showBackground": "Mostra sfondo",
+    "timeFormat": "Formato a 12 ore",
+    "mileUnit": "Unità di miglio",
+    "yTicks": "Y-axis ticks",
+    "xTicks": "X-axis ticks",
+    "showTime": "Indicatori di tempo di alba/tramonto",
+    "showCurrent": "Posizione attuale della Luna",
+    "showLegend": "Mostra leggenda",
+    "showHighest": "Mostra la posizione più alta della Luna",
+    "calendarModal": "Popup calendario",
+    "hideButtons": "Nascondi pulsanti",
+    "titleHelper": {
+      "compactView": "Mostra una vista compatta",
+      "showBackground": "Mostra uno sfondo",
+      "timeFormat": "Imposta un formato orario (12 ore o 24 ore)",
+      "mileUnit": "Verranno utilizzati i chilometri se disabilitato",
+      "yTicks": "Mostra i tick dell'asse Y",
+      "xTicks": "Mostra i tick dell'asse X",
+      "showTime": "Mostra i marcatori dell'ora di alba/tramonto",
+      "showCurrent": "Mostra la posizione attuale della Luna",
+      "showLegend": "Mostra una legenda",
+      "showHighest": "Mostra la posizione più alta della Luna",
+      "calendarModal": "Il calendario verrà visualizzato in un popup",
+      "hideButtons": "I pulsanti dell'intestazione saranno nascosti",
+      "useDefault": "Usa latitudine e longitudine di sistema",
+      "useEntity": "Usa latitudine e longitudine dell'entità",
+      "useCustom": "Usa latitudine e longitudine personalizzate",
+      "hideLabel": "Nascondi etichetta in vista compatta"
+    },
+    "placeHolder": {
+      "latitude": "Inserisci Latitudine",
+      "longitude": "Inserisci Longitudine",
+      "customBackground": "URL o percorso dell'immagine",
+      "language": "Seleziona lingua",
+      "moonPosition": "Seleziona la posizione della luna sulla carta",
+      "defaultCard": "Seleziona la scheda predefinita",
+      "yTicksPosition": "Posizione delle tacche dell'asse Y",
+      "legendPosition": "Posizione della legenda",
+      "legendAlign": "Allineamento della legenda",
+      "graphType": "Tipo di grafico",
+      "compactMode": "Modalità compatta"
+    }
+  }
 }
