@@ -10,12 +10,12 @@ const updateReadme = () => {
   const readmeContent = fs.readFileSync(readmePath, 'utf8');
 
   // Find the localization section in the README
-  const startMarker = '### Supported Localization';
-  const endMarker = '</details>';
-  const startIndex = readmeContent.indexOf(startMarker);
-  const endIndex = readmeContent.indexOf(endMarker, startIndex);
+  const startMarker = '<!--LOCALIZATION-CONTENT-START-->';
+  const endMarker = '<!--LOCALIZATION-CONTENT-END-->';
+  const startMarkerIndex = readmeContent.indexOf(startMarker);
+  const endMarkerIndex = readmeContent.indexOf(endMarker);
 
-  if (startIndex === -1 || endIndex === -1) {
+  if (startMarkerIndex === -1 || endMarkerIndex === -1) {
     console.error('Localization section not found in README.md');
     return;
   }
@@ -35,7 +35,9 @@ const updateReadme = () => {
   });
 
   // Create the new language table
-  const newTableRows = languages.map((lang) => `| \`${lang.code}\` | ${lang.name} | ${lang.nativeName} |`).join('\n');
+  const newTableRows = languages
+    .map((lang) => `| \`${lang.code}\`     | ${lang.name}          | ${lang.nativeName}          |`)
+    .join('\n');
 
   const newLocalizationSection = `
 ### Supported Localization
@@ -43,14 +45,19 @@ const updateReadme = () => {
 <details>
   <summary>The following languages are supported in this project</summary>
 
-| Language Code | Name     | Native Name     |
-| ------------- | ---------| ----------------|
+| Language Code | Name                   | Native Name            |
+| ------------- | ---------------------- | ---------------------- |
 ${newTableRows}
 
 </details>`;
 
   // Replace the old localization section with the new one
-  const updatedReadme = `${readmeContent.slice(0, startIndex)}${newLocalizationSection}${readmeContent.slice(endIndex)}`;
+  const updatedReadme =
+    readmeContent.slice(0, startMarkerIndex + startMarker.length) +
+    '\n' +
+    newLocalizationSection +
+    '\n' +
+    readmeContent.slice(endMarkerIndex);
 
   // Write the updated README back to the file
   fs.writeFileSync(readmePath, updatedReadme, 'utf8');
@@ -58,4 +65,5 @@ ${newTableRows}
   console.log('README.md updated successfully!');
 };
 
+// Run the script
 updateReadme();
