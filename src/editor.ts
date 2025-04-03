@@ -327,15 +327,16 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   private _renderViewConfiguration(): TemplateResult {
     const content: TemplateResult[][] = [];
 
-    const langThemeContainer = this._renderLangTheme();
+    const langThemeContainer = this._renderLangTypeConf();
+    const themeOptions = this._renderThemeOptions();
     const customBackgroundInput = this._renderCustomBackground();
 
-    content.push([langThemeContainer, customBackgroundInput]);
+    content.push([langThemeContainer, customBackgroundInput, themeOptions]);
 
     return this.contentTemplate('viewConfig', 'viewConfig', 'mdi:image', html`${content}`);
   }
 
-  private _renderLangTheme(): TemplateResult {
+  private _renderLangTypeConf(): TemplateResult {
     const langOpts = [
       { key: 'system', name: 'System', nativeName: this.hass?.language },
       ...languageOptions.sort((a, b) => a.name.localeCompare(b.name)),
@@ -368,34 +369,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       this._config?.default_card || 'base',
       'default_card',
       false
-    );
-
-    // Theme options
-    const theme = this._config?.theme || {};
-    const themeOptions = [
-      { value: 'light', label: 'Light' },
-      { value: 'dark', label: 'Dark' },
-      { value: 'auto', label: 'Auto' },
-    ];
-    const themeMode = theme?.theme_mode || 'auto';
-    const themePicker = html`
-      <ha-selector
-        .hass=${this.hass}
-        .value=${theme?.selected_theme ?? 'default'}
-        .configValue=${'selected_theme'}
-        .configKey=${'theme'}
-        .selector=${{ theme: { include_default: true } }}
-        @value-changed=${this._handleValueChange}
-      >
-      </ha-selector>
-    `;
-    const themeModePicker = this._haComboBox(
-      themeOptions,
-      'placeHolder.themeMode',
-      themeMode,
-      'theme_mode',
-      false,
-      'theme'
     );
 
     const compactNhide = [
@@ -435,19 +408,52 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
     const comboboxex = html` <div class="comboboxes">${moonPositon}${compactMode}</div> `;
 
-    return html` <div class="comboboxes">
-      ${langComboBox} ${defaultCard}
-      </div>
-      ${viewOptions}
-      ${comboboxex}
+    return html`
+      <div class="comboboxes">${langComboBox} ${defaultCard}</div>
+      ${viewOptions} ${comboboxex}
+    `;
+  }
+
+  private _renderThemeOptions(): TemplateResult {
+    // Theme options
+    const theme = this._config?.theme || {};
+    const themeOptions = [
+      { value: 'light', label: 'Light' },
+      { value: 'dark', label: 'Dark' },
+      { value: 'auto', label: 'Auto' },
+    ];
+    const themeMode = theme?.theme_mode || 'auto';
+    const themePicker = html`
+      <ha-selector
+        .hass=${this.hass}
+        .value=${theme?.selected_theme ?? 'default'}
+        .configValue=${'selected_theme'}
+        .configKey=${'theme'}
+        .selector=${{ theme: { include_default: true } }}
+        @value-changed=${this._handleValueChange}
+      >
+      </ha-selector>
+    `;
+    const themeModePicker = this._haComboBox(
+      themeOptions,
+      'placeHolder.themeMode',
+      themeMode,
+      'theme_mode',
+      false,
+      'theme'
+    );
+
+    return html`
       <div class="sub-config-wrapper">
         <div class="sub-config-type">
           <span class="title">${this.localize(`editor.viewConfig.theme.title`)}</span>
           <span class="desc">${this.localize(`editor.viewConfig.theme.description`)}</span>
         </div>
-        <div class="sub-config-content">${themePicker} ${themeModePicker}</div>
+        <div class="sub-config-container">
+          <div class="sub-config-content">${themePicker} ${themeModePicker}</div>
+        </div>
       </div>
-    </div>`;
+    `;
   }
 
   private _renderCustomBackground(): TemplateResult {
@@ -506,9 +512,11 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
           <span class="title">${this.localize(`editor.viewConfig.customBackground.title`)}</span>
           <span class="desc">${this.localize(`editor.viewConfig.customBackground.description`)}</span>
         </div>
-        <div class="comboboxes">${showBackground}</div>
-        <div class="sub-config-content">${backgroundOptions}</div>
-        <div class="sub-config-content">${customBackgroundInput}</div>
+        <div class="sub-config-container">
+          <div class="comboboxes">${showBackground}</div>
+          <div class="sub-config-content">${backgroundOptions}</div>
+          <div class="sub-config-content">${customBackgroundInput}</div>
+        </div>
       </div>
     `;
 
