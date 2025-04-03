@@ -93,6 +93,9 @@ export class Moon {
     };
   }
 
+  get _moonTimeFromNow(): SunCalc.IMoonTimes {
+    return SunCalc.getMoonTimes(this._dynamicDate, this.location.latitude, this.location.longitude);
+  }
   blankBeforeUnit = (unit: string): string => {
     if (unit === '°') {
       return '';
@@ -327,6 +330,59 @@ export class Moon {
       new Date(time).getTime()
     );
   }
+  private _getMoonTimeRangeItem(): {
+    start: { key: 'moonRise' | 'moonSet'; value: number };
+    end: { key: 'moonRise' | 'moonSet'; value: number };
+  } {
+    const { latitude, longitude } = this.location;
+    const now = this._dynamicDate;
+    const nextDay = new Date(now);
+    nextDay.setDate(nextDay.getDate() + 1);
+
+    const todayMoonTimes = SunCalc.getMoonTimes(now, latitude, longitude);
+    const tomorrowMoonTimes = SunCalc.getMoonTimes(nextDay, latitude, longitude);
+
+    const timeline: { key: 'moonRise' | 'moonSet'; value: number }[] = [];
+
+    if (todayMoonTimes.set) {
+      timeline.push({ key: 'moonSet', value: new Date(todayMoonTimes.set).getTime() });
+    }
+    if (todayMoonTimes.rise) {
+      timeline.push({ key: 'moonRise', value: new Date(todayMoonTimes.rise).getTime() });
+    }
+    if (tomorrowMoonTimes.set) {
+      timeline.push({ key: 'moonSet', value: new Date(tomorrowMoonTimes.set).getTime() });
+    }
+    if (tomorrowMoonTimes.rise) {
+      timeline.push({ key: 'moonRise', value: new Date(tomorrowMoonTimes.rise).getTime() });
+    }
+
+    timeline.sort((a, b) => a.value - b.value);
+
+    let start = timeline[0];
+    let end = timeline[timeline.length - 1];
+    const nowTime = now.getTime();
+
+    for (let i = 0; i < timeline.length - 1; i++) {
+      if (nowTime >= timeline[i].value && nowTime < timeline[i + 1].value) {
+        start = timeline[i];
+        end = timeline[i + 1];
+        break;
+      }
+    }
+
+    return { start, end };
+  }
+
+  _getMinimalData = (): { start: MoonDataItem; end: MoonDataItem } => {
+    const { start, end } = this._getMoonTimeRangeItem();
+    const startTime = this.createMoonTime(start.key, start.value);
+    const endTime = this.createMoonTime(end.key, end.value);
+    return {
+      start: startTime,
+      end: endTime,
+    };
+  };
 
   private _getTimeData = (
     type: 'moon' | 'sun'

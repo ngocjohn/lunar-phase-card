@@ -511,14 +511,18 @@ export class LunarPhaseCard extends LitElement {
 
   private renderCompactMinimalView(): TemplateResult {
     const { moonData, phaseName, nextPhase } = this.moon;
+    const timeRange = this.moon._getMinimalData();
     const moonImage = this.renderMoonImage();
 
-    const renderCompactItem = (key: string): TemplateResult => {
-      const { label, value } = moonData[key];
+    const renderCompactItem = (key: string, secondValue: boolean = false): TemplateResult => {
+      const { label, value, secondValue: second } = timeRange[key];
       return html`
         <div class="compact-item-minimal">
-          <span class="value">${label}</span>
-          <span class="label">${value}</span>
+          <div class="item-value">
+            <span class="value">${label}</span>
+            <span class="label">${value}</span>
+          </div>
+          <span class="second-value">${secondValue && second ? second : '\u00A0'}</span>
         </div>
       `;
     };
@@ -532,12 +536,12 @@ export class LunarPhaseCard extends LitElement {
     const timeStr = formatDateTime(currentDate, this._locale);
     return html`
       <div class="compact-view-minimal">
-        ${renderCompactItem('moonSet')}
+        ${renderCompactItem('start', true)}
         <div class="minimal-moon-image-container" @click=${this._toggleMinimalData}>
           ${moonImage}
           <span class="minimal-title">${phaseName}</span>
         </div>
-        ${renderCompactItem('moonRise')}
+        ${renderCompactItem('end', true)}
       </div>
 
       <div class="moon-data-minimal" ?hidden=${true} @click=${this._toggleMinimalData}>

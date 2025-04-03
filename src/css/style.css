@@ -355,11 +355,39 @@ lunar-base-data {
 .compact-item-minimal {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  color: var(--lunar-card-label-font-color, var(--primary-text-color));
+  height: 100%;
   flex: 1 0 29%;
+  text-align: center;
+  color: var(--lunar-card-label-font-color, var(--primary-text-color));
+  transition: all 0.2s ease-in-out;
+}
+
+.compact-item-minimal:hover {
+  transform: scale(1.10);
+  color: var(--accent-color);
+}
+
+.compact-item-minimal>.item-value {
+  display: flex;
+  flex-direction: column;
+}
+
+.compact-item-minimal .second-value {
+  font-size: smaller;
+  min-height: 1rem;
+  display: block;
+  word-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+}
+
+.compact-item-minimal:hover>.second-value {
+  opacity: 0.6;
 }
 
 .compact-item-minimal span.value {
@@ -377,8 +405,8 @@ lunar-base-data {
   text-wrap: nowrap;
   white-space: nowrap;
   overflow: hidden;
-  font-size: 1.2rem;
-  padding-top: 0.5rem;
+  font-size: 1.3rem;
+  padding-block: 0.2rem;
 }
 
 .minimal-moon-image-container {
