@@ -1,9 +1,3 @@
-import { formatDateTime, HomeAssistant, formatDateTimeWithSeconds } from 'custom-card-helpers';
-import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues } from 'lit';
-import { customElement, state, property } from 'lit/decorators.js';
-
-import type { ChartDataset } from 'chart.js/auto';
-
 // Chart.js
 import {
   Chart,
@@ -14,15 +8,20 @@ import {
   Plugin,
   ScaleChartOptions,
 } from 'chart.js/auto';
+import { formatDateTime, HomeAssistant, formatDateTimeWithSeconds } from 'custom-card-helpers';
+import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues } from 'lit';
+import { customElement, state, property } from 'lit/decorators.js';
 
 import { ICON } from '../const';
-import { LunarPhaseCard } from '../lunar-phase-card';
-// Local imports
-import { Moon } from '../utils/moon';
 // Styles
 import styles from '../css/style.css';
+import { LunarPhaseCard } from '../lunar-phase-card';
 import { ChartColors } from '../types';
+// Local imports
+import { Moon } from '../utils/moon';
 import { MOON_RISE_ICON, MOON_SET_ICON } from '../utils/moon-pic';
+
+import type { ChartDataset } from 'chart.js/auto';
 
 const HOVER_TIMEOUT = 150;
 

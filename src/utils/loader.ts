@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { LovelaceConfig } from 'custom-card-helpers';
 
 import { LunarPhaseCardConfig } from '../types';

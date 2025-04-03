@@ -1,26 +1,23 @@
+// Chart.js
+import { Chart, ChartData, ChartOptions, Plugin, ScriptableLineSegmentContext } from 'chart.js/auto';
+// Custom Card helpers
+import { FrontendLocaleData, formatDateShort, formatTime } from 'custom-card-helpers';
 // Lit
 import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import tinycolor from 'tinycolor2';
-// Custom Card helpers
-import { FrontendLocaleData, formatDateShort, formatTime } from 'custom-card-helpers';
-// Chart.js
-import { Chart, ChartData, ChartOptions, Plugin, ScriptableLineSegmentContext } from 'chart.js/auto';
-
-
-
 // DateTime
 import { DateTime } from 'luxon';
+import tinycolor from 'tinycolor2';
 // Local imports
 
 import { CHART_COLOR, CHART_DATA } from '../const';
+// Styles
+import styles from '../css/style.css';
 import { LunarPhaseCard } from '../lunar-phase-card';
 import { FILL_COLORS, HA as HomeAssistant } from '../types';
 import extract_color from '../utils/extract_color';
 import { hexToRgba } from '../utils/helpers';
 import { Moon } from '../utils/moon';
-// Styles
-import styles from '../css/style.css';
 
 @customElement('lunar-horizon-dynamic')
 export class LunarHorizonDynamic extends LitElement {
@@ -629,8 +626,6 @@ export class LunarHorizonDynamic extends LitElement {
     };
   }
 
-
-
   private _expandChartArea = (): Plugin => {
     return {
       id: 'expandChartArea',
@@ -665,6 +660,7 @@ export class LunarHorizonDynamic extends LitElement {
       const data = await extract_color(custom_background);
       return data;
     } catch (error) {
+      console.warn('Error extracting color:', error);
       return defaultColors;
     }
   }

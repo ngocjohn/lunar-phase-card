@@ -1,12 +1,13 @@
-import { LitElement, html, TemplateResult, CSSResultGroup, css, PropertyValues, nothing } from 'lit';
+import { LitElement, html, TemplateResult, CSSResultGroup, css, PropertyValues } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 import { DateTime, WeekdayNumbers } from 'luxon';
+
 // Local
 import { ICON } from '../const';
-import { LunarPhaseCard } from '../lunar-phase-card';
-import { Moon } from '../utils/moon';
 // styles
 import styles from '../css/style.css';
+import { LunarPhaseCard } from '../lunar-phase-card';
+import { Moon } from '../utils/moon';
 
 @customElement('lunar-calendar-popup')
 export class LunarCalendarPopup extends LitElement {
@@ -142,7 +143,7 @@ export class LunarCalendarPopup extends LitElement {
   }
 
   protected render(): TemplateResult {
-    const backgroundClass = this.card.config?.show_background ? '--background' : nothing;
+    const backgroundClass = this.card.config?.show_background ? '--background' : '';
     const viewDate = this.viewDate;
     const monthLocale = viewDate.setLocale(this.card._locale.language).toFormat('LLLL');
 

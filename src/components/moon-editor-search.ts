@@ -2,12 +2,11 @@ import { mdiClose } from '@mdi/js';
 import { LitElement, TemplateResult, CSSResultGroup, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { SearchResults } from '../types';
-import { getCoordinates } from '../utils/helpers';
-
 // styles
 import editorStyles from '../css/editor.css';
 import { LunarPhaseCardEditor } from '../editor';
+import { SearchResults } from '../types';
+import { getCoordinates } from '../utils/helpers';
 
 const ALERT_DURATION = 5 * 1000; // 5 seconds
 
