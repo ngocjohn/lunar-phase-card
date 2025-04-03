@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Lay-out aanpassen",
-      "description": "De lay-out van de kaart wijzigen"
+      "description": "De lay-out van de kaart wijzigen",
+      "hiddenItems": {
+        "title": "Verborgen voorwerpen",
+        "description": "Selecteer items die u wilt verbergen in de gegevensweergave"
+      }
     },
     "compactView": "Compacte weergave",
     "showBackground": "toon achtergrond",

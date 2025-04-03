@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Anpassung des Layouts",
-      "description": "Ändern des Layouts der Karte"
+      "description": "Ändern des Layouts der Karte",
+      "hiddenItems": {
+        "title": "Versteckte Elemente",
+        "description": "Auswählen von Elementen, die in der Datenansicht ausgeblendet werden sollen"
+      }
     },
     "compactView": "Kompakte Ansicht",
     "showBackground": "Hintergrund einblenden",

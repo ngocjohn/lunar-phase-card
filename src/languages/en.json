@@ -123,7 +123,11 @@
         },
         "layoutConfig": {
             "title": "Layout customization",
-            "description": "Modify the layout of the card"
+            "description": "Modify the layout of the card",
+            "hiddenItems": {
+                "title": "Hidden items",
+                "description": "Select items to hide in data view"
+            }
         },
         "compactView": "Compact view",
         "showBackground": "Show background",

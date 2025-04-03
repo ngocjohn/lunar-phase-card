@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Tùy chỉnh bố cục",
-      "description": "Sửa đổi bố cục của thẻ"
+      "description": "Sửa đổi bố cục của thẻ",
+      "hiddenItems": {
+        "title": "Các mục ẩn",
+        "description": "Chọn các mục để ẩn trong chế độ xem dữ liệu"
+      }
     },
     "compactView": "Chế độ xem nhỏ gọn",
     "showBackground": "Hiển thị nền",

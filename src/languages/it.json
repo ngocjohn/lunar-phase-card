@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Personalizzazione del layout",
-      "description": "Modificare il layout della scheda"
+      "description": "Modificare il layout della scheda",
+      "hiddenItems": {
+        "title": "Elementi nascosti",
+        "description": "Seleziona gli elementi da nascondere nella visualizzazione dati"
+      }
     },
     "compactView": "Visualizzazione compatta",
     "showBackground": "Mostra sfondo",

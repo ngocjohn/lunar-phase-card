@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Dostosowywanie układu",
-      "description": "Modyfikowanie układu karty"
+      "description": "Modyfikowanie układu karty",
+      "hiddenItems": {
+        "title": "Ukryte przedmioty",
+        "description": "Wybieranie elementów do ukrycia w widoku danych"
+      }
     },
     "compactView": "Kompaktowy widok",
     "showBackground": "Pokaż tło",

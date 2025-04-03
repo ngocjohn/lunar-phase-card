@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Maketo tinkinimas",
-      "description": "Keisti kortelės išdėstymą"
+      "description": "Keisti kortelės išdėstymą",
+      "hiddenItems": {
+        "title": "Paslėpti daiktai",
+        "description": "Elementų, kuriuos norite slėpti, pasirinkimas duomenų rodinyje"
+      }
     },
     "compactView": "Kompaktiškas vaizdas",
     "showBackground": "Rodyti foną",

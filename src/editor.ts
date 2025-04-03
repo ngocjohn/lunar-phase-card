@@ -5,7 +5,7 @@ import { fireEvent, LovelaceCardEditor, HomeAssistant } from 'custom-card-helper
 import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES } from './const';
+import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES, DATAKEYS } from './const';
 import { CUSTOM_BG } from './const';
 import editorcss from './css/editor.css';
 import { languageOptions, localize } from './localize/localize';
@@ -524,6 +524,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   }
 
   private _renderLayoutConfiguration(): TemplateResult {
+    const content: TemplateResult[][] = [];
     const viewItemMap = [
       { label: 'timeFormat', configValue: '12hr_format' },
       { label: 'mileUnit', configValue: 'mile_unit' },
@@ -546,8 +547,59 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
       </div>
     `;
 
-    return this.contentTemplate('layoutConfig', 'layoutConfig', 'mdi:format-list-bulleted', viewOptions);
+    const hiddenItems = this._renderHiddenItems();
+
+    content.push([viewOptions, hiddenItems]);
+
+    return this.contentTemplate('layoutConfig', 'layoutConfig', 'mdi:format-list-bulleted', html`${content}`);
   }
+
+  private _renderHiddenItems() {
+    const hiddenItems = this._config?.hide_items || [];
+    const selectedItems = Object.entries(hiddenItems).map(([, item]) => item);
+    const selector = this._createSelectorOptions();
+
+    const hiddenItemsSelector = html`
+      <ha-selector
+        .hass=${this.hass}
+        .value=${selectedItems}
+        .configValue=${'hide_items'}
+        .selector=${selector}
+        .required=${false}
+        .label=${this.localize(`editor.layoutConfig.hiddenItems.title`)}
+        @value-changed=${this._handleValueChange}
+      ></ha-selector>
+    `;
+
+    const hiddenItemsContainer = html`
+      <div class="sub-config-wrapper">
+        <div class="sub-config-type">
+          <span class="title">${this.localize(`editor.layoutConfig.hiddenItems.title`)}</span>
+          <span class="desc">${this.localize(`editor.layoutConfig.hiddenItems.description`)}</span>
+        </div>
+        <div class="sub-config-container">${hiddenItemsSelector}</div>
+      </div>
+    `;
+
+    return hiddenItemsContainer;
+  }
+
+  private _createSelectorOptions = () => {
+    const options = Object.entries(DATAKEYS).map(([key, value]) => {
+      const label = this.localize(`card.${value}`);
+      return { value: key, label };
+    });
+
+    options.sort((a, b) => a.label.localeCompare(b.label));
+
+    const selector = {
+      select: {
+        multiple: true,
+        options: options,
+      },
+    };
+    return selector;
+  };
 
   private _renderGraphConfig(): TemplateResult {
     const subheader = (key: string) => {
@@ -880,6 +932,9 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         [configValue]: value,
       };
       console.log('theme', updates.theme);
+    } else if (configValue === 'hide_items') {
+      updates.hide_items = value;
+      console.log('hidden items', updates.hide_items);
     } else if (configValue === 'entity') {
       const attribute = this.hass.states[value].attributes;
       updates.latitude = attribute.latitude ?? attribute.location.latitude;

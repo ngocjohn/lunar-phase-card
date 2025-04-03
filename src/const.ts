@@ -92,3 +92,16 @@ export const enum CHART_COLOR {
   MOON_SHADOW = '#161616',
   TOOLTIP_BACKGROUND = '#1f1f1f',
 }
+
+export const DATAKEYS = {
+  moonAge: 'moonAge',
+  moonFraction: 'illumination',
+  azimuthDegress: 'azimuth',
+  altitudeDegrees: 'altitude',
+  distance: 'distance',
+  moonRise: 'moonRise',
+  moonSet: 'moonSet',
+  moonHighest: 'moonHigh',
+  nextFullMoon: 'fullMoon',
+  nextNewMoon: 'newMoon',
+};

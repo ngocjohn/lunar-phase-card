@@ -123,7 +123,11 @@
     },
     "layoutConfig": {
       "title": "Personalização de layout",
-      "description": "Modifique o layout do cartão"
+      "description": "Modifique o layout do cartão",
+      "hiddenItems": {
+        "title": "Itens ocultos",
+        "description": "Selecionar itens para ocultar na visualização de dados"
+      }
     },
     "compactView": "Visualização compacta",
     "showBackground": "Mostrar plano de fundo",
