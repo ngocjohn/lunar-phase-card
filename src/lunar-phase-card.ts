@@ -512,6 +512,8 @@ export class LunarPhaseCard extends LitElement {
   }
 
   private renderCompactMinimalView(): TemplateResult {
+    const hiddenItems = this.config?.hide_items || [];
+    const hideItems = ['nextFullMoon', ...hiddenItems];
     const { moonData, phaseName, nextPhase } = this.moon;
     const timeRange = this.moon._getMinimalData();
     const moonImage = this.renderMoonImage();
@@ -529,8 +531,7 @@ export class LunarPhaseCard extends LitElement {
       `;
     };
 
-    const replacer = (key: string, value: any) =>
-      ['moonSet', 'moonRise', 'moonHighest', 'nextNewMoon', 'nextFullMoon'].includes(key) ? undefined : value;
+    const replacer = (key: string, value: any) => (hideItems.includes(key) ? undefined : value);
 
     const filteredData = JSON.parse(JSON.stringify(moonData, replacer));
     const addedData = { ...filteredData, nextPhase };
