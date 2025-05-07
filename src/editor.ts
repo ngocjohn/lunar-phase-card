@@ -4,6 +4,7 @@ import { fireEvent, LovelaceCardEditor, HomeAssistant } from 'custom-card-helper
 /*  @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import 'nvn-tabs';
 
 import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES, DATAKEYS } from './const';
 import { CUSTOM_BG } from './const';
@@ -783,11 +784,15 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     tabs: { content: TemplateResult; icon?: string; key?: string; label: string; stacked?: boolean }[];
   }): TemplateResult => {
     return html`
-      <mwc-tab-bar class="vic-tabbar" @MDCTabBar:activated=${(e: Event) => onTabChange((e.target as any).activeIndex)}>
+      <nvn-tab-bar>
         ${tabs.map(
-          (tab) => html`<mwc-tab label=${tab.label} icon=${tab.icon || ''} ?stacked=${tab.stacked || false}></mwc-tab>`
+          (tab, index) => html`
+            <nvn-tab ?active=${index === activeTabIndex} .name=${tab.label} @click=${() => onTabChange(index)}>
+              ${tab.icon ? html`<ha-icon .icon=${tab.icon}></ha-icon>` : ''}
+            </nvn-tab>
+          `
         )}
-      </mwc-tab-bar>
+      </nvn-tab-bar>
 
       <div>${tabs[activeTabIndex]?.content || html`<div>No content available</div>`}</div>
       <div class="version">
