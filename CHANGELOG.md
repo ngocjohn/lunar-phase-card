@@ -1,3 +1,18 @@
+<a id="v1.10.1"></a>
+# [v1.10.1](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.10.1) - 2025-05-07
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.10.1 -->
+
+## What's Changed
+### Other Changes
+* Updated component to be compatible with the latest Home Assistant frontend requirements. [#66](https://github.com/ngocjohn/lunar-phase-card/pull/66)
+
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.10.0...v1.10.1
+
+[Changes][v1.10.1]
+
+
 <a id="v1.10.0"></a>
 # [v1.10.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.10.0) - 2025-04-03
 
@@ -330,6 +345,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.10.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.10.0...v1.10.1
 [v1.10.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.9.0...v1.10.0
 [v1.9.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.8.1...v1.9.0
 [v1.8.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.8.0...v1.8.1
