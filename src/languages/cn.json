@@ -1,0 +1,177 @@
+{
+    "name": "Chinese",
+    "nativeName": "中文",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "上弦月",
+            "fullMoon": "满月",
+            "thirdQuarterMoon": "下弦月",
+            "newMoon": "新月",
+            "waxingCrescentMoon": "峨眉月",
+            "waxingGibbousMoon": "盈凸月",
+            "waningCrescentMoon": "残月",
+            "waningGibbousMoon": "亏凸月"
+        },
+        "illumination": "照度",
+        "illuminated": "被照亮",
+        "moonRise": "月亮升起",
+        "moonSet": "月亮落下",
+        "moonHigh": "月亮最高",
+        "moonAge": "月龄",
+        "distance": "距离",
+        "azimuth": "方位角",
+        "altitude": "高度",
+        "fullMoon": "满月",
+        "newMoon": "新月",
+        "relativeTime": {
+            "days": "天",
+            "justNow": "刚刚",
+            "minutesAgo": "{0} 分钟前",
+            "hoursAgo": "{0} 小时前",
+            "inMinutes": "在 {0} 分钟后",
+            "inHours": "在 {0} 小时后"
+        },
+        "position": "位置",
+        "direction": "方向",
+        "cardinalShort": {
+            "N": "N",
+            "NNE": "NNE",
+            "NE": "NE",
+            "ENE": "ENE",
+            "E": "E",
+            "ESE": "ESE",
+            "SE": "SE",
+            "SSE": "SSE",
+            "S": "S",
+            "SSW": "SSW",
+            "SW": "SW",
+            "WSW": "WSW",
+            "W": "W",
+            "WNW": "WNW",
+            "NW": "NW",
+            "NNW": "NNW"
+        },
+        "underHorizon": "月亮在地平线下",
+        "overHorizon": "月亮在地平线上",
+        "horizonTitle": "今日月亮",
+        "currentTime": "当前时间",
+        "common": {
+            "now": "现在"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "语言与视图模式",
+            "description": "设置语言和背景配置",
+            "customBackground": {
+                "title": "背景",
+                "description": "设置自定义背景的配置"
+            },
+            "theme": {
+                "title": "主题（可选）",
+                "description": "为卡片选择一个主题"
+            },
+            "layout": {
+                "title": "布局选项",
+                "description": "修改卡片的布局"
+            }
+        },
+        "baseConfig": {
+            "title": "纬度与经度",
+            "description": "设置纬度和经度的配置"
+        },
+        "optionsConfig": {
+            "useDefault": "使用系统",
+            "useEntity": "使用实体",
+            "useCustom": "使用自定义"
+        },
+        "fontOptions": {
+            "title": "字体自定义",
+            "description": "设置字体大小和颜色的配置",
+            "hideLabel": "隐藏标签",
+            "headerFontConfig": {
+                "title": "标题字体",
+                "description": "设置标题字体的配置"
+            },
+            "labelFontConfig": {
+                "title": "标签字体",
+                "description": "设置标签字体的配置"
+            },
+            "headerFontSize": "标题字体大小",
+            "headerFontColor": "标题字体颜色",
+            "headerFontStyle": "标题字体样式",
+            "labelFontSize": "标签字体大小",
+            "labelFontColor": "标签字体颜色",
+            "labelFontStyle": "标签字体样式",
+            "valueFontSize": "值字体大小"
+        },
+        "graphConfig": {
+            "title": "图表自定义",
+            "description": "设置图表的配置",
+            "type": {
+                "title": "图表类型",
+                "description": "选择一个图表类型"
+            },
+            "visibility": {
+                "title": "可见性选项",
+                "description": "隐藏或显示特定元素"
+            },
+            "customization": {
+                "title": "自定义选项",
+                "description": "自定义图表"
+            }
+        },
+        "layoutConfig": {
+            "title": "布局自定义",
+            "description": "修改卡片的布局",
+            "hiddenItems": {
+                "title": "隐藏项",
+                "description": "选择要在数据视图中隐藏的项目"
+            }
+        },
+        "compactView": "紧凑视图",
+        "showBackground": "显示背景",
+        "timeFormat": "12小时制时间格式",
+        "mileUnit": "英里单位",
+        "yTicks": "Y轴刻度",
+        "xTicks": "X轴刻度",
+        "showTime": "设置/升起时间标记",
+        "showCurrent": "当前月亮位置",
+        "showLegend": "显示图例",
+        "showHighest": "显示月亮最高位置",
+        "calendarModal": "日历弹窗",
+        "hideButtons": "隐藏按钮",
+        "titleHelper": {
+            "compactView": "显示紧凑视图",
+            "showBackground": "显示背景",
+            "timeFormat": "设置时间格式（12小时制或24小时制）",
+            "mileUnit": "若禁用则使用公里",
+            "yTicks": "显示Y轴刻度",
+            "xTicks": "显示X轴刻度",
+            "showTime": "显示升起/落下时间标记",
+            "showCurrent": "显示当前月亮位置",
+            "showLegend": "显示图例",
+            "showHighest": "显示月亮最高位置",
+            "calendarModal": "日历将以弹窗形式显示",
+            "hideButtons": "头部按钮将被隐藏",
+            "useDefault": "使用系统纬度和经度",
+            "useEntity": "使用实体纬度和经度",
+            "useCustom": "使用自定义纬度和经度",
+            "hideLabel": "在紧凑视图中隐藏标签"
+        },
+        "placeHolder": {
+            "latitude": "输入纬度",
+            "longitude": "输入经度",
+            "customBackground": "图片URL或路径",
+            "language": "选择语言",
+            "moonPosition": "选择卡片上的月亮位置",
+            "defaultCard": "选择默认卡片",
+            "yTicksPosition": "Y轴刻度位置",
+            "legendPosition": "图例位置",
+            "legendAlign": "图例对齐方式",
+            "graphType": "图表类型",
+            "compactMode": "紧凑模式",
+            "themeMode": "主题模式"
+        }
+    }
+}

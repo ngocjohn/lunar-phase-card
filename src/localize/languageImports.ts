@@ -1,6 +1,7 @@
 // This file is generated automatically by the generate-lang-imports script. Do not modify it manually.
 
 import * as ca from '../languages/ca.json';
+import * as cn from '../languages/cn.json';
 import * as cs from '../languages/cs.json';
 import * as da from '../languages/da.json';
 import * as de from '../languages/de.json';
@@ -19,6 +20,7 @@ import * as vi from '../languages/vi.json';
 
 const languages: any = {
   ca: ca,
+  cn: cn,
   cs: cs,
   da: da,
   de: de,
@@ -38,6 +40,7 @@ const languages: any = {
 
 export const languageOptions = [
   { key: 'ca', name: ca.name, nativeName: ca.nativeName },
+  { key: 'cn', name: cn.name, nativeName: cn.nativeName },
   { key: 'cs', name: cs.name, nativeName: cs.nativeName },
   { key: 'da', name: da.name, nativeName: da.nativeName },
   { key: 'de', name: de.name, nativeName: de.nativeName },
@@ -56,3 +59,4 @@ export const languageOptions = [
 ];
 
 export { languages };
+

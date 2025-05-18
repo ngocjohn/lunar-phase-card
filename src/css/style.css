@@ -278,6 +278,7 @@ ha-card.--background .moon-phase-name {
   display: flex;
   color: var(--lunar-card-label-font-color);
   width: fit-content;
+  white-space: nowrap;
   text-wrap: nowrap;
   flex: 0;
 }
