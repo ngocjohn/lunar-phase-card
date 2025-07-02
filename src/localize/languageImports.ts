@@ -9,6 +9,7 @@ import * as es from '../languages/es.json';
 import * as fr from '../languages/fr.json';
 import * as id from '../languages/id.json';
 import * as it from '../languages/it.json';
+import * as ko from '../languages/ko.json';
 import * as lt from '../languages/lt.json';
 import * as nl from '../languages/nl.json';
 import * as pl from '../languages/pl.json';
@@ -27,6 +28,7 @@ const languages: any = {
   fr: fr,
   id: id,
   it: it,
+  ko: ko,
   lt: lt,
   nl: nl,
   pl: pl,
@@ -46,6 +48,7 @@ export const languageOptions = [
   { key: 'fr', name: fr.name, nativeName: fr.nativeName },
   { key: 'id', name: id.name, nativeName: id.nativeName },
   { key: 'it', name: it.name, nativeName: it.nativeName },
+  { key: 'ko', name: ko.name, nativeName: ko.nativeName },
   { key: 'lt', name: lt.name, nativeName: lt.nativeName },
   { key: 'nl', name: nl.name, nativeName: nl.nativeName },
   { key: 'pl', name: pl.name, nativeName: pl.nativeName },

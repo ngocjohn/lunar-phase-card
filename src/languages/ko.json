@@ -1,0 +1,177 @@
+{
+    "name": "Korean",
+    "nativeName": "한국어",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "상현달",
+            "fullMoon": "보름달",
+            "thirdQuarterMoon": "하현달",
+            "newMoon": "신월",
+            "waxingCrescentMoon": "초승달",
+            "waxingGibbousMoon": "상현망달",
+            "waningCrescentMoon": "그믐달",
+            "waningGibbousMoon": "하현망달"
+        },
+        "illumination": "조도",
+        "illuminated": "밝은 부분",
+        "moonRise": "월출",
+        "moonSet": "월몰",
+        "moonHigh": "달 남중",
+        "moonAge": "달 나이",
+        "distance": "거리",
+        "azimuth": "방위각",
+        "altitude": "고도",
+        "fullMoon": "보름달",
+        "newMoon": "신월",
+        "relativeTime": {
+            "days": "일",
+            "justNow": "방금",
+            "minutesAgo": "{0} 분 전",
+            "hoursAgo": "{0} 시간 전",
+            "inMinutes": "{0} 분 후",
+            "inHours": "{0} 시간 후"
+        },
+        "position": "위치",
+        "direction": "방향",
+        "cardinalShort": {
+            "N": "북",
+            "NNE": "북북동",
+            "NE": "북동",
+            "ENE": "동북동",
+            "E": "동",
+            "ESE": "동남동",
+            "SE": "남동",
+            "SSE": "남남동",
+            "S": "남",
+            "SSW": "남남서",
+            "SW": "남서",
+            "WSW": "서남서",
+            "W": "서",
+            "WNW": "서북서",
+            "NW": "북서",
+            "NNW": "북북서"
+        },
+        "underHorizon": "달이 수평선 아래에 있음",
+        "overHorizon": "달이 수평선 위에 있음",
+        "horizonTitle": "오늘의 달",
+        "currentTime": "현재 시간",
+        "common": {
+            "now": "현재"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "언어 및 배경 설정",
+            "description": "언어 및 배경 설정",
+            "customBackground": {
+                "title": "배경",
+                "description": "커스텀 배경 설정"
+            },
+            "theme": {
+                "title": "테마 (선택)",
+                "description": "카드에 사용할 테마 선택"
+            },
+            "layout": {
+                "title": "레이아웃 옵션",
+                "description": "카드 레이아웃 수정"
+            }
+        },
+        "baseConfig": {
+            "title": "위도 및 경도",
+            "description": "위도 및 경도 설정"
+        },
+        "optionsConfig": {
+            "useDefault": "시스템 설정 기반",
+            "useEntity": "엔티티 기반",
+            "useCustom": "직접 설정"
+        },
+        "fontOptions": {
+            "title": "글꼴 사용자 정의",
+            "description": "글꼴 크기 및 색상 설정",
+            "hideLabel": "레이블 숨기기",
+            "headerFontConfig": {
+                "title": "제목 글꼴",
+                "description": "제목 글꼴 설정"
+            },
+            "labelFontConfig": {
+                "title": "라벨 글꼴",
+                "description": "라벨 글꼴 설정"
+            },
+            "headerFontSize": "제목 글꼴 크기",
+            "headerFontColor": "제목 글꼴 색상",
+            "headerFontStyle": "제목 글꼴 스타일",
+            "labelFontSize": "라벨 글꼴 크기",
+            "labelFontColor": "라벨 글꼴 색상",
+            "labelFontStyle": "라벨 글꼴 스타일",
+            "valueFontSize": "값 글꼴 크기"
+        },
+        "graphConfig": {
+            "title": "그래프 사용자 정의",
+            "description": "그래프 구성 설정",
+            "type": {
+                "title": "그래프 유형",
+                "description": "그래프 유형 선택"
+            },
+            "visibility": {
+                "title": "보기 옵션",
+                "description": "특정 요소 숨기기 또는 표시"
+            },
+            "customization": {
+                "title": "사용자 정의 옵션",
+                "description": "그래프 사용자 정의"
+            }
+        },
+        "layoutConfig": {
+            "title": "레이아웃 옵션",
+            "description": "카드 레이아웃 수정",
+            "hiddenItems": {
+                "title": "숨겨진 항목",
+                "description": "데이터 보기에서 숨길 항목 선택"
+            }
+        },
+        "compactView": "간단한 보기",
+        "showBackground": "배경 표시",
+        "timeFormat": "12시간제 시간 형식",
+        "mileUnit": "마일 단위",
+        "yTicks": "Y축 눈금",
+        "xTicks": "X축 눈금",
+        "showTime": "일출/일몰 시간 표시",
+        "showCurrent": "현재 달 위치",
+        "showLegend": "범례 표시",
+        "showHighest": "달의 남중고도 표시",
+        "calendarModal": "팝업 캘린더",
+        "hideButtons": "버튼 숨기기",
+        "titleHelper": {
+            "compactView": "간단한 보기 보이기",
+            "showBackground": "배경 보기",
+            "timeFormat": "시간 형식 설정 (12시간제 또는 24시간제)",
+            "mileUnit": "비활성화하면 킬로미터가 사용됩니다.",
+            "yTicks": "Y축 눈금 표시",
+            "xTicks": "X축 눈금 표시",
+            "showTime": "일출/일몰 시간 표시",
+            "showCurrent": "현재 달 위치 표시",
+            "showLegend": "범례 표시",
+            "showHighest": "가장 높은 달 위치 표시",
+            "calendarModal": "캘린더가 팝업으로 표시됩니다.",
+            "hideButtons": "헤더 버튼이 숨겨집니다.",
+            "useDefault": "시스템 위도 및 경도 사용",
+            "useEntity": "엔티티 위도 및 경도 사용",
+            "useCustom": "사용자 정의 위도 및 경도 사용",
+            "hideLabel": "컴팩트 보기에서 레이블 숨기기"
+        },
+        "placeHolder": {
+            "latitude": "위도를 입력",
+            "longitude": "경도를 입력",
+            "customBackground": "이미지 URL 또는 경로",
+            "language": "언어 선택",
+            "moonPosition": "카드에서 달 위치 선택",
+            "defaultCard": "기본 카드 선택",
+            "yTicksPosition": "Y축 눈금 위치",
+            "legendPosition": "범례 위치",
+            "legendAlign": "범례 정렬",
+            "graphType": "그래프 유형",
+            "compactMode": "컴팩트 모드",
+            "themeMode": "테마 모드"
+        }
+    }
+}
