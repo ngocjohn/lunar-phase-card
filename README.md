@@ -53,6 +53,7 @@
 | `fr`     | French          | Français          |
 | `id`     | Indonesian          | Bahasa Indonesia          |
 | `it`     | Italian          | Italiano          |
+| `ko`     | Korean          | 한국어          |
 | `lt`     | Lithuanian          | Lietuvių          |
 | `nl`     | Nederlands          | Dutch          |
 | `pl`     | Polish          | Polski          |
@@ -60,6 +61,7 @@
 | `ru`     | Русский          | Русский          |
 | `sk`     | Slovak          | Slovenčina          |
 | `vi`     | Vietnamese          | Tiếng Việt          |
+| `zh`     | Chinese          | 中文          |
 
 </details>
 <!--LOCALIZATION-CONTENT-END-->
