@@ -1,5 +1,5 @@
 import { LovelaceCardEditor, FrontendLocaleData, TimeFormat, formatDateTime } from 'custom-card-helpers';
-import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing } from 'lit';
+import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing, css } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -72,7 +72,26 @@ export class LunarPhaseCard extends LitElement {
 
   // https://lit.dev/docs/components/styles/
   static get styles(): CSSResultGroup {
-    return [style];
+    return [
+      style,
+      css`
+        :host {
+          display: block;
+          position: relative;
+          width: 100%;
+          height: 100%;
+        }
+        lunar-star-field {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 0;
+        }
+      `,
+    ];
   }
 
   public static getStubConfig = (hass: HomeAssistant): Record<string, unknown> => {
@@ -364,8 +383,8 @@ export class LunarPhaseCard extends LitElement {
             [PageType.HORIZON, () => this.renderHorizon()],
           ])}
         </div>
-        <lunar-star-field ._card=${this as any} ._baseCardReady=${this._cardReady}></lunar-star-field>
       </ha-card>
+      <lunar-star-field></lunar-star-field>
       ${this.renderCalendarDialog()}
     `;
   }

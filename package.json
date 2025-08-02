@@ -22,6 +22,7 @@
     "@dotenvx/dotenvx": "^1.32.0",
     "@mdi/js": "^7.4.47",
     "@noim/suncalc3": "^2.0.5",
+    "@tsparticles/preset-stars": "^3.2.0",
     "@vibrant/color": "^3.2.1-alpha.1",
     "chart.js": "^4.4.7",
     "custom-card-helpers": "^1.9.0",
