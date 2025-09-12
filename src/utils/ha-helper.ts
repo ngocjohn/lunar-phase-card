@@ -1,6 +1,5 @@
-import { applyThemesOnElement } from 'custom-card-helpers';
-
 import { HA, LunarPhaseCardConfig, defaultConfig } from '../types';
+import { applyThemesOnElement } from './apply-theme';
 
 export const generateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfig => {
   const defaultConf = defaultConfig;
