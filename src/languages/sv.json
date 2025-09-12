@@ -1,0 +1,177 @@
+{
+  "name": "Swedish",
+  "nativeName": "Svenska",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Första kvarteret",
+      "fullMoon": "Fullmåne",
+      "thirdQuarterMoon": "Sista kvarteret",
+      "newMoon": "Nymåne",
+      "waxingCrescentMoon": "Tilltagande skära",
+      "waxingGibbousMoon": "Tilltagande gibbe",
+      "waningCrescentMoon": "Avtagande skära",
+      "waningGibbousMoon": "Avtagande gibbe"
+    },
+    "illumination": "Belysning",
+    "illuminated": "Upplyst",
+    "moonRise": "Månuppgång",
+    "moonSet": "Månnedgång",
+    "moonHigh": "Månen högst",
+    "moonAge": "Månens ålder",
+    "distance": "Avstånd",
+    "azimuth": "Azimut",
+    "altitude": "Altitud",
+    "fullMoon": "Fullmåne",
+    "newMoon": "Nymåne",
+    "relativeTime": {
+      "days": "dagar",
+      "justNow": "nu",
+      "minutesAgo": "för {0} minuter sedan",
+      "hoursAgo": "för {0} timmar sedan",
+      "inMinutes": "om {0} minuter",
+      "inHours": "om {0} timmar"
+    },
+    "position": "Position",
+    "direction": "Riktning",
+    "cardinalShort": {
+      "N": "N",
+      "NNE": "NNÖ",
+      "NE": "NÖ",
+      "ENE": "ÖNÖ",
+      "E": "Ö",
+      "ESE": "ÖSÖ",
+      "SE": "SÖ",
+      "SSE": "SSÖ",
+      "S": "S",
+      "SSW": "SSV",
+      "SW": "SV",
+      "WSW": "VSV",
+      "W": "V",
+      "WNW": "VNV",
+      "NW": "NV",
+      "NNW": "NNV"
+    },
+    "underHorizon": "Månen under horisonten",
+    "overHorizon": "Månen över horisonten",
+    "horizonTitle": "Dagens måne",
+    "currentTime": "Aktuell tid",
+    "common": {
+      "now": "Nu"
+    }
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Språk och visningsläge",
+      "description": "Välj en konfiguration för språk och bakgrund",
+      "customBackground": {
+        "title": "Egen bakgrund",
+        "description": "Ange en egen bakgrund"
+      },
+      "theme": {
+        "title": "Tema (valfritt)",
+        "description": "Välj ett tema för kortet"
+      },
+      "layout": {
+        "title": "Layout-inställningar",
+        "description": "Ändra kortets layout"
+      }
+    },
+    "baseConfig": {
+      "title": "Latitud & Longitud",
+      "description": "Konfigurera latitud och longitud"
+    },
+    "optionsConfig": {
+      "useDefault": "Använd systemet",
+      "useEntity": "Använd entitet",
+      "useCustom": "Använd egen"
+    },
+    "fontOptions": {
+      "title": "Typsnitt",
+      "description": "Anpassa textstorlek och färg",
+      "hideLabel": "Dölj etikett",
+      "headerFontConfig": {
+        "title": "Rubriktypsnitt",
+        "description": "Ange inställningar för rubriktypsnitt"
+      },
+      "labelFontConfig": {
+        "title": "Etikettypsnitt",
+        "description": "Ange inställningar för etikettypsnitt"
+      },
+      "headerFontSize": "Rubrikstorlek",
+      "headerFontColor": "Rubrikfärg",
+      "headerFontStyle": "Rubrikstil",
+      "labelFontSize": "Etikettstorlek",
+      "labelFontColor": "Etikettfärg",
+      "labelFontStyle": "Etikettsstil",
+      "valueFontSize": "Värdestorlek"
+    },
+    "graphConfig": {
+      "title": "Graf-inställningar",
+      "description": "Konfigurera grafen",
+      "type": {
+        "title": "Graf-typ",
+        "description": "Välj graf-typ"
+      },
+      "visibility": {
+        "title": "Synlighet",
+        "description": "Visa eller dölj specifika element"
+      },
+      "customization": {
+        "title": "Anpassning",
+        "description": "Anpassa grafen"
+      }
+    },
+    "layoutConfig": {
+      "title": "Layout-anpassning",
+      "description": "Ändra kortets layout",
+      "hiddenItems": {
+        "title": "Dolda element",
+        "description": "Välj element som ska döljas i datavy"
+      }
+    },
+    "compactView": "Kompakt vy",
+    "showBackground": "Visa bakgrund",
+    "timeFormat": "12-timmarsformat",
+    "mileUnit": "Milenhet",
+    "yTicks": "Y-axelns markeringar",
+    "xTicks": "X-axelns markeringar",
+    "showTime": "Markörer för uppgång/nedgång",
+    "showCurrent": "Aktuell månposition",
+    "showLegend": "Visa förklaring",
+    "showHighest": "Visa högsta månposition",
+    "calendarModal": "Kalender-popup",
+    "hideButtons": "Dölj knappar",
+    "titleHelper": {
+      "compactView": "Visa kompakt vy",
+      "showBackground": "Visa en bakgrund",
+      "timeFormat": "Välj tidsformat (12/24 h)",
+      "mileUnit": "Kilometer används om av",
+      "yTicks": "Visa Y-axelns markeringar",
+      "xTicks": "Visa X-axelns markeringar",
+      "showTime": "Visa tid för uppgång/nedgång",
+      "showCurrent": "Visa aktuell månposition",
+      "showLegend": "Visa en förklaring",
+      "showHighest": "Visa högsta månposition",
+      "calendarModal": "Kalendern visas i en popup",
+      "hideButtons": "Rubrikknappar döljs",
+      "useDefault": "Använd systemets lat/long",
+      "useEntity": "Använd entitetens lat/long",
+      "useCustom": "Använd egna lat/long",
+      "hideLabel": "Dölj etikett i kompakt vy"
+    },
+    "placeHolder": {
+      "latitude": "Ange latitud",
+      "longitude": "Ange longitud",
+      "customBackground": "URL eller sökväg till bild",
+      "language": "Välj språk",
+      "moonPosition": "Välj månens position på kortet",
+      "defaultCard": "Välj standardkort",
+      "yTicksPosition": "Y-axelns markeringars position",
+      "legendPosition": "Förklaringens position",
+      "legendAlign": "Justering av förklaringen",
+      "graphType": "Graf-typ",
+      "compactMode": "Kompakt läge",
+      "themeMode": "Tema-läge"
+    }
+  }
+}
