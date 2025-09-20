@@ -1,3 +1,26 @@
+<a id="v1.12.0"></a>
+# [v1.12.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.12.0) - 2025-09-20
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.12.0 -->
+
+## What's Changed
+### Fixes 🐛
+* Fix theme application utility to manage custom theme by [@ngocjohn](https://github.com/ngocjohn) in [#73](https://github.com/ngocjohn/lunar-phase-card/pull/73)
+* Refactor styles for improved swiper layout by [@ngocjohn](https://github.com/ngocjohn) in [#75](https://github.com/ngocjohn/lunar-phase-card/pull/75)
+### Translations 🌍
+* Add Swedish translation (sv.json) by [@tkabt06](https://github.com/tkabt06) in [#72](https://github.com/ngocjohn/lunar-phase-card/pull/72)
+### Other Changes
+* Add particle star effects to component by [@ngocjohn](https://github.com/ngocjohn) in [#70](https://github.com/ngocjohn/lunar-phase-card/pull/70)
+* Update dependencies by [@ngocjohn](https://github.com/ngocjohn) in [#74](https://github.com/ngocjohn/lunar-phase-card/pull/74)
+
+## New Contributors
+* [@tkabt06](https://github.com/tkabt06) made their first contribution in [#72](https://github.com/ngocjohn/lunar-phase-card/pull/72)
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.11.0...v1.12.0
+
+[Changes][v1.12.0]
+
+
 <a id="v1.11.0"></a>
 # [v1.11.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.11.0) - 2025-07-02
 
@@ -369,6 +392,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.12.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.11.0...v1.12.0
 [v1.11.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.10.1...v1.11.0
 [v1.10.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.10.0...v1.10.1
 [v1.10.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.9.0...v1.10.0
