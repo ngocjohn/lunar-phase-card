@@ -17,6 +17,8 @@ export class LunarBaseData extends LitElement {
 
   static get styles(): CSSResultGroup {
     return [
+      mainStyles,
+      unsafeCSS(swiperStyleCss),
       css`
         section {
           display: block;
@@ -36,8 +38,9 @@ export class LunarBaseData extends LitElement {
           height: 100%;
         }
         .swiper-slide {
-          display: block;
-          width: fit-content;
+          display: flex;
+          height: auto;
+          width: 100%;
         }
 
         .swiper-pagination {
@@ -60,8 +63,6 @@ export class LunarBaseData extends LitElement {
           white-space: nowrap;
         }
       `,
-      mainStyles,
-      unsafeCSS(swiperStyleCss),
     ];
   }
 
