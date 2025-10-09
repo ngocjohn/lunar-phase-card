@@ -1,0 +1,177 @@
+{
+    "name": "Turkish",
+    "nativeName": "Türkçe",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "İlk dördün",
+            "fullMoon": "Dolunay",
+            "thirdQuarterMoon": "Son dördün",
+            "newMoon": "Yeni ay",
+            "waxingCrescentMoon": "Büyüyen hilal",
+            "waxingGibbousMoon": "Büyüyen kambur ay",
+            "waningCrescentMoon": "Küçülen hilal",
+            "waningGibbousMoon": "Küçülen kambur ay"
+        },
+        "illumination": "Aydınlanma",
+        "illuminated": "Aydınlatılmış",
+        "moonRise": "Ay doğumu",
+        "moonSet": "Ay batışı",
+        "moonHigh": "Ay en yüksekte",
+        "moonAge": "Ay yaşı",
+        "distance": "Mesafe",
+        "azimuth": "Azimut",
+        "altitude": "Yükseklik",
+        "fullMoon": "Dolunay",
+        "newMoon": "Yeni ay",
+        "relativeTime": {
+            "days": "gün",
+            "justNow": "hemen şimdi",
+            "minutesAgo": "{0} dakika önce",
+            "hoursAgo": "{0} saat önce",
+            "inMinutes": "{0} dakika içinde",
+            "inHours": "{0} saat içinde"
+        },
+        "position": "Konum",
+        "direction": "Yön",
+        "cardinalShort": {
+            "N": "K",
+            "NNE": "KKD",
+            "NE": "KD",
+            "ENE": "DKD",
+            "E": "D",
+            "ESE": "DGD",
+            "SE": "GD",
+            "SSE": "GGD",
+            "S": "G",
+            "SSW": "GGB",
+            "SW": "GB",
+            "WSW": "BGB",
+            "W": "B",
+            "WNW": "BKB",
+            "NW": "KBK",
+            "NNW": "KKB"
+        },
+        "underHorizon": "Ay ufkun altında",
+        "overHorizon": "Ay ufkun üstünde",
+        "horizonTitle": "Bugünün Ay'ı",
+        "currentTime": "Şu anki zaman",
+        "common": {
+            "now": "Şimdi"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "Dil ve görünüm modu",
+            "description": "Dil ve arka plan için bir yapılandırma ayarlayın",
+            "customBackground": {
+                "title": "Arka plan",
+                "description": "Özel bir arka plan için yapılandırma ayarlayın"
+            },
+            "theme": {
+                "title": "Tema (isteğe bağlı)",
+                "description": "Kart için bir tema seçin"
+            },
+            "layout": {
+                "title": "Düzen seçenekleri",
+                "description": "Kartın düzenini değiştirin"
+            }
+        },
+        "baseConfig": {
+            "title": "Enlem ve Boylam",
+            "description": "Enlem ve boylam için bir yapılandırma ayarlayın"
+        },
+        "optionsConfig": {
+            "useDefault": "Varsayılanı kullan",
+            "useEntity": "Varlığı kullan",
+            "useCustom": "Özelleştirilmişi kullan"
+        },
+        "fontOptions": {
+            "title": "Yazı tipi özelleştirme",
+            "description": "Yazı tipi boyutu ve rengi için bir yapılandırma ayarlayın",
+            "hideLabel": "Etiketi gizle",
+            "headerFontConfig": {
+                "title": "Başlık yazı tipi",
+                "description": "Başlık yazı tipi için bir yapılandırma ayarlayın"
+            },
+            "labelFontConfig": {
+                "title": "Etiket yazı tipi",
+                "description": "Etiket yazı tipi için bir yapılandırma ayarlayın"
+            },
+            "headerFontSize": "Başlık yazı tipi boyutu",
+            "headerFontColor": "Başlık yazı tipi rengi",
+            "headerFontStyle": "Başlık yazı tipi stili",
+            "labelFontSize": "Etiket yazı tipi boyutu",
+            "labelFontColor": "Etiket yazı tipi rengi",
+            "labelFontStyle": "Etiket yazı tipi stili",
+            "valueFontSize": "Değer yazı tipi boyutu"
+        },
+        "graphConfig": {
+            "title": "Grafik özelleştirme",
+            "description": "Grafik için bir yapılandırma ayarlayın",
+            "type": {
+                "title": "Grafik türü",
+                "description": "Bir grafik türü seçin"
+            },
+            "visibility": {
+                "title": "Görünürlük seçenekleri",
+                "description": "Belirli öğeleri gizleyin veya gösterin"
+            },
+            "customization": {
+                "title": "Özelleştirme seçenekleri",
+                "description": "Grafiği özelleştirin"
+            }
+        },
+        "layoutConfig": {
+            "title": "Düzen özelleştirme",
+            "description": "Kartın düzenini değiştirin",
+            "hiddenItems": {
+                "title": "Gizli öğeler",
+                "description": "Veri görünümünde gizlenecek öğeleri seçin"
+            }
+        },
+        "compactView": "Kompakt görünüm",
+        "showBackground": "Arka planı göster",
+        "timeFormat": "12 saatlik zaman biçimi",
+        "mileUnit": "Mil birimi",
+        "yTicks": "Y ekseni işaretleri",
+        "xTicks": "X ekseni işaretleri",
+        "showTime": "Batış/Doğuş zamanı işaretleri",
+        "showCurrent": "Mevcut Ay konumu",
+        "showLegend": "Lejantı göster",
+        "showHighest": "En yüksek Ay konumunu göster",
+        "calendarModal": "Takvim açılır penceresi",
+        "hideButtons": "Butonları gizle",
+        "titleHelper": {
+            "compactView": "Kompakt bir görünüm göster",
+            "showBackground": "Bir arka plan göster",
+            "timeFormat": "Bir zaman biçimi ayarla (12 saat veya 24 saat)",
+            "mileUnit": "Devre dışı bırakılırsa kilometre kullanılacaktır",
+            "yTicks": "Y ekseni tiklerini göster",
+            "xTicks": "X ekseni tiklerini göster",
+            "showTime": "Batış/doğuş zamanı işaretlerini göster",
+            "showCurrent": "Mevcut Ay konumunu göster",
+            "showLegend": "Bir lejant göster",
+            "showHighest": "En yüksek Ay konumunu göster",
+            "calendarModal": "Takvim bir açılır pencerede görüntülenecektir",
+            "hideButtons": "Başlık butonları gizlenecektir",
+            "useDefault": "Sistem enlem ve boylamını kullan",
+            "useEntity": "Varlık enlem ve boylamını kullan",
+            "useCustom": "Özelleştirilmiş enlem ve boylam kullan",
+            "hideLabel": "Kompakt görünümde etiketi gizle"
+        },
+        "placeHolder": {
+            "latitude": "Enlem girin",
+            "longitude": "Boylam girin",
+            "customBackground": "Resim URL'si veya dosya yolu",
+            "language": "Dil seçin",
+            "moonPosition": "Karttaki ay konumunu seçin",
+            "defaultCard": "Varsayılan kartı seçin",
+            "yTicksPosition": "Y ekseni işaretlerinin konumu",
+            "legendPosition": "Lejant konumu",
+            "legendAlign": "Lejant hizalaması",
+            "graphType": "Grafik türü",
+            "compactMode": "Kompakt mod",
+            "themeMode": "Tema modu"
+        }
+    }
+}
