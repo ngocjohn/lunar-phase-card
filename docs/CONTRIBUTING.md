@@ -30,13 +30,19 @@ Welcome to the translation contribution guide! This document will help you contr
 
 To generate a new language file, follow these steps:
 
-1. **Navigate to the Scripts Directory**:
+1. **First, download npm modules**:
+
+   ```sh
+    npm install
+   ```
+
+2. **Navigate to the Scripts Directory**:
 
    ```sh
     cd scripts
    ```
 
-2. **Run the Generate Script**:
+3. **Run the Generate Script**:
    Use the following command to generate a new language file. Replace `fr.json` with the desired language code and `French` with the language name.
 
    ```sh
@@ -50,13 +56,19 @@ To generate a new language file, follow these steps:
 
 When new keys are added to the base `string.json`, you need to update the language files:
 
-1. **Navigate to the Scripts Directory**:
+1. **First, download npm modules**:
+
+   ```sh
+    npm install
+   ```
+   
+2. **Navigate to the Scripts Directory**:
 
    ```sh
     cd scripts
    ```
 
-2. **Run the Update Script**:
+3. **Run the Update Script**:
    This script will add any missing keys to your language files and set their values to an empty string. It will also remove keys that are no longer present in the base `string.json`.
 
    ```sh
@@ -69,7 +81,7 @@ When new keys are added to the base `string.json`, you need to update the langua
    node update-languages.js fr.json
    ```
 
-3. **Review Missing Translations**:
+4. **Review Missing Translations**:
 
    After running the script, a file named `missing_translations.json` will be created in the `scripts` directory.
 
@@ -100,7 +112,7 @@ When new keys are added to the base `string.json`, you need to update the langua
 
    • `value`: The English (or base language) value that needs to be translated.
 
-4. **Add Missing Translations**:
+5. **Add Missing Translations**:
 
    Open the language files in the `src/languages` directory and add the missing translations.
    Use the `missing_translations.json` file as a reference to see which keys need to be translated.
@@ -115,7 +127,7 @@ To contribute changes to the source repository, follow these steps:
    - Use the following command to create a new branch:
 
      ```sh
-     git checkout -b locatization-french-branch
+     git checkout -b localization-french-branch
      ```
 
 2. **Make Your Changes**:
@@ -137,7 +149,7 @@ To contribute changes to the source repository, follow these steps:
    - Use the following command to push your changes:
 
      ```sh
-     git push origin locatization-french-branch
+     git push origin localization-french-branch
      ```
 
 5. **Create a Pull Request**:
