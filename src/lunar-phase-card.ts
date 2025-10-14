@@ -1,4 +1,4 @@
-import { LovelaceCardEditor, FrontendLocaleData, TimeFormat, formatDateTime } from 'custom-card-helpers';
+import { LovelaceCardEditor, FrontendLocaleData, TimeFormat, formatDateTime, LovelaceCard } from 'custom-card-helpers';
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing, css } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
@@ -28,10 +28,14 @@ const BASE_REFRESH_INTERVAL = 60 * 1000;
 const LOADING_TIMEOUT = 1500;
 
 @customElement('lunar-phase-card')
-export class LunarPhaseCard extends LitElement {
+export class LunarPhaseCard extends LitElement implements LovelaceCard {
+  constructor() {
+    super();
+  }
+
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     await import('./editor');
-    return document.createElement('lunar-phase-card-editor');
+    return document.createElement('lunar-phase-card-editor') as LovelaceCardEditor;
   }
 
   @property({ attribute: false })
@@ -65,10 +69,6 @@ export class LunarPhaseCard extends LitElement {
   @query('lunar-calendar-page') _CALENDAR_PAGE!: LunarCalendarPage;
   @query('lunar-star-field') _starField!: LunarStarField;
   @query('#calendar-dialog') _calendarDialog!: HTMLDialogElement;
-
-  constructor() {
-    super();
-  }
 
   // https://lit.dev/docs/components/styles/
   static get styles(): CSSResultGroup {
@@ -721,15 +721,15 @@ export class LunarPhaseCard extends LitElement {
       '--lunar-card-header-font-color': fontOptions.header_font_color
         ? fontOptions.header_font_color
         : this._showBackground
-        ? '#e1e1e1'
-        : 'var(--primary-text-color)',
+          ? '#e1e1e1'
+          : 'var(--primary-text-color)',
       '--lunar-card-label-font-size': fontOptions.label_font_size,
       '--lunar-card-label-text-transform': fontOptions.label_font_style,
       '--lunar-card-label-font-color': fontOptions.label_font_color
         ? fontOptions.label_font_color
         : this._showBackground
-        ? '#e1e1e1'
-        : 'var(--primary-text-color)',
+          ? '#e1e1e1'
+          : 'var(--primary-text-color)',
       '--swiper-theme-color': `var(--lunar-card-label-font-color, var(--primary-color))`,
       '--lunar-background-image': `url(${background})`,
       '--lunar-fill-color': this._showBackground ? 'rgba(255,255,255,0.12157)' : 'var(--divider-color)',
