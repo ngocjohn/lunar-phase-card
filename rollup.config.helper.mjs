@@ -1,6 +1,6 @@
-import typescript from 'rollup-plugin-typescript2';
+import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+import nodeResolve from '@rollup/plugin-node-resolve';
 import { babel } from '@rollup/plugin-babel';
 import json from '@rollup/plugin-json';
 import image from '@rollup/plugin-image';
@@ -34,10 +34,10 @@ export function logCardInfo(version) {
 }
 
 export const defaultPlugins = [
-  nodeResolve({}),
-  commonjs(),
-  typescript(),
+  typescript({ declaration: false }),
+  nodeResolve(),
   json(),
+  commonjs(),
   image(),
   babel({
     babelHelpers: 'bundled',

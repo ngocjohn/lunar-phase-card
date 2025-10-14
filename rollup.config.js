@@ -31,7 +31,7 @@ const replaceOpts = {
   preventAssignment: true,
 };
 
-const plugins = [replace(replaceOpts), dev && serve(serveopts), !dev && terser(terserOpt), !dev && filesize()];
+const plugins = [dev && serve(serveopts), !dev && terser(terserOpt), !dev && filesize()];
 
 export default [
   {
@@ -49,7 +49,7 @@ export default [
         },
       },
     ],
-    plugins: [...plugins, ...defaultPlugins],
+    plugins: [replace(replaceOpts), ...defaultPlugins, ...plugins],
     moduleContext: (id) => {
       const thisAsWindowForModules = [
         'node_modules/@formatjs/intl-utils/lib/src/diff.js',
@@ -69,7 +69,6 @@ export default [
     },
     watch: {
       exclude: 'node_modules/**',
-      buildDelay: 1000,
     },
   },
 ];
