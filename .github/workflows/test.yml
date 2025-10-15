@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 20
       - name: Install dependencies
-        run: npm ci
+        run: npm install
       - name: View releases of the repository
         uses: actions/github-script@v5
         id: test-releases
