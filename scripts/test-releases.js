@@ -16,7 +16,17 @@ module.exports = async ({ github, context }) => {
     owner: repo.owner,
     repo: repo.repo,
   });
-  const tags = releasesList.data.filter((release) => !release.draft).map((release) => release.tag_name);
+  if (releasesList.status !== 200) {
+    throw new Error(`Failed to fetch releases: ${releasesList.status}`);
+  }
+
+  let tags = releasesList.data.filter((release) => !release.draft).map((release) => release.tag_name);
+
+  tags = tags.slice(0, 10); // Keep only the latest 10 tags
+
+  console.log('Fetched Tags:', tags);
+
+  // update the bug report template if tags have changed
 
   // Read the current bug report template
   const bugTemplateContent = fs.readFileSync(bugTemplatePath, 'utf8');
@@ -29,17 +39,21 @@ module.exports = async ({ github, context }) => {
     const currentTags = versionField.attributes.options;
 
     if (!isDifferent(currentTags, tags)) {
-      console.log(currentTags, tags);
       console.log('No changes in tags. Exiting.');
-      return false;
+      return;
     }
-    console.log('Tags have changed');
-    // log the changes
-    console.log('Current Tags:', currentTags);
-    console.log('New Tags:', tags);
+    console.log('Tags have changed, updating template...');
 
+    // Update the options with the new tags
+    versionField.attributes.options = tags;
+    // Convert back to YAML
+    const newBugTemplateContent = yaml.dump(doc, { lineWidth: -1 });
+    // Write
+    fs.writeFileSync(bugTemplatePath, newBugTemplateContent, 'utf8');
+    console.log('Bug report template updated successfully.');
     return true;
   } else {
+    console.log('Version field not found or invalid in the template.');
     return false;
   }
 };

@@ -11,13 +11,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
       - name: Install dependencies
         run: npm install
-      - name: View releases of the repository
+
+      - name: Check releases changes
         uses: actions/github-script@v5
         id: test-releases
         with:
@@ -26,6 +30,13 @@ jobs:
             const hasChaned = script({github, context});
             return hasChaned;
           result-encoding: string
-      - name: Get results
+      - name: Output result
         run: |
           echo "Releases changed: ${{ steps.test-releases.outputs.result }}"
+      - name: Check for git diff
+        id: git-check
+        run: |
+          git diff --quiet .github/ISSUE_TEMPLATE || echo "changed=true" >> $GITHUB_OUTPUT
+      - name: Output git diff result
+        run: |
+          echo "Git diff changed: ${{ steps.git-check.outputs.changed }}"
