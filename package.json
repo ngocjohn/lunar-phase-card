@@ -80,6 +80,7 @@
     "translate-new-strings": "npx dotenvx run -- node scripts/translate-new-strings.mjs",
     "update-missing": "npm run translate-new-strings && npm run add-missing-translations",
     "clean:build": "rm -rf dist build && mkdir -p dist build",
-    "clean:cache": "rm -rf node_modules/.cache/rollup-plugin-typescript2/* && rm -rf node_modules/.cache/rollup-plugin-typescript2/rpt2_* "
+    "clean:cache": "rm -rf node_modules/.cache/rollup-plugin-typescript2/* && rm -rf node_modules/.cache/rollup-plugin-typescript2/rpt2_* ",
+    "post-release": "node scripts/update-bug-template.js && node scripts/update-readme.js"
   }
 }
