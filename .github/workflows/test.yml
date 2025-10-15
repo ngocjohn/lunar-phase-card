@@ -23,8 +23,9 @@ jobs:
         with:
           script: |
             const script = require('./scripts/test-releases.js');
-            console.log(script({github, context}));
+            const hasChaned = script({github, context});
+            return hasChaned;
+          result-encoding: string
       - name: Get results
         run: |
-          echo "Releases changed"
-          echo "${{ steps.test-releases.outputs.result }}"
+          echo "Releases changed: ${{ steps.test-releases.outputs.result }}"
