@@ -6,7 +6,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: View context attributes
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: View releases of the repository
         uses: actions/github-script@v5
         with:
-          script: console.log(context)
+          script: |
+            const script = require('./scripts/test-releases.js');
+            console.log(script({github, context}));
