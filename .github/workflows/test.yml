@@ -1,0 +1,12 @@
+name: Test action scripts
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: View context attributes
+        uses: actions/github-script@v5
+        with:
+          script: console.log(context)
