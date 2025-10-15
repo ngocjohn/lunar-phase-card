@@ -1,4 +1,4 @@
-import { PageType } from '../const';
+import { PageType } from '../../const';
 import { LunarPhaseCardConfig } from './config';
 
 export const defaultConfig: Partial<LunarPhaseCardConfig> = {

@@ -12,14 +12,14 @@ import { formatDateTime, HomeAssistant, formatDateTimeWithSeconds } from 'custom
 import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 
-import { ICON } from '../const';
+import { ICON } from '../../const';
+import { MOON_RISE_ICON, MOON_SET_ICON } from '../../shared/moon-pic';
+import { ChartColors } from '../../types/lunar-phase-legacy-card';
+// Local imports
+import { Moon } from '../../utils/moon';
 // Styles
 import styles from '../css/style.css';
 import { LunarPhaseCard } from '../lunar-phase-card';
-import { ChartColors } from '../types';
-// Local imports
-import { Moon } from '../utils/moon';
-import { MOON_RISE_ICON, MOON_SET_ICON } from '../utils/moon-pic';
 
 import type { ChartDataset } from 'chart.js/auto';
 
@@ -357,7 +357,6 @@ export class LunarHorizonChart extends LitElement {
       pointHoverBackgroundColor: secondaryTextColor,
       pointHoverBorderWidth: 2,
       pointRadius: 0,
-
     };
 
     const timeDataset = {

@@ -2,12 +2,12 @@ import { formatDate } from 'custom-card-helpers';
 import { LitElement, html, CSSResultGroup, TemplateResult, nothing, PropertyValues, css } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 
-import { ICON } from '../const';
-import styles from '../css/style.css';
+import { ICON } from '../../const';
+import { dayFormatter } from '../../localize/localize';
 import './moon-calendar-popup';
-import { dayFormatter } from '../localize/localize';
+import { Moon } from '../../utils/moon';
+import styles from '../css/style.css';
 import { LunarPhaseCard } from '../lunar-phase-card';
-import { Moon } from '../utils/moon';
 
 @customElement('lunar-calendar-page')
 export class LunarCalendarPage extends LitElement {

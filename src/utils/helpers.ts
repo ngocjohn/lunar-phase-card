@@ -1,8 +1,8 @@
 import { FrontendLocaleData, TimeFormat, HomeAssistant } from 'custom-card-helpers';
 
 import { PageType } from '../const';
-import { LunarPhaseCard } from '../lunar-phase-card';
-import { LocationAddress, LunarPhaseCardConfig, SearchResults } from '../types';
+import { LunarPhaseCard } from '../lunar-phase-legacy-card/lunar-phase-card';
+import { LocationAddress, LunarPhaseCardConfig, SearchResults } from '../types/lunar-phase-legacy-card';
 
 const useAmPm = (locale: FrontendLocaleData): boolean => {
   if (locale.time_format === TimeFormat.language || locale.time_format === TimeFormat.system) {

@@ -6,16 +6,21 @@ import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues }
 import { customElement, property, state } from 'lit/decorators.js';
 import 'nvn-tabs';
 
-import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES, DATAKEYS } from './const';
-import { CUSTOM_BG } from './const';
-import editorcss from './css/editor.css';
-import { languageOptions, localize } from './localize/localize';
-import { LunarPhaseCardConfig, FontCustomStyles, defaultConfig, LocationAddress } from './types';
-import { generateConfig } from './utils/ha-helper';
-import { compareConfig, getAddressFromOpenStreet } from './utils/helpers';
+import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES, DATAKEYS } from '../const';
+import { CUSTOM_BG } from '../const';
+import { languageOptions, localize } from '../localize/localize';
+import {
+  LunarPhaseCardConfig,
+  FontCustomStyles,
+  defaultConfig,
+  LocationAddress,
+} from '../types/lunar-phase-legacy-card';
+import { generateConfig } from '../utils/ha-helper';
+import { compareConfig, getAddressFromOpenStreet } from '../utils/helpers';
+import { loadHaComponents, stickyPreview, _saveConfig } from '../utils/loader';
 // Components
 import './components/moon-editor-search';
-import { loadHaComponents, stickyPreview, _saveConfig } from './utils/loader';
+import editorcss from './css/editor.css';
 
 enum TAB {
   LATLNG = 0,
@@ -211,10 +216,10 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
             ${this._config?.use_default
               ? this._renderUseDefault()
               : this._config?.use_custom
-              ? this._renderCustomLatLong()
-              : this._config?.use_entity
-              ? this._renderEntityPicker()
-              : ''}
+                ? this._renderCustomLatLong()
+                : this._config?.use_entity
+                  ? this._renderEntityPicker()
+                  : ''}
           </div>
 
           <div class="comboboxes">${radios} ${southern}</div>
@@ -730,8 +735,8 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
           type === 'color'
             ? FONTCOLORS.map((color) => ({ value: color, label: color }))
             : type === 'size'
-            ? FONTSIZES.map((size) => ({ value: size, label: size }))
-            : FONTSTYLES.map((style) => ({ value: style, label: style }));
+              ? FONTSIZES.map((size) => ({ value: size, label: size }))
+              : FONTSTYLES.map((style) => ({ value: style, label: style }));
 
         return this._haComboBox(
           items,

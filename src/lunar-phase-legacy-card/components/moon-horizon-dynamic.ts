@@ -10,14 +10,14 @@ import { DateTime } from 'luxon';
 import tinycolor from 'tinycolor2';
 // Local imports
 
-import { CHART_COLOR, CHART_DATA } from '../const';
+import { CHART_COLOR, CHART_DATA } from '../../const';
+import { FILL_COLORS, HA as HomeAssistant } from '../../types/lunar-phase-legacy-card';
+import extract_color from '../../utils/extract_color';
+import { hexToRgba } from '../../utils/helpers';
+import { Moon } from '../../utils/moon';
 // Styles
 import styles from '../css/style.css';
 import { LunarPhaseCard } from '../lunar-phase-card';
-import { FILL_COLORS, HA as HomeAssistant } from '../types';
-import extract_color from '../utils/extract_color';
-import { hexToRgba } from '../utils/helpers';
-import { Moon } from '../utils/moon';
 
 @customElement('lunar-horizon-dynamic')
 export class LunarHorizonDynamic extends LitElement {

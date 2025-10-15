@@ -4,9 +4,9 @@ import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
 import swiperStyleCss from 'swiper/swiper-bundle.css';
 
+import { MoonData, MoonDataItem } from '../../types/lunar-phase-legacy-card';
+import { Moon } from '../../utils/moon';
 import mainStyles from '../css/style.css';
-import { MoonData, MoonDataItem } from '../types';
-import { Moon } from '../utils/moon';
 
 @customElement('lunar-base-data')
 export class LunarBaseData extends LitElement {

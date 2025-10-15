@@ -1,7 +1,6 @@
- 
 import { LovelaceConfig } from 'custom-card-helpers';
 
-import { LunarPhaseCardConfig } from '../types';
+import { LunarPhaseCardConfig } from '../types/lunar-phase-legacy-card';
 
 interface HuiRootElement extends HTMLElement {
   lovelace: {

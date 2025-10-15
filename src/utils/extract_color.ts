@@ -2,7 +2,7 @@ import { Palette } from '@vibrant/color';
 import Vibrant from 'node-vibrant/dist/vibrant';
 import tinycolor from 'tinycolor2';
 
-import { FILL_COLORS } from '../types';
+import { FILL_COLORS } from '../types/lunar-phase-legacy-card';
 
 const extractColorData = (palette: Palette): FILL_COLORS => {
   const colors = {} as FILL_COLORS;

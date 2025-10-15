@@ -5,24 +5,24 @@ import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+// Helpers
+import { BLUE_BG, PageType, MoonState, ICON } from '../const';
+import { localize } from '../localize/localize';
+// Local types
+import { HA as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from '../types/lunar-phase-legacy-card';
+import { applyTheme, generateConfig } from '../utils/ha-helper';
+import { _handleOverflow, _setEventListeners, getDefaultConfig } from '../utils/helpers';
+import { isEditorMode } from '../utils/loader';
+import { Moon } from '../utils/moon';
 // components
 import { LunarBaseData } from './components/moon-base-data';
 import { LunarCalendarPage } from './components/moon-calendar-page';
 import { LunarHorizonChart } from './components/moon-horizon-chart';
 import { LunarHorizonDynamic } from './components/moon-horizon-dynamic';
 import { LunarStarField } from './components/moon-star-field';
-// Helpers
-import { BLUE_BG, PageType, MoonState, ICON } from './const';
+import './components';
 // styles
 import style from './css/style.css';
-import { localize } from './localize/localize';
-// Local types
-import { HA as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from './types';
-import { applyTheme, generateConfig } from './utils/ha-helper';
-import { _handleOverflow, _setEventListeners, getDefaultConfig } from './utils/helpers';
-import { isEditorMode } from './utils/loader';
-import './components';
-import { Moon } from './utils/moon';
 
 const BASE_REFRESH_INTERVAL = 60 * 1000;
 const LOADING_TIMEOUT = 1500;

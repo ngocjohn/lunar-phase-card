@@ -1,4 +1,4 @@
-import { HA, LunarPhaseCardConfig, defaultConfig } from '../types';
+import { HA, LunarPhaseCardConfig, defaultConfig } from '../types/lunar-phase-legacy-card';
 import { applyThemesOnElement } from './apply-theme';
 
 export const generateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfig => {
@@ -31,10 +31,13 @@ export const applyTheme = (element: any, hass: HA, theme: string, mode?: string)
     // Filter out only top-level properties for CSS variables and the modes property
     const filteredThemeData = Object.keys(themeData)
       .filter((key) => key !== 'modes')
-      .reduce((obj, key) => {
-        obj[key] = themeData[key];
-        return obj;
-      }, {} as Record<string, string>);
+      .reduce(
+        (obj, key) => {
+          obj[key] = themeData[key];
+          return obj;
+        },
+        {} as Record<string, string>
+      );
 
     if (!mode || mode === 'auto') {
       mode = hass.themes.darkMode ? 'dark' : 'light';

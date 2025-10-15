@@ -1,7 +1,7 @@
 // Cutom card helpers:
 import { LovelaceCardConfig } from 'custom-card-helpers';
 
-import { PageType } from '../const';
+import { PageType } from '../../const';
 
 export type FontSizeOptions = 'auto' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
 export type FontTextTransformOptions = 'none' | 'capitalize' | 'uppercase' | 'lowercase';
