@@ -29,7 +29,7 @@ export class LunarStarField extends LitElement {
   protected async firstUpdated(_changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(_changedProperties);
     await new Promise((resolve) => requestAnimationFrame(resolve));
-    console.log(`First updated for LunarStarField with ID: ${this._id}`);
+    // console.log(`First updated for LunarStarField with ID: ${this._id}`);
     this._loadParticles();
   }
 
@@ -275,7 +275,7 @@ export class LunarStarField extends LitElement {
     });
 
     this._isLoaded = true;
-    console.log(`Particles loaded for container: ${this._id}`);
+    // console.log(`Particles loaded for container: ${this._id}`);
   }
 
   static get styles(): CSSResultGroup {

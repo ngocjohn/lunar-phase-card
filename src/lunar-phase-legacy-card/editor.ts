@@ -9,17 +9,13 @@ import 'nvn-tabs';
 import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES, DATAKEYS } from '../const';
 import { CUSTOM_BG } from '../const';
 import { languageOptions, localize } from '../localize/localize';
-import {
-  LunarPhaseCardConfig,
-  FontCustomStyles,
-  defaultConfig,
-  LocationAddress,
-} from '../types/lunar-phase-legacy-card';
+import { LunarPhaseCardConfig, FontCustomStyles, defaultConfig, LocationAddress } from '../types/legacy-card-config';
 import { generateConfig } from '../utils/ha-helper';
 import { compareConfig, getAddressFromOpenStreet } from '../utils/helpers';
 import { loadHaComponents, stickyPreview, _saveConfig } from '../utils/loader';
 // Components
 import './components/moon-editor-search';
+import { LUNAR_PHASE_CARD_EDITOR_NAME } from './const';
 import editorcss from './css/editor.css';
 
 enum TAB {
@@ -30,7 +26,7 @@ enum TAB {
   GRAPH = 4,
 }
 
-@customElement('lunar-phase-card-editor')
+@customElement(LUNAR_PHASE_CARD_EDITOR_NAME)
 export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass!: HomeAssistant;
 
@@ -50,7 +46,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
     void loadHaComponents();
     void stickyPreview();
     if (process.env.ROLLUP_WATCH === 'true') {
-      window.LunarEditor = this;
+      window.LunarEditorLegacy = this;
     }
   }
 
@@ -1066,10 +1062,6 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
 
 declare global {
   interface Window {
-    LunarEditor: LunarPhaseCardEditor;
-  }
-
-  interface HTMLElementTagNameMap {
-    'lunar-phase-card-editor': LunarPhaseCardEditor;
+    LunarEditorLegacy: LunarPhaseCardEditor;
   }
 }

@@ -1,4 +1,4 @@
-import { HA, LunarPhaseCardConfig, defaultConfig } from '../types/lunar-phase-legacy-card';
+import { HA, LunarPhaseCardConfig, defaultConfig } from '../types/legacy-card-config';
 import { applyThemesOnElement } from './apply-theme';
 
 export const generateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfig => {

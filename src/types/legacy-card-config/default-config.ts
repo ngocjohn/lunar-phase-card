@@ -2,7 +2,6 @@ import { PageType } from '../../const';
 import { LunarPhaseCardConfig } from './config';
 
 export const defaultConfig: Partial<LunarPhaseCardConfig> = {
-  type: 'custom:lunar-phase-card',
   entity: '',
   '12hr_format': false,
   calendar_modal: false,

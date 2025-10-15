@@ -4,7 +4,7 @@ import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
 import swiperStyleCss from 'swiper/swiper-bundle.css';
 
-import { MoonData, MoonDataItem } from '../../types/lunar-phase-legacy-card';
+import { MoonData, MoonDataItem } from '../../types/legacy-card-config';
 import { Moon } from '../../utils/moon';
 import mainStyles from '../css/style.css';
 

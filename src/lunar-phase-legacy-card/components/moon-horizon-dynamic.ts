@@ -11,7 +11,7 @@ import tinycolor from 'tinycolor2';
 // Local imports
 
 import { CHART_COLOR, CHART_DATA } from '../../const';
-import { FILL_COLORS, HA as HomeAssistant } from '../../types/lunar-phase-legacy-card';
+import { FILL_COLORS, HA as HomeAssistant } from '../../types/legacy-card-config';
 import extract_color from '../../utils/extract_color';
 import { hexToRgba } from '../../utils/helpers';
 import { Moon } from '../../utils/moon';

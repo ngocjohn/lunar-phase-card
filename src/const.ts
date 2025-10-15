@@ -14,7 +14,7 @@ import {
 
 import { version } from '../package.json';
 import blueBackground from './images/blue-bg.png';
-import { FontSizeOptions, FontTextTransformOptions } from './types/lunar-phase-legacy-card';
+import { FontSizeOptions, FontTextTransformOptions } from './types/legacy-card-config';
 
 const VERSION_TAG = '1.7.3';
 const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${VERSION_TAG}/background/`;
@@ -105,3 +105,5 @@ export const DATAKEYS = {
   nextFullMoon: 'fullMoon',
   nextNewMoon: 'newMoon',
 };
+
+export const PREFIX_NAME = 'lunar-phase';

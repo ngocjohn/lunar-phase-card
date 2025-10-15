@@ -52,6 +52,7 @@
     "@typescript-eslint/parser": "^8.43.0",
     "axios": "^1.7.9",
     "cross-env": "^10.1.0",
+    "es-toolkit": "^1.40.0",
     "eslint": "^9.35.0",
     "eslint-plugin-perfectionist": "^4.15.0",
     "eslint-plugin-unused-imports": "^4.2.0",
