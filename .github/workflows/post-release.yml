@@ -2,11 +2,10 @@ name: Post Release
 
 on: workflow_dispatch
 
-permissions:
-  contents: read
-
 jobs:
   check-changes:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
