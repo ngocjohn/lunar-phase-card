@@ -47,7 +47,7 @@ jobs:
           changed_files=$(git diff --name-only)
           echo "Changed files: $changed_files"
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .github/ISSUE_TEMPLATE README.md
           git commit -m "chore: update bug report template and README"
           git push
