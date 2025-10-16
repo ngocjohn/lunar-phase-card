@@ -19,18 +19,31 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-      - name: Run post release scripts
-        run: npm run post-release
+
+      - name: Run update bug template script
+        uses: actions/github-script@v5
+        id: release-check
+        with:
+          script: |
+            const script = require('./scripts/update-bug-template.js');
+            const hasChaned = script({github, context});
+            return hasChaned;
+          result-encoding: string
+      - name: Run update readme script
+        run: node ./scripts/update-readme.js
 
       - name: Check for changes
         id: git-check
         run: |
           git diff --quiet .github/ISSUE_TEMPLATE || echo "changed=true" >> $GITHUB_OUTPUT
           git diff --quiet README.md || echo "changed=true" >> $GITHUB_OUTPUT
-      - name: Debug output # check what changed git status output
+
+      - name: Debug output
         if: always()
         run: |
+          echo "Releases changed: ${{ steps.release-check.outputs.result }}"
           git status
+
       - name: Commit and push changes
         if: steps.git-check.outputs.changed == 'true'
         run: |
