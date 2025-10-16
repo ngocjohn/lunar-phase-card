@@ -42,26 +42,29 @@
 <details>
   <summary>The following languages are supported in this project</summary>
 
-| Language Code | Name                   | Native Name            |
-| ------------- | ---------------------- | ---------------------- |
-| `ca`     | Catalan          | Català          |
-| `cs`     | Czech          | Čeština          |
-| `da`     | Danish          | Dansk          |
-| `de`     | German          | Deutsch          |
-| `en`     | English          | English          |
-| `es`     | Spanish          | Español          |
-| `fr`     | French          | Français          |
-| `id`     | Indonesian          | Bahasa Indonesia          |
-| `it`     | Italian          | Italiano          |
-| `ko`     | Korean          | 한국어          |
-| `lt`     | Lithuanian          | Lietuvių          |
-| `nl`     | Nederlands          | Dutch          |
-| `pl`     | Polish          | Polski          |
-| `pt`     | Portuguese          | Português (Brasil)          |
-| `ru`     | Русский          | Русский          |
-| `sk`     | Slovak          | Slovenčina          |
-| `vi`     | Vietnamese          | Tiếng Việt          |
-| `zh`     | Chinese          | 中文          |
+| Lange Code   | Name                     | Native Name              |
+|--------------|--------------------------|--------------------------|
+| `ca`         | Catalan                  | Català                   |
+| `cs`         | Czech                    | Čeština                  |
+| `da`         | Danish                   | Dansk                    |
+| `de`         | German                   | Deutsch                  |
+| `en`         | English                  | English                  |
+| `es`         | Spanish                  | Español                  |
+| `fr`         | French                   | Français                 |
+| `id`         | Indonesian               | Bahasa Indonesia         |
+| `it`         | Italian                  | Italiano                 |
+| `ko`         | Korean                   | 한국어                     |
+| `lt`         | Lithuanian               | Lietuvių                 |
+| `nl`         | Nederlands               | Dutch                    |
+| `pl`         | Polish                   | Polski                   |
+| `pt`         | Portuguese               | Português (Brasil)       |
+| `ru`         | Русский                  | Русский                  |
+| `sk`         | Slovak                   | Slovenčina               |
+| `sv`         | Swedish                  | Svenska                  |
+| `tr`         | Turkish                  | Türkçe                   |
+| `ua`         | Ukrainian                | Українська               |
+| `vi`         | Vietnamese               | Tiếng Việt               |
+| `zh-Hans`    | Chinese                  | 中文                      |
 
 </details>
 <!--LOCALIZATION-CONTENT-END-->

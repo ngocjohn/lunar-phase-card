@@ -10,6 +10,7 @@ package-lock.json
 .hass-config/
 test/
 scripts/*
+!scripts/update-bug-template.js
 !scripts/check-localization.js
 !scripts/generate-lang-imports.js
 !scripts/generate-new-lang-file.js

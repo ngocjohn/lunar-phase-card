@@ -1,6 +1,6 @@
 {
   "name": "lunar-phase-card",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "Lovelace custom card for tracking Moon phases",
   "keywords": [
     "home-assistant",
@@ -57,6 +57,7 @@
     "eslint-plugin-perfectionist": "^4.15.0",
     "eslint-plugin-unused-imports": "^4.2.0",
     "husky": "^9.1.7",
+    "js-yaml": "^4.1.0",
     "json5": "^2.2.3",
     "lint-staged": "^15.3.0",
     "postcss-preset-env": "^10.3.1",
@@ -81,6 +82,7 @@
     "translate-new-strings": "npx dotenvx run -- node scripts/translate-new-strings.mjs",
     "update-missing": "npm run translate-new-strings && npm run add-missing-translations",
     "clean:build": "rm -rf dist build && mkdir -p dist build",
-    "clean:cache": "rm -rf node_modules/.cache/rollup-plugin-typescript2/* && rm -rf node_modules/.cache/rollup-plugin-typescript2/rpt2_* "
+    "clean:cache": "rm -rf node_modules/.cache/rollup-plugin-typescript2/* && rm -rf node_modules/.cache/rollup-plugin-typescript2/rpt2_* ",
+    "post-release": "node scripts/update-bug-template.js && node scripts/update-readme.js"
   }
 }

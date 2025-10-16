@@ -1,49 +1,52 @@
-name: Post release
-on:
-  release:
-    types:
-      - released
-  workflow_dispatch:
+name: Post Release
+
+on: workflow_dispatch
 
 jobs:
-  changelog:
-    name: Update changelog
+  check-changes:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v5
         with:
-          ref: main
-      - uses: rhysd/changelog-from-release/action@v3
-        with:
-          file: CHANGELOG.md
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          commit_summary_template: 'update changelog for %s changes'
-  update-readme:
-    name: Update README
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
+          fetch-depth: 0
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 20
 
       - name: Install dependencies
         run: npm install
 
-      - name: Update README
-        run: node scripts/update-readme.js
+      - name: Run update bug template script
+        uses: actions/github-script@v5
+        id: release-check
+        with:
+          script: |
+            const script = require('./scripts/update-bug-template.js');
+            const hasChaned = script({github, context});
+            return hasChaned;
+          result-encoding: string
+      - name: Run update readme script
+        run: node ./scripts/update-readme.js
 
-      - name: Push changes
+      - name: Check for changes
+        id: git-check
         run: |
-          git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git commit -m "Update README for release ${{ github.event.release.tag_name }}" || echo "No changes to commit"
-          git push origin ${{ github.ref }} --force
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git diff --quiet .github/ISSUE_TEMPLATE || echo "changed=true" >> $GITHUB_OUTPUT
+          git diff --quiet README.md || echo "changed=true" >> $GITHUB_OUTPUT
 
-
+      - name: Commit and push changes
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          # get changed files to commit message
+          changed_files=$(git diff --name-only)
+          echo "Changed files: $changed_files"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/ISSUE_TEMPLATE README.md
+          git commit -m "chore: update bug report template and README"
+          git push
