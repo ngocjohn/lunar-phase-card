@@ -1,4 +1,4 @@
-name: Post release update
+name: Post Release
 
 on: workflow_dispatch
 
@@ -38,19 +38,14 @@ jobs:
           git diff --quiet .github/ISSUE_TEMPLATE || echo "changed=true" >> $GITHUB_OUTPUT
           git diff --quiet README.md || echo "changed=true" >> $GITHUB_OUTPUT
 
-      - name: Debug output
-        if: always()
-        run: |
-          echo "Releases changed: ${{ steps.release-check.outputs.result }}"
-          git status
-
       - name: Commit and push changes
         if: steps.git-check.outputs.changed == 'true'
         run: |
+          # get changed files to commit message
+          changed_files=$(git diff --name-only)
+          echo "Changed files: $changed_files"
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .github/ISSUE_TEMPLATE README.md
-          git commit -m "chore: update bug report template and readme"
-          ## for testing purpose only, no push to remote
-          git log -1
-          # git push
+          git commit -m "chore: update bug report template and README"
+          git push
