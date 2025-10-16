@@ -1,8 +1,8 @@
 import { isEmpty } from 'es-toolkit/compat';
 
-import { LunarPhaseNewCardConfig } from './lunar-phase-card-config';
+import { LunarPhaseCardConfig } from './config/lunar-phase-card-config';
 
-export const migrateConfig = (config: LunarPhaseNewCardConfig): LunarPhaseNewCardConfig => {
+export const migrateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfig => {
   if (!cardNeedsMigration(config)) {
     return config;
   }
@@ -60,10 +60,10 @@ export const migrateConfig = (config: LunarPhaseNewCardConfig): LunarPhaseNewCar
     delete (newConfig as any).selected_language;
   }
   console.debug('Migration completed:', newConfig);
-  return newConfig as LunarPhaseNewCardConfig;
+  return newConfig as LunarPhaseCardConfig;
 };
 
-export const cardNeedsMigration = (config: LunarPhaseNewCardConfig): boolean => {
+export const cardNeedsMigration = (config: LunarPhaseCardConfig): boolean => {
   return Boolean(
     config.use_custom ||
       config.use_default ||
@@ -77,7 +77,7 @@ export const cardNeedsMigration = (config: LunarPhaseNewCardConfig): boolean => 
   );
 };
 
-export const cleanConfig = (config: LunarPhaseNewCardConfig): LunarPhaseNewCardConfig => {
+export const cleanConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfig => {
   // deep clone config to avoid mutating the original object
   const cleanedConfig = JSON.parse(JSON.stringify(config));
   // find the difference between config and cleanedConfig

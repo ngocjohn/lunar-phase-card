@@ -5,7 +5,8 @@ import { DateTime, WeekdayNumbers } from 'luxon';
 import { CHART_DATA } from '../const';
 import { localize } from '../localize/localize';
 import { MOON_IMAGES } from '../shared/moon-pic';
-import { LunarPhaseCardConfig, MoonData, MoonDataItem, MoonImage, DynamicChartData } from '../types/legacy-card-config';
+import { MoonData, MoonDataItem, MoonImage, DynamicChartData } from '../types/config/chart-config';
+import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 import { convertKmToMiles, compareTime } from './helpers';
 
 type Location = {

@@ -12,7 +12,7 @@ import { LunarPhaseCard } from '../lunar-phase-card';
 @customElement('lunar-calendar-popup')
 export class LunarCalendarPopup extends LitElement {
   @property({ attribute: false }) card!: LunarPhaseCard;
-  @property({ attribute: false }) moon!: Moon;
+  @state() _moon!: Moon;
   @state() viewDate = DateTime.local().startOf('month');
 
   protected async firstUpdated(_changedProperties: PropertyValues): Promise<void> {
@@ -192,8 +192,8 @@ export class LunarCalendarPopup extends LitElement {
       const date = viewDate.set({ day });
       const dayClass = date.toISODate() === DateTime.local().toISODate() ? 'calendar-day today' : 'calendar-day';
       const label = day;
-      const moonPhase = this.moon._getPhaseNameForPhase(date.toJSDate());
-      const moonPhaseIcon = this.moon._getEmojiForPhase(date.toJSDate());
+      const moonPhase = this._moon._getPhaseNameForPhase(date.toJSDate());
+      const moonPhaseIcon = this._moon._getEmojiForPhase(date.toJSDate());
 
       return html`
         <div

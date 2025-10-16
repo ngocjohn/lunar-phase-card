@@ -1,15 +1,17 @@
 import { mdiMagnify } from '@mdi/js';
-// Custom card helpers
-import { fireEvent, LovelaceCardEditor, HomeAssistant } from 'custom-card-helpers';
 /*  @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, css, CSSResultGroup, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import 'nvn-tabs';
 
 import { CARD_VERSION, FONTCOLORS, FONTSTYLES, FONTSIZES, DATAKEYS } from '../const';
+import 'nvn-tabs';
+
 import { CUSTOM_BG } from '../const';
+// Custom card helpers
+import { fireEvent, LovelaceCardEditor, HomeAssistant } from '../ha';
 import { languageOptions, localize } from '../localize/localize';
-import { LunarPhaseCardConfig, FontCustomStyles, defaultConfig, LocationAddress } from '../types/legacy-card-config';
+import { LunarPhaseCardConfig, FontCustomStyles, LocationAddress } from '../types/config/lunar-phase-card-config';
+import { defaultConfig } from '../types/legacy-card-config/default-config';
 import { generateConfig } from '../utils/ha-helper';
 import { compareConfig, getAddressFromOpenStreet } from '../utils/helpers';
 import { loadHaComponents, stickyPreview, _saveConfig } from '../utils/loader';
@@ -77,10 +79,15 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
   private async _handleFirstConfig(config: LunarPhaseCardConfig): Promise<void> {
     if (!config.location) {
       console.log('No location found, fetching location');
-      const location = await getAddressFromOpenStreet(config.latitude, config.longitude);
-      config = { ...config, location };
-      this._config = { ...config };
-      fireEvent(this, 'config-changed', { config: this._config });
+      if (config.latitude && config.longitude) {
+        const location = await getAddressFromOpenStreet(config.latitude, config.longitude);
+        config = { ...config, location };
+        this._config = { ...config };
+        fireEvent(this, 'config-changed', { config: this._config });
+        console.log('Location fetched:', location);
+      } else {
+        console.log('No latitude and longitude found, using empty location');
+      }
     }
 
     const isValid = compareConfig({ ...defaultConfig }, { ...config });
@@ -725,7 +732,7 @@ export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEdit
         const configValueKey = `${prefix}_font_${type}`;
 
         // Ensure font_customize is defined, fallback to defaults if undefined
-        const fontCustomize = this._config?.font_customize ?? defaultConfig.font_customize;
+        const fontCustomize = this._config?.font_customize ?? defaultConfig.font_customize ?? {};
 
         const items =
           type === 'color'

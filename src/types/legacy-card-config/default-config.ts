@@ -1,5 +1,5 @@
 import { PageType } from '../../const';
-import { LunarPhaseCardConfig } from './config';
+import { LunarPhaseCardConfig } from '../config/lunar-phase-card-config';
 
 export const defaultConfig: Partial<LunarPhaseCardConfig> = {
   entity: '',

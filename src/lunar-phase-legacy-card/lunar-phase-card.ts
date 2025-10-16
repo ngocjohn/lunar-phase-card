@@ -1,4 +1,4 @@
-import { LovelaceCardEditor, FrontendLocaleData, TimeFormat, formatDateTime, LovelaceCard } from 'custom-card-helpers';
+import { formatDateTime } from 'custom-card-helpers';
 import { LitElement, html, TemplateResult, PropertyValues, CSSResultGroup, nothing, css } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
@@ -7,9 +7,12 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 // Helpers
 import { BLUE_BG, PageType, MoonState, ICON } from '../const';
+import { LovelaceCardEditor, FrontendLocaleData, TimeFormat, LovelaceCard } from '../ha';
+import { HomeAssistant } from '../ha';
 import { localize } from '../localize/localize';
+import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 // Local types
-import { HA as HomeAssistant, LunarPhaseCardConfig, defaultConfig } from '../types/legacy-card-config';
+import { defaultConfig } from '../types/legacy-card-config/default-config';
 import { registerCustomCard } from '../utils/custom-card-register';
 import { applyTheme, generateConfig } from '../utils/ha-helper';
 import { _handleOverflow, _setEventListeners, getDefaultConfig } from '../utils/helpers';
@@ -18,14 +21,13 @@ import { Moon } from '../utils/moon';
 // components
 import { LunarBaseData } from './components/moon-base-data';
 import { LunarCalendarPage } from './components/moon-calendar-page';
+import './components';
 import { LunarHorizonChart } from './components/moon-horizon-chart';
 import { LunarHorizonDynamic } from './components/moon-horizon-dynamic';
-import './components';
 import { LunarStarField } from './components/moon-star-field';
 import { LUNAR_PHASE_CARD_EDITOR_NAME, LUNAR_PHASE_CARD_NAME } from './const';
 // styles
 import style from './css/style.css';
-
 const BASE_REFRESH_INTERVAL = 60 * 1000;
 const LOADING_TIMEOUT = 1500;
 
@@ -601,7 +603,7 @@ export class LunarPhaseCard extends LitElement implements LovelaceCard {
   };
 
   private renderCalendar(): TemplateResult {
-    return html` <lunar-calendar-page .card=${this as any} .moon=${this.moon}></lunar-calendar-page> `;
+    return html` <lunar-calendar-page .card=${this as any} ._moon=${this.moon}></lunar-calendar-page> `;
   }
   private _attachEventListeners() {
     const dialog = this.shadowRoot?.getElementById('calendar-dialog') as HTMLDialogElement;
@@ -716,7 +718,7 @@ export class LunarPhaseCard extends LitElement implements LovelaceCard {
   }
 
   private _computeStyles() {
-    const fontOptions = this.config?.font_customize;
+    const fontOptions = this.config?.font_customize || {};
     const background = this.config.custom_background || BLUE_BG;
     const varCss = {
       '--lunar-card-header-font-size': fontOptions.header_font_size,

@@ -1,4 +1,6 @@
-import { HA, LunarPhaseCardConfig, defaultConfig } from '../types/legacy-card-config';
+import { HomeAssistant } from '../ha';
+import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
+import { defaultConfig } from '../types/legacy-card-config/default-config';
 import { applyThemesOnElement } from './apply-theme';
 
 export const generateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfig => {
@@ -23,7 +25,7 @@ export const generateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConf
   return conf;
 };
 
-export const applyTheme = (element: any, hass: HA, theme: string, mode?: string): void => {
+export const applyTheme = (element: any, hass: HomeAssistant, theme: string, mode?: string): void => {
   if (!element) return;
   // console.log('applyTheme', theme, mode);
   const themeData = hass.themes.themes[theme];

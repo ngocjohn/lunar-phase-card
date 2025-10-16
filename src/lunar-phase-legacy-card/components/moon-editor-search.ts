@@ -2,7 +2,7 @@ import { mdiClose } from '@mdi/js';
 import { LitElement, TemplateResult, CSSResultGroup, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
-import { SearchResults } from '../../types/legacy-card-config';
+import { SearchResults } from '../../types/config/lunar-phase-card-config';
 import { getCoordinates } from '../../utils/helpers';
 // styles
 import editorStyles from '../css/editor.css';

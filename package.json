@@ -16,7 +16,7 @@
     "url": "https://github.com/ngocjohn/lunar-phase-card",
     "repo": "ngocjohn/lunar-phase-card"
   },
-  "module": "lunar-phase-card.js",
+  "module": "dist/lunar-phase-card.js",
   "license": "MIT",
   "dependencies": {
     "@dotenvx/dotenvx": "^1.32.0",
@@ -28,6 +28,7 @@
     "custom-card-helpers": "^1.9.0",
     "dotenv": "^16.4.7",
     "home-assistant-js-websocket": "^9.5.0",
+    "intl-messageformat": "^10.7.18",
     "lit": "^3.3.1",
     "luxon": "^3.5.0",
     "node-vibrant": "^3.2.1-alpha.1",

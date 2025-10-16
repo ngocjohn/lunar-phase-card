@@ -14,7 +14,7 @@ import { customElement, state, property } from 'lit/decorators.js';
 
 import { ICON } from '../../const';
 import { MOON_RISE_ICON, MOON_SET_ICON } from '../../shared/moon-pic';
-import { ChartColors } from '../../types/legacy-card-config';
+import { ChartColors } from '../../types/config/chart-config';
 // Local imports
 import { Moon } from '../../utils/moon';
 // Styles

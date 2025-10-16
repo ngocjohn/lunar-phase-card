@@ -4,21 +4,21 @@ import { property, state } from 'lit/decorators.js';
 import { HomeAssistant } from '../../ha';
 import { fireEvent } from '../../ha';
 import { Store } from '../../model/store';
-import { LunarPhaseNewCardConfig } from '../../types/lunar-phase-card-config';
+import { LunarPhaseCardConfig } from '../../types/config/lunar-phase-card-config';
 import { cardNeedsMigration, migrateConfig } from '../../types/utils';
 
 export abstract class BaseEditor extends LitElement {
   @property({ attribute: false }) hass!: HomeAssistant;
-  @property({ attribute: false }) config!: LunarPhaseNewCardConfig;
+  @property({ attribute: false }) config!: LunarPhaseCardConfig;
   @property({ attribute: false }) store!: Store;
 
-  @state() private _legacyConfig?: LunarPhaseNewCardConfig;
+  @state() private _legacyConfig?: LunarPhaseCardConfig;
 
   constructor() {
     super();
   }
 
-  public setConfig(config: LunarPhaseNewCardConfig): void {
+  public setConfig(config: LunarPhaseCardConfig): void {
     if (cardNeedsMigration(config)) {
       console.debug('Config needs migration. Migrating now...');
       const newConfig = migrateConfig(config);
@@ -32,7 +32,7 @@ export abstract class BaseEditor extends LitElement {
     }
   }
 
-  protected configChanged(changedConfig: LunarPhaseNewCardConfig | undefined = undefined) {
+  protected configChanged(changedConfig: LunarPhaseCardConfig | undefined = undefined) {
     if (changedConfig) {
       this.config = {
         ...this.config,

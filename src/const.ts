@@ -14,7 +14,7 @@ import {
 
 import { version } from '../package.json';
 import blueBackground from './images/blue-bg.png';
-import { FontSizeOptions, FontTextTransformOptions } from './types/legacy-card-config';
+import { FontSizeOptions, FontTextTransformOptions } from './types/config/lunar-phase-card-config';
 
 const VERSION_TAG = '1.7.3';
 const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${VERSION_TAG}/background/`;

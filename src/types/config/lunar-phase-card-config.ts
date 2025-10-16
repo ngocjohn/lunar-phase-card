@@ -1,7 +1,7 @@
-import { PageType } from '../const';
-import { LovelaceCardConfig } from '../ha';
-import { FontConfig } from './config/font-config';
-import { GraphConfig } from './config/graph-config';
+import { PageType } from '../../const';
+import { LovelaceCardConfig } from '../../ha';
+import { FontConfig } from './font-config';
+import { GraphConfig } from './graph-config';
 
 export type Section = 'base' | 'calendar' | 'horizon';
 export enum SECTION {
@@ -22,7 +22,7 @@ export type MoonPosition = (typeof MOON_POSITION)[number];
 export const THEME_MODE = ['auto', 'light', 'dark'] as const;
 export type ThemeMode = (typeof THEME_MODE)[number];
 
-export interface LunarPhaseNewCardConfig extends LovelaceCardConfig {
+export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   default_section?: Section;
 
   location_source?: LocationSource;
@@ -128,6 +128,8 @@ export interface LunarPhaseNewCardConfig extends LovelaceCardConfig {
   /**
    * Only for editor to display the detected location
    */
+  location?: LocationAddress;
+  cardId?: string;
 }
 
 export type FontSizeOptions = 'auto' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
@@ -168,3 +170,16 @@ interface ThemeConfig {
   selected_theme?: string;
   theme_mode?: ThemeMode;
 }
+
+export type LocationAddress = {
+  country: string;
+  city: string;
+};
+
+export type SearchResults = {
+  addresstype: string;
+  display_name: string;
+  name: string;
+  lat: number;
+  lon: number;
+};

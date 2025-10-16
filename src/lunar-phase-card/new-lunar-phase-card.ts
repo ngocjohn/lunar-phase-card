@@ -3,8 +3,9 @@ import { customElement } from 'lit/decorators.js';
 
 import { HomeAssistant, LovelaceCard, LovelaceCardEditor } from '../ha';
 import { Store } from '../model/store';
-import { LunarPhaseNewCardConfig } from '../types/lunar-phase-card-config';
+import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 import './card';
+import { computeStubConfig } from '../utils/compute-stup-config';
 import { registerCustomCard } from '../utils/custom-card-register';
 import { LunarBaseCard } from './base-card';
 import { LUNAR_PHASE_CARD_EDITOR_NEW_NAME, LUNAR_PHASE_CARD_NEW_NAME } from './const';
@@ -21,17 +22,15 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     await import('./editor/lunar-phase-card-editor');
     return document.createElement(LUNAR_PHASE_CARD_EDITOR_NEW_NAME) as LovelaceCardEditor;
   }
-  public static async getStubConfig(hass: HomeAssistant): Promise<LunarPhaseNewCardConfig> {
-    const { latitude, longitude } = hass.config;
+  public static async getStubConfig(hass: HomeAssistant): Promise<LunarPhaseCardConfig> {
+    const initConfig = computeStubConfig(hass);
     return {
       type: `custom:${LUNAR_PHASE_CARD_NEW_NAME}`,
-      location_source: 'default',
-      latitude: latitude ?? 0,
-      longitude: longitude ?? 0,
+      ...initConfig,
     };
   }
 
-  public setConfig(config: LunarPhaseNewCardConfig): void {
+  public setConfig(config: LunarPhaseCardConfig): void {
     super.setConfig(config);
   }
 
@@ -48,6 +47,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     this.createStore();
     // use config
     const { latitude, longitude } = this.config;
+    const langNativeName = this.store.translate('nativeName');
     return html`
       <ha-card>
         <lunar-card .appearance=${{ compact: this.config.compact_view }}>
@@ -55,7 +55,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
             <div>Lunar Phase Card</div>
             <ha-icon icon="mdi:moon-waxing-crescent"></ha-icon>
           </div>
-          <div slot="content">${latitude}, ${longitude}</div>
+          <div slot="content">${latitude}, ${longitude} (${langNativeName})</div>
           <div slot="footer">Footer Content</div>
         </lunar-card>
       </ha-card>
