@@ -3,7 +3,8 @@ import { FrontendLocaleData, formatNumber, relativeTime, formatTime } from 'cust
 import { DateTime, WeekdayNumbers } from 'luxon';
 
 import { CHART_DATA } from '../const';
-import { localize } from '../localize/localize';
+import { LocalizeFunc } from '../ha';
+import setupTranslation from '../localize/translate';
 import { MOON_IMAGES } from '../shared/moon-pic';
 import { MoonData, MoonDataItem, MoonImage, DynamicChartData } from '../types/config/chart-config';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
@@ -22,7 +23,7 @@ export class Moon {
   readonly locale: FrontendLocaleData;
   readonly useMiles: boolean;
   readonly lang: string;
-  public dateTime: typeof DateTime;
+  private localize: LocalizeFunc;
 
   constructor(data: { date: Date; config: LunarPhaseCardConfig; locale: FrontendLocaleData }) {
     this._date = data.date;
@@ -31,12 +32,8 @@ export class Moon {
     this.location = { latitude: data.config.latitude, longitude: data.config.longitude } as Location;
     this.locale = data.locale;
     this.useMiles = this.config.mile_unit || false;
-    this.dateTime = DateTime;
+    this.localize = setupTranslation(this.lang);
   }
-
-  private localize = (string: string, search = '', replace = ''): string => {
-    return localize(string, this.lang, search, replace);
-  };
 
   formatTime = (time: number | Date): string => {
     return formatTime(new Date(time), this.locale);
@@ -622,7 +619,7 @@ export class Moon {
     localStorage.setItem('moonImages', JSON.parse(JSON.stringify(moonImages)));
   };
 
-  _getDaysOfWeek(lang: string): string[] {
+  public _getDaysOfWeek(lang: string): string[] {
     const daysOfTheWeek = Array.from({ length: 7 }, (_, i) => {
       return DateTime.local()
         .set({ weekday: (i + 1) as WeekdayNumbers })
@@ -632,12 +629,12 @@ export class Moon {
     return daysOfTheWeek;
   }
 
-  _getEmojiForPhase(date: Date): string {
+  public _getEmojiForPhase(date: Date): string {
     const moonIllumination = SunCalc.getMoonIllumination(date);
     return moonIllumination.phase.emoji;
   }
 
-  _getPhaseNameForPhase(date: Date): string {
+  public _getPhaseNameForPhase(date: Date): string {
     const moonIllumination = SunCalc.getMoonIllumination(date);
     return this.localize(`card.phase.${moonIllumination.phase.id}`);
   }

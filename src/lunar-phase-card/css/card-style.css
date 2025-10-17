@@ -1,0 +1,5 @@
+:host {
+	--lunar-card-header-height: 48px;
+	--lunar-card-padding: 12px;
+	--lunar-card-gutter: 8px;
+}

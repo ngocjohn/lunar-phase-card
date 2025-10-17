@@ -107,3 +107,9 @@ export const DATAKEYS = {
 };
 
 export const PREFIX_NAME = 'lunar-phase';
+
+export const enum SECTION {
+  BASE = 'base',
+  HORIZON = 'horizon',
+  CALENDAR = 'calendar',
+}

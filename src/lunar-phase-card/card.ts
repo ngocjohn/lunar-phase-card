@@ -2,13 +2,15 @@ import { css, CSSResultGroup, html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
+import { CardAppareance } from '../types/config/lunar-phase-card-config';
+
 @customElement('lunar-card')
 export class Card extends LitElement {
-  @property({ attribute: false }) public appearance?: any;
+  @property({ attribute: false }) public appearance?: CardAppareance;
 
   protected render(): TemplateResult {
     return html`
-      <div class=${classMap({ container: true, compact: this.appearance?.compact })}>
+      <div class=${classMap({ container: true, __header: !this.appearance?.hide_header })}>
         <slot name="header"></slot>
         <slot name="content"></slot>
         <slot name="footer"></slot>
@@ -19,8 +21,8 @@ export class Card extends LitElement {
   static get styles(): CSSResultGroup {
     return css`
       :host {
-        flex: 1;
-        display: flex;
+        width: 100%;
+        display: block;
         margin: cal(-1 * var(--ha-card-border-width, 1px));
       }
       .container {
@@ -29,11 +31,10 @@ export class Card extends LitElement {
         flex-shrink: 0;
         flex-grow: 0;
         box-sizing: border-box;
-        height: 100%;
-        min-height: 100px;
+        height: auto;
       }
+
       .container > ::slotted([slot='header']) {
-        flex: 1;
         position: absolute;
         z-index: 2;
         top: 0;
@@ -42,8 +43,10 @@ export class Card extends LitElement {
         height: fit-content;
         width: 100%;
       }
+      .container.__header > ::slotted([slot='content']) {
+        padding-top: var(--lunar-card-header-height, 36px);
+      }
       .container > ::slotted([slot='content']) {
-        flex: 1 1 auto;
         position: relative;
         display: flex;
         align-items: center;
@@ -53,11 +56,11 @@ export class Card extends LitElement {
         z-index: 1;
       }
       .container > ::slotted([slot='footer']) {
-        flex: 1 1 auto;
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
+        width: 100%;
       }
     `;
   }

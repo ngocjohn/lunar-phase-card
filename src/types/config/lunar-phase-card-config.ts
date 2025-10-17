@@ -4,13 +4,9 @@ import { FontConfig } from './font-config';
 import { GraphConfig } from './graph-config';
 
 export type Section = 'base' | 'calendar' | 'horizon';
-export enum SECTION {
-  BASE = 'base',
-  CALENDAR = 'calendar',
-  HORIZON = 'horizon',
-}
 
 export const LOC_SOURCE = ['default', 'entity', 'custom'] as const;
+
 export type LocationSource = (typeof LOC_SOURCE)[number];
 
 export const COMPACT_MODE = ['default', 'minimal'] as const;
@@ -131,6 +127,18 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   location?: LocationAddress;
   cardId?: string;
 }
+
+export const AppareanceKeys = [
+  'compact_view',
+  'compact_mode',
+  'moon_position',
+  'hide_background',
+  'custom_background',
+  'hide_header',
+  'hide_buttons',
+] as const;
+
+export type CardAppareance = Pick<LunarPhaseCardConfig, (typeof AppareanceKeys)[number]>;
 
 export type FontSizeOptions = 'auto' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
 export type FontTextTransformOptions = 'none' | 'capitalize' | 'uppercase' | 'lowercase';

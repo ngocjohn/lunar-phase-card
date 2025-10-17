@@ -14,6 +14,6 @@ export class Store {
     this.hass = hass;
     this.config = config;
     this.card = card;
-    this.translate = setupTranslation(this.config?.language || this.hass?.locale.language);
+    this.translate = setupTranslation(this.config?.language || hass?.selectedLanguage || hass.locale.language);
   }
 }
