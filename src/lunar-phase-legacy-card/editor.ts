@@ -10,7 +10,8 @@ import { CUSTOM_BG } from '../const';
 // Custom card helpers
 import { fireEvent, LovelaceCardEditor, HomeAssistant } from '../ha';
 import { languageOptions, localize } from '../localize/localize';
-import { LunarPhaseCardConfig, FontCustomStyles, LocationAddress } from '../types/config/lunar-phase-card-config';
+import { FontCustomStyles } from '../types/config/font-config';
+import { LunarPhaseCardConfig, LocationAddress } from '../types/config/lunar-phase-card-config';
 import { defaultConfig } from '../types/legacy-card-config/default-config';
 import { generateConfig } from '../utils/ha-helper';
 import { compareConfig, getAddressFromOpenStreet } from '../utils/helpers';

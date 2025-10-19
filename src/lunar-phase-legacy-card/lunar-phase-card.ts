@@ -10,6 +10,7 @@ import { BLUE_BG, PageType, MoonState, ICON } from '../const';
 import { LovelaceCardEditor, FrontendLocaleData, TimeFormat, LovelaceCard } from '../ha';
 import { HomeAssistant } from '../ha';
 import { localize } from '../localize/localize';
+import { LunarStarField } from '../shared/moon-star-field';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 // Local types
 import { defaultConfig } from '../types/legacy-card-config/default-config';
@@ -20,11 +21,10 @@ import { isEditorMode } from '../utils/loader';
 import { Moon } from '../utils/moon';
 // components
 import { LunarBaseData } from './components/moon-base-data';
-import { LunarCalendarPage } from './components/moon-calendar-page';
 import './components';
+import { LunarCalendarPage } from './components/moon-calendar-page';
 import { LunarHorizonChart } from './components/moon-horizon-chart';
 import { LunarHorizonDynamic } from './components/moon-horizon-dynamic';
-import { LunarStarField } from './components/moon-star-field';
 import { LUNAR_PHASE_CARD_EDITOR_NAME, LUNAR_PHASE_CARD_NAME } from './const';
 // styles
 import style from './css/style.css';

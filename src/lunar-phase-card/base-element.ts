@@ -2,7 +2,7 @@ import { css, CSSResultGroup, LitElement, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { HomeAssistant } from '../ha';
-import cardStyle from './css/card-style.css';
+import { style } from './css/card-styles';
 
 export function computeDarkMode(hass?: HomeAssistant): boolean {
   if (!hass) return false;
@@ -24,6 +24,6 @@ export class LunarBaseElement extends LitElement {
   }
 
   static get styles(): CSSResultGroup {
-    return [cardStyle, css``];
+    return [style, css``];
   }
 }

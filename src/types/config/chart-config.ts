@@ -8,6 +8,7 @@ export type MoonDataItem = {
 export type MoonImage = {
   moonPic: string;
   rotateDeg: number;
+  southernHemisphere?: boolean;
 };
 
 export interface MoonData {

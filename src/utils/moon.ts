@@ -127,6 +127,7 @@ export class Moon {
     return {
       moonPic: MOON_IMAGES[phaseIndex],
       rotateDeg: rotateDeg,
+      southernHemisphere: this.config.southern_hemisphere || false,
     };
   }
 

@@ -1,18 +1,23 @@
-import { css, CSSResultGroup, html, nothing, TemplateResult } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { css, CSSResultGroup, html, nothing, PropertyValues, TemplateResult } from 'lit';
+import { customElement, query, state } from 'lit/decorators.js';
+import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 import { SECTION } from '../const';
+import './components';
+import '../shared/moon-star-field';
 import { HomeAssistant, LovelaceCard, LovelaceCardEditor } from '../ha';
 import { Store } from '../model/store';
-import './card';
-import './components/lunar-phase-header';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 import { computeStubConfig } from '../utils/compute-stup-config';
 import { registerCustomCard } from '../utils/custom-card-register';
+import { debounce } from '../utils/debounce';
 import { Moon } from '../utils/moon';
 import { LunarBaseCard } from './base-card';
-import { LUNAR_PHASE_CARD_EDITOR_NEW_NAME, LUNAR_PHASE_CARD_NEW_NAME } from './const';
+import { Card, LunarHeader, LunarMoonBase, LunarMoonCalendarFooter } from './components';
+import { COMPONENT, LUNAR_PHASE_CARD_EDITOR_NEW_NAME, LUNAR_PHASE_CARD_NEW_NAME } from './const';
+import { DEFAULT_BG_URL } from './css/card-styles';
 
 registerCustomCard({
   type: LUNAR_PHASE_CARD_NEW_NAME,
@@ -35,22 +40,82 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     };
   }
 
+  @state() private _activePage: SECTION = SECTION.BASE;
+  @state() private _cardWidth = 0;
+  @state() private _cardHeight = 0;
+  @state() _calendarPopup: boolean = false;
+  @state() _selectedDate?: Date;
+  @query(COMPONENT.HEADER) _elHeader!: LunarHeader;
+  @query(COMPONENT.CARD) _elCard!: Card;
+  @query(COMPONENT.BASE) _elBase!: LunarMoonBase;
+  @query(COMPONENT.CALENDAR) _elCalendar!: LunarMoonCalendarFooter;
+
+  private _resizeObserver?: ResizeObserver;
+
   public setConfig(config: LunarPhaseCardConfig): void {
     super.setConfig(config);
+    this.updateComplete.then(() => this._measureCard());
   }
-
-  @state() private _activePage: SECTION = SECTION.BASE;
-  @state() private _selectedDate?: Date;
 
   public connectedCallback(): void {
     super.connectedCallback();
     window.LunarCard = this;
+    this.updateComplete.then(() => this._attachObserver());
+  }
+
+  protected updated(_changedProperties: PropertyValues): void {
+    super.updated(_changedProperties);
+    if (_changedProperties.has('_activePage')) {
+      const oldPage = _changedProperties.get('_activePage') as SECTION;
+      if (oldPage && oldPage !== this._activePage && this._selectedDate) {
+        this._selectedDate = undefined;
+      }
+    }
   }
 
   get _date(): Date {
     return this._selectedDate ? new Date(this._selectedDate) : new Date();
   }
 
+  get _filteredData() {
+    const hiddenItems = ['direction', ...(this.config?.hide_items || [])];
+    const replacer = (key: string, value: any) => {
+      if (hiddenItems.includes(key)) {
+        return undefined;
+      }
+      return value;
+    };
+    return JSON.parse(JSON.stringify(this.moon.moonData, replacer));
+  }
+
+  private _measureCard() {
+    const card = this.shadowRoot!.querySelector('ha-card') as HTMLElement;
+    if (!card) {
+      return;
+    }
+    this._cardWidth = card.offsetWidth;
+    this._cardHeight = card.offsetHeight;
+  }
+
+  private async _attachObserver(): Promise<void> {
+    if (!this._resizeObserver) {
+      this._resizeObserver = new ResizeObserver(debounce(() => this._measureCard(), 250, false));
+    }
+    const card = this.shadowRoot!.querySelector('ha-card');
+    // If we show an error or warning there is no ha-card
+    if (!card) {
+      return;
+    }
+    this._resizeObserver.observe(card);
+  }
+
+  public disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+    }
+  }
   protected render(): TemplateResult {
     if (!this.config || !this.hass) {
       return html``;
@@ -62,21 +127,96 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
 
     const appearance = this._configAppearance;
     return html`
-      <ha-card class=${classMap({ compact: Boolean(this.config.compact_view) })}>
-        <lunar-card .appearance=${appearance}>
-          ${!appearance.hide_header
-            ? html`<lunar-phase-header
-                slot="header"
-                .activePage=${this._activePage}
-                .moonName=${this.moon.phaseName}
-                .hideButtons=${appearance.hide_buttons}
-                @change-section=${this._handleChangeSection}
-              ></lunar-phase-header>`
-            : nothing}
-          <div slot="content">${this._activePage}</div>
-          <div slot="footer">Footer Content</div>
+      <ha-card class=${this._computeClasses()} style=${this._computeStyles()}>
+        <lunar-card
+          .cardWidth=${this._cardWidth}
+          .cardHeight=${this._cardHeight}
+          .appearance=${appearance}
+          .calendarPopup=${this._calendarPopup}
+        >
+          ${!appearance.hide_header ? this._renderHeader('header') : nothing}
+          ${choose(this._activePage, [
+            [SECTION.BASE, () => this._renderBaseSection()],
+            [SECTION.CALENDAR, () => this._renderCalendarSection()],
+            [SECTION.HORIZON, () => this._renderHorizonSection()],
+          ])}
         </lunar-card>
       </ha-card>
+      <lunar-star-field></lunar-star-field>
+    `;
+  }
+
+  private _renderBaseSection(): TemplateResult {
+    const appearance = this._configAppearance;
+    return html` <lunar-moon-base slot="content" .activePage=${this._activePage} .store=${this.store}>
+      ${this.renderMoonImage()} ${appearance.hide_header ? this._renderHeader('moon-header') : nothing}
+      <lunar-moon-data-info slot="moon-info" .moonData=${this._filteredData} .chunkedLimit=${5}></lunar-moon-data-info>
+    </lunar-moon-base>`;
+  }
+
+  private _renderCalendarSection(): TemplateResult {
+    if (this._calendarPopup) {
+      return html`
+        <lunar-moon-calendar-popup
+          slot="content"
+          .card=${this}
+          .config=${this.config}
+          .moon=${this.moon}
+          @calendar-action=${this._handleCalendarAction}
+        >
+        </lunar-moon-calendar-popup>
+      `;
+    }
+    return html`
+      <lunar-moon-base slot="content" .activePage=${this._activePage} .store=${this.store}>
+        ${this.renderMoonImage()}
+        <lunar-moon-calendar-footer
+          slot="moon-info"
+          .hass=${this.hass}
+          .store=${this.store}
+          .config=${this.config}
+          .card=${this}
+          .moonData=${this._filteredData}
+          @popup-show=${this._handleCalendarPopup}
+        ></lunar-moon-calendar-footer>
+      </lunar-moon-base>
+    `;
+  }
+
+  private _handleCalendarPopup(ev: CustomEvent) {
+    ev.stopPropagation();
+    this._calendarPopup = true;
+  }
+  private _handleCalendarAction(ev: CustomEvent) {
+    ev.stopPropagation();
+    const action = ev.detail.action;
+    if (action === 'close') {
+      this._calendarPopup = false;
+    } else if (action === 'date-select' && ev.detail.date) {
+      this._selectedDate = ev.detail.date;
+      this._calendarPopup = false;
+      // toggle calendar footer active
+      setTimeout(() => {
+        this._elCalendar?._toggleFooter();
+      }, 100);
+    }
+  }
+
+  private _renderHorizonSection(): TemplateResult {
+    return html`<div slot="content">This is the horizon section.</div>`;
+  }
+
+  private _renderHeader(slot: string): TemplateResult {
+    const appearance = this._configAppearance;
+    return html`
+      <lunar-phase-header
+        slot=${slot}
+        .activePage=${this._activePage}
+        .moonName=${this.moon.phaseName}
+        .hideButtons=${appearance.hide_header || appearance.hide_buttons}
+        .store=${this.store}
+        @change-section=${this._handleChangeSection}
+      ></lunar-phase-header>
     `;
   }
 
@@ -105,6 +245,38 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     this._activePage = section;
   }
 
+  private _computeClasses() {
+    const appearance = this._configAppearance;
+    const classes = {
+      compact: appearance?.compact_view === true,
+      '--has-bg': appearance?.hide_background !== true,
+    };
+    return classMap(classes);
+  }
+  private _computeStyles() {
+    const appearance = this._configAppearance;
+    const styles: Record<string, string> = {};
+    const bg = appearance?.custom_background;
+    if (bg) {
+      styles['--lpc-bg-image'] = `url(${bg})`;
+    }
+    // header styles
+    const { _configHeaderStyles, _configLabelStyles } = this;
+    Object.entries(_configHeaderStyles).forEach(([key, value]) => {
+      if (value !== undefined) {
+        styles[`--lpc-header-${key.replace(/_/g, '-')}`] = value;
+      }
+    });
+    // label styles
+    Object.entries(_configLabelStyles).forEach(([key, value]) => {
+      if (value !== undefined) {
+        styles[`--lpc-label-${key.replace(/_/g, '-')}`] = value;
+      }
+    });
+
+    return styleMap(styles);
+  }
+
   static get styles(): CSSResultGroup {
     return [
       super.styles,
@@ -113,21 +285,36 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           display: block;
           width: 100%;
           height: 100%;
-          box-sizing: border-box;
+          margin: cal(-1 * var(--ha-card-border-width, 1px));
+          padding: 0;
+          position: relative;
+        }
+        ${DEFAULT_BG_URL}
+        lunar-star-field {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 0;
         }
         ha-card {
-          display: flex;
-          height: 100%;
-          box-sizing: border-box;
+          position: relative;
           overflow: hidden;
+          display: flex;
           width: 100%;
-          padding: 0;
-          margin: 0;
-          /* min-height: 250px; */
+          height: fit-content;
+          flex-direction: column;
         }
-        /* ha-card.compact {
-          min-height: 150px;
-        } */
+        ha-card.--has-bg {
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-image: var(--lpc-bg-image);
+          transition: all 0.5s ease;
+          border: none;
+        }
       `,
     ];
   }

@@ -3,25 +3,36 @@ import { html, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
 import { SECTION } from '../const';
-import { TimeFormat } from '../ha';
+import { FrontendLocaleData, TimeFormat } from '../ha';
 import { hasLocation } from '../ha/common/entity/has_location';
 import { Store } from '../model/store';
+import { CardArea } from '../types/card-area';
+import {
+  HeaderFontConfig,
+  HeaderFontConfigKeys,
+  LabelFontConfig,
+  LabelFontConfigKeys,
+} from '../types/config/font-config';
 import { AppareanceKeys, CardAppareance, LunarPhaseCardConfig, Section } from '../types/config/lunar-phase-card-config';
 import { FrontendLocaleDataExtended, LatLon } from '../types/config/types';
 import { migrateConfig } from '../types/utils';
 import { Moon } from '../utils/moon';
 import { LunarBaseElement } from './base-element';
+import './components/moon-image';
 
 export class LunarBaseCard extends LunarBaseElement {
   @property({ attribute: false }) protected store!: Store;
   @property({ attribute: false }) protected moon!: Moon;
-
   @state() protected config!: LunarPhaseCardConfig;
-  @property({ reflect: true, type: String })
-  public layout: string | undefined;
+  @state() _initSection: Section = SECTION.BASE;
 
-  @state() private _initSection: Section = SECTION.BASE;
-
+  protected _cardArea?: CardArea;
+  constructor(cardArea?: CardArea) {
+    super();
+    if (cardArea) {
+      this._cardArea = cardArea;
+    }
+  }
   setConfig(config: LunarPhaseCardConfig): void {
     this.config = {
       ...migrateConfig(config),
@@ -32,11 +43,11 @@ export class LunarBaseCard extends LunarBaseElement {
   }
 
   get _configLanguage(): string {
-    return this.config.language || this.hass.selectedLanguage || this.hass.config.language;
+    return this.config?.language || this.hass.selectedLanguage || this.hass.config.language;
   }
   get _configLocation(): LatLon {
-    const source = this.config.location_source || 'default';
-    if (source === 'entity' && this.config.location_entity) {
+    const source = this.config?.location_source || 'default';
+    if (source === 'entity' && this.config?.location_entity) {
       const stateObj = this.hass.states[this.config.location_entity];
       if (stateObj && hasLocation(stateObj)) {
         const { latitude, longitude } = stateObj.attributes;
@@ -52,16 +63,24 @@ export class LunarBaseCard extends LunarBaseElement {
     };
   }
 
-  get _configLocale(): FrontendLocaleDataExtended {
+  get _locale(): FrontendLocaleData {
     const haLocale = this.hass.locale;
-    const time_format = this.config['12hr_format'] ? TimeFormat.am_pm : TimeFormat.twenty_four;
+    const time_format = this.config?.['12hr_format'] ? TimeFormat.am_pm : TimeFormat.twenty_four;
     const language = this._configLanguage;
-    const location = this._configLocation;
-    const number_decimals = this.config?.number_decimals;
-    return {
+    const newLocale: FrontendLocaleData = {
       ...haLocale,
       language,
       time_format,
+    };
+    return newLocale;
+  }
+
+  get _configLocale(): FrontendLocaleDataExtended {
+    const _locale = this._locale;
+    const location = this._configLocation;
+    const number_decimals = this.config?.number_decimals;
+    return {
+      ..._locale,
       location,
       number_decimals,
     };
@@ -72,13 +91,32 @@ export class LunarBaseCard extends LunarBaseElement {
     return appearance;
   }
 
-  public getCardSize(): number | Promise<number> {
-    return 1;
+  get _configHeaderStyles(): HeaderFontConfig {
+    return pick(this.config.font_config || {}, [...HeaderFontConfigKeys]);
   }
 
-  protected renderMoon(img: string): TemplateResult {
-    return html`<div slot="moon-img">
-      <img src="${img}" alt="moon" />
-    </div> `;
+  get _configLabelStyles(): LabelFontConfig {
+    return pick(this.config.font_config || {}, [...LabelFontConfigKeys]);
+  }
+
+  public getCardSize(): number | Promise<number> {
+    let height = 1;
+    if (!this.config) {
+      return height;
+    }
+    const appearance = this._configAppearance;
+    if (appearance.compact_view === true) {
+      height += 1;
+    } else {
+      height += 2;
+    }
+    if (appearance.hide_header !== true) {
+      height += 1;
+    }
+    return height;
+  }
+
+  protected renderMoonImage(): TemplateResult {
+    return html`<lunar-moon-image slot="moon-pic" .imageData=${this.moon.moonImage}></lunar-moon-image>`;
   }
 }

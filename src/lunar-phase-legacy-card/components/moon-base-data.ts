@@ -165,10 +165,7 @@ export class LunarBaseData extends LitElement {
     return html`
       <div class="moon-data-item">
         <span class="label">${label}</span>
-        <div class="value">
-          ${secondValue ? html`<span>(${secondValue}) </span>` : ''} ${value}
-        </div>
-      </div>
+        <div class="value">${secondValue ? html`<span>(${secondValue}) </span>` : ''} ${value}</div>
       </div>
     `;
   }

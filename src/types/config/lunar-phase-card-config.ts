@@ -1,6 +1,6 @@
 import { PageType } from '../../const';
 import { LovelaceCardConfig } from '../../ha';
-import { FontConfig } from './font-config';
+import { FontCustomStyles } from './font-config';
 import { GraphConfig } from './graph-config';
 
 export type Section = 'base' | 'calendar' | 'horizon';
@@ -59,6 +59,10 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
    */
   hide_buttons?: boolean;
   /**
+   * Hide the header, including the moon phase name and section buttons
+   */
+  hide_header?: boolean;
+  /**
    * Show a button to open the calendar in a modal
    */
   calendar_modal?: boolean;
@@ -77,7 +81,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   /**
    * Font config for data display
    */
-  font_config?: FontConfig;
+  font_config?: FontCustomStyles;
   /**
    * Graph layout config for horizon section
    */
@@ -140,20 +144,6 @@ export const AppareanceKeys = [
 
 export type CardAppareance = Pick<LunarPhaseCardConfig, (typeof AppareanceKeys)[number]>;
 
-export type FontSizeOptions = 'auto' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large';
-export type FontTextTransformOptions = 'none' | 'capitalize' | 'uppercase' | 'lowercase';
-/**
- * @deprecated use 'font_config' instead
- */
-export interface FontCustomStyles {
-  header_font_size?: FontSizeOptions;
-  header_font_style?: FontTextTransformOptions;
-  header_font_color?: string;
-  label_font_size?: FontSizeOptions;
-  label_font_style?: FontTextTransformOptions;
-  label_font_color?: string;
-  hide_label?: boolean;
-}
 /** @deprecated use 'graph_chart_config' instead
  */
 interface HorizonGraphConfig {

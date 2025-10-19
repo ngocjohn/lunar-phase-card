@@ -1,19 +1,23 @@
-import { css, CSSResultGroup, html, TemplateResult, LitElement, nothing } from 'lit';
+import { css, CSSResultGroup, html, TemplateResult, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { ICON, SECTION } from '../../const';
 import { fireEvent } from '../../ha';
-import { COMPONENT } from '../const';
+import { CardArea } from '../../types/card-area';
+import { LunarBaseCard } from '../base-card';
 
+const SectionsList = [SECTION.BASE, SECTION.CALENDAR, SECTION.HORIZON];
 const SECTION_ICON: Record<SECTION, string> = {
   [SECTION.BASE]: ICON.WEATHER,
   [SECTION.CALENDAR]: ICON.CALENDAR,
   [SECTION.HORIZON]: ICON.CHART,
 };
-const SectionsList = [SECTION.BASE, SECTION.CALENDAR, SECTION.HORIZON];
 
-@customElement(COMPONENT.HEADER)
-export class LunarHeader extends LitElement {
+@customElement('lunar-phase-header')
+export class LunarHeader extends LunarBaseCard {
+  constructor() {
+    super(CardArea.HEADER);
+  }
   @property({ attribute: false }) public moonName?: string;
   @property({ attribute: false }) public hideButtons?: boolean;
 
@@ -31,12 +35,12 @@ export class LunarHeader extends LitElement {
                 ${SectionsList.map((section) => {
                   const isActive = section === activePage;
                   return html`
-                    <ha-svg-icon
+                    <ha-icon-button
                       .path=${SECTION_ICON[section]}
                       @click=${() => this._handleChangeSection(section)}
                       ?active=${isActive}
                       .title=${section}
-                    ></ha-svg-icon>
+                    ></ha-icon-button>
                   `;
                 })}
               </div>
@@ -53,57 +57,44 @@ export class LunarHeader extends LitElement {
     fireEvent(this, 'change-section', { section });
   }
   static get styles(): CSSResultGroup {
-    return css`
-      :host {
-        display: block;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 100%;
-        padding: 8px 12px 0px;
-        max-height: var(--lunar-card-header-height, 48px);
-        box-sizing: border-box;
-      }
-      .title {
-        display: flex;
-        align-items: center;
-        flex: 1;
-        font-size: var(--ha-font-size-2xl, 24px);
-        line-height: 1.2;
-      }
-      .actions {
-        display: flex;
-        align-items: center;
-        gap: var(--lunar-card-gutter);
-        flex-grow: 0;
-        flex-shrink: 0;
-      }
-      ha-svg-icon {
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-        opacity: 0.6;
-        transition: opacity 0.3s ease;
-        color: var(--secondary-text-color);
-      }
-      ha-svg-icon:hover,
-      ha-svg-icon[active] {
-        opacity: 1;
-        color: var(--primary-color);
-      }
-    `;
+    return [
+      super.styles,
+      css`
+        :host {
+          display: block;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: 100%;
+          /* padding: 8px 0px 0px; */
+          max-height: var(--lunar-card-header-height, 48px);
+          box-sizing: border-box;
+        }
+        .title {
+          display: flex;
+          align-items: center;
+          flex: 1;
+          font-size: var(--ha-font-size-xl, 20px);
+          /* line-height: 1; */
+          /* margin-inline-start: var(--lunar-card-gutter); */
+        }
+        .actions {
+          display: flex;
+          align-items: center;
+          flex-grow: 0;
+          flex-shrink: 0;
+        }
+      `,
+    ];
   }
 }
 
 declare global {
   interface HASSDomEvents {
     'change-section': { section: SECTION };
-  }
-  interface HTMLElementTagNameMap {
-    [COMPONENT.HEADER]: LunarHeader;
   }
 }

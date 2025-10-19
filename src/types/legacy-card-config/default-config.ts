@@ -29,10 +29,8 @@ export const defaultConfig: Partial<LunarPhaseCardConfig> = {
     time_step_size: 30,
   },
   font_customize: {
-    header_font_size: 'x-large',
     header_font_style: 'capitalize',
     header_font_color: '',
-    label_font_size: 'auto',
     label_font_style: 'none',
     label_font_color: '',
     hide_label: false,

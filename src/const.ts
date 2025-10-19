@@ -14,19 +14,20 @@ import {
 
 import { version } from '../package.json';
 import blueBackground from './images/blue-bg.png';
-import { FontSizeOptions, FontTextTransformOptions } from './types/config/lunar-phase-card-config';
+import { FontSizeOptions, FontTextTransformOptions } from './types/config/font-config';
 
 const VERSION_TAG = '1.7.3';
 const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${VERSION_TAG}/background/`;
-const BACKGROUND_URL = (index: number) => `${PIC_URL}moon_bg_${index}.png`;
+export const BACKGROUND_URL = (index: number) => `${PIC_URL}moon_bg_${index}.png`;
 
 export const CUSTOM_BG = [blueBackground, BACKGROUND_URL(1), BACKGROUND_URL(2), BACKGROUND_URL(3)];
 
 export const CARD_VERSION = `v${version}`;
 
 export const BLUE_BG = blueBackground;
+export const DEFAULT_BG = BACKGROUND_URL(0);
 
-export const FONTSIZES: FontSizeOptions[] = ['auto', 'small', 'medium', 'large', 'x-large', 'xx-large'];
+export const FONTSIZES: FontSizeOptions[] = ['small', 'medium', 'large', 'x-large', 'xx-large'];
 export const FONTSTYLES: FontTextTransformOptions[] = ['none', 'capitalize', 'uppercase', 'lowercase'];
 
 export const FONTCOLORS: string[] = [
