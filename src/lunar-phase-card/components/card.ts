@@ -2,6 +2,7 @@ import { css, CSSResultGroup, html, LitElement, PropertyValues, TemplateResult }
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
+import { SECTION } from '../../const';
 import { CardAppareance } from '../../types/config/lunar-phase-card-config';
 
 @customElement('lunar-card')
@@ -10,11 +11,13 @@ export class Card extends LitElement {
   @property({ type: Number }) public cardWidth = 0;
   @property({ type: Number }) public cardHeight = 0;
   @property({ type: Boolean }) public calendarPopup = false;
+  @property({ type: String }) public activePage?: SECTION;
+  @property({ type: Boolean, reflect: true }) public changingContent = false;
 
   protected willUpdate(_changedProperties: PropertyValues): void {
     if (_changedProperties.has('cardWidth') || _changedProperties.has('cardHeight')) {
-      const minHeight = this.cardWidth * 0.5;
-      this.style.setProperty('min-height', `${minHeight}px`);
+      // const minHeight = this.cardWidth * 0.5;
+      // this.style.setProperty('min-height', `${minHeight}px`);
     }
   }
 
@@ -29,10 +32,14 @@ export class Card extends LitElement {
 
   private _computeClasses({ appearance } = this) {
     const hasPopup = this.calendarPopup;
+    const isCompact = appearance?.compact_view === true;
+    const compactAndBase = isCompact && this.activePage === SECTION.BASE;
     const classes = {
       container: true,
-      '--no-header': appearance?.hide_header === true || hasPopup,
+      '--no-header': appearance?.hide_header === true || hasPopup || compactAndBase,
       '--has-popup': hasPopup,
+      '--compact': isCompact,
+      '--changing-content': this.changingContent,
     };
     return classMap(classes);
   }
@@ -43,9 +50,9 @@ export class Card extends LitElement {
         width: 100%;
         height: 100%;
         display: block;
-        box-sizing: border-box;
-        min-height: 150px;
+        overflow: hidden;
       }
+
       .container {
         position: relative;
         display: flex;
@@ -57,27 +64,28 @@ export class Card extends LitElement {
         flex-direction: column;
       }
 
+      .container.--compact {
+        min-height: 150px;
+      }
+
       .container > ::slotted([slot='header']) {
         position: absolute;
-        z-index: 2;
         top: 0;
         left: 0;
         right: 0;
-        height: fit-content;
         width: 100%;
         padding-inline-start: var(--lunar-card-gutter, 8px);
       }
 
+      .container.--no-header > ::slotted([slot='header']),
       .container.--has-popup > ::slotted([slot='header']) {
         display: none;
       }
+      .container.--no-header > ::slotted([slot='content']),
       .container.--has-popup > ::slotted([slot='content']) {
         margin-top: 0 !important;
       }
 
-      .container.--no-header > ::slotted([slot='content']) {
-        margin-top: var(--lunar-card-gutter, 8px);
-      }
       .container > ::slotted([slot='content']) {
         position: relative;
         display: flex;
@@ -85,10 +93,14 @@ export class Card extends LitElement {
         justify-content: center;
         width: 100%;
         height: 100%;
-        z-index: 1;
-        margin-top: var(--lunar-card-header-height, 48px);
-        /* margin-bottom: var(--lunar-card-gutter, 8px); */
+        margin-top: var(--lunar-card-header-height);
         flex: 1;
+        z-index: 1;
+      }
+
+      .container.--changing-content > ::slotted([slot='content']) {
+        animation: fade-in 0.3s ease-in-out;
+        animation-fill-mode: forwards;
       }
     `;
   }

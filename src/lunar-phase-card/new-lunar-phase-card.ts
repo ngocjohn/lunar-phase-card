@@ -4,11 +4,13 @@ import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-import { SECTION } from '../const';
+import { MoonState, SECTION } from '../const';
 import './components';
 import '../shared/moon-star-field';
 import { HomeAssistant, LovelaceCard, LovelaceCardEditor } from '../ha';
 import { Store } from '../model/store';
+import { MoonData } from '../types/config/chart-config';
+import { CSS_FONT_SIZE } from '../types/config/font-config';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 import { computeStubConfig } from '../utils/compute-stup-config';
 import { registerCustomCard } from '../utils/custom-card-register';
@@ -45,6 +47,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
   @state() private _cardHeight = 0;
   @state() _calendarPopup: boolean = false;
   @state() _selectedDate?: Date;
+  @state() private _state: MoonState = MoonState.READY;
   @query(COMPONENT.HEADER) _elHeader!: LunarHeader;
   @query(COMPONENT.CARD) _elCard!: Card;
   @query(COMPONENT.BASE) _elBase!: LunarMoonBase;
@@ -77,7 +80,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     return this._selectedDate ? new Date(this._selectedDate) : new Date();
   }
 
-  get _filteredData() {
+  get _filteredData(): MoonData {
     const hiddenItems = ['direction', ...(this.config?.hide_items || [])];
     const replacer = (key: string, value: any) => {
       if (hiddenItems.includes(key)) {
@@ -133,6 +136,8 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           .cardHeight=${this._cardHeight}
           .appearance=${appearance}
           .calendarPopup=${this._calendarPopup}
+          .activePage=${this._activePage}
+          .changingContent=${this._state === MoonState.CONTENT_CHANGING}
         >
           ${!appearance.hide_header ? this._renderHeader('header') : nothing}
           ${choose(this._activePage, [
@@ -148,10 +153,41 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
 
   private _renderBaseSection(): TemplateResult {
     const appearance = this._configAppearance;
+    const moonData = this._filteredData;
     return html` <lunar-moon-base slot="content" .activePage=${this._activePage} .store=${this.store}>
-      ${this.renderMoonImage()} ${appearance.hide_header ? this._renderHeader('moon-header') : nothing}
-      <lunar-moon-data-info slot="moon-info" .moonData=${this._filteredData} .chunkedLimit=${5}></lunar-moon-data-info>
+      ${this.renderMoonImage()}
+      ${appearance.compact_view === true
+        ? this._renderCompactBaseSection(moonData)
+        : html` ${appearance.hide_header ? this._renderHeader('moon-header') : nothing}
+            <lunar-moon-data-info slot="moon-info" .moonData=${moonData} .chunkedLimit=${5}></lunar-moon-data-info>`}
     </lunar-moon-base>`;
+  }
+
+  private _renderCompactBaseSection(moonData: MoonData): TemplateResult {
+    const items = {
+      moonAge: 'mdi:progress-clock',
+      moonRise: 'mdi:weather-moonset-up',
+      moonSet: 'mdi:weather-moonset',
+    };
+
+    const renderCompactItem = (key: string): TemplateResult => {
+      const { label, value } = moonData[key];
+      const icon = items[key];
+      return html`
+        <div class="compact-item">
+          <div class="icon-value">
+            <ha-icon .icon=${icon}></ha-icon>
+            ${value}
+          </div>
+          ${this.config.font_config?.hide_label ? html`` : html` <span class="value">${label}</span>`}
+        </div>
+      `;
+    };
+    return html` ${this._renderHeader('moon-header')}
+      <div slot="moon-info" class="compact-view-container">
+        <div class="moon-fraction">${moonData.moonFraction.value} ${this.store.translate('card.illuminated')}</div>
+        <div class="compact-view-items">${Object.keys(items).map((key) => renderCompactItem(key))}</div>
+      </div>`;
   }
 
   private _renderCalendarSection(): TemplateResult {
@@ -215,6 +251,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
         .moonName=${this.moon.phaseName}
         .hideButtons=${appearance.hide_header || appearance.hide_buttons}
         .store=${this.store}
+        .config=${this.config}
         @change-section=${this._handleChangeSection}
       ></lunar-phase-header>
     `;
@@ -242,7 +279,11 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     if (section === this._activePage) {
       return;
     }
+    this._state = MoonState.CONTENT_CHANGING;
     this._activePage = section;
+    setTimeout(() => {
+      this._state = MoonState.READY;
+    }, 300);
   }
 
   private _computeClasses() {
@@ -262,15 +303,9 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     }
     // header styles
     const { _configHeaderStyles, _configLabelStyles } = this;
-    Object.entries(_configHeaderStyles).forEach(([key, value]) => {
+    Object.entries({ ..._configHeaderStyles, ..._configLabelStyles }).forEach(([key, value]) => {
       if (value !== undefined) {
-        styles[`--lpc-header-${key.replace(/_/g, '-')}`] = value;
-      }
-    });
-    // label styles
-    Object.entries(_configLabelStyles).forEach(([key, value]) => {
-      if (value !== undefined) {
-        styles[`--lpc-label-${key.replace(/_/g, '-')}`] = value;
+        styles[`--lpc-${key.replace(/_/g, '-')}`] = CSS_FONT_SIZE[value] || value;
       }
     });
 
@@ -314,6 +349,47 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           background-image: var(--lpc-bg-image);
           transition: all 0.5s ease;
           border: none;
+        }
+        .compact-view-container {
+          display: flex;
+          width: 100%;
+          gap: var(--lunar-card-padding);
+          /* margin-inline: 8px; */
+          overflow: hidden;
+          --mdc-icon-size: 17px;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: space-between;
+        }
+        .moon-fraction {
+          font-size: var(--ha-font-size-l);
+          letter-spacing: 1px;
+          color: rgba(from var(--primary-text-color) r g b / 0.8);
+          margin-inline-start: var(--lunar-card-gutter);
+        }
+        .compact-view-items {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: var(--lunar-card-gutter);
+          width: 100%;
+        }
+
+        .compact-item {
+          display: flex;
+          width: 100%;
+          flex-direction: column;
+          font-size: var(--lpc-label-font-size, var(--ha-font-size-m));
+          align-items: center;
+          justify-content: space-between;
+        }
+        .compact-item .icon-value {
+          display: flex;
+          align-items: flex-end;
+          flex-direction: row;
+        }
+
+        .compact-item span.value {
+          color: rgba(from var(--primary-text-color) r g b / 0.7);
         }
       `,
     ];

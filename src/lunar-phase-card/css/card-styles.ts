@@ -15,8 +15,8 @@ export const DEFAULT_BG_URL = css`
 export const style = css`
   :host {
     --lpc-scale: 1;
-    --lpc-unit: calc(var(--lpc-scale) * 40px);
-    --lunar-card-header-height: 48px;
+    --lpc-unit: calc(var(--lpc-scale) * 36px);
+    --lunar-card-header-height: calc(var(--lpc-unit) + var(--lunar-card-gutter));
     --lunar-card-padding: 12px;
     --lunar-card-gutter: 8px;
     --mdc-icon-button-size: var(--lpc-unit);
@@ -34,6 +34,8 @@ export const style = css`
   ha-icon {
     width: calc(var(--lpc-unit) * 0.6);
     height: calc(var(--lpc-unit) * 0.6);
+    display: flex;
+    align-items: center;
   }
 
   ha-icon-button,
@@ -62,5 +64,14 @@ export const style = css`
 
   ha-icon-button ha-icon {
     display: flex;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 `;

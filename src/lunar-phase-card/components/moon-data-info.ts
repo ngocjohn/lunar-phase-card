@@ -157,9 +157,8 @@ export class LunarMoonDataInfo extends LunarBaseCard {
           justify-content: space-between;
           align-items: center;
           gap: 0.5rem;
-          border-bottom: 1px solid var(--divider-color);
-          padding-top: 0.25rem;
-          padding-bottom: 0.25rem;
+          border-bottom: 0.5px solid rgba(from var(--secondary-text-color) r g b / 0.2);
+          padding: 0.25rem 0;
           width: 100%;
           flex: 1 1 0%;
         }

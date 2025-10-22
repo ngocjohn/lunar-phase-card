@@ -4,6 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { ICON, SECTION } from '../../const';
 import { fireEvent } from '../../ha';
 import { CardArea } from '../../types/card-area';
+import { CardAppareance } from '../../types/config/lunar-phase-card-config';
 import { LunarBaseCard } from '../base-card';
 
 const SectionsList = [SECTION.BASE, SECTION.CALENDAR, SECTION.HORIZON];
@@ -20,32 +21,70 @@ export class LunarHeader extends LunarBaseCard {
   }
   @property({ attribute: false }) public moonName?: string;
   @property({ attribute: false }) public hideButtons?: boolean;
-
   @property() public activePage?: SECTION;
-  @state() private _open = false;
+  @state() _open = false;
 
   protected render(): TemplateResult {
+    const appearance: CardAppareance = this._configAppearance || {};
     const activePage = this.activePage || SECTION.BASE;
+    const isCompact = appearance?.compact_view === true && activePage === SECTION.BASE;
     return html`
-      <div class="header">
-        <div class="title">${this.moonName}</div>
+      <div class="header" ?compact=${isCompact}>
+        <div class="title" ?button-hidden=${this.hideButtons}>${this.moonName}</div>
         ${!this.hideButtons
-          ? html`
-              <div class="actions">
-                ${SectionsList.map((section) => {
-                  const isActive = section === activePage;
-                  return html`
-                    <ha-icon-button
-                      .path=${SECTION_ICON[section]}
-                      @click=${() => this._handleChangeSection(section)}
-                      ?active=${isActive}
-                      .title=${section}
-                    ></ha-icon-button>
-                  `;
-                })}
-              </div>
-            `
+          ? isCompact
+            ? this._renderButtonMenu(activePage)
+            : this._renderButtonRow(activePage)
           : nothing}
+      </div>
+    `;
+  }
+
+  private _renderButtonRow(activePage: SECTION): TemplateResult {
+    return html`
+      <div class="actions">
+        ${SectionsList.map((section) => {
+          const isActive = section === activePage;
+          return html`
+            <ha-icon-button
+              .path=${SECTION_ICON[section]}
+              @click=${() => this._handleChangeSection(section)}
+              ?active=${isActive}
+              .title=${section}
+            ></ha-icon-button>
+          `;
+        })}
+      </div>
+    `;
+  }
+  private _renderButtonMenu(activePage: SECTION): TemplateResult {
+    return html`
+      <div class="menu-actions">
+        <ha-button-menu
+          .corner=${'TOP_START'}
+          .menuCorner=${'END'}
+          .naturalMenuWidth=${true}
+          .fullWidth=${true}
+          .activatable=${true}
+          @closed=${(ev: Event) => {
+            ev.stopPropagation();
+            this._open = false;
+          }}
+          @opened=${(ev: Event) => {
+            ev.stopPropagation();
+            this._open = true;
+          }}
+        >
+          <ha-icon-button slot="trigger" .path=${SECTION_ICON[activePage]}></ha-icon-button>
+          ${SectionsList.filter((section) => section !== activePage).map((section) => {
+            return html`
+              <ha-list-item graphic="icon" .action=${section} @click=${this._handleChangeSection.bind(this, section)}>
+                <ha-svg-icon .path=${SECTION_ICON[section]} slot="graphic"></ha-svg-icon>
+                ${section.toUpperCase()}
+              </ha-list-item>
+            `;
+          })}
+        </ha-button-menu>
       </div>
     `;
   }
@@ -63,30 +102,48 @@ export class LunarHeader extends LunarBaseCard {
         :host {
           display: block;
           width: 100%;
-          box-sizing: border-box;
+          backdrop-filter: blur(4px);
+          height: var(--lunar-card-header-height);
+          z-index: 2;
         }
         .header {
           display: flex;
-          justify-content: space-between;
+          height: inherit;
           align-items: center;
-          height: 100%;
-          /* padding: 8px 0px 0px; */
-          max-height: var(--lunar-card-header-height, 48px);
-          box-sizing: border-box;
+        }
+        .header[compact] {
+          align-items: initial;
+          margin-inline-start: var(--lunar-card-gutter);
         }
         .title {
-          display: flex;
-          align-items: center;
-          flex: 1;
-          font-size: var(--ha-font-size-xl, 20px);
-          /* line-height: 1; */
-          /* margin-inline-start: var(--lunar-card-gutter); */
+          flex-grow: 1;
+          flex-shrink: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: var(--lpc-header-font-size, var(--ha-font-size-xl, 20px));
+          white-space: nowrap;
         }
+
+        .title[button-hidden] {
+          place-self: center;
+        }
+
         .actions {
           display: flex;
-          align-items: center;
           flex-grow: 0;
           flex-shrink: 0;
+        }
+        .menu-actions {
+          display: block;
+          flex-grow: 0;
+          flex-shrink: 0;
+        }
+        ha-list {
+          height: fit-content !important;
+          z-index: 10;
+        }
+        ha-icon-button[active] {
+          color: var(--lpc-accent-color, var(--primary-color));
         }
       `,
     ];

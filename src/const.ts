@@ -53,6 +53,7 @@ export const enum PageType {
 export const enum MoonState {
   READY = 'ready',
   LOADING = 'loading',
+  CONTENT_CHANGING = 'content-changing',
 }
 
 export const ICON = {

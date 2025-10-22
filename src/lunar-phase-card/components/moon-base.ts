@@ -67,9 +67,19 @@ export class LunarMoonBase extends LunarBaseCard {
         padding: 0;
       }
       .info {
-        padding-inline: var(--lunar-card-gutter, 8px);
+        /* padding-inline: var(--lunar-card-gutter, 8px); */
         display: -ms-inline-grid;
         display: inline-grid;
+        width: 100%;
+        backdrop-filter: blur(2px);
+      }
+
+      .info ::slotted([slot='moon-header']) {
+        min-height: var(--lpc-unit);
+      }
+
+      .info ::slotted([slot='moon-info']) {
+        z-index: 1;
       }
     `;
   }

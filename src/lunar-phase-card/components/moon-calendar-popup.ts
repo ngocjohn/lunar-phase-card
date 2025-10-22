@@ -202,12 +202,11 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
         .calendar-day {
           text-align: center;
           font-size: 1em;
-          margin: 0 auto;
-          padding: 0.35em 0 0.25em 0;
+          margin: auto auto;
           border-radius: 0.25em;
-          cursor: default !important;
           background-color: rgba(0, 0, 0, 0.14);
           width: 100%;
+          cursor: default !important;
         }
         .calendar-day:hover {
           background-color: rgba(0, 0, 0, 0.2);
@@ -219,7 +218,7 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
         }
 
         .calendar-day.today {
-          outline: 2px solid var(--accent-color);
+          outline: 1px solid var(--accent-color);
         }
 
         .calendar-day > .day-symbol {
