@@ -45,8 +45,6 @@ export class LunarMoonBase extends LunarBaseCard {
       }
       .container {
         display: flex;
-        width: 100%;
-        height: 100%;
         padding-inline: 8px;
         align-items: stretch;
         gap: var(--lunar-card-gutter);

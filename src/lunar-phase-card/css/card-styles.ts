@@ -30,7 +30,9 @@ export const style = css`
   *::after {
     box-sizing: border-box;
   }
-
+  *[hidden] {
+    display: none !important;
+  }
   ha-icon {
     width: calc(var(--lpc-unit) * 0.6);
     height: calc(var(--lpc-unit) * 0.6);

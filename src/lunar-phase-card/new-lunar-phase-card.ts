@@ -154,40 +154,21 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
   private _renderBaseSection(): TemplateResult {
     const appearance = this._configAppearance;
     const moonData = this._filteredData;
-    return html` <lunar-moon-base slot="content" .activePage=${this._activePage} .store=${this.store}>
-      ${this.renderMoonImage()}
-      ${appearance.compact_view === true
-        ? this._renderCompactBaseSection(moonData)
-        : html` ${appearance.hide_header ? this._renderHeader('moon-header') : nothing}
-            <lunar-moon-data-info slot="moon-info" .moonData=${moonData} .chunkedLimit=${5}></lunar-moon-data-info>`}
-    </lunar-moon-base>`;
-  }
-
-  private _renderCompactBaseSection(moonData: MoonData): TemplateResult {
-    const items = {
-      moonAge: 'mdi:progress-clock',
-      moonRise: 'mdi:weather-moonset-up',
-      moonSet: 'mdi:weather-moonset',
-    };
-
-    const renderCompactItem = (key: string): TemplateResult => {
-      const { label, value } = moonData[key];
-      const icon = items[key];
-      return html`
-        <div class="compact-item">
-          <div class="icon-value">
-            <ha-icon .icon=${icon}></ha-icon>
-            ${value}
-          </div>
-          ${this.config.font_config?.hide_label ? html`` : html` <span class="value">${label}</span>`}
-        </div>
-      `;
-    };
-    return html` ${this._renderHeader('moon-header')}
-      <div slot="moon-info" class="compact-view-container">
-        <div class="moon-fraction">${moonData.moonFraction.value} ${this.store.translate('card.illuminated')}</div>
-        <div class="compact-view-items">${Object.keys(items).map((key) => renderCompactItem(key))}</div>
-      </div>`;
+    const moonImage = this.renderMoonImage();
+    return html` ${appearance.compact_view === true
+      ? html` <lunar-moon-compact-view
+          .moonData=${moonData}
+          .moon=${this.moon}
+          .store=${this.store}
+          .config=${this.config}
+          .hass=${this.hass}
+          .header=${this._renderHeader('moon-header')}
+          slot="content"
+        ></lunar-moon-compact-view>`
+      : html` <lunar-moon-base slot="content" .activePage=${this._activePage} .store=${this.store}>
+          ${moonImage} ${appearance.hide_header ? this._renderHeader('moon-header') : nothing}
+          <lunar-moon-data-info slot="moon-info" .moonData=${moonData} .chunkedLimit=${5}></lunar-moon-data-info
+        ></lunar-moon-base>`}`;
   }
 
   private _renderCalendarSection(): TemplateResult {
@@ -242,7 +223,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     return html`<div slot="content">This is the horizon section.</div>`;
   }
 
-  private _renderHeader(slot: string): TemplateResult {
+  public _renderHeader(slot?: string): TemplateResult {
     const appearance = this._configAppearance;
     return html`
       <lunar-phase-header
@@ -252,7 +233,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
         .hideButtons=${appearance.hide_header || appearance.hide_buttons}
         .store=${this.store}
         .config=${this.config}
-        @change-section=${this._handleChangeSection}
+        @change-section=${this._handleChangeSection.bind(this)}
       ></lunar-phase-header>
     `;
   }
@@ -349,47 +330,6 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           background-image: var(--lpc-bg-image);
           transition: all 0.5s ease;
           border: none;
-        }
-        .compact-view-container {
-          display: flex;
-          width: 100%;
-          gap: var(--lunar-card-padding);
-          /* margin-inline: 8px; */
-          overflow: hidden;
-          --mdc-icon-size: 17px;
-          flex-direction: column;
-          align-items: flex-start;
-          justify-content: space-between;
-        }
-        .moon-fraction {
-          font-size: var(--ha-font-size-l);
-          letter-spacing: 1px;
-          color: rgba(from var(--primary-text-color) r g b / 0.8);
-          margin-inline-start: var(--lunar-card-gutter);
-        }
-        .compact-view-items {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: var(--lunar-card-gutter);
-          width: 100%;
-        }
-
-        .compact-item {
-          display: flex;
-          width: 100%;
-          flex-direction: column;
-          font-size: var(--lpc-label-font-size, var(--ha-font-size-m));
-          align-items: center;
-          justify-content: space-between;
-        }
-        .compact-item .icon-value {
-          display: flex;
-          align-items: flex-end;
-          flex-direction: row;
-        }
-
-        .compact-item span.value {
-          color: rgba(from var(--primary-text-color) r g b / 0.7);
         }
       `,
     ];

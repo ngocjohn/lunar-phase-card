@@ -5,3 +5,4 @@ export * from './moon-image';
 export * from './moon-data-info';
 export * from './moon-calendar-footer';
 export * from './moon-calendar-popup';
+export * from './moon-compact-view';

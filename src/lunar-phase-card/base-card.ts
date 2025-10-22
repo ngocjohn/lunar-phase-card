@@ -1,5 +1,5 @@
 import { pick } from 'es-toolkit';
-import { html, TemplateResult } from 'lit';
+import { CSSResultGroup, html, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
 import { SECTION } from '../const';
@@ -116,7 +116,11 @@ export class LunarBaseCard extends LunarBaseElement {
     return height;
   }
 
-  protected renderMoonImage(): TemplateResult {
+  public renderMoonImage(): TemplateResult {
     return html`<lunar-moon-image slot="moon-pic" .imageData=${this.moon.moonImage}></lunar-moon-image>`;
+  }
+
+  static get styles(): CSSResultGroup {
+    return super.styles;
   }
 }
