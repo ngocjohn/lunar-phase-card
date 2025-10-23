@@ -218,7 +218,17 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
   }
 
   private _renderHorizonSection(): TemplateResult {
-    return html`<div slot="content">This is the horizon section.</div>`;
+    return html`
+      <lunar-moon-chart-dynamic
+        slot="content"
+        .hass=${this.hass}
+        .store=${this.store}
+        .config=${this.config}
+        .moon=${this.moon}
+        .cardWidth=${this._cardWidth}
+        .cardHeight=${this._cardHeight}
+      ></lunar-moon-chart-dynamic>
+    `;
   }
 
   public _renderHeader(slot?: string): TemplateResult {

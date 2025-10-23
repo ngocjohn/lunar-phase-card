@@ -37,12 +37,14 @@ export class Card extends LitElement {
     const hasPopup = this.calendarPopup;
     const isCompact = appearance?.compact_view === true;
     const compactAndBase = isCompact && this.activePage === SECTION.BASE;
+    const isChartPage = this.activePage === SECTION.HORIZON;
     const classes = {
       container: true,
       '--no-header': appearance?.hide_header === true || hasPopup || compactAndBase,
       '--has-popup': hasPopup,
       '--compact': isCompact,
       '--changing-content': this.changingContent,
+      '--chart-page': isChartPage,
     };
     return classMap(classes);
   }
@@ -85,11 +87,16 @@ export class Card extends LitElement {
       .container.--has-popup > ::slotted([slot='header']) {
         display: none;
       }
+
       .container.--no-header > ::slotted([slot='content']),
       .container.--has-popup > ::slotted([slot='content']) {
         margin-top: 0 !important;
       }
-
+      .container.--chart-page > ::slotted([slot='content']) {
+        margin-top: 0 !important;
+        /* padding-top: var(--lunar-card-header-height); */
+        /* margin-bottom: var(--lunar-card-footer-height, 0px); */
+      }
       .container > ::slotted([slot='content']) {
         position: relative;
         /* display: flex; */
