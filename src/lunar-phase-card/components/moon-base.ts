@@ -16,14 +16,14 @@ export class LunarMoonBase extends LunarBaseCard {
 
   protected render(): TemplateResult {
     const moonPicStyles = {
-      maxWidth: 'calc(100% / 3.5)',
+      maxWidth: 'calc(calc(100%/3.1) - var(--lunar-card-gutter))',
       width: '100%',
       height: 'auto',
     };
     return html`
       <div
         class=${classMap({
-          container: true,
+          content: true,
           '--vertical': this.activePage === SECTION.CALENDAR,
         })}
       >
@@ -39,46 +39,49 @@ export class LunarMoonBase extends LunarBaseCard {
   }
 
   static get styles(): CSSResultGroup {
-    return css`
-      :host {
-        display: block;
-      }
-      .container {
-        display: flex;
-        padding-inline: 8px;
-        align-items: stretch;
-        gap: var(--lunar-card-gutter);
-      }
-      .container.--vertical {
-        flex-direction: column;
-        align-items: center;
-        padding: 0 !important;
-      }
+    return [
+      super.styles,
+      css`
+        :host {
+          display: block;
+        }
+        .content {
+          display: flex;
+          align-items: stretch;
+          gap: var(--lunar-card-gutter);
+          padding-inline: var(--lunar-card-padding);
+        }
+        .content.--vertical {
+          flex-direction: column;
+          align-items: center;
+          padding: 0 !important;
+        }
 
-      .moon-pic {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .container.--vertical .info {
-        width: 100%;
-        padding: 0;
-      }
-      .info {
-        /* padding-inline: var(--lunar-card-gutter, 8px); */
-        display: -ms-inline-grid;
-        display: inline-grid;
-        width: 100%;
-        backdrop-filter: blur(2px);
-      }
+        .moon-pic {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .content.--vertical .info {
+          width: 100%;
+          padding: 0;
+        }
+        .info {
+          /* padding-inline: var(--lunar-card-gutter, 8px); */
+          display: -ms-inline-grid;
+          display: inline-grid;
+          width: 100%;
+          backdrop-filter: blur(2px);
+        }
 
-      .info ::slotted([slot='moon-header']) {
-        min-height: var(--lpc-unit);
-      }
+        .info ::slotted([slot='moon-header']) {
+          min-height: var(--lpc-unit);
+        }
 
-      .info ::slotted([slot='moon-info']) {
-        z-index: 1;
-      }
-    `;
+        .info ::slotted([slot='moon-info']) {
+          z-index: 1;
+        }
+      `,
+    ];
   }
 }

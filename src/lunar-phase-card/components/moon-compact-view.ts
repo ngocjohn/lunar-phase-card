@@ -1,6 +1,6 @@
 import { formatDateTime, FrontendLocaleData } from 'custom-card-helpers';
 import { html, TemplateResult, CSSResultGroup, css } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 
 import { MoonData } from '../../types/config/chart-config';
 import { CardAppareance } from '../../types/config/lunar-phase-card-config';
@@ -12,7 +12,6 @@ export class LunarMoonCompactView extends LunarBaseCard {
   @property({ attribute: false }) public moonData!: MoonData;
   @property({ attribute: false }) public moonImage!: TemplateResult;
   @property({ attribute: false }) public header!: TemplateResult;
-  @state() private _minimalDataView: boolean = false;
 
   constructor() {
     super();
@@ -48,11 +47,11 @@ export class LunarMoonCompactView extends LunarBaseCard {
       `;
     };
     return html`
-      <lunar-moon-base slot="content" .store=${this.store}>
+      <lunar-moon-base>
         ${this.renderMoonImage()} ${this.header}
 
         <div class="compact-view-container" slot="moon-info">
-          <div class="moon-fraction">${moonData.moonFraction.value} ${this.store.translate('card.illuminated')}</div>
+          <div class="moon-fraction">${moonData.moonFraction!.value} ${this.store.translate('card.illuminated')}</div>
           <div class="compact-view-items">${Object.keys(items).map((key) => renderCompactItem(key))}</div>
         </div>
       </lunar-moon-base>
@@ -60,10 +59,10 @@ export class LunarMoonCompactView extends LunarBaseCard {
   }
 
   private _renderMinimalCompactView(): TemplateResult {
-    const { phaseName, nextPhase } = this.moon;
+    const { phaseName } = this.moon;
     const timeRange = this.moon._getMinimalData();
     const moonImage = this.renderMoonImage();
-    const addedData = { ...this.moonData, nextPhase };
+    const addedData = { ...this.moonData };
     const timeStr = formatDateTime(new Date(), this._locale as FrontendLocaleData);
 
     const moonDataEl = html`
@@ -137,6 +136,10 @@ export class LunarMoonCompactView extends LunarBaseCard {
     return [
       super.styles,
       css`
+        :host {
+          display: inline-grid;
+          display: -ms-inline-grid;
+        }
         .compact-view-container {
           display: flex;
           width: 100%;
@@ -180,24 +183,23 @@ export class LunarMoonCompactView extends LunarBaseCard {
         }
 
         .compact-view-minimal {
-          display: grid;
-          width: 100%;
-          grid-template-columns: 1fr 29% 1fr;
-          height: 100%;
-          padding: var(--lunar-card-gutter);
-          padding-block: initial;
+          display: inline-grid;
+          grid-template-columns: 1fr 27% 1fr;
+          /* width: 100%; */
+          /* height: 100%;
+            padding: var(--lunar-card-gutter);
+            padding-block: initial; */
         }
 
         .moon-data-minimal {
-          display: flex;
+          display: inline-grid;
           width: 100%;
           padding: var(--lunar-card-gutter);
           padding-bottom: initial;
           transition: all 300ms ease-in-out;
-          justify-content: center;
-          align-items: center;
           flex-direction: column;
           color: var(--lunar-card-label-font-color, var(--primary-text-color));
+          justify-items: center;
         }
 
         .compact-item-minimal {

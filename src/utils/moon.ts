@@ -81,13 +81,17 @@ export class Moon {
 
   get nextPhase(): MoonDataItem {
     const next = this._moonData.illumination.next;
-    const nextPhase = next.fullMoon.value < next.newMoon.value ? 'fullMoon' : 'newMoon';
-    const nextDate = new Date(next[nextPhase].value);
-    const _relativeTime = relativeTime(nextDate, this.locale);
-    const phaseName = this.localize(`card.phase.${nextPhase}`);
+    const { date, type } = next;
+    let phaseName = '';
+    if (type === 'fullMoon' || type === 'newMoon') {
+      phaseName = this.localize(`card.phase.${type}`);
+    } else {
+      phaseName = this.localize(`card.phase.${type}Moon`);
+    }
+    const _relativeTime = relativeTime(new Date(date), this.locale);
     return {
-      label: phaseName,
-      value: _relativeTime,
+      label: 'Next phase',
+      value: `${phaseName} (${_relativeTime})`,
     };
   }
 
@@ -120,6 +124,10 @@ export class Moon {
     return this.createItem(key, timeString, '', secondValue);
   };
 
+  // Helper function to format date as short time string
+  shortTime = (date: number | Date) =>
+    new Date(date).toLocaleDateString(this.lang, { weekday: 'short', month: 'short', day: 'numeric' });
+
   get moonImage(): MoonImage {
     const phaseIndex = Math.round(this._moonData.illumination.phaseValue * 31) % 31;
     const { zenithAngle, parallacticAngle } = this._moonData;
@@ -138,18 +146,23 @@ export class Moon {
   }
 
   get moonData(): MoonData {
-    const { createItem, createMoonTime, convertKmToMiles, formatNumber, localize, useMiles, lang, convertCardinal } =
-      this;
-    // Helper function to format date as short time string
-    const shortTime = (date: number | Date) =>
-      new Date(date).toLocaleDateString(lang, { weekday: 'short', month: 'short', day: 'numeric' });
+    const {
+      createItem,
+      createMoonTime,
+      convertKmToMiles,
+      formatNumber,
+      localize,
+      useMiles,
+      shortTime,
+      convertCardinal,
+    } = this;
 
     // Destructure relevant data
     const { distance, azimuthDegrees, altitudeDegrees, illumination } = this._moonData;
     const {
       fraction,
       phaseValue,
-      next: { fullMoon, newMoon },
+      next: { fullMoon, newMoon, value, type },
     } = illumination;
     const { rise, set, highest } = this._moonTime;
     // Format numeric values
@@ -162,6 +175,11 @@ export class Moon {
     };
 
     const cardinal = convertCardinal(azimuthDegrees);
+
+    const nextPhaseName =
+      type === 'fullMoon' || type === 'newMoon' ? localize(`card.phase.${type}`) : localize(`card.phase.${type}Moon`);
+    const nextPhaseTime = shortTime(value);
+
     // Construct moon data items
     return {
       moonAge: createItem('moonAge', formatted.moonAge, localize('card.relativeTime.days')),
@@ -169,13 +187,14 @@ export class Moon {
       azimuthDegress: createItem('azimuth', formatted.azimuth, '°', cardinal),
       altitudeDegrees: createItem('altitude', formatted.altitude, '°'),
       distance: createItem('distance', formatted.distance, useMiles ? 'mi' : 'km'),
+      position: createItem('position', localize(`card.${altitudeDegrees > 0 ? 'overHorizon' : 'underHorizon'}`)),
       moonRise: createMoonTime('moonRise', rise),
       moonSet: createMoonTime('moonSet', set),
       moonHighest: createMoonTime('moonHigh', new Date(highest as Date)),
       nextFullMoon: createItem('fullMoon', shortTime(fullMoon.value)),
       nextNewMoon: createItem('newMoon', shortTime(newMoon.value)),
+      nextPhase: createItem('nextPhase', `${nextPhaseName} (${nextPhaseTime})`),
       direction: createItem('azimuth', formatted.azimuth, '°', cardinal),
-      position: createItem('position', localize(`card.${altitudeDegrees > 0 ? 'overHorizon' : 'underHorizon'}`)),
     };
   }
 

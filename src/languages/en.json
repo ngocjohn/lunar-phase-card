@@ -33,6 +33,7 @@
         },
         "position": "Position",
         "direction": "Direction",
+        "nextPhase": "Next phase",
         "cardinalShort": {
             "N": "N",
             "NNE": "NNE",

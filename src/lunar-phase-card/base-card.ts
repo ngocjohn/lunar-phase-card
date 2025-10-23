@@ -104,17 +104,23 @@ export class LunarBaseCard extends LunarBaseElement {
     if (!this.config) {
       return height;
     }
-    const appearance = this._configAppearance;
-    if (appearance.compact_view === true) {
-      height += 1;
-    } else {
-      height += 2;
-    }
-    if (appearance.hide_header !== true) {
-      height += 1;
-    }
-    return height;
+    return 2; // default min-height is 100px
   }
+  // public getCardSize(): number | Promise<number> {
+  //   let height = 1; // 50px for 1 unit
+  //   if (!this.config) {
+  //     return height;
+  //   }
+  //   const appearance: CardAppareance = this._configAppearance;
+  //   if (appearance.compact_view === true) {
+  //     // min-height for compact view is 180px
+  //     height += 6;
+  //   } else {
+  //     // min-height for normal view is 245px
+  //     height += 7;
+  //   }
+  //   return height;
+  // }
 
   public renderMoonImage(): TemplateResult {
     return html`<lunar-moon-image slot="moon-pic" .imageData=${this.moon.moonImage}></lunar-moon-image>`;

@@ -16,8 +16,11 @@ export class Card extends LitElement {
 
   protected willUpdate(_changedProperties: PropertyValues): void {
     if (_changedProperties.has('cardWidth') || _changedProperties.has('cardHeight')) {
-      // const minHeight = this.cardWidth * 0.5;
-      // this.style.setProperty('min-height', `${minHeight}px`);
+      if (this.appearance.compact_view === true) {
+        return;
+      }
+      const minHeight = this.cardWidth * 0.5;
+      this.style.setProperty('min-height', `${minHeight}px`);
     }
   }
 
@@ -55,19 +58,20 @@ export class Card extends LitElement {
 
       .container {
         position: relative;
-        display: flex;
-        flex-shrink: 0;
-        flex-grow: 0;
         box-sizing: border-box;
         height: 100%;
         width: 100%;
+        display: flex;
+        align-items: center;
         flex-direction: column;
       }
 
       .container.--compact {
-        min-height: 150px;
+        min-height: 180px;
       }
-
+      /* .container {
+        min-height: 235px;
+      } */
       .container > ::slotted([slot='header']) {
         position: absolute;
         top: 0;
@@ -88,14 +92,15 @@ export class Card extends LitElement {
 
       .container > ::slotted([slot='content']) {
         position: relative;
-        display: flex;
+        /* display: flex; */
         align-items: center;
-        justify-content: center;
+        /* justify-content: center; */
         width: 100%;
-        height: 100%;
+        /* height: 100%; */
         margin-top: var(--lunar-card-header-height);
         flex: 1;
-        z-index: 1;
+        /* z-index: 1; */
+        /* padding-inline: var(--lunar-card-padding); */
       }
 
       .container.--changing-content > ::slotted([slot='content']) {

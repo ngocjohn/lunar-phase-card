@@ -25,7 +25,6 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
   protected render(): TemplateResult {
     const isToday = this.card._date.toDateString() === new Date().toDateString();
     const todayToLocale = dayFormatter(0, this._configLocale.language);
-
     return html`
       <div class="calendar-footer">
         <div class="inline-btns">
@@ -88,9 +87,7 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
       super.styles,
       css`
         .calendar-footer {
-          width: 100%;
-          box-sizing: border-box;
-          height: 40px;
+          height: 42px;
           display: flex;
           flex-direction: row;
           align-items: center;
@@ -108,7 +105,7 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
           display: flex;
           flex-direction: column;
           align-items: center;
-          line-height: 1;
+          line-height: 1.2;
           flex: 3;
         }
         .calendar-footer .date-name span {

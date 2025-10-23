@@ -9,7 +9,7 @@ import './components';
 import '../shared/moon-star-field';
 import { HomeAssistant, LovelaceCard, LovelaceCardEditor } from '../ha';
 import { Store } from '../model/store';
-import { MoonData } from '../types/config/chart-config';
+import { filterItemFromMoonData, MoonData } from '../types/config/chart-config';
 import { CSS_FONT_SIZE } from '../types/config/font-config';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 import { computeStubConfig } from '../utils/compute-stup-config';
@@ -82,13 +82,10 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
 
   get _filteredData(): MoonData {
     const hiddenItems = ['direction', ...(this.config?.hide_items || [])];
-    const replacer = (key: string, value: any) => {
-      if (hiddenItems.includes(key)) {
-        return undefined;
-      }
-      return value;
-    };
-    return JSON.parse(JSON.stringify(this.moon.moonData, replacer));
+    const dataItems = Object.fromEntries(
+      Object.entries(this.moon.moonData).filter(([key]) => !hiddenItems.includes(key))
+    );
+    return dataItems as MoonData;
   }
 
   private _measureCard() {
@@ -167,7 +164,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
         ></lunar-moon-compact-view>`
       : html` <lunar-moon-base slot="content" .activePage=${this._activePage} .store=${this.store}>
           ${moonImage} ${appearance.hide_header ? this._renderHeader('moon-header') : nothing}
-          <lunar-moon-data-info slot="moon-info" .moonData=${moonData} .chunkedLimit=${5}></lunar-moon-data-info
+          <lunar-moon-data-info slot="moon-info" .moonData=${moonData} .chunkedLimit=${6}></lunar-moon-data-info
         ></lunar-moon-base>`}`;
   }
 
@@ -184,6 +181,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
         </lunar-moon-calendar-popup>
       `;
     }
+    const moonData = filterItemFromMoonData(this._filteredData, ['position', 'nextPhase']);
     return html`
       <lunar-moon-base slot="content" .activePage=${this._activePage} .store=${this.store}>
         ${this.renderMoonImage()}
@@ -193,7 +191,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           .store=${this.store}
           .config=${this.config}
           .card=${this}
-          .moonData=${this._filteredData}
+          .moonData=${moonData}
           @popup-show=${this._handleCalendarPopup}
         ></lunar-moon-calendar-footer>
       </lunar-moon-base>

@@ -11,20 +11,29 @@ export type MoonImage = {
   southernHemisphere?: boolean;
 };
 
-export interface MoonData {
-  moonFraction: MoonDataItem;
-  moonAge: MoonDataItem;
-  moonRise: MoonDataItem;
-  moonSet: MoonDataItem;
-  moonHighest?: MoonDataItem;
-  distance: MoonDataItem;
-  azimuthDegress: MoonDataItem;
-  altitudeDegrees: MoonDataItem;
-  nextFullMoon: MoonDataItem;
-  nextNewMoon: MoonDataItem;
-  direction: MoonDataItem;
-  position: MoonDataItem;
-}
+export const MoonDataKeys = [
+  'moonFraction',
+  'moonAge',
+  'moonRise',
+  'moonSet',
+  'moonHighest',
+  'distance',
+  'azimuthDegress',
+  'altitudeDegrees',
+  'nextFullMoon',
+  'nextNewMoon',
+  'nextPhase',
+  'direction',
+  'position',
+] as const;
+
+export type MoonDataKey = (typeof MoonDataKeys)[number];
+export type MoonData = Partial<Record<MoonDataKey, MoonDataItem>>;
+
+export const filterItemFromMoonData = (moonData: MoonData, itemsToRemove: MoonDataKey[]): MoonData => {
+  const dataEntries = Object.entries(moonData).filter(([key]) => !itemsToRemove.includes(key as MoonDataKey));
+  return Object.fromEntries(dataEntries) as MoonData;
+};
 
 export type ChartColors = {
   primaryTextColor: string;
