@@ -47,22 +47,6 @@ export class LunarMoonDataInfo extends LunarBaseCard {
     `;
   }
 
-  private _chunkObject = (obj: MoonData, size: number): MoonDataItem => {
-    const keys = Object.keys(obj);
-
-    return keys.reduce((chunked: MoonDataItem, key: string, index: number) => {
-      const chunkIndex = Math.floor(index / size);
-
-      if (!chunked[chunkIndex]) {
-        chunked[chunkIndex] = {} as MoonDataItem;
-      }
-
-      chunked[chunkIndex][key] = obj[key];
-
-      return chunked;
-    }, {} as MoonDataItem);
-  };
-
   private renderItem(key: string): TemplateResult {
     const { label, value, secondValue } = this.moonData[key] as MoonDataItem;
     return html`
@@ -101,7 +85,7 @@ export class LunarMoonDataInfo extends LunarBaseCard {
 
   static get styles(): CSSResultGroup {
     return [
-      super.styles,
+      // super.styles,
       unsafeCSS(swiperStyleCss),
       css`
         :host {
@@ -110,7 +94,7 @@ export class LunarMoonDataInfo extends LunarBaseCard {
           padding: 0;
           margin: 0;
           overflow: hidden;
-          --swiper-theme-color: var(--lunar-card-label-font-color, var(--primary-text-color));
+          --swiper-theme-color: var(--lpc-label-font-color, var(--primary-text-color));
         }
         section {
           display: block;
@@ -136,6 +120,14 @@ export class LunarMoonDataInfo extends LunarBaseCard {
         }
 
         .swiper-pagination {
+          bottom: 0 !important;
+          left: 0 !important;
+          width: 100% !important;
+          height: min-content !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          padding-block: 4px !important;
           position: relative !important;
         }
 
@@ -160,7 +152,7 @@ export class LunarMoonDataInfo extends LunarBaseCard {
         .moon-data-item {
           display: inline-flex;
           border-bottom: 0.5px solid rgba(from var(--secondary-text-color) r g b / 0.2);
-          padding: 0.25rem 0;
+          padding-block: 2px;
           width: 100%;
         }
 
@@ -171,14 +163,14 @@ export class LunarMoonDataInfo extends LunarBaseCard {
 
         .moon-data-item > span.label {
           display: flex;
-          color: var(--lunar-card-label-font-color);
+          color: var(--lpc-label-font-color, var(--primary-text-color));
           white-space: nowrap;
           margin-inline: 0 auto;
         }
 
         .moon-data-item > .value {
           display: inline-flex;
-          color: var(--lunar-card-label-font-color);
+          color: var(--lpc-label-font-color, var(--primary-text-color));
           font-weight: 500;
           white-space: nowrap !important;
           align-items: center;

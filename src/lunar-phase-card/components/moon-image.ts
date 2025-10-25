@@ -34,9 +34,13 @@ export class LunarMoonImage extends LunarBaseElement {
         this._focused = false;
       });
 
-      this._imgElement.addEventListener('touchstart', () => {
-        this._touchStarted = true;
-      });
+      this._imgElement.addEventListener(
+        'touchstart',
+        () => {
+          this._touchStarted = true;
+        },
+        { passive: true }
+      );
 
       this._imgElement.addEventListener('touchend', () => {
         setTimeout(() => {

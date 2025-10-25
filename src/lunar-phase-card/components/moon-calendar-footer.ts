@@ -125,9 +125,9 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
           transition: transform 0.3s ease-in-out;
         }
 
-        .calendar-footer[active] {
+        /* .calendar-footer[active] {
           margin-bottom: var(--lunar-card-gutter);
-        }
+        } */
 
         .footer-content {
           display: grid;

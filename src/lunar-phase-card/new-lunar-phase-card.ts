@@ -15,6 +15,7 @@ import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 import { computeStubConfig } from '../utils/compute-stup-config';
 import { registerCustomCard } from '../utils/custom-card-register';
 import { debounce } from '../utils/debounce';
+import { applyTheme } from '../utils/ha-helper';
 import { Moon } from '../utils/moon';
 import { LunarBaseCard } from './base-card';
 import { LunarMoonCalendarFooter } from './components';
@@ -88,6 +89,12 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     }
   }
 
+  protected willUpdate(_changedProperties: PropertyValues): void {
+    super.willUpdate(_changedProperties);
+    if ((_changedProperties.has('config') && this.config.custom_theme) || this.config.theme_mode) {
+      applyTheme(this, this.hass, this.config.custom_theme!, this.config.theme_mode);
+    }
+  }
   protected updated(_changedProperties: PropertyValues): void {
     super.updated(_changedProperties);
     if (_changedProperties.has('_activePage')) {
@@ -359,6 +366,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           background-position: center;
           background-repeat: no-repeat;
           background-image: var(--lpc-bg-image);
+          --primary-text-color: var(--lpc-label-font-color, #e1e1e1);
         }
       `,
     ];

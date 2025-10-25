@@ -36,27 +36,39 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
     const backgroundClass = this._configAppearance?.hide_background ? '' : '--background';
     const viewDate = this.viewDate;
     const monthLocale = viewDate.setLocale(this.card._locale.language).toFormat('LLLL');
+    const isThisMonth = viewDate.hasSame(DateTime.local(), 'month') && viewDate.hasSame(DateTime.local(), 'year');
 
-    const renderNavButton = (icon: string, action: () => void): TemplateResult => html`
-      <ha-icon-button .path=${icon} @click=${action}></ha-icon-button>
+    const renderNavButton = (icon: string, type: 'months' | 'years', action: 'prev' | 'next'): TemplateResult => html`
+      <ha-icon-button .path=${icon} @click=${this._updateCalendarDate.bind(this, type, action)}></ha-icon-button>
     `;
 
     return html`
       <div id="lunar-calendar" class=${backgroundClass}>
         <div class="calendar-header">
-          ${renderNavButton(ICON.CLOSE, () => {
-            this._dispatchEvent('close', {});
-            this.viewDate = DateTime.local().startOf('month');
-          })}
-          <div class="calendar-header__year">
-            ${renderNavButton(ICON.LEFT, () => this._updateCalendarDate('years', 'prev'))}
+          <ha-icon-button
+            .path=${ICON.CLOSE}
+            @click=${() => {
+              this._dispatchEvent('close', {});
+              this.viewDate = DateTime.local().startOf('month');
+            }}
+          >
+          </ha-icon-button>
+          <ha-icon-button
+            .path=${ICON.RESTORE}
+            ?disabled=${isThisMonth}
+            @click=${() => (this.viewDate = DateTime.local().startOf('month'))}
+          >
+          </ha-icon-button>
+          <div class="calendar-header__btns">
+            ${renderNavButton(ICON.LEFT, 'years', 'prev')}
             <span>${viewDate.year}</span>
-            ${renderNavButton(ICON.RIGHT, () => this._updateCalendarDate('years', 'next'))}
+            ${renderNavButton(ICON.RIGHT, 'years', 'next')}
           </div>
-          <div class="calendar-header__month">
-            ${renderNavButton(ICON.LEFT, () => this._updateCalendarDate('months', 'prev'))}
+          <div class="spacer"></div>
+          <div class="calendar-header__btns">
+            ${renderNavButton(ICON.LEFT, 'months', 'prev')}
             <span>${monthLocale}</span>
-            ${renderNavButton(ICON.RIGHT, () => this._updateCalendarDate('months', 'next'))}
+            ${renderNavButton(ICON.RIGHT, 'months', 'next')}
           </div>
         </div>
         ${this._renderCalendarGrid()}
@@ -72,7 +84,7 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
     const firstOfMonth = viewDate.startOf('month');
     const numberOfFillerDays = (firstOfMonth.weekday - 1 + 7) % 7;
 
-    const dayOfWeek = daysOfWeek.map((day) => html`<div class="day-of-week">${day}</div>`);
+    const dayOfWeek = daysOfWeek.map((day) => html`<div class="day-of-week"><span>${day}</span></div>`);
 
     // Empty divs with total number of filler days
 
@@ -87,13 +99,14 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
 
       return html`
         <div
-          title="${moonPhase}"
+          id="calendar-day-${day}"
           class=${dayClass}
           @click=${() => this._dispatchEvent('date-select', { date: date.toJSDate() })}
         >
-          <div class="day-num">${label}</div>
-          <div class="day-symbol">${moonPhaseIcon}</div>
+          <span>${label}</span>
+          <span class="day-symbol">${moonPhaseIcon}</span>
         </div>
+        <ha-tooltip .for=${`calendar-day-${day}`}>${moonPhase}</ha-tooltip>
       `;
     };
 
@@ -159,38 +172,32 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
         }
 
         .calendar-header {
-          /* padding: 0.25em 0.5em; */
-          display: flex;
-          flex-direction: row;
+          display: inline-flex;
           justify-content: space-between;
           align-items: center;
-          /* font-weight: 600; */
+          width: 100%;
           font-size: initial;
         }
 
-        .calendar-header__month {
+        .calendar-header__btns {
           display: flex;
+          flex-direction: row;
           align-items: center;
-          justify-content: end;
-          flex-grow: 1; /* Allows the month section to take up remaining space */
-          text-align: center;
+        }
+        .calendar-header__btns span {
+          flex: 0 0 auto;
+          text-transform: capitalize;
         }
 
-        .calendar-header__month span {
-          margin: 0 0.5rem; /* Adds spacing around the month name */
-        }
-
-        .calendar-header__year {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
+        .spacer {
+          flex: 1;
         }
 
         #calendar-grid {
           display: grid;
           grid-template-columns: repeat(7, 1fr);
           /* grid-template-rows: repeat(7, 1fr); */
-          padding: 0.3em;
+          padding: 4px;
           cursor: default;
           /* gap: 2px 4px; */
         }
@@ -202,34 +209,49 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
           align-items: center;
           text-transform: uppercase;
           color: var(--secondary-text-color);
+          line-height: 2;
+          margin-bottom: 4px;
+        }
+        .day-of-week span {
+          background-color: rgba(from var(--secondary-text-color) r g b / 0.1);
+          width: calc(100% - 1px);
         }
 
         .calendar-day {
-          text-align: center;
-          font-size: 1em;
-          margin: auto auto;
+          display: flex;
+          width: calc(100% - 2px);
+          height: calc(100% - 2px);
           border-radius: 0.25em;
+          border: 1px solid transparent;
           background-color: rgba(0, 0, 0, 0.14);
-          width: 100%;
           cursor: default !important;
+          transition:
+            background-color 0.3s,
+            border 0.3s;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-end;
         }
         .calendar-day:hover {
-          background-color: rgba(0, 0, 0, 0.2);
-          outline: 2px solid var(--accent-color);
-        }
-        .calendar-day > .day-num {
-          text-align: right;
-          padding-inline-end: 0.2rem;
+          background-color: rgba(from var(--secondary-text-color) r g b / 0.1);
+          border: 1px solid var(--accent-color);
         }
 
         .calendar-day.today {
-          outline: 1px solid var(--accent-color);
+          border: 1px solid var(--primary-color);
+        }
+        .calendar-day > span {
+          padding-inline-end: 4px;
         }
 
-        .calendar-day > .day-symbol {
-          font-size: 1.5em;
-          padding: 0.05em;
-          text-align: center;
+        .calendar-day span.day-symbol {
+          font-size: var(--ha-font-size-xl, 20px);
+          place-self: center !important;
+          min-height: 36px;
+        }
+
+        ha-icon-button[disabled] {
+          opacity: 0.1;
         }
 
         ha-icon-button {

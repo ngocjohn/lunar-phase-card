@@ -112,11 +112,10 @@ export class LunarMoonBase extends LunarBaseCard {
           padding: 0;
         }
         .info {
-          /* padding-inline: var(--lunar-card-gutter, 8px); */
-          display: -ms-inline-grid;
           display: inline-grid;
+          grid-template-rows: auto auto;
+          align-content: space-evenly;
           width: 100%;
-          backdrop-filter: blur(2px);
         }
 
         .info ::slotted([slot='moon-header']) {

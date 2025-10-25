@@ -209,7 +209,7 @@ export class LunarMoonCompactView extends LunarBaseCard {
           display: inline-grid;
           width: 100%;
           padding: var(--lunar-card-gutter);
-          padding-bottom: initial;
+          /* padding-bottom: initial; */
           transition: all 300ms ease-in-out;
           flex-direction: column;
           color: var(--lunar-card-label-font-color, var(--primary-text-color));
