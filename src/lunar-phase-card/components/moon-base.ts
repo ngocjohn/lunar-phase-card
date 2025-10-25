@@ -1,5 +1,5 @@
 import { html, css, TemplateResult, CSSResultGroup } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -11,23 +11,40 @@ import { LunarBaseCard } from '../base-card';
 export class LunarMoonBase extends LunarBaseCard {
   constructor() {
     super(CardArea.BASE);
+    window.LunarMoonBase = this;
   }
+
   @property({ type: String, reflect: true }) public activePage?: SECTION;
+  @state() private _cardWidth = 0;
+  @state() private _cardOffsetTop = 0;
+  @state() private _cardHeight = 0;
+
+  private get _isCompactView(): boolean {
+    return this.appearance?.compact_view === true;
+  }
+
+  protected firstUpdated(): void {
+    this._measureCard();
+    new ResizeObserver(() => this._measureCard()).observe(this);
+  }
+
+  private _measureCard() {
+    const { offsetWidth: width, offsetHeight: height, offsetTop: top } = this;
+    this._cardWidth = width;
+    this._cardOffsetTop = top;
+    this._cardHeight = height;
+  }
 
   protected render(): TemplateResult {
-    const moonPicStyles = {
-      maxWidth: 'calc(calc(100%/3.1) - var(--lunar-card-gutter))',
-      width: '100%',
-      height: 'auto',
-    };
     return html`
       <div
         class=${classMap({
           content: true,
+          '--compact-view': this._isCompactView,
           '--vertical': this.activePage === SECTION.CALENDAR,
         })}
       >
-        <div class="moon-pic" style=${styleMap(moonPicStyles)}>
+        <div class="moon-pic" style=${this._computeMoonPicStyle()}>
           <slot name="moon-pic"></slot>
         </div>
         <div class="info">
@@ -38,6 +55,22 @@ export class LunarMoonBase extends LunarBaseCard {
     `;
   }
 
+  private _computeMoonPicStyle() {
+    if (this._isCompactView) {
+      return;
+    }
+
+    const width = this._cardWidth;
+    const offsetTop = this._cardOffsetTop;
+    const availableHeight = width * 0.5 - offsetTop;
+    const moonSize = Math.min(width / 3.2, availableHeight, 150);
+    // console.debug('moonSize calculation:', { width, offsetTop, availableHeight, moonSize });
+
+    return styleMap({
+      'max-width': `${moonSize}px`,
+    });
+  }
+
   static get styles(): CSSResultGroup {
     return [
       super.styles,
@@ -45,23 +78,35 @@ export class LunarMoonBase extends LunarBaseCard {
         :host {
           display: block;
         }
+
         .content {
           display: flex;
-          align-items: stretch;
           gap: var(--lunar-card-gutter);
           padding-inline: var(--lunar-card-padding);
+          min-height: var(--lpc-content-min-height, initial);
         }
+
         .content.--vertical {
-          flex-direction: column;
-          align-items: center;
-          padding: 0 !important;
+          display: grid;
+          padding: 0px !important;
+          align-items: end;
+          justify-items: center;
+          gap: calc(var(--lunar-card-gutter) * 0.5);
+          /* min-height: inherit; */
+        }
+        .content.--compact-view > .moon-pic {
+          max-width: calc(100% / 3.5);
         }
 
         .moon-pic {
+          /* max-width: 150px; */
+          width: 100%;
+          height: auto;
           display: flex;
-          justify-content: center;
           align-items: center;
+          justify-content: center;
         }
+
         .content.--vertical .info {
           width: 100%;
           padding: 0;

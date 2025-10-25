@@ -17,7 +17,7 @@ import { registerCustomCard } from '../utils/custom-card-register';
 import { debounce } from '../utils/debounce';
 import { Moon } from '../utils/moon';
 import { LunarBaseCard } from './base-card';
-import { Card, LunarHeader, LunarMoonBase, LunarMoonCalendarFooter } from './components';
+import { LunarMoonCalendarFooter } from './components';
 import { COMPONENT, LUNAR_PHASE_CARD_EDITOR_NEW_NAME, LUNAR_PHASE_CARD_NEW_NAME } from './const';
 import { DEFAULT_BG_URL } from './css/card-styles';
 
@@ -42,21 +42,23 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     };
   }
 
+  @state() private _state: MoonState = MoonState.READY;
   @state() private _activePage: SECTION = SECTION.BASE;
   @state() private _cardWidth = 0;
   @state() private _cardHeight = 0;
-  @state() _calendarPopup: boolean = false;
+  @state() _cardReady: boolean = false;
   @state() _selectedDate?: Date;
-  @state() private _state: MoonState = MoonState.READY;
-  @query(COMPONENT.HEADER) _elHeader!: LunarHeader;
-  @query(COMPONENT.CARD) _elCard!: Card;
-  @query(COMPONENT.BASE) _elBase!: LunarMoonBase;
+
+  @state() _calendarPopup: boolean = false;
   @query(COMPONENT.CALENDAR) _elCalendar!: LunarMoonCalendarFooter;
 
   private _resizeObserver?: ResizeObserver;
 
   public setConfig(config: LunarPhaseCardConfig): void {
     super.setConfig(config);
+    this._cardReady = false;
+    this._activePage = this.config?.default_section || SECTION.BASE;
+    this._cardReady = true;
     this.updateComplete.then(() => this._measureCard());
   }
 
@@ -66,11 +68,32 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     this.updateComplete.then(() => this._attachObserver());
   }
 
+  private async _attachObserver(): Promise<void> {
+    if (!this._resizeObserver) {
+      this._resizeObserver = new ResizeObserver(debounce(() => this._measureCard(), 250));
+    }
+    const card = this.shadowRoot!.querySelector('ha-card');
+    // If we show an error or warning there is no ha-card
+    if (!card) {
+      return;
+    }
+    this._resizeObserver.observe(card);
+  }
+
+  public disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+    }
+  }
+
   protected updated(_changedProperties: PropertyValues): void {
     super.updated(_changedProperties);
     if (_changedProperties.has('_activePage')) {
       const oldPage = _changedProperties.get('_activePage') as SECTION;
       if (oldPage && oldPage !== this._activePage && this._selectedDate) {
+        console.debug('Reset selected date on page change');
         this._selectedDate = undefined;
       }
     }
@@ -93,31 +116,13 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     if (!card) {
       return;
     }
-    this._cardWidth = card.offsetWidth;
-    this._cardHeight = card.offsetHeight;
+    this._cardWidth = card.clientWidth;
+    this._cardHeight = card.clientHeight;
+    // console.debug('Measured card size:', this._cardWidth, this._cardHeight);
   }
 
-  private async _attachObserver(): Promise<void> {
-    if (!this._resizeObserver) {
-      this._resizeObserver = new ResizeObserver(debounce(() => this._measureCard(), 250, false));
-    }
-    const card = this.shadowRoot!.querySelector('ha-card');
-    // If we show an error or warning there is no ha-card
-    if (!card) {
-      return;
-    }
-    this._resizeObserver.observe(card);
-  }
-
-  public disconnectedCallback(): void {
-    super.disconnectedCallback();
-
-    if (this._resizeObserver) {
-      this._resizeObserver.disconnect();
-    }
-  }
   protected render(): TemplateResult {
-    if (!this.config || !this.hass) {
+    if (!this.config || !this.hass || !this._cardReady) {
       return html``;
     }
     // create store if not exists
@@ -136,7 +141,6 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           .activePage=${this._activePage}
           .changingContent=${this._state === MoonState.CONTENT_CHANGING}
         >
-          ${!appearance.hide_header ? this._renderHeader('header') : nothing}
           ${choose(this._activePage, [
             [SECTION.BASE, () => this._renderBaseSection()],
             [SECTION.CALENDAR, () => this._renderCalendarSection()],
@@ -152,6 +156,8 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     const appearance = this._configAppearance;
     const moonData = this._filteredData;
     const moonImage = this.renderMoonImage();
+    const isButtonHidden = appearance.hide_buttons === true;
+    const chunkLimit = this._cardWidth > 460 ? 6 : undefined;
     return html` ${appearance.compact_view === true
       ? html` <lunar-moon-compact-view
           .moonData=${moonData}
@@ -159,13 +165,24 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           .store=${this.store}
           .config=${this.config}
           .hass=${this.hass}
-          .header=${this._renderHeader('moon-header')}
+          .appearance=${appearance}
+          .header=${this._renderHeader('moon-header', this.moon.phaseName, isButtonHidden)}
           slot="content"
         ></lunar-moon-compact-view>`
-      : html` <lunar-moon-base slot="content" .activePage=${this._activePage} .store=${this.store}>
-          ${moonImage} ${appearance.hide_header ? this._renderHeader('moon-header') : nothing}
-          <lunar-moon-data-info slot="moon-info" .moonData=${moonData} .chunkedLimit=${6}></lunar-moon-data-info
-        ></lunar-moon-base>`}`;
+      : html` ${!isButtonHidden ? this._renderHeader('header') : nothing}
+          <lunar-moon-base
+            slot="content"
+            .activePage=${this._activePage}
+            .appearance=${appearance}
+            .store=${this.store}
+          >
+            ${moonImage} ${isButtonHidden ? this._renderHeader('moon-header', undefined, true) : nothing}
+            <lunar-moon-data-info
+              slot="moon-info"
+              .moonData=${moonData}
+              .chunkedLimit=${chunkLimit}
+            ></lunar-moon-data-info
+          ></lunar-moon-base>`}`;
   }
 
   private _renderCalendarSection(): TemplateResult {
@@ -183,6 +200,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     }
     const moonData = filterItemFromMoonData(this._filteredData, ['position', 'nextPhase']);
     return html`
+      ${this._renderHeader('header')}
       <lunar-moon-base slot="content" .activePage=${this._activePage} .store=${this.store}>
         ${this.renderMoonImage()}
         <lunar-moon-calendar-footer
@@ -219,6 +237,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
 
   private _renderHorizonSection(): TemplateResult {
     return html`
+      ${this._renderHeader('header')}
       <lunar-moon-chart-dynamic
         slot="content"
         .hass=${this.hass}
@@ -226,21 +245,28 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
         .config=${this.config}
         .moon=${this.moon}
         .cardWidth=${this._cardWidth}
-        .cardHeight=${this._cardHeight}
       ></lunar-moon-chart-dynamic>
     `;
   }
 
-  public _renderHeader(slot?: string): TemplateResult {
+  public _renderHeader(slot?: string, title?: string, force: boolean = false): TemplateResult {
     const appearance = this._configAppearance;
+    if (appearance.hide_buttons === true && !force) {
+      return html``;
+    }
+
+    if (!title) {
+      title = this.moon.phaseName;
+    }
     return html`
       <lunar-phase-header
         slot=${slot}
         .activePage=${this._activePage}
-        .moonName=${this.moon.phaseName}
-        .hideButtons=${appearance.hide_header || appearance.hide_buttons}
+        .moonName=${title}
+        .hideButtons=${appearance.hide_buttons}
         .store=${this.store}
         .config=${this.config}
+        ._buttonDisabled=${this._state === MoonState.CONTENT_CHANGING}
         @change-section=${this._handleChangeSection.bind(this)}
       ></lunar-phase-header>
     `;
@@ -262,17 +288,14 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     this.moon = new Moon(initData);
   }
 
-  private _handleChangeSection(ev: CustomEvent): void {
+  private _handleChangeSection(ev: CustomEvent) {
     ev.stopPropagation();
     const section = ev.detail.section;
-    if (section === this._activePage) {
-      return;
-    }
     this._state = MoonState.CONTENT_CHANGING;
     this._activePage = section;
     setTimeout(() => {
       this._state = MoonState.READY;
-    }, 300);
+    }, 500);
   }
 
   private _computeClasses() {
@@ -293,8 +316,8 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     // header styles
     const { _configHeaderStyles, _configLabelStyles } = this;
     Object.entries({ ..._configHeaderStyles, ..._configLabelStyles }).forEach(([key, value]) => {
-      if (value !== undefined) {
-        styles[`--lpc-${key.replace(/_/g, '-')}`] = CSS_FONT_SIZE[value] || value;
+      if (value !== undefined || value !== null || !['auto', 'none'].includes(value as string)) {
+        styles[`--lpc-${key.replace(/_/g, '-')}`] = CSS_FONT_SIZE[value];
       }
     });
 
@@ -336,8 +359,6 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           background-position: center;
           background-repeat: no-repeat;
           background-image: var(--lpc-bg-image);
-          transition: all 0.5s ease;
-          border: none;
         }
       `,
     ];

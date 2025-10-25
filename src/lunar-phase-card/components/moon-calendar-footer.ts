@@ -6,6 +6,7 @@ import './moon-data-info';
 import { ICON } from '../../const';
 import { fireEvent } from '../../ha';
 import { dayFormatter } from '../../localize/localize';
+import { CardArea } from '../../types/card-area';
 import { MoonData } from '../../types/config/chart-config';
 import { LunarBaseCard } from '../base-card';
 import { LunarPhaseNewCard } from '../new-lunar-phase-card';
@@ -18,6 +19,10 @@ declare global {
 
 @customElement('lunar-moon-calendar-footer')
 export class LunarMoonCalendarFooter extends LunarBaseCard {
+  constructor() {
+    super(CardArea.FOOTER);
+    window.LunarCalendarFooter = this;
+  }
   @property({ attribute: false }) public moonData!: MoonData;
   @property({ attribute: false }) private card!: LunarPhaseNewCard;
   @property({ type: Boolean }) public _footerActive = false;
@@ -26,7 +31,7 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
     const isToday = this.card._date.toDateString() === new Date().toDateString();
     const todayToLocale = dayFormatter(0, this._configLocale.language);
     return html`
-      <div class="calendar-footer">
+      <div class="calendar-footer" ?active=${this._footerActive}>
         <div class="inline-btns">
           <ha-icon-button .path=${ICON.CALENDAR} @click="${() => this._handleCalendarPopup()}"> </ha-icon-button>
           <ha-icon-button
@@ -77,7 +82,6 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
   }
 
   private _handleCalendarPopup() {
-    console.log('Calendar popup clicked');
     // Implement calendar popup logic here
     fireEvent(this, 'popup-show');
   }
@@ -87,7 +91,7 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
       super.styles,
       css`
         .calendar-footer {
-          height: 42px;
+          height: var(--lpc-unit);
           display: flex;
           flex-direction: row;
           align-items: center;
@@ -105,7 +109,7 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
           display: flex;
           flex-direction: column;
           align-items: center;
-          line-height: 1.2;
+          line-height: 1.1;
           flex: 3;
         }
         .calendar-footer .date-name span {
@@ -121,17 +125,27 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
           transition: transform 0.3s ease-in-out;
         }
 
+        .calendar-footer[active] {
+          margin-bottom: var(--lunar-card-gutter);
+        }
+
         .footer-content {
           display: grid;
           overflow: hidden;
           max-height: 0;
-          transition: all 0.3s ease-out;
           padding-inline: 0;
+          opacity: 0;
+          transition: all 0.3s ease-out;
         }
+
         .footer-content[active] {
           max-height: 300px;
-          transition: all 0.3s ease-in;
-          padding-inline: var(--lunar-card-padding, 12px);
+          opacity: 1;
+          padding-inline: var(--lunar-card-padding);
+          transition: all 0.5s ease-in;
+          /* padding-top: var(--lunar-card-gutter); */
+
+          /* margin-top: var(--lunar-card-gutter); */
         }
       `,
     ];

@@ -1,4 +1,4 @@
-import { html, css, LitElement, CSSResultGroup, PropertyValues, TemplateResult } from 'lit';
+import { html, css, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import type { Container } from '@tsparticles/engine';
@@ -10,8 +10,8 @@ export class LunarStarField extends LitElement {
   private _isLoaded = false;
 
   private _particleContainer?: Container;
-  private static _tsParticles?: typeof import('@tsparticles/engine').tsParticles;
-  private static _presetLoaded = false;
+  static _tsParticles?: typeof import('@tsparticles/engine').tsParticles;
+  static _presetLoaded = false;
 
   private static async _ensureParticlesEngine(): Promise<typeof import('@tsparticles/engine').tsParticles> {
     if (!this._tsParticles) {
@@ -278,7 +278,7 @@ export class LunarStarField extends LitElement {
     // console.log(`Particles loaded for container: ${this._id}`);
   }
 
-  static get styles(): CSSResultGroup {
+  static get styles() {
     return [
       css`
         :host {

@@ -29,6 +29,7 @@ export const style = css`
   *::before,
   *::after {
     box-sizing: border-box;
+    transition: none;
   }
   *[hidden] {
     display: none !important;

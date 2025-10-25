@@ -4,6 +4,7 @@ import { DateTime, WeekdayNumbers } from 'luxon';
 
 import { ICON } from '../../const';
 import { fireEvent } from '../../ha';
+import { CardArea } from '../../types/card-area';
 import { LunarBaseCard } from '../base-card';
 import { LunarPhaseNewCard } from '../new-lunar-phase-card';
 
@@ -18,6 +19,10 @@ declare global {
 
 @customElement('lunar-moon-calendar-popup')
 export class LunarMoonCalendarPopup extends LunarBaseCard {
+  constructor() {
+    super(CardArea.POPUP);
+    window.LunarPopup = this;
+  }
   @property({ attribute: false }) public card!: LunarPhaseNewCard;
   @state() private viewDate = DateTime.local().startOf('month');
 

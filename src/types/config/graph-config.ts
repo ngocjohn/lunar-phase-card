@@ -22,3 +22,16 @@ export interface GraphConfig {
   legend_align?: LegendAlign;
   time_step_size?: number;
 }
+
+export const CHART_FILL_COLORS = {
+  default: {
+    color: 'var(--divider-color)',
+    bellow: 'rgba(0,0,0,0.05)',
+    'line-bellow': 'var(--divider-color)',
+  },
+  with_background: {
+    color: 'rgba(255,255,255,0.12157)',
+    bellow: '#e1e0dd0f',
+    'line-bellow': '#e1e0dd30',
+  },
+};

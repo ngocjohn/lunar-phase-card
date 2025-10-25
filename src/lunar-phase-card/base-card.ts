@@ -16,17 +16,22 @@ import {
 import { AppareanceKeys, CardAppareance, LunarPhaseCardConfig, Section } from '../types/config/lunar-phase-card-config';
 import { FrontendLocaleDataExtended, LatLon } from '../types/config/types';
 import { migrateConfig } from '../types/utils';
+import * as Chunk from '../utils/chunk-object';
+import './components/moon-image';
 import { Moon } from '../utils/moon';
 import { LunarBaseElement } from './base-element';
-import './components/moon-image';
 
 export class LunarBaseCard extends LunarBaseElement {
   @property({ attribute: false }) protected store!: Store;
   @property({ attribute: false }) protected moon!: Moon;
+  @property({ attribute: false }) public appearance?: CardAppareance;
   @state() protected config!: LunarPhaseCardConfig;
   @state() _initSection: Section = SECTION.BASE;
 
+  @property({ attribute: false }) _chunk = Chunk;
+
   protected _cardArea?: CardArea;
+
   constructor(cardArea?: CardArea) {
     super();
     if (cardArea) {
@@ -104,23 +109,8 @@ export class LunarBaseCard extends LunarBaseElement {
     if (!this.config) {
       return height;
     }
-    return 2; // default min-height is 100px
+    return 1;
   }
-  // public getCardSize(): number | Promise<number> {
-  //   let height = 1; // 50px for 1 unit
-  //   if (!this.config) {
-  //     return height;
-  //   }
-  //   const appearance: CardAppareance = this._configAppearance;
-  //   if (appearance.compact_view === true) {
-  //     // min-height for compact view is 180px
-  //     height += 6;
-  //   } else {
-  //     // min-height for normal view is 245px
-  //     height += 7;
-  //   }
-  //   return height;
-  // }
 
   public renderMoonImage(): TemplateResult {
     return html`<lunar-moon-image slot="moon-pic" .imageData=${this.moon.moonImage}></lunar-moon-image>`;

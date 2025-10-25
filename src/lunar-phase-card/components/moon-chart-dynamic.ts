@@ -8,23 +8,39 @@ import tinycolor from 'tinycolor2';
 
 // Local imports
 import { CHART_COLOR, CHART_DATA } from '../../const';
+import { CardArea } from '../../types/card-area';
 import { FILL_COLORS } from '../../types/config/chart-config';
+import { CHART_FILL_COLORS } from '../../types/config/graph-config';
 import extract_color from '../../utils/extract_color';
 import { hexToRgba } from '../../utils/helpers';
 import { LunarBaseCard } from '../base-card';
 
 @customElement('lunar-moon-chart-dynamic')
 export class LunarMoonChartDynamic extends LunarBaseCard {
+  constructor() {
+    super(CardArea.DYNAMIC);
+    window.LunarChartDynamic = this;
+  }
+
   @property({ attribute: false }) public cardWidth!: number;
   @state() fillColors!: FILL_COLORS;
   @state() dynamicChart!: Chart;
   @state() tinyColor = tinycolor;
   @state() cardHeight = 0;
+  @state() _chartInitialized = false;
 
+  public connectedCallback(): void {
+    super.connectedCallback();
+    if (this.isConnected) {
+      this._computeDynamicStyles();
+    }
+  }
   protected async firstUpdated(): Promise<void> {
     this.fillColors = await this.extractColorData();
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    this.initChart();
+    await new Promise((resolve) => setTimeout(resolve, 0)); // Wait for next frame
+    if (this.fillColors) {
+      this.initChart();
+    }
   }
 
   protected shouldUpdate(_changedProperties: PropertyValues): boolean {
@@ -39,10 +55,11 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
   }
 
   protected updated(_changedProperties: PropertyValues): void {
-    if (!this.config || !this.moon) return;
-    if (_changedProperties.has('cardWidth')) {
+    if (_changedProperties.has('cardWidth') || _changedProperties.has('cardHeight')) {
       if (this.dynamicChart) {
+        // console.debug('Dynamic chart updated - resizing chart:', this.cardWidth, this.cardHeight);
         this.dynamicChart.resize(this.cardWidth, this.cardHeight);
+        this.dynamicChart.update('none');
       }
     }
   }
@@ -75,7 +92,7 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
     const cssColors = getComputedStyle(this) as CSSStyleDeclaration;
     const property = (name: string) => cssColors.getPropertyValue(name).trim();
     return {
-      PRIMARY_TEXT: property('--lunar-card-label-font-color'),
+      PRIMARY_TEXT: property('--lunar-card-label-font-color') || property('--primary-text-color'),
       SECONDARY_TEXT: property('--secondary-text-color'),
       DEFAULT_PRIMARY_COLOR: property('--primary-color'),
       MOON_LINE_LIGHT: property('--lunar-fill-line-bellow-color'),
@@ -88,9 +105,11 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
 
   private initChart(): void {
     if (this.dynamicChart) {
-      this.dynamicChart.destroy();
+      console.debug('chart already initialized, skipping...');
+      return;
+      // this.dynamicChart.destroy();
     }
-
+    console.debug('Initializing dynamic chart...');
     const data = this.chartData;
     const options = this.chartOptions;
     const plugins = this.chartPlugins;
@@ -110,12 +129,14 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
       },
       plugins: plugins,
     });
+    this._chartInitialized = true;
   }
 
   private _onChartTouchStart(event: TouchEvent): void {
     event.preventDefault();
   }
   private _onChartTouchEnd(event: TouchEvent): void {
+    event.stopPropagation();
     const touch = event.changedTouches[0];
     const canvas = this.shadowRoot!.getElementById('dynamic-chart') as HTMLCanvasElement;
     const chart = this.dynamicChart;
@@ -127,19 +148,20 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
   }
 
   protected render(): TemplateResult {
-    const useBackground = !this.config?.hide_background;
     let height = this.cardWidth * 0.5;
-    const paddingTop = this._configAppearance?.hide_header ? 0 : 36;
+    height = this._configAppearance?.hide_buttons ? height : height - 43;
+    this.cardHeight = height;
+    const useBackground = !this.config?.hide_background;
     return html`
-      <div id="horizon-dynamic-chart" style="--lp-chart-padding-top: ${paddingTop}px">
+      <div id="horizon-dynamic-chart">
         ${useBackground ? html` <div id="blur-overlay"></div>` : nothing}
-        <canvas id="dynamic-chart" width="${this.cardWidth}" height="${height}"></canvas>
+        <canvas id="dynamic-chart" width="${this.cardWidth}" height="${this.cardHeight}"></canvas>
       </div>
     `;
   }
 
   private _getChartData(): ChartData {
-    const isBackground = !this.config?.hide_background;
+    const isBackground = this.config?.hide_background !== true;
     const SHARED_OPTIONS = {
       pointRadius: 0,
       pointHoverRadius: 4,
@@ -280,7 +302,7 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
     };
     options.responsive = true;
     options.maintainAspectRatio = false;
-    options.resizeDelay = 100;
+    options.resizeDelay = 0;
     // options.devicePixelRatio = 2;
     options.layout = layout;
     options.scales = scales;
@@ -589,8 +611,11 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
       nextDay: CHART_COLOR.NEXTDAY_FILL,
       fillAbove: CHART_COLOR.FILL_ABOVE,
     };
+    if (this.config?.hide_background) {
+      return defaultColors;
+    }
     const custom_background = this.config?.custom_background;
-    if (!custom_background || this.config?.hide_background) {
+    if (!custom_background) {
       return defaultColors;
     }
 
@@ -602,7 +627,22 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
       return defaultColors;
     }
   }
-
+  protected _computeDynamicStyles() {
+    const appearance = this._configAppearance;
+    const fillKey = appearance?.hide_background === true ? 'default' : 'with_background';
+    const fillColors = CHART_FILL_COLORS[fillKey];
+    const styles: Record<string, string> = {};
+    Object.entries(fillColors).forEach(([key, value]) => {
+      if (key === 'color') {
+        styles[`--lunar-fill-color`] = value;
+      } else {
+        styles[`--lunar-fill-${key}-color`] = value;
+      }
+    });
+    Object.entries(styles).forEach(([key, value]) => {
+      this.style.setProperty(key, value);
+    });
+  }
   static get styles(): CSSResultGroup {
     return [
       super.styles,
@@ -610,7 +650,7 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
         #horizon-dynamic-chart {
           display: block;
           position: relative;
-          /* margin: 0 auto; */
+          margin: 0 auto;
           width: 100%;
           height: 100%;
           max-width: 1800px;
@@ -619,13 +659,33 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
           overflow: hidden;
         }
 
+        #horizon-dynamic-chart.blur-background::before {
+          content: '';
+          position: absolute;
+          bottom: 0px;
+          left: 0px;
+          filter: blur(5px);
+          width: 100%;
+          height: 62%;
+          pointer-events: none;
+          overflow: hidden;
+          /* z-index: 0; */
+          isolation: isolate;
+          box-sizing: border-box;
+          /* border-radius: 24px; */
+          will-change: backdrop-filter;
+          /* margin: -2px; */
+          background: #00000038 !important;
+          /* display: none; */
+        }
+
         #blur-overlay {
           position: absolute;
           bottom: 0;
           left: 0;
           -webkit-backdrop-filter: blur(4px);
-          backdrop-filter: blur(4px);
-          background: transparent !important;
+          backdrop-filter: blur(3px);
+          background: #00000000 !important;
           width: 100%;
           height: 60%;
           pointer-events: none;
@@ -633,13 +693,12 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
           z-index: 0;
           isolation: isolate;
           box-sizing: border-box;
-          border-radius: 24px;
           will-change: backdrop-filter;
-          margin: -2px;
+          margin: -1px;
+          /* display: none; */
         }
 
         #dynamic-chart {
-          padding-top: var(--lp-chart-padding-top, 0px);
           width: 100% !important;
           height: 100%;
           display: block;

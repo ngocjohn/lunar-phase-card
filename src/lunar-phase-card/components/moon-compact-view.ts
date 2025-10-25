@@ -2,10 +2,11 @@ import { formatDateTime, FrontendLocaleData } from 'custom-card-helpers';
 import { html, TemplateResult, CSSResultGroup, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
+import { CardArea } from '../../types/card-area';
 import { MoonData } from '../../types/config/chart-config';
 import { CardAppareance } from '../../types/config/lunar-phase-card-config';
-import { LunarBaseCard } from '../base-card';
 import './moon-data-info';
+import { LunarBaseCard } from '../base-card';
 
 @customElement('lunar-moon-compact-view')
 export class LunarMoonCompactView extends LunarBaseCard {
@@ -14,7 +15,8 @@ export class LunarMoonCompactView extends LunarBaseCard {
   @property({ attribute: false }) public header!: TemplateResult;
 
   constructor() {
-    super();
+    super(CardArea.COMPACT);
+    window.LunarCompactView = this;
   }
   protected render(): TemplateResult {
     const appearance: CardAppareance = this._configAppearance;
@@ -47,14 +49,16 @@ export class LunarMoonCompactView extends LunarBaseCard {
       `;
     };
     return html`
-      <lunar-moon-base>
-        ${this.renderMoonImage()} ${this.header}
+      <lunar-moon-base .appearance=${this.appearance} id="compact-main">
+        <div slot="moon-pic" @click=${this._toggleMinimalData} class="pic-con">${this.renderMoonImage()}</div>
+        ${this.header}
 
         <div class="compact-view-container" slot="moon-info">
           <div class="moon-fraction">${moonData.moonFraction!.value} ${this.store.translate('card.illuminated')}</div>
           <div class="compact-view-items">${Object.keys(items).map((key) => renderCompactItem(key))}</div>
         </div>
       </lunar-moon-base>
+      ${this._renderDataMinial()}
     `;
   }
 
@@ -62,15 +66,6 @@ export class LunarMoonCompactView extends LunarBaseCard {
     const { phaseName } = this.moon;
     const timeRange = this.moon._getMinimalData();
     const moonImage = this.renderMoonImage();
-    const addedData = { ...this.moonData };
-    const timeStr = formatDateTime(new Date(), this._locale as FrontendLocaleData);
-
-    const moonDataEl = html`
-      <div class="moon-data-minimal" ?hidden=${true} @click=${this._toggleMinimalData}>
-        <span>${timeStr}</span>
-        <lunar-moon-data-info .moonData=${addedData} .chunkedLimit=${4}></lunar-moon-data-info>
-      </div>
-    `;
 
     const renderCompactItem = (key: string, secondValue: boolean = false): TemplateResult => {
       const { label, value, secondValue: second } = timeRange[key];
@@ -85,7 +80,7 @@ export class LunarMoonCompactView extends LunarBaseCard {
       `;
     };
     return html`
-      <div class="compact-view-minimal">
+      <div id="compact-main" class="compact-view-minimal">
         ${renderCompactItem('start', true)}
         <div class="minimal-moon-image-container" @click=${this._toggleMinimalData}>
           ${moonImage}
@@ -93,15 +88,29 @@ export class LunarMoonCompactView extends LunarBaseCard {
         </div>
         ${renderCompactItem('end', true)}
       </div>
-      ${moonDataEl}
+      ${this._renderDataMinial()}
     `;
   }
+
+  private _renderDataMinial(): TemplateResult {
+    const addedData = { ...this.moonData };
+    const timeStr = formatDateTime(new Date(), this._locale as FrontendLocaleData);
+    return html`
+      <div class="moon-data-minimal" ?hidden=${true} @click=${this._toggleMinimalData}>
+        <span>${timeStr}</span>
+        <lunar-moon-data-info .moonData=${addedData} .chunkedLimit=${4}></lunar-moon-data-info>
+      </div>
+    `;
+  }
+
   private _toggleMinimalData(): void {
     const root = this.shadowRoot;
     if (!root) return;
 
-    const minimal = root.querySelector('.compact-view-minimal') as HTMLElement;
+    // const minimal = root.querySelector('.compact-view-minimal') as HTMLElement;
+    const minimal = root.querySelector('#compact-main') as any;
     const details = root.querySelector('.moon-data-minimal') as HTMLElement;
+    console.debug('Toggling minimal data view', { minimal, details });
 
     if (!minimal || !details) return;
 
@@ -140,6 +149,11 @@ export class LunarMoonCompactView extends LunarBaseCard {
           display: inline-grid;
           display: -ms-inline-grid;
         }
+        .pic-con {
+          user-select: all;
+          cursor: pointer;
+        }
+
         .compact-view-container {
           display: flex;
           width: 100%;

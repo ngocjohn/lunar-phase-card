@@ -4,14 +4,19 @@ import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
 import swiperStyleCss from 'swiper/swiper-bundle.css';
 
+import { CardArea } from '../../types/card-area';
 import { MoonData, MoonDataItem } from '../../types/config/chart-config';
 import { LunarBaseCard } from '../base-card';
 
 @customElement('lunar-moon-data-info')
 export class LunarMoonDataInfo extends LunarBaseCard {
-  @property({ attribute: false }) public moonData!: MoonData;
-  @property({ type: Number }) public chunkedLimit: number = 5;
+  constructor() {
+    super(CardArea.DATABOX);
+    window.LunarDataBox = this;
+  }
 
+  @property({ attribute: false }) public moonData!: MoonData;
+  @property({ attribute: false }) public chunkedLimit?: number;
   @state() swiper: Swiper | null = null;
 
   protected firstUpdated(): void {
@@ -19,7 +24,8 @@ export class LunarMoonDataInfo extends LunarBaseCard {
   }
 
   protected render(): TemplateResult {
-    const chunkedData = this._chunkObject(this.moonData, this.chunkedLimit);
+    // const chunkedData = this._chunkObject(this.moonData, this.chunkedLimit || 5);
+    const chunkedData = this._chunk.objectToChunks<MoonDataItem>(this.moonData, this.chunkedLimit || 5);
     const dataContainer = Object.keys(chunkedData).map((key) => {
       return html`
         <div class="swiper-slide">
@@ -152,15 +158,10 @@ export class LunarMoonDataInfo extends LunarBaseCard {
         }
 
         .moon-data-item {
-          display: flex;
-          /* flex-direction: row; */
-          justify-content: space-between;
-          align-items: center;
-          gap: 0.5rem;
+          display: inline-flex;
           border-bottom: 0.5px solid rgba(from var(--secondary-text-color) r g b / 0.2);
           padding: 0.25rem 0;
           width: 100%;
-          flex: 1 1 0%;
         }
 
         .moon-data-item:last-child {
@@ -171,25 +172,22 @@ export class LunarMoonDataInfo extends LunarBaseCard {
         .moon-data-item > span.label {
           display: flex;
           color: var(--lunar-card-label-font-color);
-          width: fit-content;
           white-space: nowrap;
-          flex: 0;
+          margin-inline: 0 auto;
         }
 
         .moon-data-item > .value {
           display: inline-flex;
           color: var(--lunar-card-label-font-color);
-          font-weight: 600;
-          width: auto;
-          word-wrap: nowrap !important;
+          font-weight: 500;
+          white-space: nowrap !important;
           align-items: center;
         }
 
         .value > span {
-          font-weight: 400;
-          font-size: smaller;
-          padding-inline: 2px;
-          word-wrap: nowrap;
+          font-weight: var(--ha-font-weight-normal, 400);
+          font-size: var(--ha-font-size-s, 12px);
+          padding-inline-end: 4px;
         }
       `,
     ];

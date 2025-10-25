@@ -130,12 +130,14 @@ export class Moon {
 
   get moonImage(): MoonImage {
     const phaseIndex = Math.round(this._moonData.illumination.phaseValue * 31) % 31;
+    const moonFraction = Math.round(this._moonData.illumination.fraction * 100);
     const { zenithAngle, parallacticAngle } = this._moonData;
     const rotateDeg = (zenithAngle - parallacticAngle) * (180 / Math.PI);
     return {
       moonPic: MOON_IMAGES[phaseIndex],
       rotateDeg: rotateDeg,
       southernHemisphere: this.config.southern_hemisphere || false,
+      fraction: moonFraction,
     };
   }
 

@@ -8,4 +8,5 @@ export const COMPONENT = {
   CARD: 'lunar-card',
   BASE: 'lunar-moon-base',
   CALENDAR: 'lunar-moon-calendar-footer',
+  CHART_DYNAMIC: 'lunar-moon-chart-dynamic',
 };

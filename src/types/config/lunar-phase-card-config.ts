@@ -1,9 +1,9 @@
-import { PageType } from '../../const';
+import { PageType, SECTION } from '../../const';
 import { LovelaceCardConfig } from '../../ha';
 import { FontCustomStyles } from './font-config';
 import { GraphConfig } from './graph-config';
 
-export type Section = 'base' | 'calendar' | 'horizon';
+export type Section = SECTION.BASE | SECTION.CALENDAR | SECTION.HORIZON;
 
 export const LOC_SOURCE = ['default', 'entity', 'custom'] as const;
 
@@ -59,11 +59,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
    */
   hide_buttons?: boolean;
   /**
-   * Hide the header, including the moon phase name and section buttons
-   */
-  hide_header?: boolean;
-  /**
-   * Show a button to open the calendar in a modal
+   * Use a modal popup for calendar section
    */
   calendar_modal?: boolean;
   /**
@@ -138,7 +134,6 @@ export const AppareanceKeys = [
   'moon_position',
   'hide_background',
   'custom_background',
-  'hide_header',
   'hide_buttons',
 ] as const;
 
