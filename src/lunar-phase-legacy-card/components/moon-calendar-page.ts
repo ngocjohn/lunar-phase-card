@@ -5,7 +5,7 @@ import { customElement, state, property } from 'lit/decorators.js';
 import { ICON } from '../../const';
 import { dayFormatter } from '../../localize/localize';
 import './moon-calendar-popup';
-import { Moon } from '../../utils/moon';
+import { Moon } from '../../model/moon';
 import styles from '../css/style.css';
 import { LunarPhaseCard } from '../lunar-phase-card';
 

@@ -1,4 +1,4 @@
-import { html, css, TemplateResult, CSSResultGroup, unsafeCSS } from 'lit';
+import { html, css, TemplateResult, CSSResultGroup, unsafeCSS, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
@@ -53,9 +53,14 @@ export class LunarMoonDataInfo extends LunarBaseCard {
       <div class="moon-data-item">
         <span class="label">${label}</span>
         <div class="value">
-          ${secondValue ? html`<span>(${secondValue}) </span>` : ''} ${value}
+          ${secondValue && key !== 'direction' ? html`<span>(${secondValue})</span>` : nothing} ${value}
+          ${key === 'direction' && secondValue
+            ? html`<span>(${secondValue})</span>
+                <span class="direction-arrow" style="transform: rotate(${parseInt(value, 0)}deg);">
+                  <ha-icon icon="mdi:arrow-up-thin"></ha-icon>
+                </span>`
+            : nothing}
         </div>
-      </div>
       </div>
     `;
   }
@@ -154,6 +159,7 @@ export class LunarMoonDataInfo extends LunarBaseCard {
           border-bottom: 0.5px solid rgba(from var(--secondary-text-color) r g b / 0.2);
           padding-block: 2px;
           width: 100%;
+          justify-content: space-between;
         }
 
         .moon-data-item:last-child {
@@ -161,25 +167,32 @@ export class LunarMoonDataInfo extends LunarBaseCard {
           padding-bottom: 0;
         }
 
-        .moon-data-item > span.label {
-          display: flex;
+        .moon-data-item span.label {
+          display: inline-flex;
           color: var(--lpc-label-font-color, var(--primary-text-color));
           white-space: nowrap;
           margin-inline: 0 auto;
         }
 
-        .moon-data-item > .value {
+        .moon-data-item .value {
           display: inline-flex;
           color: var(--lpc-label-font-color, var(--primary-text-color));
-          font-weight: 500;
           white-space: nowrap !important;
           align-items: center;
+          font-weight: 500;
+          gap: 4px;
+          margin-inline: auto 0;
         }
 
-        .value > span {
+        .value span {
           font-weight: var(--ha-font-weight-normal, 400);
           font-size: var(--ha-font-size-s, 12px);
-          padding-inline-end: 4px;
+          line-height: 1;
+          place-self: auto;
+        }
+        .value span.direction-arrow {
+          transition: transform 0.3s ease-in-out;
+          color: var(--lpc-label-font-color, var(--secondary-text-color));
         }
       `,
     ];

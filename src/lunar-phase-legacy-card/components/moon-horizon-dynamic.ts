@@ -12,10 +12,10 @@ import tinycolor from 'tinycolor2';
 
 import { CHART_COLOR, CHART_DATA } from '../../const';
 import { HomeAssistant } from '../../ha';
+import { Moon } from '../../model/moon';
 import { FILL_COLORS } from '../../types/config/chart-config';
 import extract_color from '../../utils/extract_color';
 import { hexToRgba } from '../../utils/helpers';
-import { Moon } from '../../utils/moon';
 // Styles
 import styles from '../css/style.css';
 import { LunarPhaseCard } from '../lunar-phase-card';

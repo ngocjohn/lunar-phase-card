@@ -4,7 +4,7 @@ import { DateTime, WeekdayNumbers } from 'luxon';
 
 // Local
 import { ICON } from '../../const';
-import { Moon } from '../../utils/moon';
+import { Moon } from '../../model/moon';
 // styles
 import styles from '../css/style.css';
 import { LunarPhaseCard } from '../lunar-phase-card';

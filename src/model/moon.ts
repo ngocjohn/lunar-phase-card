@@ -8,7 +8,7 @@ import setupTranslation from '../localize/translate';
 import { MOON_IMAGES } from '../shared/moon-pic';
 import { MoonData, MoonDataItem, MoonImage, DynamicChartData } from '../types/config/chart-config';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
-import { convertKmToMiles, compareTime } from './helpers';
+import { convertKmToMiles, compareTime } from '../utils/helpers';
 
 type Location = {
   latitude: number;

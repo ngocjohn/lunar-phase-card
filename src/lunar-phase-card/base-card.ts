@@ -5,6 +5,7 @@ import { property, state } from 'lit/decorators.js';
 import { SECTION } from '../const';
 import { FrontendLocaleData, TimeFormat } from '../ha';
 import { hasLocation } from '../ha/common/entity/has_location';
+import { Moon } from '../model/moon';
 import { Store } from '../model/store';
 import { CardArea } from '../types/card-area';
 import {
@@ -16,9 +17,9 @@ import {
 import { AppareanceKeys, CardAppareance, LunarPhaseCardConfig, Section } from '../types/config/lunar-phase-card-config';
 import { FrontendLocaleDataExtended, LatLon } from '../types/config/types';
 import { migrateConfig } from '../types/utils';
-import * as Chunk from '../utils/chunk-object';
 import './components/moon-image';
-import { Moon } from '../utils/moon';
+import '../shared/moon-clock-time';
+import * as Chunk from '../utils/chunk-object';
 import { LunarBaseElement } from './base-element';
 
 export class LunarBaseCard extends LunarBaseElement {
@@ -114,6 +115,10 @@ export class LunarBaseCard extends LunarBaseElement {
 
   public renderMoonImage(): TemplateResult {
     return html`<lunar-moon-image slot="moon-pic" .imageData=${this.moon.moonImage}></lunar-moon-image>`;
+  }
+
+  public renderTimeClock(): TemplateResult {
+    return html`<lunar-moon-clock-time .hass=${this.hass} .configLocale=${this._locale}></lunar-moon-clock-time>`;
   }
 
   static get styles(): CSSResultGroup {

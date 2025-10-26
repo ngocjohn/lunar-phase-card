@@ -4,8 +4,8 @@ import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
 import swiperStyleCss from 'swiper/swiper-bundle.css';
 
+import { Moon } from '../../model/moon';
 import { MoonData, MoonDataItem } from '../../types/config/chart-config';
-import { Moon } from '../../utils/moon';
 import mainStyles from '../css/style.css';
 
 @customElement('lunar-base-data')

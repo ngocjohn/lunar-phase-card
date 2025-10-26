@@ -100,15 +100,15 @@ export class LunarMoonImage extends LunarBaseElement {
       }
       .moon-image {
         display: flex;
-        min-width: 100px;
-        min-height: 100px;
+        /* min-width: 100px;
+        min-height: 100px; */
         transition: transform 0.5s;
         -webkit-user-select: none;
         -moz-user-select: none;
         user-select: none;
         aspect-ratio: 1;
         flex-shrink: 0;
-        max-width: 150px;
+        /* max-width: 150px; */
         position: relative;
       }
 

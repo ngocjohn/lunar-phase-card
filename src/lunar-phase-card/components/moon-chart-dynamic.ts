@@ -109,7 +109,6 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
       return;
       // this.dynamicChart.destroy();
     }
-    console.debug('Initializing dynamic chart...');
     const data = this.chartData;
     const options = this.chartOptions;
     const plugins = this.chartPlugins;

@@ -10,6 +10,7 @@ import { BLUE_BG, PageType, MoonState, ICON } from '../const';
 import { LovelaceCardEditor, FrontendLocaleData, TimeFormat, LovelaceCard } from '../ha';
 import { HomeAssistant } from '../ha';
 import { localize } from '../localize/localize';
+import { Moon } from '../model/moon';
 import { LunarStarField } from '../shared/moon-star-field';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 // Local types
@@ -18,7 +19,6 @@ import { registerCustomCard } from '../utils/custom-card-register';
 import { applyTheme, generateConfig } from '../utils/ha-helper';
 import { _handleOverflow, _setEventListeners, getDefaultConfig } from '../utils/helpers';
 import { isEditorMode } from '../utils/loader';
-import { Moon } from '../utils/moon';
 // components
 import { LunarBaseData } from './components/moon-base-data';
 import './components';
@@ -529,7 +529,7 @@ export class LunarPhaseCard extends LitElement implements LovelaceCard {
       <div class="compact-view">
         ${this.renderHeader()}
 
-        <div class="moon-fraction">${moonData.moonFraction.value} ${this.localize('card.illuminated')}</div>
+        <div class="moon-fraction">${moonData.moonFraction!.value} ${this.localize('card.illuminated')}</div>
         <div class="compact-view-items">${Object.keys(items).map((key) => renderCompactItem(key))}</div>
       </div>
     `;

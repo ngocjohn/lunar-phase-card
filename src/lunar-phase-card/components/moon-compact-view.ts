@@ -107,10 +107,9 @@ export class LunarMoonCompactView extends LunarBaseCard {
     const root = this.shadowRoot;
     if (!root) return;
 
-    // const minimal = root.querySelector('.compact-view-minimal') as HTMLElement;
-    const minimal = root.querySelector('#compact-main') as any;
+    const minimal = root.querySelector('#compact-main') as HTMLElement;
     const details = root.querySelector('.moon-data-minimal') as HTMLElement;
-    console.debug('Toggling minimal data view', { minimal, details });
+    // console.debug('Toggling minimal data view', { minimal, details });
 
     if (!minimal || !details) return;
 
@@ -288,6 +287,7 @@ export class LunarMoonCompactView extends LunarBaseCard {
           padding-top: 8px;
           text-transform: var(--lunar-card-header-text-transform, capitalize);
           color: var(--lunar-card-header-font-color, var(--primary-text-color));
+          white-space: nowrap;
         }
       `,
     ];

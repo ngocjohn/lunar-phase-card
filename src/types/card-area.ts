@@ -8,4 +8,5 @@ export enum CardArea {
   FOOTER = 'calendar-footer',
   COMPACT = 'compact-view',
   POPUP = 'calendar-popup',
+  GRAPH = 'horizon-chart',
 }

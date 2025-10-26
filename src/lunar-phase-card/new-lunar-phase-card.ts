@@ -8,6 +8,7 @@ import { MoonState, SECTION } from '../const';
 import './components';
 import '../shared/moon-star-field';
 import { HomeAssistant, LovelaceCard, LovelaceCardEditor } from '../ha';
+import { Moon } from '../model/moon';
 import { Store } from '../model/store';
 import { filterItemFromMoonData, MoonData } from '../types/config/chart-config';
 import { CSS_FONT_SIZE } from '../types/config/font-config';
@@ -16,7 +17,6 @@ import { computeStubConfig } from '../utils/compute-stup-config';
 import { registerCustomCard } from '../utils/custom-card-register';
 import { debounce } from '../utils/debounce';
 import { applyTheme } from '../utils/ha-helper';
-import { Moon } from '../utils/moon';
 import { LunarBaseCard } from './base-card';
 import { LunarMoonCalendarFooter } from './components';
 import { COMPONENT, LUNAR_PHASE_CARD_EDITOR_NEW_NAME, LUNAR_PHASE_CARD_NEW_NAME } from './const';
@@ -103,6 +103,9 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
         console.debug('Reset selected date on page change');
         this._selectedDate = undefined;
       }
+    }
+    if (_changedProperties.has('_selectedDate') && this._selectedDate !== undefined) {
+      console.debug('update:', new Date(this._selectedDate).toLocaleString());
     }
   }
 

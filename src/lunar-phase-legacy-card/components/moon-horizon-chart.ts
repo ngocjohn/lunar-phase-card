@@ -13,10 +13,10 @@ import { LitElement, html, CSSResultGroup, TemplateResult, css, PropertyValues }
 import { customElement, state, property } from 'lit/decorators.js';
 
 import { ICON } from '../../const';
+// Local imports
+import { Moon } from '../../model/moon';
 import { MOON_RISE_ICON, MOON_SET_ICON } from '../../shared/moon-pic';
 import { ChartColors } from '../../types/config/chart-config';
-// Local imports
-import { Moon } from '../../utils/moon';
 // Styles
 import styles from '../css/style.css';
 import { LunarPhaseCard } from '../lunar-phase-card';
