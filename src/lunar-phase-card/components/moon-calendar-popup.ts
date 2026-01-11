@@ -7,6 +7,7 @@ import { fireEvent } from '../../ha';
 import { CardArea } from '../../types/card-area';
 import { LunarBaseCard } from '../base-card';
 import { LunarPhaseNewCard } from '../new-lunar-phase-card';
+import './moon-calendar-tooltip';
 
 declare global {
   interface HASSDomEvents {
@@ -24,12 +25,16 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
     window.LunarPopup = this;
   }
   @property({ attribute: false }) public card!: LunarPhaseNewCard;
+  @property({ type: Boolean, reflect: true, attribute: 'tooltip-active' }) public tooltipActive = false;
   @state() private viewDate = DateTime.local().startOf('month');
+
+  private _tooltipDate: Date | null = null;
+  private _dateBoxRect: DOMRect | null = null;
 
   protected async firstUpdated(_changedProperties: PropertyValues): Promise<void> {
     super.firstUpdated(_changedProperties);
     await new Promise((resolve) => setTimeout(resolve, 0));
-    this._setEventListeners();
+    // this._setEventListeners();
   }
 
   protected render(): TemplateResult {
@@ -73,6 +78,7 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
         </div>
         ${this._renderCalendarGrid()}
       </div>
+      ${this._renderDateTooltip()}
     `;
   }
 
@@ -92,7 +98,8 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
 
     const renderDayItem = (day: number): TemplateResult => {
       const date = viewDate.set({ day });
-      const dayClass = date.toISODate() === DateTime.local().toISODate() ? 'calendar-day today' : 'calendar-day';
+      const isToday = date.toISODate() === DateTime.local().toISODate() ? true : false;
+      // const dayClass = date.toISODate() === DateTime.local().toISODate() ? 'calendar-day today' : 'calendar-day';
       const label = day;
       const moonPhase = this.moon._getPhaseNameForPhase(date.toJSDate());
       const moonPhaseIcon = this.moon._getEmojiForPhase(date.toJSDate());
@@ -100,8 +107,10 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
       return html`
         <div
           id="calendar-day-${day}"
-          class=${dayClass}
-          @click=${() => this._dispatchEvent('date-select', { date: date.toJSDate() })}
+          class="calendar-day"
+          .jsdate=${date.toJSDate()}
+          ?today=${isToday}
+          @click=${this._handleDayClick}
         >
           <span>${label}</span>
           <span class="day-symbol">${moonPhaseIcon}</span>
@@ -116,6 +125,35 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
       </div>
     `;
   }
+
+  private _renderDateTooltip(): TemplateResult {
+    if (!this._dateBoxRect) {
+      return html``;
+    }
+    return html`<lunar-moon-calendar-tooltip .dateBoxRect=${this._dateBoxRect} @closing=${this._handleTooltipClosing}>
+      <div slot="moon-header">${this._tooltipDate?.toDateString()}</div>
+      ${this.renderMoonImage()}
+      <div slot="moon-info">${this.moon.phaseName}</div>
+    </lunar-moon-calendar-tooltip>`;
+  }
+
+  private _handleDayClick(e: MouseEvent): void {
+    e.stopPropagation();
+    const target = e.currentTarget as HTMLElement;
+    const dayBoxRect = target.getBoundingClientRect();
+    this._tooltipDate = (target as any).jsdate as Date;
+    this._dispatchEvent('date-select', { date: this._tooltipDate });
+    this._dateBoxRect = dayBoxRect;
+    this.tooltipActive = true;
+    this.requestUpdate();
+  }
+
+  private _handleTooltipClosing = (): void => {
+    this._dateBoxRect = null;
+    this._tooltipDate = null;
+    this.tooltipActive = false;
+    this.requestUpdate();
+  };
 
   private _dispatchEvent(action: string, detail: any): void {
     fireEvent(this, 'calendar-action', { action, ...detail });
@@ -154,6 +192,11 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
     return [
       super.styles,
       css`
+        :host([tooltip-active]) #lunar-calendar {
+          pointer-events: none;
+          /* filter: grayscale(1); */
+        }
+
         #lunar-calendar {
           /* max-width: 500px; */
           margin: 0 auto;
@@ -198,7 +241,6 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
           grid-template-columns: repeat(7, 1fr);
           /* grid-template-rows: repeat(7, 1fr); */
           padding: 4px;
-          cursor: default;
           /* gap: 2px 4px; */
         }
         .day-of-week {
@@ -237,7 +279,7 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
           border: 1px solid var(--accent-color);
         }
 
-        .calendar-day.today {
+        .calendar-day[today] {
           border: 1px solid var(--primary-color);
         }
         .calendar-day > span {

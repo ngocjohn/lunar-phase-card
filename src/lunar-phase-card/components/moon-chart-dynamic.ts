@@ -314,14 +314,9 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
   private _nowPosition(): Plugin {
     const chartData = this.todayData.chartData;
     const emoji = this.todayData.moonIllumination.phase.emoji;
-    const emojiFontSize = '14px Arial';
-    const timeLabels = chartData.map((data) => data.timeLabel);
-    const now = this._date;
-    const closestTime = timeLabels.reduce((a, b) =>
-      Math.abs(b - now.getTime()) < Math.abs(a - now.getTime()) ? b : a
-    );
 
-    const index = timeLabels.indexOf(closestTime);
+    const timeLabels = chartData.map((data) => data.timeLabel);
+
     return {
       id: 'nowLine',
       beforeDatasetDraw: (chart: Chart) => {
@@ -366,8 +361,15 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
           scales: { x, y },
         } = chart;
         if (!dataSet.hidden) {
+          const now = this._date;
+          const closestTime = timeLabels.reduce((a, b) =>
+            Math.abs(b - now.getTime()) < Math.abs(a - now.getTime()) ? b : a
+          );
+          const index = timeLabels.indexOf(closestTime);
+          const emojiFontSize = '24px Arial';
           ctx.font = emojiFontSize;
           const emojiSize = ctx.measureText(emoji);
+
           const xPosition = x.getPixelForValue(index) - emojiSize.width / 2;
           const totalHeight = emojiSize.actualBoundingBoxAscent + emojiSize.actualBoundingBoxDescent;
           const yPosition =

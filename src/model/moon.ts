@@ -2,7 +2,7 @@ import * as SunCalc from '@noim/suncalc3';
 import { FrontendLocaleData, formatNumber, relativeTime, formatTime } from 'custom-card-helpers';
 import { DateTime, WeekdayNumbers } from 'luxon';
 
-import { CHART_DATA } from '../const';
+import { CHART_DATA, MOON_PIC_URL } from '../const';
 import { LocalizeFunc } from '../ha';
 import setupTranslation from '../localize/translate';
 import { MOON_IMAGES } from '../shared/moon-pic';
@@ -133,8 +133,10 @@ export class Moon {
     const moonFraction = Math.round(this._moonData.illumination.fraction * 100);
     const { zenithAngle, parallacticAngle } = this._moonData;
     const rotateDeg = (zenithAngle - parallacticAngle) * (180 / Math.PI);
+    const moonUrl = MOON_PIC_URL(phaseIndex);
+
     return {
-      moonPic: MOON_IMAGES[phaseIndex],
+      moonPic: moonUrl,
       rotateDeg: rotateDeg,
       southernHemisphere: this.config.southern_hemisphere || false,
       fraction: moonFraction,

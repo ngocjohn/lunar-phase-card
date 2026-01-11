@@ -147,7 +147,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           .cardWidth=${this._cardWidth}
           .cardHeight=${this._cardHeight}
           .appearance=${appearance}
-          .calendarPopup=${this._calendarPopup}
+          .calendarPopup=${this._activePage === SECTION.FULL_CALENDAR}
           .activePage=${this._activePage}
           .changingContent=${this._state === MoonState.CONTENT_CHANGING}
         >
@@ -155,10 +155,11 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
             [SECTION.BASE, () => this._renderBaseSection()],
             [SECTION.CALENDAR, () => this._renderCalendarSection()],
             [SECTION.HORIZON, () => this._renderHorizonSection()],
+            [SECTION.FULL_CALENDAR, () => this._renderCalendarSection()],
           ])}
         </lunar-card>
       </ha-card>
-      <lunar-star-field></lunar-star-field>
+      <lunar-star-field> </lunar-star-field>
     `;
   }
 
@@ -196,7 +197,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
   }
 
   private _renderCalendarSection(): TemplateResult {
-    if (this._calendarPopup) {
+    if (this._activePage === SECTION.FULL_CALENDAR) {
       return html`
         <lunar-moon-calendar-popup
           slot="content"
@@ -228,13 +229,13 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
 
   private _handleCalendarPopup(ev: CustomEvent) {
     ev.stopPropagation();
-    this._calendarPopup = true;
+    this._activePage = SECTION.FULL_CALENDAR;
   }
   private _handleCalendarAction(ev: CustomEvent) {
     ev.stopPropagation();
     const action = ev.detail.action;
     if (action === 'close') {
-      this._calendarPopup = false;
+      this._activePage = SECTION.CALENDAR;
     } else if (action === 'date-select' && ev.detail.date) {
       this._selectedDate = ev.detail.date;
       this._calendarPopup = false;
@@ -342,7 +343,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           display: block;
           width: 100%;
           height: 100%;
-          margin: cal(-1 * var(--ha-card-border-width, 1px));
+          margin: calc(-1 * var(--ha-card-border-width, 1px));
           padding: 0;
           position: relative;
         }

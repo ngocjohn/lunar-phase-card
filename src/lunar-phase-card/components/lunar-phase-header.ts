@@ -12,6 +12,7 @@ const SECTION_ICON: Record<SECTION, string> = {
   [SECTION.BASE]: ICON.WEATHER,
   [SECTION.CALENDAR]: ICON.CALENDAR,
   [SECTION.HORIZON]: ICON.CHART,
+  [SECTION.FULL_CALENDAR]: ICON.CALENDAR,
 };
 
 @customElement('lunar-phase-header')

@@ -19,8 +19,10 @@ import { FontSizeOptions, FontTextTransformOptions } from './types/config/font-c
 const VERSION_TAG = '1.7.3';
 const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${VERSION_TAG}/background/`;
 export const BACKGROUND_URL = (index: number) => `${PIC_URL}moon_bg_${index}.png`;
-
 export const CUSTOM_BG = [blueBackground, BACKGROUND_URL(1), BACKGROUND_URL(2), BACKGROUND_URL(3)];
+
+const MOON_URL = 'https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/refs/heads/main/moon_pic/';
+export const MOON_PIC_URL = (index: number) => `${MOON_URL}${index}_moon.png`;
 
 export const CARD_VERSION = `v${version}`;
 
@@ -114,4 +116,5 @@ export const enum SECTION {
   BASE = 'base',
   HORIZON = 'horizon',
   CALENDAR = 'calendar',
+  FULL_CALENDAR = 'full_calendar',
 }

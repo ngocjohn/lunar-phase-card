@@ -1,4 +1,4 @@
-import { html, css, TemplateResult, CSSResultGroup, unsafeCSS, nothing } from 'lit';
+import { html, css, TemplateResult, CSSResultGroup, unsafeCSS, nothing, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import Swiper from 'swiper';
 import { Pagination } from 'swiper/modules';
@@ -21,6 +21,20 @@ export class LunarMoonDataInfo extends LunarBaseCard {
 
   protected firstUpdated(): void {
     this.initSwiper();
+  }
+
+  protected updated(changedProps: PropertyValues): void {
+    const oldMoonData = changedProps.get('moonData') as MoonData | undefined;
+    if (oldMoonData && JSON.stringify(oldMoonData) !== JSON.stringify(this.moonData)) {
+      // debug changed values from old to new
+      const changed = {};
+      Object.keys(this.moonData).forEach((key) => {
+        if (JSON.stringify(oldMoonData[key]) !== JSON.stringify(this.moonData[key])) {
+          (changed as any)[key] = { old: oldMoonData[key], new: this.moonData[key] };
+        }
+      });
+      // console.log('Moon Data changed:', changed);
+    }
   }
 
   protected render(): TemplateResult {

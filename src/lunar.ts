@@ -1,5 +1,4 @@
 import { version } from '../package.json';
-import './lunar-phase-legacy-card/lunar-phase-card';
 import './lunar-phase-card/new-lunar-phase-card';
 
 console.info(
