@@ -4,7 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { ICON, SECTION } from '../../const';
 import { fireEvent } from '../../ha';
 import { CardArea } from '../../types/card-area';
-import { CardAppareance } from '../../types/config/lunar-phase-card-config';
+import { CardAppearance } from '../../types/config/lunar-phase-card-config';
 import { LunarBaseCard } from '../base-card';
 
 const SectionsList = [SECTION.BASE, SECTION.CALENDAR, SECTION.HORIZON];
@@ -28,7 +28,7 @@ export class LunarHeader extends LunarBaseCard {
   @state() _open = false;
 
   protected render(): TemplateResult {
-    const appearance: CardAppareance = this._configAppearance || {};
+    const appearance: CardAppearance = this._configAppearance || {};
     const activePage = this.activePage || SECTION.BASE;
     const isCompact = appearance?.compact_view === true && activePage === SECTION.BASE;
     return html`

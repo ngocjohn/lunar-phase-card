@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 
 import { CardArea } from '../../types/card-area';
 import { MoonData } from '../../types/config/chart-config';
-import { CardAppareance } from '../../types/config/lunar-phase-card-config';
+import { CardAppearance } from '../../types/config/lunar-phase-card-config';
 import './moon-data-info';
 import { LunarBaseCard } from '../base-card';
 
@@ -19,7 +19,7 @@ export class LunarMoonCompactView extends LunarBaseCard {
     window.LunarCompactView = this;
   }
   protected render(): TemplateResult {
-    const appearance: CardAppareance = this._configAppearance;
+    const appearance: CardAppearance = this._configAppearance;
     if (appearance.compact_mode === 'minimal') {
       return this._renderMinimalCompactView();
     }
