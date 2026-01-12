@@ -3,7 +3,7 @@ import { LovelaceCardConfig } from '../../ha';
 import { FontCustomStyles } from './font-config';
 import { GraphConfig } from './graph-config';
 
-export type Section = SECTION.BASE | SECTION.CALENDAR | SECTION.HORIZON;
+export type Section = SECTION.BASE | SECTION.CALENDAR | SECTION.HORIZON | SECTION.FULL_CALENDAR;
 
 export const LOC_SOURCE = ['default', 'entity', 'custom'] as const;
 
@@ -137,7 +137,17 @@ export const AppareanceKeys = [
   'hide_buttons',
 ] as const;
 
-export type CardAppareance = Pick<LunarPhaseCardConfig, (typeof AppareanceKeys)[number]>;
+export type CardAppearance = Pick<LunarPhaseCardConfig, (typeof AppareanceKeys)[number]>;
+
+export const LocationConfigKeys = [
+  'location_source',
+  'latitude',
+  'longitude',
+  'entity',
+  'southern_hemisphere',
+] as const;
+
+export type LocationConfig = Pick<LunarPhaseCardConfig, (typeof LocationConfigKeys)[number]>;
 
 /** @deprecated use 'graph_chart_config' instead
  */

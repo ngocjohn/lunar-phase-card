@@ -1,4 +1,4 @@
-import { css, LitElement } from 'lit';
+import { css, CSSResultGroup, LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
 import { HomeAssistant } from '../../ha';
@@ -6,16 +6,34 @@ import { fireEvent } from '../../ha';
 import { Store } from '../../model/store';
 import { LunarPhaseCardConfig } from '../../types/config/lunar-phase-card-config';
 import { cardNeedsMigration, migrateConfig } from '../../types/utils';
+import { editorStyle } from '../css/card-styles';
+import { createEditorMenuItems, EditorArea, EditorMenuItems } from './const';
 
-export abstract class BaseEditor extends LitElement {
-  @property({ attribute: false }) hass!: HomeAssistant;
+export class BaseEditor extends LitElement {
+  @property({ attribute: false }) _hass!: HomeAssistant;
   @property({ attribute: false }) config!: LunarPhaseCardConfig;
   @property({ attribute: false }) store!: Store;
 
   @state() private _legacyConfig?: LunarPhaseCardConfig;
 
-  constructor() {
+  protected _editorArea?: EditorArea;
+
+  constructor(area?: EditorArea) {
     super();
+    if (area) {
+      this._editorArea = area;
+    }
+  }
+  set hass(hass: HomeAssistant) {
+    this._hass = hass;
+  }
+
+  get hass(): HomeAssistant {
+    return this._hass;
+  }
+
+  get AreaMenuItems(): EditorMenuItems {
+    return createEditorMenuItems(this.store!.translate);
   }
 
   public setConfig(config: LunarPhaseCardConfig): void {
@@ -44,15 +62,7 @@ export abstract class BaseEditor extends LitElement {
     super.requestUpdate();
   }
 
-  public createStore(): void {
-    if (this.store) {
-      return;
-    }
-    console.debug('Create store for editor');
-    this.store = new Store(this.hass, this.config, this);
-  }
-
-  static get styles() {
-    return css``;
+  static get styles(): CSSResultGroup {
+    return [editorStyle, css``];
   }
 }

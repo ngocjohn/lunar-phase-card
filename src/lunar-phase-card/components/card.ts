@@ -3,12 +3,12 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import { SECTION } from '../../const';
-import { CardAppareance } from '../../types/config/lunar-phase-card-config';
+import { CardAppearance } from '../../types/config/lunar-phase-card-config';
 import { LunarBaseCard } from '../base-card';
 
 @customElement('lunar-card')
 export class Card extends LunarBaseCard {
-  @property({ attribute: false }) public appearance!: CardAppareance;
+  @property({ attribute: false }) public appearance!: CardAppearance;
   @property({ type: Number }) public cardWidth = 0;
   @property({ type: Number }) public cardHeight = 0;
   @property({ type: Boolean }) public calendarPopup = false;

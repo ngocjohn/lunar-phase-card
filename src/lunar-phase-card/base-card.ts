@@ -14,7 +14,7 @@ import {
   LabelFontConfig,
   LabelFontConfigKeys,
 } from '../types/config/font-config';
-import { AppareanceKeys, CardAppareance, LunarPhaseCardConfig, Section } from '../types/config/lunar-phase-card-config';
+import { AppareanceKeys, CardAppearance, LunarPhaseCardConfig, Section } from '../types/config/lunar-phase-card-config';
 import { FrontendLocaleDataExtended, LatLon } from '../types/config/types';
 import { migrateConfig } from '../types/utils';
 import './components/moon-image';
@@ -25,7 +25,7 @@ import { LunarBaseElement } from './base-element';
 export class LunarBaseCard extends LunarBaseElement {
   @property({ attribute: false }) protected store!: Store;
   @property({ attribute: false }) protected moon!: Moon;
-  @property({ attribute: false }) public appearance?: CardAppareance;
+  @property({ attribute: false }) public appearance?: CardAppearance;
   @state() protected config!: LunarPhaseCardConfig;
   @state() _initSection: Section = SECTION.BASE;
 
@@ -92,7 +92,7 @@ export class LunarBaseCard extends LunarBaseElement {
     };
   }
 
-  get _configAppearance(): CardAppareance {
+  get _configAppearance(): CardAppearance {
     const appearance = pick(this.config, [...AppareanceKeys]);
     return appearance;
   }

@@ -1,6 +1,7 @@
 import { css, unsafeCSS } from 'lit';
 
 import { BLUE_BG } from '../../const';
+import editorStyles from './editor.css';
 const DEFAULT_BG = {
   url: `
     :host {
@@ -8,6 +9,9 @@ const DEFAULT_BG = {
     }
   `,
 };
+export const editorStyle = css`
+  ${unsafeCSS(editorStyles)}
+`;
 
 export const DEFAULT_BG_URL = css`
   ${unsafeCSS(DEFAULT_BG.url)}
@@ -23,6 +27,12 @@ export const style = css`
     --mdc-icon-size: calc(var(--lpc-unit) * 0.6);
     --swiper-pagination-bullet-inactive-color: var(--secondary-text-color);
     --swiper-pagination-bottom: 0;
+    --vic-gutter-gap: 8px;
+    --vic-card-padding: 12px;
+    --vic-icon-size: 36px;
+    --vic-icon-border-radius: 18px;
+    --vic-icon-bg-opacity: 0.2;
+    --vsc-unit: 40px;
   }
 
   *,
