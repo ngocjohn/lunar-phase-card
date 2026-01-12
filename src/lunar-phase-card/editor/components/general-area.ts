@@ -4,7 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { CARD_VERSION } from '../../../const';
 import { fireEvent } from '../../../ha';
 import { BaseEditor } from '../base-editor';
-import { EditorArea } from '../const';
+import { EditorArea } from '../editor-area-config';
 
 declare global {
   interface HASSDomEvents {

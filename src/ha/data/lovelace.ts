@@ -190,6 +190,8 @@ export type ActionConfig =
   | NoActionConfig
   | CustomActionConfig;
 
+export type UiAction = Exclude<ActionConfig['action'], 'fire-dom-event'>;
+
 type LovelaceUpdatedEvent = HassEventBase & {
   event_type: 'lovelace_updated';
   data: {

@@ -9,7 +9,7 @@ import { Store } from '../../model/store';
 import { loadHaComponents, refactorEditDialog } from '../../utils/loader';
 import { LUNAR_PHASE_CARD_EDITOR_NEW_NAME } from '../const';
 import { BaseEditor } from './base-editor';
-import { EditorArea } from './const';
+import { EditorArea } from './editor-area-config';
 
 export class LunarPhaseCardEditor extends BaseEditor implements LovelaceCardEditor {
   @property({ attribute: false }) public _hass!: HomeAssistant;

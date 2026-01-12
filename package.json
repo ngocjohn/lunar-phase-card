@@ -29,6 +29,7 @@
     "custom-card-helpers": "^1.9.0",
     "dotenv": "^16.4.7",
     "home-assistant-js-websocket": "^9.5.0",
+    "home-assistant-styles-manager": "^3.1.0",
     "intl-messageformat": "^10.7.18",
     "lit": "^3.3.1",
     "luxon": "^3.5.0",
