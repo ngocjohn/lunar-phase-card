@@ -5,6 +5,7 @@ import { property, state } from 'lit/decorators.js';
 import { HomeAssistant, LovelaceCardEditor } from '../../ha';
 import './components/general-area';
 import './components/location-area';
+import './components/layout-area';
 import './components/appearance-area';
 import './components/yaml-editor';
 import './components/form-editor';
@@ -81,7 +82,7 @@ export class LunarPhaseCardEditor extends BaseEditor implements LovelaceCardEdit
     ></lpc-appearance-area>`;
   }
   private _renderLayoutArea(): TemplateResult {
-    return html`<div>This is Layout Area Editor (to be implemented)</div>`;
+    return html`<lpc-layout-area ._hass=${this._hass} .config=${this.config} .store=${this.store}></lpc-layout-area>`;
   }
 
   private _areaChanged(ev: CustomEvent): void {

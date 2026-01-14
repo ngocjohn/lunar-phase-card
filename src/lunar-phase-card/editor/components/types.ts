@@ -4,5 +4,6 @@ declare global {
   interface Window {
     LunarAppearanceArea: EDITOR_COMPONENTS.AppearanceArea;
     LunarLocationArea: EDITOR_COMPONENTS.LocationArea;
+    LunarLayoutArea: EDITOR_COMPONENTS.LayoutArea;
   }
 }

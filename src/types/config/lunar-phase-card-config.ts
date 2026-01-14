@@ -194,6 +194,17 @@ export const LocationConfigKeys = [
 
 export type LocationConfig = Pick<LunarPhaseCardConfig, (typeof LocationConfigKeys)[number]>;
 
+export const LayoutConfigKeys = [
+  'hide_items',
+  'number_decimals',
+  'mile_unit',
+  '12hr_format',
+  'font_config',
+  'graph_chart_config',
+] as const;
+
+export type LayoutConfig = Pick<LunarPhaseCardConfig, (typeof LayoutConfigKeys)[number]>;
+
 export const ConfigFieldOrder = ['type', ...LocationConfigKeys, ...AppearanceOptions] as const;
 
 /** @deprecated use 'graph_chart_config' instead

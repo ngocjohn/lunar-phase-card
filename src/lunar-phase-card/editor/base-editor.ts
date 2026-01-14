@@ -91,7 +91,7 @@ export class BaseEditor extends LitElement {
 
     const value = { ...ev.detail.value };
     const { key, subKey } = ev.target as any;
-
+    console.debug('Form changes:', { key, subKey, value });
     // console.debug({ currentConfig, incoming: value });
     let changedValues: any = {};
     changedValues = getObjectDifferences(currentConfig, { ...currentConfig, ...value });
@@ -119,11 +119,14 @@ export class BaseEditor extends LitElement {
 
     changedValues = getObjectDifferences(this.config, newConfig);
     hasChanges = Boolean(changedValues && Object.keys(changedValues).length > 0);
-
+    console.debug('Detected config changes:', { hasChanges, changedValues });
     if (hasChanges) {
       console.group('Config change from:', this._editorArea);
       Object.entries(changedValues).forEach(([k, v]) => {
-        const [oldValue, newValue] = v as [any, any];
+        if (!Array.isArray(v)) {
+          return;
+        }
+        const [oldValue, newValue] = v;
         console.log(`%c${k}`, 'color: #2196F3; font-weight: bold;', oldValue, '→', newValue);
       });
       console.groupEnd();

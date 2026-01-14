@@ -6,10 +6,11 @@ export const LEGEND_ALIGN = ['start', 'center', 'end'] as const;
 export type LegendPos = (typeof LEGEND_POS)[number];
 export type LegendAlign = (typeof LEGEND_ALIGN)[number];
 
-export type GraphType = 'default' | 'dynamic';
+export const GRAPH_TYPES = ['default', 'dynamic'] as const;
+export type GraphType = (typeof GRAPH_TYPES)[number];
 
 export interface GraphConfig {
-  graph_type?: string;
+  graph_type?: GraphType;
   y_ticks?: boolean;
   x_ticks?: boolean;
   show_time?: boolean;
@@ -22,6 +23,19 @@ export interface GraphConfig {
   legend_align?: LegendAlign;
   time_step_size?: number;
 }
+
+export const GraphConfigBooleanKeys = [
+  'y_ticks',
+  'x_ticks',
+  'show_time',
+  'show_current',
+  'show_legend',
+  'show_highest',
+] as const;
+
+export const GraphConfigNumberKeys = ['y_ticks_step_size', 'time_step_size'] as const;
+
+export const GraphConfigDropdownKeys = ['graph_type', 'y_ticks_position', 'legend_position', 'legend_align'] as const;
 
 export const CHART_FILL_COLORS = {
   default: {
