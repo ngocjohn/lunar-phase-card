@@ -1,8 +1,10 @@
+import { LocalizeFunc } from '../../../ha';
 import {
   FontSizes,
   FontTextTransforms,
   HeaderFontConfigKeys,
   LabelFontConfigKeys,
+  FontConfigKey,
 } from '../../../types/config/font-config';
 import {
   GRAPH_TYPES,
@@ -13,18 +15,23 @@ import {
   GraphConfigNumberKeys,
   GraphConfigDropdownKeys,
 } from '../../../types/config/graph-config';
-import { LayoutConfig } from '../../../types/config/lunar-phase-card-config';
-import { formatLabelUppercase } from '../../../utils/string-helper';
+import { HIDDEN_ITEMS, HiddenItem, LayoutConfig } from '../../../types/config/lunar-phase-card-config';
+import { TITLE_PATH } from '../translate-const';
+import { computeBooleanItem, computeSelectorSchema } from './helper';
+import { HaFormBaseSchemaExtended } from './types';
 
 type GraphDropdownProperty = (typeof GraphConfigDropdownKeys)[number];
 
-interface GraphDropdownSelectorOptions {
-  name: GraphDropdownProperty;
-  default: string;
-  options: readonly string[];
-}
+type DropdownItemType = GraphDropdownProperty | FontConfigKey | string;
 
-const GRAPH_DROPDOWN_SELECTOR_OPTIONS: Record<GraphDropdownProperty, GraphDropdownSelectorOptions> = {
+const SECTIONS = ['base', 'calendar', 'full_calendar', 'horizon'] as const;
+
+const SELECT: Record<DropdownItemType, HaFormBaseSchemaExtended> = {
+  default_section: {
+    name: 'default_section',
+    default: 'base',
+    options: SECTIONS as readonly string[],
+  },
   graph_type: {
     name: 'graph_type',
     default: 'default',
@@ -45,148 +52,108 @@ const GRAPH_DROPDOWN_SELECTOR_OPTIONS: Record<GraphDropdownProperty, GraphDropdo
     default: 'start',
     options: LEGEND_ALIGN as readonly string[],
   },
+  header_font_size: {
+    name: 'header_font_size',
+    options: FontSizes as readonly string[],
+  },
+  header_font_style: {
+    name: 'header_font_style',
+    options: FontTextTransforms as readonly string[],
+  },
+  label_font_size: {
+    name: 'label_font_size',
+    options: FontSizes as readonly string[],
+  },
+  label_font_style: {
+    name: 'label_font_style',
+    options: FontTextTransforms as readonly string[],
+  },
 };
 
-const computeGraphDropdownItem = (property: GraphDropdownProperty) => {
-  const selectorOption = GRAPH_DROPDOWN_SELECTOR_OPTIONS[property];
+const computeFontSchema = (type: 'header' | 'label') => {
+  const keys = type === 'header' ? HeaderFontConfigKeys : LabelFontConfigKeys;
+  const title = type === 'header' ? 'Header Font Settings' : 'Label Font Settings';
   return [
     {
-      name: selectorOption.name,
-      required: false,
-      default: selectorOption.default,
-      selector: {
-        select: {
-          mode: 'dropdown',
-          options: selectorOption.options.map((option) => ({
-            value: option,
-            label: formatLabelUppercase(option),
-          })),
+      title,
+      type: 'expandable',
+      icon: 'mdi:format-font',
+      flatten: true,
+      schema: [
+        ...keys
+          .map((key: FontConfigKey) => {
+            if (key === `${type}_font_color`) {
+              return {
+                name: key,
+                required: false,
+                type: 'string',
+              };
+            } else {
+              return computeSelectorSchema(SELECT[key]);
+            }
+          })
+          .flat(),
+      ],
+    },
+  ] as const;
+};
+
+const FONT_CONFIG_SCHEMA = (localize: LocalizeFunc) =>
+  [
+    {
+      title: localize('editor.fontOptions.title'),
+      name: 'font_config',
+      flatten: false,
+      type: 'expandable',
+      icon: 'mdi:format-font',
+      schema: [...['header', 'label'].map((type) => computeFontSchema(type as 'header' | 'label')).flat()],
+    },
+  ] as const;
+
+const HIDDEN_LABEL: Record<HiddenItem, string> = {
+  moonAge: 'moonAge',
+  moonFraction: 'illumination',
+  azimuthDegress: 'azimuth',
+  altitudeDegrees: 'altitude',
+  distance: 'distance',
+  moonRise: 'moonRise',
+  moonSet: 'moonSet',
+  moonHighest: 'moonHigh',
+  nextFullMoon: 'fullMoon',
+  nextNewMoon: 'newMoon',
+};
+
+const LAYOUT_BASE_SCHEMA = (localize: LocalizeFunc) =>
+  [
+    {
+      title: localize('editor.layoutConfig.title'),
+      type: 'expandable',
+      icon: 'mdi:calendar-today',
+      description: 'Configure how date, time, and numbers are displayed.',
+      flatten: true,
+      schema: [
+        {
+          type: 'grid',
+          flatten: true,
+          schema: [
+            ...['12hr_format', 'mile_unit'].map((prop) => computeBooleanItem(prop)),
+            {
+              name: 'number_decimals',
+              default: 2,
+              required: false,
+              selector: { number: { min: 0, max: 5, mode: 'box', step: 1 } },
+            },
+            {
+              name: 'hide_items',
+              required: false,
+              type: 'multi_select',
+              options: HIDDEN_ITEMS.map((item) => [item, localize(`card.${HIDDEN_LABEL[item]}`)] as const),
+            },
+          ],
         },
-      },
+      ],
     },
   ] as const;
-};
-
-const computeBooleanItem = (property: string) => ({
-  name: property,
-  required: false,
-  default: false,
-  type: 'boolean',
-});
-
-const FontSizeOptions = FontSizes.map((size) => ({
-  value: size,
-  label: size,
-}));
-const FontTextTransformOptions = FontTextTransforms.map((transform) => ({
-  value: transform,
-  label: transform,
-}));
-
-const computeFontDropdownItem = (property: string) => {
-  const options =
-    property === 'header_font_size' || property === 'label_font_size' ? FontSizeOptions : FontTextTransformOptions;
-  return [
-    {
-      name: property,
-      required: false,
-      selector: {
-        select: {
-          mode: 'dropdown',
-          options: options,
-        },
-      },
-    },
-  ] as const;
-};
-const computeFontoColorItem = (property: string) => {
-  return [
-    {
-      name: property,
-      required: false,
-      type: 'string',
-    },
-  ] as const;
-};
-
-export const LABEL_FONT_SCHEMA = [
-  {
-    title: 'Label Font Settings',
-    type: 'expandable',
-    icon: 'mdi:format-font',
-    flatten: true,
-    schema: [
-      ...LabelFontConfigKeys.map((key) => {
-        if (key === 'label_font_color') {
-          return computeFontoColorItem(key);
-        } else {
-          return computeFontDropdownItem(key);
-        }
-      }).flat(),
-    ],
-  },
-] as const;
-export const HEADER_FONT_SCHEMA = [
-  {
-    title: 'Header Font Settings',
-    type: 'expandable',
-    icon: 'mdi:format-font',
-    flatten: true,
-    schema: [
-      ...HeaderFontConfigKeys.map((key) => {
-        if (key === 'header_font_color') {
-          return computeFontoColorItem(key);
-        } else {
-          return computeFontDropdownItem(key);
-        }
-      }).flat(),
-    ],
-  },
-] as const;
-const FONT_CONFIG_SCHEMA = [
-  {
-    title: 'Font Settings',
-    name: 'font_config',
-    flatten: false,
-    type: 'expandable',
-    icon: 'mdi:format-font',
-    schema: [...HEADER_FONT_SCHEMA, ...LABEL_FONT_SCHEMA],
-  },
-] as const;
-
-const LAYOUT_BASE_SCHEMA = [
-  {
-    title: 'Data Format Options',
-    type: 'expandable',
-    icon: 'mdi:calendar-today',
-    description: 'Configure how date, time, and numbers are displayed.',
-    flatten: true,
-    schema: [
-      {
-        type: 'grid',
-        flatten: true,
-        schema: [
-          {
-            name: '12hr_format',
-            default: false,
-            type: 'boolean',
-          },
-          {
-            name: 'mile_unit',
-            default: false,
-            type: 'boolean',
-          },
-          {
-            name: 'number_decimals',
-            default: 2,
-            required: false,
-            selector: { number: { min: 0, max: 5, step: 1 } },
-          },
-        ],
-      },
-    ],
-  },
-] as const;
 
 const GRAP_DEFAULT_SCHEMA = [
   {
@@ -197,46 +164,39 @@ const GRAP_DEFAULT_SCHEMA = [
       ...GraphConfigNumberKeys.map((prop) => ({
         name: prop,
         required: false,
-        default: prop === 'y_ticks_step_size' ? 10 : 60,
-        selector: { number: { min: 1, step: 1 } },
+        default: 30,
+        selector:
+          prop === 'y_ticks_step_size'
+            ? { number: { max: 90, min: 5, mode: 'box', step: 5 } }
+            : { number: { max: 60, min: 5, mode: 'box', step: 5 } },
       })),
       ...GraphConfigDropdownKeys.filter((prop) => prop !== 'graph_type')
-        .map((prop) => computeGraphDropdownItem(prop))
+        .map((prop) => computeSelectorSchema(SELECT[prop]))
         .flat(),
     ],
   },
 ] as const;
 
-const GRAPH_SCHEMA = (isDynamicChart: boolean) => {
+const GRAPH_SCHEMA = (isDynamicChart: boolean, title: string) => {
   return [
     {
-      title: 'Graph Options',
+      title,
       name: 'graph_chart_config',
       flatten: false,
       type: 'expandable',
       icon: 'mdi:chart-line',
-      schema: [
-        {
-          name: 'graph_type',
-          required: false,
-          default: 'default',
-          selector: {
-            select: {
-              mode: 'dropdown',
-              options: GRAPH_TYPES.map((type) => ({
-                value: type,
-                label: type.charAt(0).toUpperCase() + type.slice(1),
-              })),
-            },
-          },
-        },
-        ...(!isDynamicChart ? GRAP_DEFAULT_SCHEMA : []),
-      ],
+      schema: [...computeSelectorSchema(SELECT['graph_type']), ...(!isDynamicChart ? GRAP_DEFAULT_SCHEMA : [])],
     },
   ] as const;
 };
 
-export const LAYOUT_SCHEMA = (data: LayoutConfig) => {
+export const LAYOUT_SCHEMA = (data: LayoutConfig, localize: LocalizeFunc) => {
   const isDynamicChart = data?.graph_chart_config?.graph_type === 'dynamic';
-  return [...LAYOUT_BASE_SCHEMA, ...FONT_CONFIG_SCHEMA, ...GRAPH_SCHEMA(isDynamicChart)] as const;
+  const getTitle = (path: string) => localize(`editor.${TITLE_PATH[path]}.title`);
+  return [
+    ...computeSelectorSchema(SELECT['default_section']),
+    ...LAYOUT_BASE_SCHEMA(localize),
+    ...FONT_CONFIG_SCHEMA(localize),
+    ...GRAPH_SCHEMA(isDynamicChart, getTitle('graph_chart_config')),
+  ] as const;
 };

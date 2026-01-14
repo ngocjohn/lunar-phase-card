@@ -24,7 +24,8 @@ export interface FontCustomStyles extends HeaderFontConfig, LabelFontConfig {
 
 export const HeaderFontConfigKeys = ['header_font_size', 'header_font_style', 'header_font_color'] as const;
 export const LabelFontConfigKeys = ['label_font_size', 'label_font_style', 'label_font_color'] as const;
-
+export const FontConfigKeys = [...HeaderFontConfigKeys, ...LabelFontConfigKeys] as const;
+export type FontConfigKey = (typeof FontConfigKeys)[number];
 export type CardHeaderFontConfig = Pick<FontCustomStyles, (typeof HeaderFontConfigKeys)[number]>;
 export type CardLabelFontConfig = Pick<FontCustomStyles, (typeof LabelFontConfigKeys)[number]>;
 

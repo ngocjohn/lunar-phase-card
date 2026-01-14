@@ -1,6 +1,7 @@
 import type { LocationConfig } from '../../../types/config/lunar-phase-card-config';
 
 import { LOC_SOURCE } from '../../../types/config/lunar-phase-card-config';
+import { computeBooleanItem, computeSelectorSchema } from './helper';
 
 const COORDINATES_SCHEMA = [
   {
@@ -37,21 +38,12 @@ const LAT_LON_SCHEMA = (isCustom: boolean = false) => {
 };
 
 const LOCATION_SOURCE_SCHEMA = [
-  {
+  ...computeSelectorSchema({
     name: 'location_source',
     default: 'default',
-    selector: {
-      select: {
-        mode: 'dropdown',
-        options: [...LOC_SOURCE.map((source) => ({ value: source, label: source.toUpperCase() }))],
-      },
-    },
-  },
-  {
-    name: 'southern_hemisphere',
-    default: false,
-    type: 'boolean',
-  },
+    options: LOC_SOURCE as readonly string[],
+  }),
+  computeBooleanItem('southern_hemisphere'),
 ] as const;
 
 const LOCATION_ENTITY_SCHEMA = (entitiesInclude?: string[]) =>

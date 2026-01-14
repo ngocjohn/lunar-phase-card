@@ -18,6 +18,21 @@ export type MoonPosition = (typeof MOON_POSITION)[number];
 export const THEME_MODE = ['auto', 'light', 'dark'] as const;
 export type ThemeMode = (typeof THEME_MODE)[number];
 
+export const HIDDEN_ITEMS = [
+  'moonAge',
+  'moonFraction',
+  'azimuthDegress',
+  'altitudeDegrees',
+  'distance',
+  'moonRise',
+  'moonSet',
+  'moonHighest',
+  'nextFullMoon',
+  'nextNewMoon',
+] as const;
+
+export type HiddenItem = (typeof HIDDEN_ITEMS)[number];
+
 export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   /**
    * Source of location for lat lon values
@@ -99,7 +114,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   /**
    * List of items to hide from data display
    */
-  hide_items?: string[];
+  hide_items?: HiddenItem[];
   /**
    * Number of decimals to show for numeric values
    */
@@ -167,7 +182,6 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
 }
 
 export const AppearanceOptions = [
-  'default_section',
   'compact_view',
   'compact_mode',
   'moon_position',
@@ -195,6 +209,7 @@ export const LocationConfigKeys = [
 export type LocationConfig = Pick<LunarPhaseCardConfig, (typeof LocationConfigKeys)[number]>;
 
 export const LayoutConfigKeys = [
+  'default_section',
   'hide_items',
   'number_decimals',
   'mile_unit',
@@ -205,7 +220,7 @@ export const LayoutConfigKeys = [
 
 export type LayoutConfig = Pick<LunarPhaseCardConfig, (typeof LayoutConfigKeys)[number]>;
 
-export const ConfigFieldOrder = ['type', ...LocationConfigKeys, ...AppearanceOptions] as const;
+export const ConfigFieldOrder = ['type', ...LocationConfigKeys, ...AppearanceOptions, ...LayoutConfigKeys] as const;
 
 /** @deprecated use 'graph_chart_config' instead
  */

@@ -6,6 +6,7 @@ import { HaFormElement } from '../../../ha/panels/ha-form/types';
 import { selectTree } from '../../../utils/helpers-dom';
 import { BaseEditor } from '../base-editor';
 import { ELEMENT } from '../editor-const';
+import { APPEARANCE_LABELS, LABEL_PATH, LabelPathType } from '../translate-const';
 
 const HA_FORM_STYLE = css`
   .root > :not([own-margin]):not(:last-child) {
@@ -56,11 +57,20 @@ export class FormEditor extends BaseEditor {
     if (schema.name === 'entity' && !schema.context?.group_entity) {
       return undefined;
     }
+    if (['hide_compact_label', ...APPEARANCE_LABELS].includes(schema.name)) {
+      return this.store.translate(`editor.${LABEL_PATH[schema.name as LabelPathType]}`);
+    }
     const label = schema.label || schema.name || schema.title || '';
     return capitalize(label.replace(/_/g, ' '));
   };
 
   private computeHelper = (schema: any): string | TemplateResult | undefined => {
+    if (APPEARANCE_LABELS.includes(schema.name)) {
+      return this.store.translate(`editor.titleHelper.${LABEL_PATH[schema.name as LabelPathType]}`);
+    }
+    if (schema.name === 'hide_compact_label') {
+      return this.store.translate(`editor.titleHelper.hideLabel`);
+    }
     return schema.helper || undefined;
   };
 

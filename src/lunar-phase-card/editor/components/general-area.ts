@@ -243,29 +243,29 @@ export class GeneralArea extends BaseEditor {
 
         .menu-label {
           display: flex;
+          /* height: initial; */
+          flex: 1 1 auto;
+          justify-content: flex-start;
           flex-direction: column;
-          height: 100%;
-          justify-content: space-evenly;
-          flex: 1;
         }
 
         .menu-label .primary {
           font-weight: 500;
-          font-size: 1rem;
+          /* font-size: 1rem; */
           white-space: nowrap;
           position: relative;
           text-overflow: ellipsis;
           overflow: hidden;
           text-transform: uppercase;
-          line-height: 1;
+          /* line-height: 1; */
         }
 
         .menu-label .secondary {
           color: var(--secondary-text-color);
           /* text-transform: capitalize; */
           letter-spacing: 0.5px;
-          font-size: smaller;
-          line-height: 150%;
+          font-size: 0.85em;
+          line-height: normal;
         }
 
         .menu-selector.hidden {

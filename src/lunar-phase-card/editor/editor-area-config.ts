@@ -40,8 +40,7 @@ const TRANSLATION_KEY: Record<string, string> = {
 const createMenuItem = (localize: LocalizeFunc, key: EditorAreaKey): EditorMenuItem => {
   if (key === EditorArea.DEFAULT) {
     return {
-      title: 'Config Overview',
-      description: 'Select the type of configuration you want to edit.',
+      title: 'LUNAR PHASE CARD confiuguration',
       icon: ICON[key],
     };
   }

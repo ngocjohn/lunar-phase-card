@@ -25,8 +25,9 @@ export class AppearanceArea extends BaseEditor {
   }
 
   protected render(): TemplateResult {
+    const customLocalize = this.store.translate;
     const DATA = { ...this._appearance };
-    const schema = APPEARANCE_FORM_SCHEMA(DATA);
+    const schema = APPEARANCE_FORM_SCHEMA(DATA, customLocalize);
     const formEl = this.createLpcForm(DATA, schema);
     return html`
       ${this._yamlActive ? this.createYamlEditor(DATA) : formEl}

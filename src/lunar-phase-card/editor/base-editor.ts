@@ -75,6 +75,8 @@ export class BaseEditor extends LitElement {
     const currentConfig = { ...(this.config || {}) };
     return html`<lpc-form-editor
       ._hass=${this._hass}
+      .config=${this.config}
+      .store=${this.store}
       .data=${data}
       .schema=${schema}
       .currentConfig=${currentConfig}

@@ -24,8 +24,9 @@ export class LayoutArea extends BaseEditor {
     }
   }
   protected render(): TemplateResult {
+    const customLocalize = this.store.translate;
     const layoutConfig = { ...this.layoutConfig };
-    const SCHEMA = LAYOUT_SCHEMA(layoutConfig);
+    const SCHEMA = LAYOUT_SCHEMA(layoutConfig, customLocalize);
     const layoutForm = this.createLpcForm(layoutConfig, SCHEMA);
     return html`
       ${this._yamlActive ? this.createYamlEditor(layoutConfig) : layoutForm}
