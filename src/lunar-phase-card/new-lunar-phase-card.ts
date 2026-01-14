@@ -1,5 +1,5 @@
 import { css, CSSResultGroup, html, nothing, PropertyValues, TemplateResult } from 'lit';
-import { customElement, query, state } from 'lit/decorators.js';
+import { customElement, property, query, state } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -48,7 +48,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
   @state() private _cardWidth = 0;
   @state() private _cardHeight = 0;
   @state() _cardReady: boolean = false;
-  @state() _selectedDate?: Date;
+  @property() public _selectedDate?: Date;
 
   @state() _calendarPopup: boolean = false;
   @query(COMPONENT.CALENDAR) _elCalendar!: LunarMoonCalendarFooter;
@@ -244,16 +244,30 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
   }
 
   private _renderHorizonSection(): TemplateResult {
+    if (this._configGraph?.graph_type === 'dynamic') {
+      return html`
+        ${this._renderHeader('header')}
+        <lunar-moon-chart-dynamic
+          slot="content"
+          .hass=${this.hass}
+          .store=${this.store}
+          .config=${this.config}
+          .moon=${this.moon}
+          .cardWidth=${this._cardWidth}
+        ></lunar-moon-chart-dynamic>
+      `;
+    }
+    const headerTitle = this.store.translate('card.horizonTitle');
     return html`
-      ${this._renderHeader('header')}
-      <lunar-moon-chart-dynamic
+      ${this._renderHeader('header', headerTitle)}
+      <lunar-moon-chart-horizon
         slot="content"
         .hass=${this.hass}
         .store=${this.store}
         .config=${this.config}
         .moon=${this.moon}
         .cardWidth=${this._cardWidth}
-      ></lunar-moon-chart-dynamic>
+      ></lunar-moon-chart-horizon>
     `;
   }
 
@@ -280,6 +294,11 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     `;
   }
 
+  public _resetSelectedDate(): void {
+    if (this._selectedDate !== undefined) {
+      this._selectedDate = undefined;
+    }
+  }
   private createStore() {
     if (this.store) {
       return;

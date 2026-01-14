@@ -23,6 +23,11 @@ export class LunarMoonDataInfo extends LunarBaseCard {
     this.initSwiper();
   }
 
+  get isSwiperLocked(): boolean {
+    if (!this.swiper) return true;
+    return this.swiper.isLocked;
+  }
+
   protected updated(changedProps: PropertyValues): void {
     super.updated(changedProps);
     if (changedProps.has('moonData')) {
@@ -58,7 +63,7 @@ export class LunarMoonDataInfo extends LunarBaseCard {
       <div>
         <div class="swiper-container">
           <div class="swiper-wrapper">${dataContainer}</div>
-          <div class="swiper-pagination"></div>
+          <div class="swiper-pagination" ?locked=${this.isSwiperLocked}></div>
         </div>
       </div>
     `;

@@ -9,5 +9,6 @@ declare global {
     LunarCalendarFooter: COMPONENTS.LunarMoonCalendarFooter;
     LunarCompactView: COMPONENTS.LunarMoonCompactView;
     LunarPopup: COMPONENTS.LunarMoonCalendarPopup;
+    LunarChartHorizon: COMPONENTS.LunarMoonChartHorizon;
   }
 }

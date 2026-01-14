@@ -112,6 +112,10 @@ export class LunarBaseCard extends LunarBaseElement {
     return pick(this.config.font_config || {}, [...LabelFontConfigKeys]);
   }
 
+  get _configGraph(): LunarPhaseCardConfig['graph_chart_config'] {
+    return this.config.graph_chart_config || {};
+  }
+
   public getOrderedConfigFields(): LunarPhaseCardConfig {
     if (!this.config) {
       return {} as LunarPhaseCardConfig;

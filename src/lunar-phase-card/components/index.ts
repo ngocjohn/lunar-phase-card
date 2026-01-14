@@ -7,5 +7,6 @@ export * from './moon-calendar-footer';
 export * from './moon-calendar-popup';
 export * from './moon-compact-view';
 export * from './moon-chart-dynamic';
+export * from './moon-chart-horizon';
 export * from './moon-stars-sky';
 export * from './moon-calendar-tooltip';
