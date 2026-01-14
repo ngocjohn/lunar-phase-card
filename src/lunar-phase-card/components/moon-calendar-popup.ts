@@ -204,8 +204,9 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
           /* background: var(--ha-card-background-color, var(--secondary-background-color)); */
           width: 100%;
           height: 100%;
-          border-radius: inherit;
+          border-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg));
           box-sizing: border-box;
+          overflow: hidden;
         }
         #lunar-calendar.--background {
           background-image: var(--lpc-bg-image);

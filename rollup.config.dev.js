@@ -4,7 +4,6 @@ import filesize from 'rollup-plugin-filesize';
 import replace from '@rollup/plugin-replace';
 import { version } from './package.json';
 import { logCardInfo, defaultPlugins } from './rollup.config.helper.mjs';
-import { watch } from 'fs';
 
 const dev = process.env.ROLLUP_WATCH;
 const port = process.env.PORT || 8235;

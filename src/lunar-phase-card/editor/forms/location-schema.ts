@@ -10,7 +10,7 @@ const COORDINATES_SCHEMA = [
     schema: [
       {
         name: 'latitude',
-        required: true,
+        required: false,
         selector: { number: { step: 'any', unit_of_measurement: '°' } },
       },
       {
@@ -27,6 +27,7 @@ const LAT_LON_SCHEMA = (isCustom: boolean = false) => {
     return [
       {
         name: 'location',
+        label: ' ',
         selector: { location: { radius: false } },
       },
     ] as const;
@@ -53,18 +54,23 @@ const LOCATION_SOURCE_SCHEMA = [
   },
 ] as const;
 
-const LOCATION_ENTITY_SCHEMA = [
-  {
-    name: 'entity',
-    label: 'Entity (optional)',
-    helper: 'Only entity with latitude and longitude attributes are supported.',
-    required: false,
-    selector: { entity: {} },
-  },
-] as const;
+const LOCATION_ENTITY_SCHEMA = (entitiesInclude?: string[]) =>
+  [
+    {
+      name: 'entity',
+      label: 'Entity (optional)',
+      helper: 'Only entity with latitude and longitude attributes are supported.',
+      required: false,
+      selector: { entity: { include_entities: entitiesInclude ?? [] } },
+    },
+  ] as const;
 
-export const LOCATION_FORM_SCHEMA = (data: LocationConfig) => {
+export const LOCATION_FORM_SCHEMA = (data: LocationConfig, entitiesInclude?: string[]) => {
   const isCustom = data.location_source === 'custom';
   const isEntity = data.location_source === 'entity';
-  return [...LOCATION_SOURCE_SCHEMA, ...(isEntity ? LOCATION_ENTITY_SCHEMA : []), ...LAT_LON_SCHEMA(isCustom)] as const;
+  return [
+    ...LOCATION_SOURCE_SCHEMA,
+    ...(isEntity ? LOCATION_ENTITY_SCHEMA(entitiesInclude) : []),
+    ...LAT_LON_SCHEMA(isCustom),
+  ] as const;
 };

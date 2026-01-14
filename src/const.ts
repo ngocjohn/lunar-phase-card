@@ -21,6 +21,8 @@ const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${VERSION
 export const BACKGROUND_URL = (index: number) => `${PIC_URL}moon_bg_${index}.png`;
 export const CUSTOM_BG = [blueBackground, BACKGROUND_URL(1), BACKGROUND_URL(2), BACKGROUND_URL(3)];
 
+export const EDITOR_CUSTOM_BG = [BACKGROUND_URL(0), BACKGROUND_URL(1), BACKGROUND_URL(2), BACKGROUND_URL(3)];
+
 const MOON_URL = 'https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/refs/heads/main/moon_pic/';
 export const MOON_PIC_URL = (index: number) => `${MOON_URL}${index}_moon.png`;
 

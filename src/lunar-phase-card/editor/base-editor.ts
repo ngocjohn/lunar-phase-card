@@ -4,10 +4,10 @@ import { property, state } from 'lit/decorators.js';
 
 import { HomeAssistant } from '../../ha';
 import { fireEvent } from '../../ha';
-import { hasLocation } from '../../ha/common/entity/has_location';
 import { Store } from '../../model/store';
 import { LunarPhaseCardConfig } from '../../types/config/lunar-phase-card-config';
 import { cardNeedsMigration, migrateConfig } from '../../types/utils';
+import { getObjectDifferences } from '../../utils/object-differences';
 import { editorStyle } from '../css/card-styles';
 import { createEditorMenuItems, EditorArea, EditorMenuItems } from './editor-area-config';
 
@@ -17,6 +17,7 @@ export class BaseEditor extends LitElement {
   @property({ attribute: false }) store!: Store;
 
   @state() private _legacyConfig?: LunarPhaseCardConfig;
+
   protected _stylesManager: HomeAssistantStylesManager;
 
   protected _editorArea?: EditorArea;
@@ -51,9 +52,9 @@ export class BaseEditor extends LitElement {
       return;
     } else {
       delete this._legacyConfig;
-      console.debug('Config does not need migration.');
+      // console.debug('Config does not need migration.');
       this.config = JSON.parse(JSON.stringify(config));
-      console.debug('Config set to:', this.config);
+      // console.debug('Config set to:', this.config);
     }
   }
 
@@ -65,6 +66,7 @@ export class BaseEditor extends LitElement {
       };
     }
     fireEvent(this, 'config-changed', { config: this.config });
+    console.log('Config update fired from', this._editorArea);
     super.requestUpdate();
   }
 
@@ -82,55 +84,86 @@ export class BaseEditor extends LitElement {
   }
 
   protected _onValueChanged(ev: CustomEvent): void {
-    console.debug('onValueChanged (BaseEditor)');
     ev.stopPropagation();
-
-    const { key, subKey, currentConfig } = ev.target as any;
-    const value = { ...ev.detail.value };
-
+    const currentConfig = { ...(this.config || {}) };
     if (!currentConfig || typeof currentConfig !== 'object') return;
 
-    const updates: Partial<LunarPhaseCardConfig> = {};
-    if (key && key === 'location-area') {
-      // special handling for location-area
-      if (value.location) {
-        updates.latitude = value.location.latitude;
-        updates.longitude = value.location.longitude;
-        delete value.location;
-      } else if (value.location_source === 'entity' && value.entity !== undefined) {
-        const entityObj = this._hass.states[value.entity];
-        if (hasLocation(entityObj)) {
-          updates.latitude = entityObj.attributes.latitude;
-          updates.longitude = entityObj.attributes.longitude;
-        } else {
-          // entity does not have location attribute, we cannot set location
-          updates.entity = undefined;
-          delete value.entity;
-        }
-      }
-      Object.assign(updates, value);
-      if (Object.keys(updates).length > 0) {
-        console.debug('Location-area updates to apply:', updates);
-        this.configChanged(updates);
-      }
+    const value = { ...ev.detail.value };
+    const { key, subKey } = ev.target as any;
+
+    // console.debug({ currentConfig, incoming: value });
+    let changedValues: any = {};
+    changedValues = getObjectDifferences(currentConfig, { ...currentConfig, ...value });
+    const hasChanges = Boolean(changedValues && Object.keys(changedValues).length > 0);
+
+    if (!hasChanges) {
       return;
-    } else if (key && subKey) {
-      if (typeof currentConfig[key] === 'object' && currentConfig[key] === null) {
-        currentConfig[key] = {};
-      }
-      currentConfig[key][subKey] = value;
-      updates[key] = currentConfig[key];
+    }
+
+    let updates: Partial<LunarPhaseCardConfig> = {};
+    if (key && subKey) {
+      updates[key] = {
+        ...(this.config[key] || {}),
+        [subKey]: value,
+      };
     } else if (key) {
       updates[key] = value;
     } else {
-      Object.assign(updates, value);
+      updates = value;
     }
 
-    console.debug('updates to apply:', updates);
-    if (Object.keys(updates).length > 0) {
+    if (hasChanges) {
+      console.group('Config change from:', this._editorArea);
+      Object.entries(changedValues).forEach(([k, v]) => {
+        const [oldValue, newValue] = v as [any, any];
+        console.log(`%c${k}`, 'color: #2196F3; font-weight: bold;', oldValue, '→', newValue);
+      });
+      console.groupEnd();
       this.configChanged(updates);
+      return;
     }
-    return;
+  }
+
+  protected createYamlEditor(
+    defaultConfig: any,
+    key?: string | number,
+    subKey?: string | number,
+    hasExtraActions = false
+  ): TemplateResult {
+    return html`<lpc-yaml-editor
+      ._hass=${this._hass}
+      .configDefault=${defaultConfig}
+      .hasExtraActions=${hasExtraActions}
+      .key=${key}
+      .subKey=${subKey}
+      @yaml-value-changed=${this._onYamlValueChanged}
+      @yaml-editor-closed=${this._onYamlEditorClosed}
+    ></lpc-yaml-editor>`;
+  }
+  protected _onYamlValueChanged(ev: CustomEvent): void {
+    ev.stopPropagation();
+    const { key, subKey } = ev.target as any;
+    const value = ev.detail.value;
+    // console.debug('YAML changes:', { key, subKey, value });
+    let updates: Partial<LunarPhaseCardConfig> = {};
+    if (key && subKey) {
+      updates[key] = {
+        ...(this.config[key] || {}),
+        [subKey]: value,
+      };
+    } else if (key) {
+      updates[key] = value;
+    } else {
+      updates = value;
+    }
+    this.configChanged(updates);
+  }
+
+  protected _onYamlEditorClosed(ev: CustomEvent): void {
+    ev.stopPropagation();
+    const { key, subKey } = ev.target as any;
+    console.debug('YAML Editor closed:', { key, subKey });
+    fireEvent(this, 'yaml-editor-closed', undefined);
   }
 
   static get styles(): CSSResultGroup {

@@ -19,41 +19,60 @@ export const THEME_MODE = ['auto', 'light', 'dark'] as const;
 export type ThemeMode = (typeof THEME_MODE)[number];
 
 export interface LunarPhaseCardConfig extends LovelaceCardConfig {
-  default_section?: Section;
-
-  location_source?: LocationSource;
   /**
-   * Lat & Lon from config, change dynamically with location_source
-   * if location_source is set to 'default', lat lon will be pulled from Home Assistant config
-   * if location_source is set to 'custom', lat lon will be pulled from config
-   * if location_source is set to 'entity', lat lon will be pulled from the state attributes of the defined entity
+   * Source of location for lat lon values
+   * 'default' - use Home Assistant config location
+   * 'custom' - use lat lon from config
+   * 'entity' - use entity to pull lat lon from state attributes
+   * Default is 'default'
    */
-  latitude?: number;
-  longitude?: number;
+  location_source?: LocationSource;
   /**
    * Entity to use for location (if location_source is set to 'entity')
    * Lat lon will be pulled from the state attributes
    */
   entity?: string;
+  /**
+   * Set to true if the location is in the southern hemisphere
+   * This will adjust moon phase display accordingly
+   */
   southern_hemisphere?: boolean;
+  /**
+   * Lat & Long dynamically set by user (if location_source is set to 'custom')
+   */
+  latitude?: number;
+  longitude?: number;
+  //
+  // APPEARANCE & BEHAVIOR CONFIG
+  /*
+    Language for the card, if not set, default 'en' will be used
+  */
+  language?: string;
+  /*
+    Section to show by default
+  */
+  default_section?: Section;
   /*
 		Show a more compact view, hiding some details
 	*/
   compact_view?: boolean;
   compact_mode?: CompactMode;
   /*
-   * Position of the moon image in content
+   * Position of the moon phase image on base section
    */
   moon_position?: MoonPosition;
   /*
    * Show or hide card background
    */
   hide_background?: boolean;
-
   /**
    * Custom background image url
    */
   custom_background?: string;
+  /**
+   * Hide star field background
+   */
+  hide_starfield?: boolean;
   /**
    * Hide menu button to switch between sections
    */
@@ -63,19 +82,34 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
    */
   calendar_modal?: boolean;
   /**
-   * theme mode for the card
-   * 'auto' will match the system / Home Assistant theme
+   * Custom theme name for the card
+   */
+  custom_theme?: string;
+  /**
+   * Theme mode for the card: auto, light, dark
+   * Default is 'auto'
    */
   theme_mode?: ThemeMode;
-  custom_theme?: string;
-  // DATA Visualization
-  language?: string;
-  number_decimals?: number;
-  mile_unit?: boolean;
-  '12hr_format'?: boolean;
+  //
+  // LAYOUT & DATA VISUALIZATION CONFIG
+  /**
+   * List of items to hide from data display
+   */
   hide_items?: string[];
   /**
-   * Font config for data display
+   * Number of decimals to show for numeric values
+   */
+  number_decimals?: number;
+  /**
+   * Use mile unit for distance display (otherwise km unit will be used)
+   */
+  mile_unit?: boolean;
+  /**
+   * Use 12hr format for time display (otherwise 24hr format will be used)
+   */
+  '12hr_format'?: boolean;
+  /**
+   * Font custom styles for the card
    */
   font_config?: FontCustomStyles;
   /**
@@ -128,26 +162,34 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   cardId?: string;
 }
 
-export const AppareanceKeys = [
+export const AppearanceOptions = [
+  'default_section',
   'compact_view',
   'compact_mode',
   'moon_position',
   'hide_background',
   'custom_background',
+  'hide_starfield',
   'hide_buttons',
+  'calendar_modal',
+  'custom_theme',
+  'theme_mode',
+  'language',
 ] as const;
 
-export type CardAppearance = Pick<LunarPhaseCardConfig, (typeof AppareanceKeys)[number]>;
+export type CardAppearance = Pick<LunarPhaseCardConfig, (typeof AppearanceOptions)[number]>;
 
 export const LocationConfigKeys = [
   'location_source',
-  'latitude',
-  'longitude',
   'entity',
   'southern_hemisphere',
+  'latitude',
+  'longitude',
 ] as const;
 
 export type LocationConfig = Pick<LunarPhaseCardConfig, (typeof LocationConfigKeys)[number]>;
+
+export const ConfigFieldOrder = ['type', ...LocationConfigKeys, ...AppearanceOptions] as const;
 
 /** @deprecated use 'graph_chart_config' instead
  */

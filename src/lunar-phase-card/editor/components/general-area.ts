@@ -4,7 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { CARD_VERSION } from '../../../const';
 import { fireEvent } from '../../../ha';
 import { BaseEditor } from '../base-editor';
-import { EditorArea } from '../editor-area-config';
+import { EditorArea, EditorMenuItems } from '../editor-area-config';
 
 declare global {
   interface HASSDomEvents {
@@ -20,6 +20,11 @@ export class GeneralArea extends BaseEditor {
 
   @property() public value?: string;
   @state() private _open = false;
+
+  private get tipsItems(): Partial<EditorMenuItems> {
+    const options = Object.entries(this.AreaMenuItems).filter(([key]) => key !== EditorArea.DEFAULT);
+    return Object.fromEntries(options);
+  }
 
   protected render(): TemplateResult {
     const options = this.AreaMenuItems;
@@ -54,7 +59,7 @@ export class GeneralArea extends BaseEditor {
             <div id="menu-trigger" class="menu-icon click-shrink" slot="trigger">
               <div class="menu-icon-inner"><ha-icon .icon=${menuIcon}></ha-icon></div>
             </div>
-            ${Object.entries(options).map(
+            ${Object.entries(this.tipsItems).map(
               ([key, item]) => html`
                 <ha-list-item .value=${key} .activated=${this.value === key}> ${item.title} </ha-list-item>
               `
@@ -70,7 +75,7 @@ export class GeneralArea extends BaseEditor {
     `;
   }
   private _renderTips(): TemplateResult {
-    const options = Object.entries(this.AreaMenuItems).filter(([key]) => key !== EditorArea.DEFAULT);
+    const options = Object.entries(this.tipsItems);
     return html`
       <div class="tip-content">
         ${options.map(([key, { title, description, icon }]) => {
@@ -90,9 +95,8 @@ export class GeneralArea extends BaseEditor {
   }
 
   private _handleItemClick(ev: CustomEvent | string): void {
-    const menuKeys = Object.keys(this.AreaMenuItems);
+    const menuKeys = Object.keys(this.tipsItems);
     const value = typeof ev === 'string' ? ev : menuKeys[ev.detail.index];
-    console.log('Menu item clicked:', value);
     fireEvent(this, 'area-changed', { area: value });
   }
 

@@ -60,7 +60,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     this._cardReady = false;
     this._activePage = this.config?.default_section || SECTION.BASE;
     this._cardReady = true;
-    this.updateComplete.then(() => this._measureCard());
+    // this.updateComplete.then(() => this._measureCard());
   }
 
   public connectedCallback(): void {
@@ -104,9 +104,6 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
         this._selectedDate = undefined;
       }
     }
-    if (_changedProperties.has('_selectedDate') && this._selectedDate !== undefined) {
-      console.debug('update:', new Date(this._selectedDate).toLocaleString());
-    }
   }
 
   get _date(): Date {
@@ -121,7 +118,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     return dataItems as MoonData;
   }
 
-  private _measureCard() {
+  private _measureCard(): void {
     const card = this.shadowRoot!.querySelector('ha-card') as HTMLElement;
     if (!card) {
       return;
@@ -159,7 +156,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           ])}
         </lunar-card>
       </ha-card>
-      <lunar-star-field> </lunar-star-field>
+      ${appearance.hide_starfield ? nothing : html`<lunar-star-field> </lunar-star-field>`}
     `;
   }
 
@@ -287,7 +284,6 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     if (this.store) {
       return;
     }
-    console.debug('Create store for card');
     this.store = new Store(this.hass, this.config, this);
   }
   private createMoon() {

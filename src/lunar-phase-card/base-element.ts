@@ -15,7 +15,7 @@ export class LunarBaseElement extends LitElement {
   protected updated(changedProps: PropertyValues): void {
     super.updated(changedProps);
     if (changedProps.has('hass') && this.hass) {
-      const currentDarkMode = computeDarkMode(changedProps.get('hass'));
+      const currentDarkMode = computeDarkMode(changedProps.get('hass') as HomeAssistant | undefined);
       const newDarkMode = computeDarkMode(this.hass);
       if (currentDarkMode !== newDarkMode) {
         this.toggleAttribute('dark-mode', newDarkMode);

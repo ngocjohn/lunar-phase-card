@@ -3,7 +3,9 @@ import { css, CSSResultGroup, html, PropertyValues, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 
 import { HaFormElement } from '../../../ha/panels/ha-form/types';
+import { selectTree } from '../../../utils/helpers-dom';
 import { BaseEditor } from '../base-editor';
+import { ELEMENT } from '../editor-const';
 
 const HA_FORM_STYLE = css`
   .root > :not([own-margin]):not(:last-child) {
@@ -35,7 +37,7 @@ export class FormEditor extends BaseEditor {
       this._stylesManager.addStyle([HA_FORM_STYLE], this._haForm.shadowRoot);
       // this._changeChips();
     }
-    // this._addEventListeners();
+    this._addEventListeners();
   }
 
   protected render(): TemplateResult {
@@ -60,6 +62,40 @@ export class FormEditor extends BaseEditor {
 
   private computeHelper = (schema: any): string | TemplateResult | undefined => {
     return schema.helper || undefined;
+  };
+
+  private _addEventListeners = async () => {
+    const expandables = (await selectTree(
+      this._haForm.shadowRoot,
+      ELEMENT.FORM_EXPANDABLE,
+      true
+    )) as NodeListOf<HaFormElement>;
+    if (expandables) {
+      Array.from(expandables).forEach((el: any) => {
+        (el.addEventListener('expanded-changed', this._expandableToggled.bind(this)), { once: true });
+      });
+    }
+  };
+
+  private _expandableToggled = async (ev: any) => {
+    ev.stopPropagation();
+    const target = ev.target;
+    const expandedOpen = ev.detail.expanded as boolean;
+    const styledAlready = target.getAttribute('data-processed') === 'true';
+
+    if (!expandedOpen || styledAlready) {
+      // If the panel is closed, do nothing
+      return;
+    }
+    // Add custom styles to the expanded content
+    if (target && target.shadowRoot) {
+      const haFormRoot = await selectTree(target.shadowRoot, 'ha-expansion-panel ha-form');
+
+      if (haFormRoot) {
+        this._stylesManager.addStyle([HA_FORM_STYLE], haFormRoot.shadowRoot!);
+      }
+      target.setAttribute('data-processed', 'true');
+    }
   };
 
   static get styles(): CSSResultGroup {

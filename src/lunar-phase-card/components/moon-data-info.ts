@@ -10,30 +10,33 @@ import { LunarBaseCard } from '../base-card';
 
 @customElement('lunar-moon-data-info')
 export class LunarMoonDataInfo extends LunarBaseCard {
+  @property({ attribute: false }) public moonData!: MoonData;
+  @property({ attribute: false }) public chunkedLimit?: number;
+  @state() swiper: Swiper | null = null;
+
   constructor() {
     super(CardArea.DATABOX);
     window.LunarDataBox = this;
   }
-
-  @property({ attribute: false }) public moonData!: MoonData;
-  @property({ attribute: false }) public chunkedLimit?: number;
-  @state() swiper: Swiper | null = null;
 
   protected firstUpdated(): void {
     this.initSwiper();
   }
 
   protected updated(changedProps: PropertyValues): void {
-    const oldMoonData = changedProps.get('moonData') as MoonData | undefined;
-    if (oldMoonData && JSON.stringify(oldMoonData) !== JSON.stringify(this.moonData)) {
-      // debug changed values from old to new
-      const changed = {};
-      Object.keys(this.moonData).forEach((key) => {
-        if (JSON.stringify(oldMoonData[key]) !== JSON.stringify(this.moonData[key])) {
-          (changed as any)[key] = { old: oldMoonData[key], new: this.moonData[key] };
-        }
-      });
-      // console.log('Moon Data changed:', changed);
+    super.updated(changedProps);
+    if (changedProps.has('moonData')) {
+      const oldMoonData = changedProps.get('moonData') as MoonData | undefined;
+      if (oldMoonData && JSON.stringify(oldMoonData) !== JSON.stringify(this.moonData)) {
+        // debug changed values from old to new
+        const changed = {};
+        Object.keys(this.moonData).forEach((key) => {
+          if (JSON.stringify(oldMoonData[key]) !== JSON.stringify(this.moonData[key])) {
+            (changed as any)[key] = { old: oldMoonData[key], new: this.moonData[key] };
+          }
+        });
+        // console.log('Moon Data changed:', changed);
+      }
     }
   }
 
