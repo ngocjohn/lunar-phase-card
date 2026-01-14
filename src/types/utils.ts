@@ -42,6 +42,10 @@ export const migrateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfi
       if (!newConfig.font_config) {
         newConfig.font_config = {};
       }
+      if (key === 'hide_label') {
+        newConfig.hide_compact_label = value;
+        continue;
+      }
       (newConfig.font_config as any)[key] = value;
     }
     delete (newConfig as any).font_customize;

@@ -78,6 +78,10 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
    */
   hide_buttons?: boolean;
   /**
+   * Hide label in compact view
+   */
+  hide_compact_label?: boolean;
+  /**
    * Use a modal popup for calendar section
    */
   calendar_modal?: boolean;
@@ -171,6 +175,7 @@ export const AppearanceOptions = [
   'custom_background',
   'hide_starfield',
   'hide_buttons',
+  'hide_compact_label',
   'calendar_modal',
   'custom_theme',
   'theme_mode',

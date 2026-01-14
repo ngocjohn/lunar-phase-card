@@ -5,9 +5,10 @@ import { property, state } from 'lit/decorators.js';
 import { HomeAssistant } from '../../ha';
 import { fireEvent } from '../../ha';
 import { Store } from '../../model/store';
-import { LunarPhaseCardConfig } from '../../types/config/lunar-phase-card-config';
+import { ConfigFieldOrder, LunarPhaseCardConfig } from '../../types/config/lunar-phase-card-config';
 import { cardNeedsMigration, migrateConfig } from '../../types/utils';
 import { getObjectDifferences } from '../../utils/object-differences';
+import { orderProperties } from '../../utils/order-properties';
 import { editorStyle } from '../css/card-styles';
 import { createEditorMenuItems, EditorArea, EditorMenuItems } from './editor-area-config';
 
@@ -94,7 +95,7 @@ export class BaseEditor extends LitElement {
     // console.debug({ currentConfig, incoming: value });
     let changedValues: any = {};
     changedValues = getObjectDifferences(currentConfig, { ...currentConfig, ...value });
-    const hasChanges = Boolean(changedValues && Object.keys(changedValues).length > 0);
+    let hasChanges = Boolean(changedValues && Object.keys(changedValues).length > 0);
 
     if (!hasChanges) {
       return;
@@ -111,6 +112,13 @@ export class BaseEditor extends LitElement {
     } else {
       updates = value;
     }
+    let newConfig = {
+      ...this.config,
+      ...updates,
+    };
+
+    changedValues = getObjectDifferences(this.config, newConfig);
+    hasChanges = Boolean(changedValues && Object.keys(changedValues).length > 0);
 
     if (hasChanges) {
       console.group('Config change from:', this._editorArea);
@@ -119,7 +127,8 @@ export class BaseEditor extends LitElement {
         console.log(`%c${k}`, 'color: #2196F3; font-weight: bold;', oldValue, '→', newValue);
       });
       console.groupEnd();
-      this.configChanged(updates);
+      newConfig = orderProperties(newConfig, ConfigFieldOrder);
+      fireEvent(this, 'config-changed', { config: newConfig });
       return;
     }
   }

@@ -3,7 +3,7 @@ import { langKeys } from '../../../localize/languageImports';
 import { CardAppearance, COMPACT_MODE, MOON_POSITION, THEME_MODE } from '../../../types/config/lunar-phase-card-config';
 import { formatLabelUppercase } from '../../../utils/string-helper';
 
-const sections = ['base', 'calendar', 'full_calendar', 'horizon'] as const;
+const SECTIONS = ['base', 'calendar', 'full_calendar', 'horizon'] as const;
 const booleanProperties = ['compact_view', 'calendar_modal', 'hide_buttons'] as const;
 const backgroundBooleans = ['hide_background', 'hide_starfield'] as const;
 
@@ -12,61 +12,69 @@ const CUSTOM_BG_OPTIONS = Array.from(EDITOR_CUSTOM_BG).map((bg, index) => ({
   label: `BG #${index + 1}`,
   image: { src: bg },
 }));
+const DropdownProperty = ['default_section', 'compact_mode', 'moon_position', 'theme_mode'] as const;
+type DropdownProperty = (typeof DropdownProperty)[number];
 
-const computeBooleanIte = (property: string) => ({
+interface DropdownSelectorOptions {
+  name: DropdownProperty;
+  default: string;
+  options: readonly string[];
+}
+
+const SELECTOR_OPTIONS: Record<DropdownProperty, DropdownSelectorOptions> = {
+  default_section: {
+    name: 'default_section',
+    default: 'base',
+    options: SECTIONS as readonly string[],
+  },
+  compact_mode: {
+    name: 'compact_mode',
+    default: 'default',
+    options: COMPACT_MODE as readonly string[],
+  },
+  moon_position: {
+    name: 'moon_position',
+    default: 'left',
+    options: MOON_POSITION as readonly string[],
+  },
+  theme_mode: {
+    name: 'theme_mode',
+    default: 'auto',
+    options: THEME_MODE as readonly string[],
+  },
+};
+
+const computeDropdownItem = (property: DropdownProperty) => {
+  const selectorOption = SELECTOR_OPTIONS[property];
+  return [
+    {
+      name: selectorOption.name,
+      required: false,
+      default: selectorOption.default,
+      selector: {
+        select: {
+          mode: 'dropdown',
+          options: selectorOption.options.map((option) => ({
+            value: option,
+            label: formatLabelUppercase(option),
+          })),
+        },
+      },
+    },
+  ] as const;
+};
+const computeBooleanItem = (property: string) => ({
   name: property,
   required: false,
   default: false,
   type: 'boolean',
 });
 
-const DEFAULT_SECTION_SCHEMA = [
-  {
-    name: 'default_section',
-    default: 'base',
-    required: false,
-    selector: {
-      select: {
-        mode: 'dropdown',
-        options: sections.map((section) => ({
-          value: section,
-          label: formatLabelUppercase(section),
-        })),
-      },
-    },
-  },
-] as const;
-
 const COMPACT_MODE_SCHEMA = [
   {
-    name: 'compact_mode',
-    required: false,
-    default: 'default',
-    selector: {
-      select: {
-        mode: 'dropdown',
-        options: COMPACT_MODE.map((mode) => ({
-          value: mode,
-          label: formatLabelUppercase(mode),
-        })),
-      },
-    },
-  },
-] as const;
-const MOON_POSITION_SCHEMA = [
-  {
-    name: 'moon_position',
-    required: false,
-    default: 'left',
-    selector: {
-      select: {
-        mode: 'dropdown',
-        options: MOON_POSITION.map((position) => ({
-          value: position,
-          label: formatLabelUppercase(position),
-        })),
-      },
-    },
+    type: 'grid',
+    flatten: true,
+    schema: [computeBooleanItem('hide_compact_label'), ...computeDropdownItem('compact_mode')],
   },
 ] as const;
 
@@ -87,20 +95,7 @@ const THEME_CONFIG_SCHEMA = [
             required: false,
             selector: { theme: { include_default: true } },
           },
-          {
-            name: 'theme_mode',
-            required: false,
-            default: 'auto',
-            selector: {
-              select: {
-                mode: 'dropdown',
-                options: THEME_MODE.map((mode) => ({
-                  value: mode,
-                  label: formatLabelUppercase(mode),
-                })),
-              },
-            },
-          },
+          ...computeDropdownItem('theme_mode'),
         ],
       },
     ],
@@ -131,9 +126,9 @@ const ADDITIONAL_APPEARANCE_SCHEMA = (isCompact = false) =>
         {
           type: 'grid',
           flatten: true,
-          schema: [...booleanProperties.map((prop) => computeBooleanIte(prop))],
+          schema: [...booleanProperties.map((prop) => computeBooleanItem(prop))],
         },
-        ...(isCompact ? COMPACT_MODE_SCHEMA : MOON_POSITION_SCHEMA),
+        ...(isCompact ? COMPACT_MODE_SCHEMA : computeDropdownItem('moon_position')),
       ],
     },
   ] as const;
@@ -173,7 +168,7 @@ const BACKGROUND_CONFIG_SCHEMA = (isBackgroundHidden = false) =>
         {
           type: 'grid',
           flatten: true,
-          schema: backgroundBooleans.map((prop) => computeBooleanIte(prop)),
+          schema: backgroundBooleans.map((prop) => computeBooleanItem(prop)),
         },
         ...computeBgOption(isBackgroundHidden),
         ...computeBgOption(isBackgroundHidden, true),
@@ -186,9 +181,9 @@ export const APPEARANCE_FORM_SCHEMA = (data: CardAppearance) => {
   const isBackgroundHidden = data?.hide_background === true;
   return [
     ...LANGUAGE_SCHEMA,
-    ...DEFAULT_SECTION_SCHEMA,
+    ...computeDropdownItem('default_section'),
     ...ADDITIONAL_APPEARANCE_SCHEMA(isCompact),
-    ...THEME_CONFIG_SCHEMA,
     ...BACKGROUND_CONFIG_SCHEMA(isBackgroundHidden),
+    ...THEME_CONFIG_SCHEMA,
   ];
 };

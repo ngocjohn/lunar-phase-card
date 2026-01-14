@@ -16,6 +16,9 @@ export interface LabelFontConfig {
   label_font_color?: string;
 }
 export interface FontCustomStyles extends HeaderFontConfig, LabelFontConfig {
+  /**
+   * @deprecated use `hide_compact_label` in main config instead
+   */
   hide_label?: boolean;
 }
 
