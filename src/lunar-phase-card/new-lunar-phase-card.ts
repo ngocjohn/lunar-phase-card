@@ -19,26 +19,26 @@ import { debounce } from '../utils/debounce';
 import { applyTheme } from '../utils/ha-helper';
 import { LunarBaseCard } from './base-card';
 import { LunarMoonCalendarFooter } from './components';
-import { COMPONENT, LUNAR_PHASE_CARD_EDITOR_NEW_NAME, LUNAR_PHASE_CARD_NEW_NAME } from './const';
+import { COMPONENT, LUNAR_PHASE_CARD_EDITOR_NAME, LUNAR_PHASE_CARD_NAME } from './const';
 import { DEFAULT_BG_URL } from './css/card-styles';
 
 registerCustomCard({
-  type: LUNAR_PHASE_CARD_NEW_NAME,
+  type: LUNAR_PHASE_CARD_NAME,
   name: 'Lunar Phase Card',
   description: 'A card to display lunar phases and related information.',
 });
 
-@customElement(LUNAR_PHASE_CARD_NEW_NAME)
+@customElement(LUNAR_PHASE_CARD_NAME)
 export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     await import('./editor/lunar-phase-card-editor');
-    return document.createElement(LUNAR_PHASE_CARD_EDITOR_NEW_NAME) as LovelaceCardEditor;
+    return document.createElement(LUNAR_PHASE_CARD_EDITOR_NAME) as LovelaceCardEditor;
   }
 
   public static async getStubConfig(hass: HomeAssistant): Promise<LunarPhaseCardConfig> {
     const initConfig = computeStubConfig(hass);
     return {
-      type: `custom:${LUNAR_PHASE_CARD_NEW_NAME}`,
+      type: `custom:${LUNAR_PHASE_CARD_NAME}`,
       ...initConfig,
     };
   }

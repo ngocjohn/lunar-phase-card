@@ -48,7 +48,8 @@ export class BaseEditor extends LitElement {
   public setConfig(config: LunarPhaseCardConfig): void {
     if (cardNeedsMigration(config)) {
       console.debug('Config needs migration. Migrating now...');
-      const newConfig = migrateConfig(config);
+      let newConfig = migrateConfig(config);
+      newConfig = orderProperties(newConfig, ConfigFieldOrder);
       fireEvent(this, 'config-changed', { config: newConfig });
       return;
     } else {

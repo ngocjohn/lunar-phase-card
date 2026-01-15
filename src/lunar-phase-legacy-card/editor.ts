@@ -18,7 +18,7 @@ import { compareConfig, getAddressFromOpenStreet } from '../utils/helpers';
 import { loadHaComponents, stickyPreview, _saveConfig } from '../utils/loader';
 // Components
 import './components/moon-editor-search';
-import { LUNAR_PHASE_CARD_EDITOR_NAME } from './const';
+import { LUNAR_PHASE_CARD_EDITOR_NAME_LEGACY } from './const';
 import editorcss from './css/editor.css';
 
 enum TAB {
@@ -29,7 +29,7 @@ enum TAB {
   GRAPH = 4,
 }
 
-@customElement(LUNAR_PHASE_CARD_EDITOR_NAME)
+@customElement(LUNAR_PHASE_CARD_EDITOR_NAME_LEGACY)
 export class LunarPhaseCardEditor extends LitElement implements LovelaceCardEditor {
   @property({ attribute: false }) public hass!: HomeAssistant;
 

@@ -1,12 +1,12 @@
 import { isEmpty } from 'es-toolkit/compat';
 
+import { getObjectDifferences } from '../utils/object-differences';
 import { LunarPhaseCardConfig } from './config/lunar-phase-card-config';
 
 export const migrateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfig => {
   if (!cardNeedsMigration(config)) {
     return config;
   }
-  console.debug('Starting migration for config:', config);
   // deep clone config to avoid mutating the original object
   const newConfig = { ...config } as Record<string, any>;
   for (const [key, value] of Object.entries(newConfig)) {
@@ -63,7 +63,27 @@ export const migrateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfi
     newConfig.language = newConfig.selected_language;
     delete (newConfig as any).selected_language;
   }
-  console.debug('Migration completed:', newConfig);
+
+  if ('location' in newConfig) {
+    delete (newConfig as any).location;
+  }
+
+  const changedValues = getObjectDifferences(config, newConfig as LunarPhaseCardConfig);
+  if (changedValues && Object.keys(changedValues).length > 0) {
+    console.groupCollapsed('Migrated config from old to new format:');
+    Object.entries(changedValues).forEach(([k, v]) => {
+      if (!Array.isArray(v)) {
+        Object.entries(v as Record<string, unknown>).forEach(([subK, subV]) => {
+          const [oldValue, newValue] = subV as [any, any];
+          console.log(`%c${k}.${subK}`, 'color: #2196F3; font-weight: bold;', oldValue, '→', newValue);
+        });
+        return;
+      }
+      const [oldValue, newValue] = v;
+      console.log(`%c${k}`, 'color: #2196F3; font-weight: bold;', oldValue, '→', newValue);
+    });
+    console.groupEnd();
+  }
   return newConfig as LunarPhaseCardConfig;
 };
 

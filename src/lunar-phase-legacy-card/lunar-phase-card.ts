@@ -25,13 +25,13 @@ import './components';
 import { LunarCalendarPage } from './components/moon-calendar-page';
 import { LunarHorizonChart } from './components/moon-horizon-chart';
 import { LunarHorizonDynamic } from './components/moon-horizon-dynamic';
-import { LUNAR_PHASE_CARD_EDITOR_NAME, LUNAR_PHASE_CARD_NAME } from './const';
+import { LUNAR_PHASE_CARD_EDITOR_NAME_LEGACY, LUNAR_PHASE_CARD_NAME_LEGACY } from './const';
 // styles
 import style from './css/style.css';
 const BASE_REFRESH_INTERVAL = 60 * 1000;
 const LOADING_TIMEOUT = 1500;
 
-@customElement(LUNAR_PHASE_CARD_NAME)
+@customElement(LUNAR_PHASE_CARD_NAME_LEGACY)
 export class LunarPhaseCard extends LitElement implements LovelaceCard {
   constructor() {
     super();
@@ -39,7 +39,7 @@ export class LunarPhaseCard extends LitElement implements LovelaceCard {
 
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     await import('./editor');
-    return document.createElement(LUNAR_PHASE_CARD_EDITOR_NAME) as LovelaceCardEditor;
+    return document.createElement(LUNAR_PHASE_CARD_EDITOR_NAME_LEGACY) as LovelaceCardEditor;
   }
 
   @property({ attribute: false })
@@ -101,7 +101,7 @@ export class LunarPhaseCard extends LitElement implements LovelaceCard {
   public static getStubConfig = (hass: HomeAssistant): Record<string, unknown> => {
     const initConfig = getDefaultConfig(hass);
     return {
-      type: `custom:${LUNAR_PHASE_CARD_NAME}`,
+      type: `custom:${LUNAR_PHASE_CARD_NAME_LEGACY}`,
       ...defaultConfig,
       ...initConfig,
     };
@@ -755,7 +755,7 @@ export class LunarPhaseCard extends LitElement implements LovelaceCard {
 
 // Register the card in the UI
 registerCustomCard({
-  type: LUNAR_PHASE_CARD_NAME,
+  type: LUNAR_PHASE_CARD_NAME_LEGACY,
   name: 'Lunar Phase Card',
   description: 'A custom card to display the current lunar phase.',
 });
