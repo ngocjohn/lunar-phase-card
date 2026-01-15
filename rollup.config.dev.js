@@ -35,17 +35,6 @@ const plugins = [dev && serve(serveopts), !dev && terser(terserOpt), !dev && fil
 
 export default [
   {
-    input: 'src/legacy-lunar.ts',
-    output: {
-      file: 'dist/lunar-phase-legacy-card.js',
-      format: 'es',
-      sourcemap: false,
-      inlineDynamicImports: true,
-    },
-    plugins: [replace(replaceOpts), ...defaultPlugins],
-    watch: false,
-  },
-  {
     input: 'src/lunar.ts',
     output: [
       {

@@ -1,6 +1,5 @@
 import { PageType } from '../const';
 import { FrontendLocaleData, TimeFormat, HomeAssistant } from '../ha';
-import { LunarPhaseCard } from '../lunar-phase-legacy-card/lunar-phase-card';
 import { LocationAddress, LunarPhaseCardConfig, SearchResults } from '../types/config/lunar-phase-card-config';
 
 export const useAmPm = (locale: FrontendLocaleData): boolean => {
