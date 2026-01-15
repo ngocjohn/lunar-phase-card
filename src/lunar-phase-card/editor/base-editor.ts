@@ -61,10 +61,12 @@ export class BaseEditor extends LitElement {
 
   protected configChanged(changedConfig: Partial<LunarPhaseCardConfig> | undefined = undefined) {
     if (changedConfig) {
-      this.config = {
+      let newConfig = {
         ...this.config,
         ...changedConfig,
       };
+      newConfig = orderProperties(newConfig, ConfigFieldOrder);
+      this.config = newConfig;
     }
     fireEvent(this, 'config-changed', { config: this.config });
     console.log('Config update fired from', this._editorArea);

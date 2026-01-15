@@ -6,7 +6,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 import { MoonState, SECTION } from '../const';
 import './components';
-import '../shared/moon-star-field';
+import '../shared/lunar-star-particles';
 import { HomeAssistant, LovelaceCard, LovelaceCardEditor } from '../ha';
 import { Moon } from '../model/moon';
 import { Store } from '../model/store';
@@ -156,7 +156,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           ])}
         </lunar-card>
       </ha-card>
-      ${appearance.hide_starfield ? nothing : html`<lunar-star-field> </lunar-star-field>`}
+      ${appearance.hide_starfield ? nothing : html`<lunar-star-particles></lunar-star-particles>`}
     `;
   }
 
