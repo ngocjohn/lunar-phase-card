@@ -17,6 +17,8 @@ import {
   AppearanceOptions,
   CardAppearance,
   ConfigFieldOrder,
+  LayoutConfig,
+  LayoutConfigKeys,
   LocationConfig,
   LocationConfigKeys,
   LunarPhaseCardConfig,
@@ -99,9 +101,14 @@ export class LunarBaseCard extends LunarBaseElement {
   get _configLocation(): LocationConfig {
     return pick(this.config || {}, [...LocationConfigKeys]);
   }
+
   get _configAppearance(): CardAppearance {
     const appearance = pick(this.config || {}, [...AppearanceOptions]);
     return appearance;
+  }
+
+  get _configLayout(): LayoutConfig {
+    return pick(this.config || {}, [...LayoutConfigKeys]);
   }
 
   get _configHeaderStyles(): HeaderFontConfig {

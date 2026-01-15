@@ -1,3 +1,4 @@
+import { formatDate } from 'custom-card-helpers';
 import { html, TemplateResult, CSSResultGroup, css, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DateTime, WeekdayNumbers } from 'luxon';
@@ -6,8 +7,8 @@ import { ICON } from '../../const';
 import { fireEvent } from '../../ha';
 import { CardArea } from '../../types/card-area';
 import { LunarBaseCard } from '../base-card';
-import { LunarPhaseNewCard } from '../new-lunar-phase-card';
 import './moon-calendar-tooltip';
+import { LunarPhaseNewCard } from '../new-lunar-phase-card';
 
 declare global {
   interface HASSDomEvents {
@@ -99,23 +100,26 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
     const renderDayItem = (day: number): TemplateResult => {
       const date = viewDate.set({ day });
       const isToday = date.toISODate() === DateTime.local().toISODate() ? true : false;
-      // const dayClass = date.toISODate() === DateTime.local().toISODate() ? 'calendar-day today' : 'calendar-day';
       const label = day;
-      const moonPhase = this.moon._getPhaseNameForPhase(date.toJSDate());
-      const moonPhaseIcon = this.moon._getEmojiForPhase(date.toJSDate());
-
+      // const moonPhase = this.moon._getPhaseNameForPhase(date.toJSDate());
+      // const moonPhaseIcon = this.moon._getEmojiForPhase(date.toJSDate());
+      const { emoji, phaseId, phaseName, isNewMoonOrFullMoon } = this.moon._getDataByDate(date.toJSDate());
+      const south = this.card._configLocation?.southern_hemisphere === true;
       return html`
         <div
           id="calendar-day-${day}"
           class="calendar-day"
           .jsdate=${date.toJSDate()}
+          data-phase-id=${phaseId}
           ?today=${isToday}
+          ?south=${south}
+          ?new-full-moon=${isNewMoonOrFullMoon}
           @click=${this._handleDayClick}
         >
           <span>${label}</span>
-          <span class="day-symbol">${moonPhaseIcon}</span>
+          <span class="day-symbol">${emoji}</span>
         </div>
-        <ha-tooltip .for=${`calendar-day-${day}`}>${moonPhase}</ha-tooltip>
+        <ha-tooltip .for=${`calendar-day-${day}`}>${phaseName}</ha-tooltip>
       `;
     };
 
@@ -131,9 +135,10 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
       return html``;
     }
     return html`<lunar-moon-calendar-tooltip .dateBoxRect=${this._dateBoxRect} @closing=${this._handleTooltipClosing}>
-      <div slot="moon-header">${this._tooltipDate?.toDateString()}</div>
+      <div slot="moon-header">${formatDate(this._tooltipDate!, this._locale)}</div>
+      <span slot="phase-name">${this.moon.phaseName}</span>
       ${this.renderMoonImage()}
-      <div slot="moon-info">${this.moon.phaseName}</div>
+      <div slot="moon-info"></div>
     </lunar-moon-calendar-tooltip>`;
   }
 
@@ -186,6 +191,20 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
   private _updateCalendarDate(type: 'months' | 'years', action: 'prev' | 'next'): void {
     this.viewDate = action === 'prev' ? this.viewDate.minus({ [type]: 1 }) : this.viewDate.plus({ [type]: 1 });
     this.requestUpdate();
+  }
+
+  public _getMoonDataForMoth(month: number): any[] {
+    console.debug('Getting moon data for month:', month);
+    // set month by parameter
+    const viewDate = this.viewDate.set({ month });
+    const daysInMonth = viewDate.daysInMonth;
+    const moonDataArray: any[] = [];
+    Array.from({ length: daysInMonth }, (_, i) => {
+      const date = viewDate.set({ day: i + 1 });
+      const moonData = this.moon._getDataByDate(date.toJSDate());
+      moonDataArray.push({ ...moonData, date: date.toISODate() });
+    });
+    return moonDataArray;
   }
 
   static get styles(): CSSResultGroup {
@@ -262,18 +281,17 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
 
         .calendar-day {
           display: flex;
-          width: calc(100% - 2px);
-          height: calc(100% - 2px);
           border-radius: 0.25em;
           border: 1px solid transparent;
           background-color: rgba(0, 0, 0, 0.14);
-          cursor: default !important;
           transition:
             background-color 0.3s,
-            border 0.3s;
+            border 0.3s ease-in-out;
           flex-direction: column;
-          justify-content: center;
-          align-items: flex-end;
+          height: calc(100% - 2px);
+          aspect-ratio: 1 / 1;
+          cursor: default !important;
+          outline: none;
         }
         .calendar-day:hover {
           background-color: rgba(from var(--secondary-text-color) r g b / 0.1);
@@ -283,14 +301,27 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
         .calendar-day[today] {
           border: 1px solid var(--primary-color);
         }
-        .calendar-day > span {
+        .calendar-day > span:not(.day-symbol) {
           padding-inline-end: 4px;
+          display: inline-flex;
+          line-height: inherit;
+          place-self: flex-end;
+          height: fit-content;
         }
 
         .calendar-day span.day-symbol {
-          font-size: var(--ha-font-size-xl, 20px);
-          place-self: center !important;
+          font-size: 24px;
           min-height: 36px;
+          place-self: center center;
+          aspect-ratio: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: auto;
+          padding: 0;
+        }
+        .calendar-day[south]:not([new-full-moon]) span.day-symbol {
+          transform: rotate(180deg);
         }
 
         ha-icon-button[disabled] {

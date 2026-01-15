@@ -60,7 +60,8 @@ export class LunarMoonCalendarTooltip extends LitElement {
     return html`
       <div id="shadow-container" @click=${() => this._handleClose()}></div>
       <div class="tooltip hide">
-        <slot name="moon-header"></slot>
+        <slot name="moon-header"> </slot>
+        <slot name="phase-name"></slot>
         <slot name="moon-pic"></slot>
         <slot name="moon-info"></slot>
       </div>
@@ -105,20 +106,32 @@ export class LunarMoonCalendarTooltip extends LitElement {
     .tooltip {
       display: flex;
       flex-direction: column;
-      background-color: var(--card-background-color, #fff);
-      border-radius: 8px;
-      box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 10px;
+      background-color: rgba(var(--rgb-card-background-color), 0.95);
+      border-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg));
       padding: 1rem;
       height: fit-content;
       min-width: 200px;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
     }
     .tooltip ::slotted([slot='moon-header']) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
       font-weight: bold;
       font-size: 1.2em;
       padding-inline: 1em;
       /* margin-bottom: 8px; */
       text-align: center;
     }
+    .tooltip ::slotted([slot='phase-name']) {
+      font-weight: normal !important;
+      margin-top: 0.2em !important;
+      text-align: center;
+      color: var(--secondary-text-color, #666) !important;
+    }
+
     .tooltip ::slotted([slot='moon-pic']) {
       align-self: center;
       max-width: 150px;

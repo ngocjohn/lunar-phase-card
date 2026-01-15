@@ -81,7 +81,7 @@ const LANGUAGE_SCHEMA = [
   },
 ] as const;
 
-const ADDITIONAL_APPEARANCE_SCHEMA = (isCompact = false, title: string) =>
+const ADDITIONAL_APPEARANCE_SCHEMA = (isCompact = false, isMinimal = false, title: string) =>
   [
     {
       title,
@@ -94,7 +94,11 @@ const ADDITIONAL_APPEARANCE_SCHEMA = (isCompact = false, title: string) =>
           flatten: true,
           schema: [...booleanProperties.map((prop) => computeBooleanItem(prop))],
         },
-        ...(isCompact ? COMPACT_MODE_SCHEMA : computeSelectorSchema(SELECTOR_OPTIONS['moon_position'])),
+        ...(isMinimal
+          ? COMPACT_MODE_SCHEMA
+          : isCompact
+            ? [...computeSelectorSchema(SELECTOR_OPTIONS['moon_position']), ...COMPACT_MODE_SCHEMA]
+            : computeSelectorSchema(SELECTOR_OPTIONS['moon_position'])),
       ],
     },
   ] as const;
@@ -144,12 +148,14 @@ const BACKGROUND_CONFIG_SCHEMA = (isBackgroundHidden = false, title: string) =>
 
 export const APPEARANCE_FORM_SCHEMA = (data: CardAppearance, customLocalize: LocalizeFunc) => {
   const isCompact = data?.compact_view === true;
+  const isMinimal = isCompact && data?.compact_mode === 'minimal';
+
   const isBackgroundHidden = data?.hide_background === true;
   const getTitle = (key: string) => customLocalize(`editor.viewConfig.${key}.title`);
 
   return [
     ...LANGUAGE_SCHEMA,
-    ...ADDITIONAL_APPEARANCE_SCHEMA(isCompact, getTitle('layout')),
+    ...ADDITIONAL_APPEARANCE_SCHEMA(isCompact, isMinimal, getTitle('layout')),
     ...BACKGROUND_CONFIG_SCHEMA(isBackgroundHidden, getTitle('customBackground')),
     ...THEME_CONFIG_SCHEMA(getTitle('theme')),
   ];

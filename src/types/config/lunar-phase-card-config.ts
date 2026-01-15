@@ -24,11 +24,13 @@ export const HIDDEN_ITEMS = [
   'azimuthDegress',
   'altitudeDegrees',
   'distance',
+  'position',
   'moonRise',
   'moonSet',
   'moonHighest',
   'nextFullMoon',
   'nextNewMoon',
+  'nextPhase',
 ] as const;
 
 export type HiddenItem = (typeof HIDDEN_ITEMS)[number];
@@ -115,6 +117,10 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
    * List of items to hide from data display
    */
   hide_items?: HiddenItem[];
+  /**
+   * Max data items per page to show in data-info view
+   */
+  max_data_per_page?: number;
   /**
    * Number of decimals to show for numeric values
    */
@@ -211,6 +217,7 @@ export type LocationConfig = Pick<LunarPhaseCardConfig, (typeof LocationConfigKe
 export const LayoutConfigKeys = [
   'default_section',
   'hide_items',
+  'max_data_per_page',
   'number_decimals',
   'mile_unit',
   '12hr_format',

@@ -44,7 +44,7 @@ export class LunarMoonCompactView extends LunarBaseCard {
             <ha-icon .icon=${icon}></ha-icon>
             ${value}
           </div>
-          ${this.config.font_config?.hide_label ? html`` : html` <span class="value">${label}</span>`}
+          ${this._configAppearance?.hide_compact_label ? html`` : html` <span class="value">${label}</span>`}
         </div>
       `;
     };
@@ -182,6 +182,8 @@ export class LunarMoonCompactView extends LunarBaseCard {
           width: 100%;
           flex-direction: column;
           font-size: var(--lpc-label-font-size, var(--ha-font-size-m));
+          color: var(--lunar-card-label-font-color, var(--primary-text-color));
+          text-transform: var(--lunar-card-label-text-transform, none);
           align-items: center;
           justify-content: space-between;
         }

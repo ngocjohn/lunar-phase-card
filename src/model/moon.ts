@@ -24,6 +24,7 @@ export class Moon {
   readonly useMiles: boolean;
   readonly lang: string;
   private localize: LocalizeFunc;
+  public _sunCalc = SunCalc;
 
   constructor(data: { date: Date; config: LunarPhaseCardConfig; locale: FrontendLocaleData }) {
     this._date = data.date;
@@ -661,5 +662,22 @@ export class Moon {
   public _getPhaseNameForPhase(date: Date): string {
     const moonIllumination = SunCalc.getMoonIllumination(date);
     return this.localize(`card.phase.${moonIllumination.phase.id}`);
+  }
+
+  public _getDataByDate(date: Date): {
+    emoji: string;
+    phaseId: string;
+    phaseName: string;
+    isNewMoonOrFullMoon: boolean;
+  } {
+    const moonIllumination = SunCalc.getMoonIllumination(date);
+    const phaseId = moonIllumination.phase.id;
+    const isNewMoonOrFullMoon = ['newMoon', 'fullMoon'].includes(phaseId);
+    return {
+      emoji: moonIllumination.phase.emoji,
+      phaseId,
+      phaseName: this.localize(`card.phase.${moonIllumination.phase.id}`),
+      isNewMoonOrFullMoon,
+    };
   }
 }

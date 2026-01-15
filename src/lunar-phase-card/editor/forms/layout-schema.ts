@@ -116,11 +116,13 @@ const HIDDEN_LABEL: Record<HiddenItem, string> = {
   azimuthDegress: 'azimuth',
   altitudeDegrees: 'altitude',
   distance: 'distance',
+  position: 'position',
   moonRise: 'moonRise',
   moonSet: 'moonSet',
   moonHighest: 'moonHigh',
   nextFullMoon: 'fullMoon',
   nextNewMoon: 'newMoon',
+  nextPhase: 'nextPhase',
 };
 
 const LAYOUT_BASE_SCHEMA = (localize: LocalizeFunc) =>
@@ -137,6 +139,12 @@ const LAYOUT_BASE_SCHEMA = (localize: LocalizeFunc) =>
           flatten: true,
           schema: [
             ...['12hr_format', 'mile_unit'].map((prop) => computeBooleanItem(prop)),
+            {
+              name: 'max_data_per_page',
+              required: false,
+              default: 6,
+              selector: { number: { min: 1, max: 12, mode: 'box', step: 1 } },
+            },
             {
               name: 'number_decimals',
               default: 2,

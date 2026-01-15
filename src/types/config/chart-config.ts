@@ -29,6 +29,7 @@ export const MoonDataKeys = [
 ] as const;
 
 export type MoonDataKey = (typeof MoonDataKeys)[number];
+
 export type MoonData = Partial<Record<MoonDataKey, MoonDataItem>>;
 
 export const filterItemFromMoonData = (moonData: MoonData, itemsToRemove: MoonDataKey[]): MoonData => {

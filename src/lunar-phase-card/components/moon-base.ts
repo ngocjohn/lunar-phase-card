@@ -42,6 +42,7 @@ export class LunarMoonBase extends LunarBaseCard {
           content: true,
           '--compact-view': this._isCompactView,
           '--vertical': this.activePage === SECTION.CALENDAR,
+          '--reverse': this.appearance?.moon_position === 'right',
         })}
       >
         <div class="moon-pic" style=${this._computeMoonPicStyle()}>
@@ -85,6 +86,9 @@ export class LunarMoonBase extends LunarBaseCard {
           padding-inline: var(--lunar-card-padding);
           min-height: var(--lpc-content-min-height, initial);
         }
+        .content.--reverse {
+          flex-direction: row-reverse;
+        }
 
         .content.--vertical {
           display: grid;
@@ -107,15 +111,18 @@ export class LunarMoonBase extends LunarBaseCard {
           justify-content: center;
         }
 
-        .content.--vertical .info {
-          width: 100%;
-          padding: 0;
-        }
         .info {
           display: inline-grid;
           grid-template-rows: auto auto;
           align-content: space-evenly;
           width: 100%;
+        }
+        .content.--compact-view .info {
+          align-content: space-between;
+        }
+        .content.--vertical .info {
+          width: 100%;
+          padding: 0;
         }
 
         .info ::slotted([slot='moon-header']) {

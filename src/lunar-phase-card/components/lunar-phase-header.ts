@@ -22,7 +22,7 @@ export class LunarHeader extends LunarBaseCard {
     window.LunarHeader = this;
   }
   @property({ attribute: false }) public moonName?: string;
-  @property({ attribute: false }) public hideButtons?: boolean;
+  @property({ type: Boolean, reflect: true, attribute: 'hide-buttons' }) public hideButtons?: boolean;
   @property({ attribute: false }) private _buttonDisabled?: boolean;
   @property() public activePage?: SECTION;
   @state() _open = false;
@@ -79,7 +79,7 @@ export class LunarHeader extends LunarBaseCard {
             this._open = true;
           }}
         >
-          <ha-icon-button slot="trigger" .path=${SECTION_ICON[activePage]}></ha-icon-button>
+          <ha-icon-button slot="trigger" class="trigger-icon" .path=${SECTION_ICON[activePage]}></ha-icon-button>
           ${SectionsList.filter((section) => section !== activePage).map((section) => {
             return html`
               <ha-list-item
@@ -120,19 +120,23 @@ export class LunarHeader extends LunarBaseCard {
           height: inherit;
           align-items: center;
         }
-        .header[compact] {
-          /* align-items: initial; */
-          /* margin-inline-start: var(--lunar-card-gutter); */
-          place-items: flex-start;
+        :host(:not([hide-buttons])) .header[compact] {
+          place-items: anchor-center;
           height: min-content;
         }
+        :host([hide-buttons]) .header[compact] {
+          height: inherit;
+        }
+
         .title {
           overflow: hidden;
           text-overflow: ellipsis;
+          color: var(--lpc-header-font-color, var(--primary-text-color));
+          text-transform: var(--lpc-header-font-style, none);
           font-size: var(--lpc-header-font-size, var(--ha-font-size-xl, 20px));
           white-space: nowrap;
+          margin-inline-start: var(--lunar-card-padding);
           margin-inline-end: auto;
-          margin-inline-start: var(--lunar-card-gutter);
         }
 
         .header:not([compact]) .title[button-hidden] {
@@ -156,6 +160,9 @@ export class LunarHeader extends LunarBaseCard {
         }
         ha-icon-button[active] {
           color: var(--lpc-accent-color, var(--primary-color));
+        }
+        ha-icon-button.trigger-icon {
+          padding: 0 0 !important;
         }
       `,
     ];

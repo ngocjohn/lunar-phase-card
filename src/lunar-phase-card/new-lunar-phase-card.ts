@@ -139,7 +139,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
 
     const appearance = this._configAppearance;
     return html`
-      <ha-card class=${this._computeClasses()} style=${this._computeStyles()}>
+      <ha-card class=${this._computeClasses()} style=${styleMap(this._computeStyles())}>
         <lunar-card
           .cardWidth=${this._cardWidth}
           .cardHeight=${this._cardHeight}
@@ -162,10 +162,15 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
 
   private _renderBaseSection(): TemplateResult {
     const appearance = this._configAppearance;
+    const configLayout = this._configLayout;
     const moonData = this._filteredData;
     const moonImage = this.renderMoonImage();
     const isButtonHidden = appearance.hide_buttons === true;
-    const chunkLimit = this._cardWidth > 460 ? 6 : undefined;
+    // determine chunk limit for data info based on card width and config
+    // by default for card width > 460 show 5 items per page, else undefined
+    // allow config to override this value via max_data_per_page setting but only apply if card width is small
+    const chunkLimit = this._cardWidth > 460 ? configLayout.max_data_per_page || 6 : undefined;
+
     return html` ${appearance.compact_view === true
       ? html` <lunar-moon-compact-view
           .moonData=${moonData}
@@ -198,6 +203,8 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
       return html`
         <lunar-moon-calendar-popup
           slot="content"
+          .hass=${this.hass}
+          .store=${this.store}
           .card=${this}
           .config=${this.config}
           .moon=${this.moon}
@@ -332,6 +339,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     };
     return classMap(classes);
   }
+
   private _computeStyles() {
     const appearance = this._configAppearance;
     const styles: Record<string, string> = {};
@@ -342,12 +350,13 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     // header styles
     const { _configHeaderStyles, _configLabelStyles } = this;
     Object.entries({ ..._configHeaderStyles, ..._configLabelStyles }).forEach(([key, value]) => {
-      if (value !== undefined || value !== null || !['auto', 'none'].includes(value as string)) {
-        styles[`--lpc-${key.replace(/_/g, '-')}`] = CSS_FONT_SIZE[value];
+      // only set style if value is valid, not undefined, not empty, and not 'auto' or 'none'
+      if (Boolean(value !== undefined && value !== '' && !['auto', 'none'].includes(value as string))) {
+        styles[`--lpc-${key.replace(/_/g, '-')}`] = CSS_FONT_SIZE[value] || value;
       }
     });
 
-    return styleMap(styles);
+    return styles;
   }
 
   static get styles(): CSSResultGroup {
