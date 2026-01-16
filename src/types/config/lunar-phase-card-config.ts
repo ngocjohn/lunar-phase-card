@@ -95,6 +95,10 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
    */
   hide_buttons?: boolean;
   /**
+   * Compack menu button style
+   */
+  compact_menu_button?: boolean;
+  /**
    * Hide label in compact view
    */
   hide_compact_label?: boolean;
@@ -214,6 +218,7 @@ export const AppearanceLayoutKeys = [
   'compact_mode',
   'moon_position',
   'hide_buttons',
+  'compact_menu_button',
   'hide_compact_label',
   'calendar_modal',
 ] as const;

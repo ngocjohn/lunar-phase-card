@@ -50,7 +50,7 @@ export class LayoutArea extends BaseEditor {
     const combinedForm = this.createLpcForm(dataVisualConfigCombined, combinedSchema);
 
     return html`
-      ${this._yamlActive ? this.createYamlEditor(dataVisualConfig) : combinedForm}
+      ${this._yamlActive ? this.createYamlEditor(dataVisualConfigCombined) : combinedForm}
       <lpc-nav-bar
         hide-primary
         .secondaryAction=${createSecondaryCodeLabel(this._yamlActive)}

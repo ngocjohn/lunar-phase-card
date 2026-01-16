@@ -30,7 +30,8 @@ export class LunarHeader extends LunarBaseCard {
   protected render(): TemplateResult {
     const appearance: CardAppearance = this._configAppearance || {};
     const activePage = this.activePage || SECTION.BASE;
-    const isCompact = appearance?.compact_view === true && activePage === SECTION.BASE;
+    const isCompact =
+      (appearance?.compact_view === true && activePage === SECTION.BASE) || appearance?.compact_menu_button === true;
     return html`
       <div class="header" ?compact=${isCompact}>
         <div class="title" ?button-hidden=${this.hideButtons}>${this.moonName}</div>
@@ -124,8 +125,8 @@ export class LunarHeader extends LunarBaseCard {
           place-items: anchor-center;
           height: min-content;
         }
-        :host([hide-buttons]) .header[compact] {
-          height: auto;
+        :host([hide-buttons]) .header {
+          height: 100%;
         }
 
         .title {
