@@ -134,11 +134,7 @@ or
 
 <p style="text-align: justify;">All options can be configured in the GUI editor. To configure the Lunar Phase Card, you can use the following parameters in your Lovelace configuration:</p>
 
-## Card Configuration (New Interface)
-
-> ⚠️ **Important**
-> The card has been migrated to a **new configuration interface**.
-> Deprecated and legacy options have been removed from the documentation. Existing configs are migrated automatically.
+## Card Configuration
 
 ![Card config editor][card-config-editor]
 
