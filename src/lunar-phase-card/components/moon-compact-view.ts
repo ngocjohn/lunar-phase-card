@@ -1,11 +1,9 @@
-import { formatDateTime, FrontendLocaleData } from 'custom-card-helpers';
 import { html, TemplateResult, CSSResultGroup, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
+import './moon-data-info';
 import { CardArea } from '../../types/card-area';
 import { MoonData } from '../../types/config/chart-config';
-import { CardAppearance } from '../../types/config/lunar-phase-card-config';
-import './moon-data-info';
 import { LunarBaseCard } from '../base-card';
 
 @customElement('lunar-moon-compact-view')
@@ -19,8 +17,7 @@ export class LunarMoonCompactView extends LunarBaseCard {
     window.LunarCompactView = this;
   }
   protected render(): TemplateResult {
-    const appearance: CardAppearance = this._configAppearance;
-    if (appearance.compact_mode === 'minimal') {
+    if (this.appearance.compact_mode === 'minimal') {
       return this._renderMinimalCompactView();
     }
     // default to standard
@@ -44,7 +41,7 @@ export class LunarMoonCompactView extends LunarBaseCard {
             <ha-icon .icon=${icon}></ha-icon>
             ${value}
           </div>
-          ${this._configAppearance?.hide_compact_label ? html`` : html` <span class="value">${label}</span>`}
+          ${this.appearance?.hide_compact_label ? html`` : html` <span class="value">${label}</span>`}
         </div>
       `;
     };
@@ -94,10 +91,11 @@ export class LunarMoonCompactView extends LunarBaseCard {
 
   private _renderDataMinial(): TemplateResult {
     const addedData = { ...this.moonData };
-    const timeStr = formatDateTime(new Date(), this._locale as FrontendLocaleData);
+
     return html`
       <div class="moon-data-minimal" ?hidden=${true} @click=${this._toggleMinimalData}>
-        <span>${timeStr}</span>
+        ${this.renderTimeClock()}
+
         <lunar-moon-data-info .moonData=${addedData} .chunkedLimit=${4}></lunar-moon-data-info>
       </div>
     `;

@@ -59,7 +59,9 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
         </div>
       </div>
       <div class="footer-content" ?active=${this._footerActive}>
-        <lunar-moon-data-info .moonData=${this.moonData}></lunar-moon-data-info>
+        ${!this._footerActive
+          ? nothing
+          : html`<lunar-moon-data-info .moonData=${this.moonData}></lunar-moon-data-info>`}
       </div>
     `;
   }

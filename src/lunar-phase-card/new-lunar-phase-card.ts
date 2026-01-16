@@ -60,7 +60,6 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     this._cardReady = false;
     this._activePage = this.config?.default_section || SECTION.BASE;
     this._cardReady = true;
-    // this.updateComplete.then(() => this._measureCard());
   }
 
   public connectedCallback(): void {
@@ -91,10 +90,17 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
 
   protected willUpdate(_changedProperties: PropertyValues): void {
     super.willUpdate(_changedProperties);
-    if ((_changedProperties.has('config') && this.config.custom_theme) || this.config.theme_mode) {
-      applyTheme(this, this.hass, this.config.custom_theme!, this.config.theme_mode);
+
+    if (_changedProperties.has('config') && this.config?.custom_theme) {
+      const oldTheme = _changedProperties.get('config')?.custom_theme;
+      const newTheme = this.config?.custom_theme;
+      if (oldTheme !== newTheme && newTheme !== 'default') {
+        console.debug('Applying custom theme:', newTheme);
+        applyTheme(this, this.hass, newTheme!);
+      }
     }
   }
+
   protected updated(_changedProperties: PropertyValues): void {
     super.updated(_changedProperties);
     if (_changedProperties.has('_activePage')) {
@@ -139,7 +145,11 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
 
     const appearance = this._configAppearance;
     return html`
-      <ha-card class=${this._computeClasses()} style=${styleMap(this._computeStyles())}>
+      <ha-card
+        class=${this._computeClasses()}
+        style=${styleMap(this._computeStyles())}
+        ?raised=${appearance.hide_background !== true}
+      >
         <lunar-card
           .cardWidth=${this._cardWidth}
           .cardHeight=${this._cardHeight}
@@ -167,8 +177,8 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     const moonImage = this.renderMoonImage();
     const isButtonHidden = appearance.hide_buttons === true;
     // determine chunk limit for data info based on card width and config
-    // by default for card width > 460 show 5 items per page, else undefined
-    // allow config to override this value via max_data_per_page setting but only apply if card width is small
+    // by default for card width > 460 show 6 items per page, else undefined
+    // allow config to override this value via max_data_per_page setting but only apply if card width is > 460
     const chunkLimit = this._cardWidth > 460 ? configLayout.max_data_per_page || 6 : undefined;
 
     return html` ${appearance.compact_view === true
@@ -199,6 +209,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
   }
 
   private _renderCalendarSection(): TemplateResult {
+    const moonData = filterItemFromMoonData(this._filteredData, ['position', 'nextPhase']);
     if (this._activePage === SECTION.FULL_CALENDAR) {
       return html`
         <lunar-moon-calendar-popup
@@ -208,12 +219,14 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           .card=${this}
           .config=${this.config}
           .moon=${this.moon}
+          .moonData=${moonData}
+          .south=${this._configLocation?.southern_hemisphere === true}
           @calendar-action=${this._handleCalendarAction}
         >
         </lunar-moon-calendar-popup>
       `;
     }
-    const moonData = filterItemFromMoonData(this._filteredData, ['position', 'nextPhase']);
+
     return html`
       ${this._renderHeader('header')}
       <lunar-moon-base slot="content" .activePage=${this._activePage} .store=${this.store}>
@@ -344,7 +357,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     const appearance = this._configAppearance;
     const styles: Record<string, string> = {};
     const bg = appearance?.custom_background;
-    if (bg) {
+    if (bg && appearance.hide_background !== true) {
       styles['--lpc-bg-image'] = `url(${bg})`;
     }
     // header styles
@@ -367,12 +380,12 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           display: block;
           width: 100%;
           height: 100%;
-          margin: calc(-1 * var(--ha-card-border-width, 1px));
+          /* margin: calc(-1 * var(--ha-card-border-width, 1px)); */
           padding: 0;
           position: relative;
         }
         ${DEFAULT_BG_URL}
-        lunar-star-field {
+        lunar-star-particles {
           position: absolute;
           top: 0;
           left: 0;
@@ -395,6 +408,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
           background-repeat: no-repeat;
           background-image: var(--lpc-bg-image);
           --primary-text-color: var(--lpc-label-font-color, #e1e1e1);
+          box-shadow: none !important;
         }
       `,
     ];

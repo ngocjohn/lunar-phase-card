@@ -1,6 +1,7 @@
 import { pick } from 'es-toolkit';
 import { CSSResultGroup, html, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { DateTime } from 'luxon';
 
 import { FrontendLocaleData, TimeFormat } from '../ha';
 import { getLatLonFromEntity, hasEntityLocation } from '../ha/common/entity/has_location';
@@ -24,35 +25,35 @@ import {
   LunarPhaseCardConfig,
 } from '../types/config/lunar-phase-card-config';
 import { FrontendLocaleDataExtended, LatLon } from '../types/config/types';
-import { migrateConfig } from '../types/utils';
 import './components/moon-image';
 import '../shared/moon-clock-time';
-import * as Chunk from '../utils/chunk-object';
+import { migrateConfig } from '../types/utils';
 import { orderProperties } from '../utils/order-properties';
 import { LunarBaseElement } from './base-element';
 
 export class LunarBaseCard extends LunarBaseElement {
   @property({ attribute: false }) protected store!: Store;
   @property({ attribute: false }) protected moon!: Moon;
-  @property({ attribute: false }) public appearance?: CardAppearance;
+  @property({ attribute: false }) public appearance!: CardAppearance;
   @state() protected config!: LunarPhaseCardConfig;
-
-  protected _chunk = Chunk;
-
+  @property({ attribute: 'south', type: Boolean, reflect: true }) public south = false;
   protected _cardArea?: CardArea;
 
+  setConfig(config: LunarPhaseCardConfig): void {
+    this.config = {
+      ...migrateConfig(config),
+    };
+  }
   constructor(cardArea?: CardArea) {
     super();
     if (cardArea) {
       this._cardArea = cardArea;
     }
   }
-  setConfig(config: LunarPhaseCardConfig): void {
-    this.config = {
-      ...migrateConfig(config),
-    };
-  }
 
+  get _nowDateTime(): DateTime {
+    return DateTime.local().setLocale(this._configLanguage);
+  }
   get _configLanguage(): string {
     return this.config?.language || this.hass.selectedLanguage || this.hass.config.language;
   }

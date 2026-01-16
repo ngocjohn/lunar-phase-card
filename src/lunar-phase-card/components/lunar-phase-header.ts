@@ -125,7 +125,7 @@ export class LunarHeader extends LunarBaseCard {
           height: min-content;
         }
         :host([hide-buttons]) .header[compact] {
-          height: inherit;
+          height: auto;
         }
 
         .title {

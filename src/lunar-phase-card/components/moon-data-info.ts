@@ -6,6 +6,8 @@ import swiperStyleCss from 'swiper/swiper-bundle.css';
 
 import { CardArea } from '../../types/card-area';
 import { MoonData, MoonDataItem } from '../../types/config/chart-config';
+import { objectToChunks } from '../../utils/chunk-object';
+import { getObjectDifferences } from '../../utils/object-differences';
 import { LunarBaseCard } from '../base-card';
 
 @customElement('lunar-moon-data-info')
@@ -34,20 +36,30 @@ export class LunarMoonDataInfo extends LunarBaseCard {
       const oldMoonData = changedProps.get('moonData') as MoonData | undefined;
       if (oldMoonData && JSON.stringify(oldMoonData) !== JSON.stringify(this.moonData)) {
         // debug changed values from old to new
-        const changed = {};
-        Object.keys(this.moonData).forEach((key) => {
-          if (JSON.stringify(oldMoonData[key]) !== JSON.stringify(this.moonData[key])) {
-            (changed as any)[key] = { old: oldMoonData[key], new: this.moonData[key] };
-          }
-        });
-        // console.log('Moon Data changed:', changed);
+        let changed = {};
+        changed = getObjectDifferences(oldMoonData, this.moonData);
+        if (changed && Object.keys(changed).length !== 0) {
+          // console.group('Moon Data Changes');
+          // Object.entries(changed).forEach(([k, v]) => {
+          //   if (!Array.isArray(v)) {
+          //     Object.entries(v as Record<string, unknown>).forEach(([subK, subV]) => {
+          //       const [oldValue, newValue] = subV as [any, any];
+          //       console.log(`%c${k}.${subK}`, 'color: #2196F3; font-weight: bold;', oldValue, '→', newValue);
+          //     });
+          //     return;
+          //   }
+          //   const [oldValue, newValue] = v;
+          //   console.log(`%c${k}`, 'color: #2196F3; font-weight: bold;', oldValue, '→', newValue);
+          // });
+          // console.groupEnd();
+        }
       }
     }
   }
 
   protected render(): TemplateResult {
     // const chunkedData = this._chunkObject(this.moonData, this.chunkedLimit || 5);
-    const chunkedData = this._chunk.objectToChunks<MoonDataItem>(this.moonData, this.chunkedLimit || 5);
+    const chunkedData = objectToChunks<MoonDataItem>(this.moonData, this.chunkedLimit || 5);
     const dataContainer = Object.keys(chunkedData).map((key) => {
       return html`
         <div class="swiper-slide">
@@ -179,9 +191,9 @@ export class LunarMoonDataInfo extends LunarBaseCard {
         .moon-data-item {
           display: inline-flex;
           border-bottom: 0.5px solid rgba(from var(--secondary-text-color) r g b / 0.2);
-          padding-block: 2px;
+          padding-block: 3px;
           width: 100%;
-          justify-content: space-between;
+          /* justify-content: space-between; */
         }
 
         .moon-data-item:last-child {

@@ -108,6 +108,9 @@ export class LunarMoonCalendarTooltip extends LitElement {
       flex-direction: column;
       background-color: rgba(var(--rgb-card-background-color), 0.95);
       border-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg));
+      box-shadow: var(--ha-card-box-shadow, 0 2px 4px rgba(0, 0, 0, 0.2));
+      box-sizing: border-box;
+      border: 1px solid rgba(var(--rgb-primary-text-color), 0.1);
       padding: 1rem;
       height: fit-content;
       min-width: 200px;
@@ -138,7 +141,11 @@ export class LunarMoonCalendarTooltip extends LitElement {
       width: 100%;
       margin-block: 0.5em;
     }
-
+    .tooltip ::slotted([slot='moon-info']) {
+      max-width: 350px;
+      width: 100%;
+      margin-top: 0.5em;
+    }
     /* Card fade-in and fade-out animations */
     .fade-in {
       animation: fadeIn 0.2s ease-in;

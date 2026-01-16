@@ -40,7 +40,7 @@ const TRANSLATION_KEY: Record<string, string> = {
 const createMenuItem = (localize: LocalizeFunc, key: EditorAreaKey): EditorMenuItem => {
   if (key === EditorArea.DEFAULT) {
     return {
-      title: 'LUNAR PHASE CARD confiuguration',
+      title: 'LUNAR PHASE CARD',
       icon: ICON[key],
     };
   }
