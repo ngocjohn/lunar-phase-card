@@ -134,33 +134,62 @@ or
 
 <p style="text-align: justify;">All options can be configured in the GUI editor. To configure the Lunar Phase Card, you can use the following parameters in your Lovelace configuration:</p>
 
+## Card Configuration (New Interface)
+
+> ⚠️ **Important**
+> The card has been migrated to a **new configuration interface**.
+> Deprecated and legacy options have been removed from the documentation. Existing configs are migrated automatically.
+
 ![Card config editor][card-config-editor]
 
-| Name                | Type    | Requirement | Description                                                           |
-| ------------------- | ------- | ----------- | --------------------------------------------------------------------- |
-| `type`              | string  | Required    | The type of the card. For this card, use `custom:lunar-phase-card`.   |
-| `entity`            | string  | Optional    | The entity_id from Lunar Phase custom component `sensor.*_moon_phase` |
-| `use_default`       | boolean | Optional    | Whether to use default settings. Defaults to `true`.                  |
-| `use_entity`        | boolean | Optional    | Whether to use entity settings. Defaults to `false`.                  |
-| `use_custom`        | boolean | Optional    | Whether to use custom settings. Defaults to `false`.                  |
-| `show_background`   | boolean | Optional    | Whether to show the background image. Defaults to `false`.            |
-| `compact_view`      | boolean | Optional    | Whether to display the card in a compact view. Defaults to `false`.   |
-| `compact_mode`      | string  | Optional    | Mode for compact view. Options: `default`, `minimal`.                 |
-| `12hr_format`       | boolean | Optional    | Whether to display time in 12-hour format. Defaults to `false`.       |
-| `mile_unit`         | boolean | Optional    | Whether to display distance in miles. Defaults to `false`.            |
-| `hide_buttons`       | boolean | Optional    | Whether to hide the buttons in header. Defaults to `false`.          |
-| `calendar_modal`    | boolean | Optional    | Whether to use calendar as modal popup. Defaults to `false`.          |
-| `default_card`      | string  | Optional    | Default view of the card. Options: `base`, `calendar`, `horizon`. Defaults to `base`. |
-| `moon_position`     | string  | Optional    | Position of the moon image. Options: `left`, `right`. Defaults to `left`. |
-| `southern_hemisphere` | boolean | Optional  | Adjusts the moon orientation for southern hemisphere users. Defaults to `false`. |
-| `number_decimals`   | number  | Optional    | Number of decimals for numerical values. Defaults to `2`.             |
-| `selected_language` | string  | Optional    | ISO code of the language to be used. Defaults to system or `en`.      |
-| `latitude`          | number  | Optional    | The latitude for which to calculate the lunar phase.                  |
-| `longitude`         | number  | Optional    | The longitude for which to calculate the lunar phase.                 |
-| `hide_items`        | list    | Optional    | List of items to hide in data view                                    |
-| `theme`             | object  | Optional    | Apply theme on card.                                                  |
-| `font_customize`    | object  | Optional    | Customize fonts for the card. See below for details.                  |
-| `graph_config`      | object  | Optional    | Configuration for the chart. See below for details.                   |
+---
+
+## 🌍 Location Configuration
+
+| Name | Type | Requirement | Description |
+| ---- | ---- | ----------- | ----------- |
+| `type` | string | Required | Card type: `custom:lunar-phase-card` |
+| `location_source` | string | Optional | Source of location data. Options: `default`, `entity`, `custom`. Defaults to `default`. |
+| `entity` | string | Optional | Entity used as a location source when `location_source: entity`. Latitude and longitude are read from entity attributes. |
+| `latitude` | number | Optional | Custom latitude (used when `location_source: custom`). |
+| `longitude` | number | Optional | Custom longitude (used when `location_source: custom`). |
+| `southern_hemisphere` | boolean | Optional | Adjusts moon orientation for southern hemisphere users. Defaults to `false`. |
+
+---
+
+## 🎨 Appearance & Behavior
+
+| Name | Type | Requirement | Description |
+| ---- | ---- | ----------- | ----------- |
+| `language` | string | Optional | Language ISO code. Defaults to `en`. |
+| `default_section` | string | Optional | Section shown on load. Options: `base`, `calendar`, `horizon`, `full_calendar`. |
+| `compact_view` | boolean | Optional | Enable compact card layout. Defaults to `false`. |
+| `compact_mode` | string | Optional | Compact mode style. Options: `default`, `minimal`. |
+| `moon_position` | string | Optional | Position of the moon image on the base section. Options: `left`, `right`. |
+| `hide_background` | boolean | Optional | Hide the card background image. Defaults to `false`. |
+| `custom_background` | string | Optional | Custom background image URL. |
+| `hide_starfield` | boolean | Optional | Hide the starfield background layer. |
+| `hide_buttons` | boolean | Optional | Hide the menu buttons used to switch sections. |
+| `compact_menu_button` | boolean | Optional | Use a compact style for the menu button. |
+| `hide_compact_label` | boolean | Optional | Hide labels when compact view is enabled. |
+| `calendar_modal` | boolean | Optional | Open the calendar section in a modal popup. |
+| `custom_theme` | string | Optional | Custom Home Assistant theme name applied to the card. |
+| `theme_mode` | string | Optional | Theme mode. Options: `auto`, `light`, `dark`. Defaults to `auto`. |
+
+---
+
+## 📊 Layout & Data Visualization
+
+| Name | Type | Requirement | Description |
+| ---- | ---- | ----------- | ----------- |
+| `hide_items` | list | Optional | List of data items to hide in data views. |
+| `max_data_per_page` | number | Optional | Maximum number of data items per page in the data-info view. |
+| `number_decimals` | number | Optional | Number of decimals shown for numeric values. |
+| `mile_unit` | boolean | Optional | Use miles instead of kilometers for distance values. |
+| `12hr_format` | boolean | Optional | Use 12-hour time format instead of 24-hour. |
+| `font_config` | object | Optional | Font customization options for the card. |
+| `graph_chart_config` | object | Optional | Chart configuration for the horizon section. |
+
 
 > [!NOTE]
 > The `entity` parameter is not required. It refers to the entity ID from the Lunar Card Custom component, which can be installed [here](https://github.com/ngocjohn/lunar-phase). If the `entity` is not defined, the card will use the default latitude and longitude from the system configuration.
@@ -196,41 +225,46 @@ Here's an example configuration for the Lunar Phase Card:
 
 ```yaml
 type: custom:lunar-phase-card
-entity: ""
-use_default: true
-use_custom: false
-use_entity: false
-show_background: true
-selected_language: en
-compact_view: false
-12hr_format: false
-mile_unit: false
-hide_buttons: false
-calendar_modal: false
-default_card: base
-moon_position: left
+location_source: default
+entity: sensor.lunar_phase
 southern_hemisphere: false
+latitude: 50.06038385213462
+longitude: 14.399275481700899
+language: en
+hide_background: true
+hide_starfield: true
+custom_background: http://localhost:8235/background/moon_bg_2.png
+theme_mode: dark
+default_section: base
+compact_view: false
+moon_position: right
+hide_buttons: false
+compact_menu_button: false
+hide_compact_label: false
+calendar_modal: false
+hide_items: []
 number_decimals: 2
-graph_config:
+mile_unit: false
+12hr_format: true
+font_config:
+  label_font_size: auto
+  label_font_style: none
+  label_font_color: ""
+graph_chart_config:
+  graph_type: dynamic
   y_ticks: false
   x_ticks: false
-  show_time: true
+  show_time: false
   show_current: true
   show_highest: true
   y_ticks_position: left
   y_ticks_step_size: 30
   time_step_size: 30
-  graph_type: default
-font_customize:
-  header_font_size: x-large
-  header_font_style: capitalize
-  header_font_color: ""
-  label_font_size: auto
-  label_font_style: none
-  label_font_color: ""
-  hide_label: false
-latitude: 50.0874654
-longitude: 14.4212535
+  show_legend: true
+  legend_position: top
+  legend_align: center
+
+
 ```
 
 ## Contribution Guidelines
