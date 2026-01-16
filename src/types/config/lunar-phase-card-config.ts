@@ -187,23 +187,6 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   cardId?: string;
 }
 
-export const AppearanceOptions = [
-  'compact_view',
-  'compact_mode',
-  'moon_position',
-  'hide_background',
-  'custom_background',
-  'hide_starfield',
-  'hide_buttons',
-  'hide_compact_label',
-  'calendar_modal',
-  'custom_theme',
-  'theme_mode',
-  'language',
-] as const;
-
-export type CardAppearance = Pick<LunarPhaseCardConfig, (typeof AppearanceOptions)[number]>;
-
 export const LocationConfigKeys = [
   'location_source',
   'entity',
@@ -214,8 +197,34 @@ export const LocationConfigKeys = [
 
 export type LocationConfig = Pick<LunarPhaseCardConfig, (typeof LocationConfigKeys)[number]>;
 
-export const LayoutConfigKeys = [
+export const VisualBackgroundOptions = [
+  'language',
+  'hide_background',
+  'hide_starfield',
+  'custom_background',
+  'custom_theme',
+  'theme_mode',
+] as const;
+
+export type VisualBackgroundConfig = Pick<LunarPhaseCardConfig, (typeof VisualBackgroundOptions)[number]>;
+
+export const AppearanceLayoutKeys = [
   'default_section',
+  'compact_view',
+  'compact_mode',
+  'moon_position',
+  'hide_buttons',
+  'hide_compact_label',
+  'calendar_modal',
+] as const;
+
+export type AppearanceLayoutConfig = Pick<LunarPhaseCardConfig, (typeof AppearanceLayoutKeys)[number]>;
+
+export const CardAppearanceLayoutKeys = [...VisualBackgroundOptions, ...AppearanceLayoutKeys] as const;
+
+export type CardAppearance = Pick<LunarPhaseCardConfig, (typeof CardAppearanceLayoutKeys)[number]>;
+
+export const DataVisualKeys = [
   'hide_items',
   'max_data_per_page',
   'number_decimals',
@@ -225,10 +234,14 @@ export const LayoutConfigKeys = [
   'graph_chart_config',
 ] as const;
 
-export type LayoutConfig = Pick<LunarPhaseCardConfig, (typeof LayoutConfigKeys)[number]>;
+export type DataVisualConfig = Pick<LunarPhaseCardConfig, (typeof DataVisualKeys)[number]>;
 
-export const ConfigFieldOrder = ['type', ...LocationConfigKeys, ...AppearanceOptions, ...LayoutConfigKeys] as const;
-
+export const ConfigFieldOrder = [
+  'type',
+  ...LocationConfigKeys,
+  ...CardAppearanceLayoutKeys,
+  ...DataVisualKeys,
+] as const;
 /** @deprecated use 'graph_chart_config' instead
  */
 interface HorizonGraphConfig {

@@ -15,7 +15,7 @@ import {
   GraphConfigNumberKeys,
   GraphConfigDropdownKeys,
 } from '../../../types/config/graph-config';
-import { HIDDEN_ITEMS, HiddenItem, LayoutConfig } from '../../../types/config/lunar-phase-card-config';
+import { HIDDEN_ITEMS, HiddenItem, DataVisualConfig } from '../../../types/config/lunar-phase-card-config';
 import { TITLE_PATH } from '../translate-const';
 import { computeBooleanItem, computeSelectorSchema } from './helper';
 import { HaFormBaseSchemaExtended } from './types';
@@ -24,14 +24,7 @@ type GraphDropdownProperty = (typeof GraphConfigDropdownKeys)[number];
 
 type DropdownItemType = GraphDropdownProperty | FontConfigKey | string;
 
-const SECTIONS = ['base', 'calendar', 'full_calendar', 'horizon'] as const;
-
 const SELECT: Record<DropdownItemType, HaFormBaseSchemaExtended> = {
-  default_section: {
-    name: 'default_section',
-    default: 'base',
-    options: SECTIONS as readonly string[],
-  },
   graph_type: {
     name: 'graph_type',
     default: 'default',
@@ -198,11 +191,10 @@ const GRAPH_SCHEMA = (isDynamicChart: boolean, title: string) => {
   ] as const;
 };
 
-export const LAYOUT_SCHEMA = (data: LayoutConfig, localize: LocalizeFunc) => {
+export const LAYOUT_SCHEMA = (data: DataVisualConfig, localize: LocalizeFunc) => {
   const isDynamicChart = data?.graph_chart_config?.graph_type === 'dynamic';
   const getTitle = (path: string) => localize(`editor.${TITLE_PATH[path]}.title`);
   return [
-    ...computeSelectorSchema(SELECT['default_section']),
     ...LAYOUT_BASE_SCHEMA(localize),
     ...FONT_CONFIG_SCHEMA(localize),
     ...GRAPH_SCHEMA(isDynamicChart, getTitle('graph_chart_config')),

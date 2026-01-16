@@ -15,11 +15,11 @@ import {
   LabelFontConfigKeys,
 } from '../types/config/font-config';
 import {
-  AppearanceOptions,
+  CardAppearanceLayoutKeys,
   CardAppearance,
   ConfigFieldOrder,
-  LayoutConfig,
-  LayoutConfigKeys,
+  DataVisualConfig,
+  DataVisualKeys,
   LocationConfig,
   LocationConfigKeys,
   LunarPhaseCardConfig,
@@ -104,12 +104,12 @@ export class LunarBaseCard extends LunarBaseElement {
   }
 
   get _configAppearance(): CardAppearance {
-    const appearance = pick(this.config || {}, [...AppearanceOptions]);
+    const appearance = pick(this.config || {}, [...CardAppearanceLayoutKeys]);
     return appearance;
   }
 
-  get _configLayout(): LayoutConfig {
-    return pick(this.config || {}, [...LayoutConfigKeys]);
+  get _configLayout(): DataVisualConfig {
+    return pick(this.config || {}, [...DataVisualKeys]);
   }
 
   get _configHeaderStyles(): HeaderFontConfig {

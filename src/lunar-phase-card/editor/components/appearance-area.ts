@@ -2,10 +2,10 @@ import { pick } from 'es-toolkit';
 import { css, CSSResultGroup, TemplateResult, PropertyValues, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
-import { AppearanceOptions, CardAppearance } from '../../../types/config/lunar-phase-card-config';
+import { VisualBackgroundConfig, VisualBackgroundOptions } from '../../../types/config/lunar-phase-card-config';
 import { BaseEditor } from '../base-editor';
 import { EditorArea } from '../editor-area-config';
-import { APPEARANCE_FORM_SCHEMA } from '../forms/appearance-schema';
+import { VISUAL_SCHEMA } from '../forms';
 import { createSecondaryCodeLabel } from '../shared/nav-bar';
 
 @customElement('lpc-appearance-area')
@@ -14,23 +14,23 @@ export class AppearanceArea extends BaseEditor {
     super(EditorArea.APPEARANCE);
     window.LunarAppearanceArea = this;
   }
-  @state() protected _appearance?: CardAppearance;
+  @state() protected _visualConfig?: VisualBackgroundConfig;
   @state() private _yamlActive: boolean = false;
 
   protected willUpdate(_changedProperties: PropertyValues): void {
     super.willUpdate(_changedProperties);
     if (_changedProperties.has('config') && this.config) {
-      this._appearance = pick(this.config, [...AppearanceOptions]);
+      this._visualConfig = pick(this.config, [...VisualBackgroundOptions]);
     }
   }
 
   protected render(): TemplateResult {
     const customLocalize = this.store.translate;
-    const DATA = { ...this._appearance };
-    const schema = APPEARANCE_FORM_SCHEMA(DATA, customLocalize);
-    const formEl = this.createLpcForm(DATA, schema);
+    const VISUAL_DATA = { ...this._visualConfig };
+    const visualSchema = VISUAL_SCHEMA(VISUAL_DATA, customLocalize);
+    const visualFormEl = this.createLpcForm(VISUAL_DATA, visualSchema);
     return html`
-      ${this._yamlActive ? this.createYamlEditor(DATA) : formEl}
+      ${this._yamlActive ? this.createYamlEditor(VISUAL_DATA) : visualFormEl}
       <lpc-nav-bar
         hide-primary
         .secondaryAction=${createSecondaryCodeLabel(this._yamlActive)}
