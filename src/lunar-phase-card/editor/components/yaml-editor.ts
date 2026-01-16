@@ -42,7 +42,7 @@ export class YamlEditor extends BaseEditor {
         ? html`<ha-button
             size="medium"
             variant="warning"
-            apperance="plain"
+            appearance="plain"
             slot="extra-actions"
             @click=${this._closeEditor}
           >

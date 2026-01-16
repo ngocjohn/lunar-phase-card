@@ -14,7 +14,7 @@ export const objectToChunks = <T>(obj: Record<string, T>, size: number): Record<
   let counter = 0;
   let portion: Record<string, T> = {};
 
-  for (var key in obj) {
+  for (const key in obj) {
     if (counter !== 0 && counter % size === 0) {
       final.push(portion);
       portion = {};

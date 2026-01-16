@@ -265,7 +265,7 @@ interface HorizonGraphConfig {
 }
 
 /**
- * @deprecated use 'theme' and 'them_mode' instead
+ * @deprecated use 'theme' and 'theme_mode' instead
  */
 interface ThemeConfig {
   selected_theme?: string;

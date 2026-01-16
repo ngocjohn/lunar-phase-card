@@ -13,7 +13,7 @@ import { Store } from '../model/store';
 import { filterItemFromMoonData, MoonData } from '../types/config/chart-config';
 import { CSS_FONT_SIZE } from '../types/config/font-config';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
-import { computeStubConfig } from '../utils/compute-stup-config';
+import { computeStubConfig } from '../utils/compute-stub-config';
 import { registerCustomCard } from '../utils/custom-card-register';
 import { debounce } from '../utils/debounce';
 import { applyTheme } from '../utils/ha-helper';
