@@ -5,11 +5,11 @@ import { customElement, property } from 'lit/decorators.js';
 import './moon-data-info';
 import { ICON } from '../../const';
 import { fireEvent } from '../../ha';
-import { dayFormatter } from '../../localize/localize';
 import { CardArea } from '../../types/card-area';
 import { MoonData } from '../../types/config/chart-config';
+import { dayFormatter } from '../../utils/helpers';
 import { LunarBaseCard } from '../base-card';
-import { LunarPhaseNewCard } from '../new-lunar-phase-card';
+import { LunarPhaseNewCard } from '../lunar-phase-card';
 
 declare global {
   interface HASSDomEvents {

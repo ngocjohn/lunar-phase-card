@@ -77,8 +77,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "start:dev": "rollup -c rollup.config.dev.js --bundleConfigAsCjs -w",
-    "build:dev": "rollup -c rollup.config.dev.js --bundleConfigAsCjs",
+    "start:dev": "rollup -c rollup.config.js --bundleConfigAsCjs -w",
     "dev": "rollup -c rollup.config.js --bundleConfigAsCjs -w",
     "rollup": "rollup -c rollup.config.js --bundleConfigAsCjs",
     "build": "npm run lint && npm run rollup",

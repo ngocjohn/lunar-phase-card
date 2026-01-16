@@ -5,7 +5,6 @@ import { DateTime, WeekdayNumbers } from 'luxon';
 import { CHART_DATA, MOON_PIC_URL } from '../const';
 import { LocalizeFunc } from '../ha';
 import setupTranslation from '../localize/translate';
-import { MOON_IMAGES } from '../shared/moon-pic';
 import { MoonData, MoonDataItem, MoonImage, DynamicChartData } from '../types/config/chart-config';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 import { convertKmToMiles, compareTime } from '../utils/helpers';
@@ -636,13 +635,6 @@ export class Moon {
     }
     return events;
   }
-
-  setMoonImagesToStorage = () => {
-    // set as array
-    const moonImages = MOON_IMAGES;
-    // set to storage
-    localStorage.setItem('moonImages', JSON.parse(JSON.stringify(moonImages)));
-  };
 
   public _getDaysOfWeek(lang: string): string[] {
     const daysOfTheWeek = Array.from({ length: 7 }, (_, i) => {

@@ -35,7 +35,7 @@ const plugins = [dev && serve(serveopts), !dev && terser(terserOpt), !dev && fil
 
 export default [
   {
-    input: 'src/lunar.ts',
+    input: 'src/index.ts',
     output: [
       {
         file: dev ? 'dist/lunar-phase-card.js' : 'build/lunar-phase-card.js',

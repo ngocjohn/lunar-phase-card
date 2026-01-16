@@ -17,7 +17,7 @@ import { CardArea } from '../../types/card-area';
 import { ChartColors } from '../../types/config/chart-config';
 import { CHART_FILL_COLORS } from '../../types/config/graph-config';
 import { LunarBaseCard } from '../base-card';
-import { LunarPhaseNewCard } from '../new-lunar-phase-card';
+import { LunarPhaseNewCard } from '../lunar-phase-card';
 
 import type { ChartDataset } from 'chart.js/auto';
 
@@ -718,6 +718,9 @@ export class LunarMoonChartHorizon extends LunarBaseCard {
           background-color: rgba(0, 0, 0, 0.14);
         }
 
+        .moon-data {
+          box-sizing: border-box;
+        }
         .moon-data[show='false'] {
           max-height: 0px;
           overflow: hidden;

@@ -173,3 +173,8 @@ export const hexToRgba = (hex: string, alpha: number): string => {
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 };
+
+export function dayFormatter(day: number, lang: string): string {
+  const dayFormat = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' });
+  return dayFormat.format(day, 'day');
+}

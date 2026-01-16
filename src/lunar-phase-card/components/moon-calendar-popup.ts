@@ -9,7 +9,7 @@ import { CardArea } from '../../types/card-area';
 import { MoonData } from '../../types/config/chart-config';
 import './moon-calendar-tooltip';
 import { LunarBaseCard } from '../base-card';
-import { LunarPhaseNewCard } from '../new-lunar-phase-card';
+import { LunarPhaseNewCard } from '../lunar-phase-card';
 
 declare global {
   interface HASSDomEvents {
