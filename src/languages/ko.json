@@ -33,6 +33,7 @@
         },
         "position": "위치",
         "direction": "방향",
+        "nextPhase": "다음 달의 위상",
         "cardinalShort": {
             "N": "북",
             "NNE": "북북동",

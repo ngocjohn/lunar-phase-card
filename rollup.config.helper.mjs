@@ -72,7 +72,7 @@ export function logCardInfo(version) {
 }
 
 export const defaultPlugins = [
-  typescript({ declaration: false }),
+  typescript(),
   nodeResolve(),
   json(),
   commonjs(),

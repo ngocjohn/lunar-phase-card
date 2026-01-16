@@ -1,177 +1,178 @@
 {
-  "name": "Lithuanian",
-  "nativeName": "Lietuvių",
-  "card": {
-    "phase": {
-      "firstQuarterMoon": "Priešpilnis",
-      "fullMoon": "Pilnatis",
-      "thirdQuarterMoon": "Delčia",
-      "newMoon": "Jaunatis",
-      "waxingCrescentMoon": "Jaunatis pilnėja",
-      "waxingGibbousMoon": "Priešpilnis pilnėja",
-      "waningCrescentMoon": "Delčia dyla",
-      "waningGibbousMoon": "Pilnatis dyla"
+    "name": "Lithuanian",
+    "nativeName": "Lietuvių",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Priešpilnis",
+            "fullMoon": "Pilnatis",
+            "thirdQuarterMoon": "Delčia",
+            "newMoon": "Jaunatis",
+            "waxingCrescentMoon": "Jaunatis pilnėja",
+            "waxingGibbousMoon": "Priešpilnis pilnėja",
+            "waningCrescentMoon": "Delčia dyla",
+            "waningGibbousMoon": "Pilnatis dyla"
+        },
+        "illumination": "Apšviesta",
+        "illuminated": "Apšviesta dalis",
+        "moonRise": "Kyla",
+        "moonSet": "Leidžiasi",
+        "moonHigh": "Aukščiausiai",
+        "moonAge": "Mėnulio amžius",
+        "distance": "Atstumas",
+        "azimuth": "Azimutas",
+        "altitude": "Altitudė",
+        "fullMoon": "Pilnatis",
+        "newMoon": "Jaunatis",
+        "relativeTime": {
+            "days": "d.",
+            "justNow": "dabar",
+            "minutesAgo": "{0} min. prieš",
+            "hoursAgo": "{0} val. prieš",
+            "inMinutes": "po {0} min.",
+            "inHours": "po {0} val."
+        },
+        "position": "Padėtis",
+        "direction": "Kryptis",
+        "nextPhase": "Kitas Mėnulio etapas",
+        "cardinalShort": {
+            "N": "Š",
+            "NNE": "ŠŠR",
+            "NE": "ŠR",
+            "ENE": "RŠR",
+            "E": "R",
+            "ESE": "RPR",
+            "SE": "PR",
+            "SSE": "PPR",
+            "S": "P",
+            "SSW": "PPV",
+            "SW": "PV",
+            "WSW": "VPV",
+            "W": "V",
+            "WNW": "VŠV",
+            "NW": "ŠV",
+            "NNW": "ŠŠV"
+        },
+        "underHorizon": "Mėlulis žemiau horizonto",
+        "overHorizon": "Mėlulis virš horizonto",
+        "horizonTitle": "Šiandienos mėnulis",
+        "currentTime": "Dabartinis laikas",
+        "common": {
+            "now": "Dabar"
+        }
     },
-    "illumination": "Apšviesta",
-    "illuminated": "Apšviesta dalis",
-    "moonRise": "Kyla",
-    "moonSet": "Leidžiasi",
-    "moonHigh": "Aukščiausiai",
-    "moonAge": "Mėnulio amžius",
-    "distance": "Atstumas",
-    "azimuth": "Azimutas",
-    "altitude": "Altitudė",
-    "fullMoon": "Pilnatis",
-    "newMoon": "Jaunatis",
-    "relativeTime": {
-      "days": "d.",
-      "justNow": "dabar",
-      "minutesAgo": "{0} min. prieš",
-      "hoursAgo": "{0} val. prieš",
-      "inMinutes": "po {0} min.",
-      "inHours": "po {0} val."
-    },
-    "position": "Padėtis",
-    "direction": "Kryptis",
-    "cardinalShort": {
-      "N": "Š",
-      "NNE": "ŠŠR",
-      "NE": "ŠR",
-      "ENE": "RŠR",
-      "E": "R",
-      "ESE": "RPR",
-      "SE": "PR",
-      "SSE": "PPR",
-      "S": "P",
-      "SSW": "PPV",
-      "SW": "PV",
-      "WSW": "VPV",
-      "W": "V",
-      "WNW": "VŠV",
-      "NW": "ŠV",
-      "NNW": "ŠŠV"
-    },
-    "underHorizon": "Mėlulis žemiau horizonto",
-    "overHorizon": "Mėlulis virš horizonto",
-    "horizonTitle": "Šiandienos mėnulis",
-    "currentTime": "Dabartinis laikas",
-    "common": {
-      "now": "Dabar"
+    "editor": {
+        "viewConfig": {
+            "title": "Kalba ir peržiūra",
+            "description": "Nustatykite kalbą ir foną",
+            "customBackground": {
+                "title": "Fonas",
+                "description": "Nustatykite tinkintą fono"
+            },
+            "theme": {
+                "title": "Tema (pasirinktinai)",
+                "description": "Pasirinkite kortelės temą"
+            },
+            "layout": {
+                "title": "Išdėstymo parinktys",
+                "description": "Keisti kortelės išdėstymą"
+            }
+        },
+        "baseConfig": {
+            "title": "Platuma ir ilguma",
+            "description": "Nustatyti platumą ir ilgumą"
+        },
+        "optionsConfig": {
+            "useDefault": "Naudokite sistemos",
+            "useEntity": "Naudokite subjektą",
+            "useCustom": "Naudokite pasirinktinį"
+        },
+        "fontOptions": {
+            "title": "Šrifto pritaikymas",
+            "description": "Nustatykite šrifto dydį ir spalvą",
+            "hideLabel": "Paslėpti etiketę",
+            "headerFontConfig": {
+                "title": "Antraštės šriftas",
+                "description": "Nustatyti antraštės šriftą"
+            },
+            "labelFontConfig": {
+                "title": "Etiketės šriftas",
+                "description": "Etiketės šrifto nustatymas"
+            },
+            "headerFontSize": "Antraštės šrifto dydis",
+            "headerFontColor": "Antraštės šrifto spalva",
+            "headerFontStyle": "Antraštės šrifto stilius",
+            "labelFontSize": "Etiketės šrifto dydis",
+            "labelFontColor": "Etiketės šrifto spalva",
+            "labelFontStyle": "Etiketės šrifto stilius",
+            "valueFontSize": "Reikšmių šrifto dydis"
+        },
+        "graphConfig": {
+            "title": "Grafiko pritaikymas",
+            "description": "Nustatyti grafiką",
+            "type": {
+                "title": "grafiko tipas",
+                "description": "Nustatyti grafiko tipą"
+            },
+            "visibility": {
+                "title": "Peržiūros parinktys",
+                "description": "Slėpti arba rodyti konkrečius elementus"
+            },
+            "customization": {
+                "title": "Tinkinimo parinktys",
+                "description": "Tinkinti grafiką"
+            }
+        },
+        "layoutConfig": {
+            "title": "Maketo tinkinimas",
+            "description": "Keisti kortelės išdėstymą",
+            "hiddenItems": {
+                "title": "Paslėpti daiktai",
+                "description": "Elementų, kuriuos norite slėpti, pasirinkimas duomenų rodinyje"
+            }
+        },
+        "compactView": "Kompaktiškas vaizdas",
+        "showBackground": "Rodyti foną",
+        "timeFormat": "12 valandų laiko formatas",
+        "mileUnit": "Atstumo vienetas",
+        "yTicks": "Y-ašies žymės",
+        "xTicks": "X-ašies žymės",
+        "showTime": "Laiko žymekliai",
+        "showCurrent": "Dabartinė mėnulio padėtis",
+        "showLegend": "Rodyti legendą",
+        "showHighest": "Rodyti aukščiausią mėnulio padėtį",
+        "calendarModal": "Kalendoriaus iššokantis langas",
+        "hideButtons": "Slėpti mygtukus",
+        "titleHelper": {
+            "compactView": "Rodyti kompaktišką vaizdą",
+            "showBackground": "Rodyti foną",
+            "timeFormat": "Nustatyti laiko formatą (12 ar 24-valandos)",
+            "mileUnit": "Išjungus bus naudojami kilometrai",
+            "yTicks": "Rodyti Y-ašies žymes",
+            "xTicks": "Rodyti X-ašies žymes",
+            "showTime": "Rodyti teka/leidžiasi laiko žymes",
+            "showCurrent": "Rodyti dabartinę mėnulio padėtį",
+            "showLegend": "Rodyti legendą",
+            "showHighest": "Rodyti aukščiausią mėnulio padėtį",
+            "calendarModal": "Kalendorius bus rodomas iššokančiame lange",
+            "hideButtons": "Antraštės mygtukai bus paslėpti",
+            "useDefault": "Naudoti sistemos platumą ir ilgumą",
+            "useEntity": "Naudoti subjekto platumą ir ilgumą",
+            "useCustom": "Naudoti pasirinktą platumą ir ilgumą",
+            "hideLabel": "Paslėpti etiketę kompaktiniame vaizde"
+        },
+        "placeHolder": {
+            "latitude": "Įveskite platumą",
+            "longitude": "Įveskite ilgumą",
+            "customBackground": "URL arba kelias iki paveiksliuko",
+            "language": "Pasirinkite kalbą",
+            "moonPosition": "Pasirinkite mėnulio padėtį kortelėje",
+            "defaultCard": "Pasirinkite numatytąją kortelę",
+            "yTicksPosition": "Y-ašies žymių padėtis",
+            "legendPosition": "Legendos padėtis",
+            "legendAlign": "Legenda lygiavimas",
+            "graphType": "Grafiko tipas",
+            "compactMode": "Kompaktiškas režimas",
+            "themeMode": "Temos režimas"
+        }
     }
-  },
-  "editor": {
-    "viewConfig": {
-      "title": "Kalba ir peržiūra",
-      "description": "Nustatykite kalbą ir foną",
-      "customBackground": {
-        "title": "Fonas",
-        "description": "Nustatykite tinkintą fono"
-      },
-      "theme": {
-        "title": "Tema (pasirinktinai)",
-        "description": "Pasirinkite kortelės temą"
-      },
-      "layout": {
-        "title": "Išdėstymo parinktys",
-        "description": "Keisti kortelės išdėstymą"
-      }
-    },
-    "baseConfig": {
-      "title": "Platuma ir ilguma",
-      "description": "Nustatyti platumą ir ilgumą"
-    },
-    "optionsConfig": {
-      "useDefault": "Naudokite sistemos",
-      "useEntity": "Naudokite subjektą",
-      "useCustom": "Naudokite pasirinktinį"
-    },
-    "fontOptions": {
-      "title": "Šrifto pritaikymas",
-      "description": "Nustatykite šrifto dydį ir spalvą",
-      "hideLabel": "Paslėpti etiketę",
-      "headerFontConfig": {
-        "title": "Antraštės šriftas",
-        "description": "Nustatyti antraštės šriftą"
-      },
-      "labelFontConfig": {
-        "title": "Etiketės šriftas",
-        "description": "Etiketės šrifto nustatymas"
-      },
-      "headerFontSize": "Antraštės šrifto dydis",
-      "headerFontColor": "Antraštės šrifto spalva",
-      "headerFontStyle": "Antraštės šrifto stilius",
-      "labelFontSize": "Etiketės šrifto dydis",
-      "labelFontColor": "Etiketės šrifto spalva",
-      "labelFontStyle": "Etiketės šrifto stilius",
-      "valueFontSize": "Reikšmių šrifto dydis"
-    },
-    "graphConfig": {
-      "title": "Grafiko pritaikymas",
-      "description": "Nustatyti grafiką",
-      "type": {
-        "title": "grafiko tipas",
-        "description": "Nustatyti grafiko tipą"
-      },
-      "visibility": {
-        "title": "Peržiūros parinktys",
-        "description": "Slėpti arba rodyti konkrečius elementus"
-      },
-      "customization": {
-        "title": "Tinkinimo parinktys",
-        "description": "Tinkinti grafiką"
-      }
-    },
-    "layoutConfig": {
-      "title": "Maketo tinkinimas",
-      "description": "Keisti kortelės išdėstymą",
-      "hiddenItems": {
-        "title": "Paslėpti daiktai",
-        "description": "Elementų, kuriuos norite slėpti, pasirinkimas duomenų rodinyje"
-      }
-    },
-    "compactView": "Kompaktiškas vaizdas",
-    "showBackground": "Rodyti foną",
-    "timeFormat": "12 valandų laiko formatas",
-    "mileUnit": "Atstumo vienetas",
-    "yTicks": "Y-ašies žymės",
-    "xTicks": "X-ašies žymės",
-    "showTime": "Laiko žymekliai",
-    "showCurrent": "Dabartinė mėnulio padėtis",
-    "showLegend": "Rodyti legendą",
-    "showHighest": "Rodyti aukščiausią mėnulio padėtį",
-    "calendarModal": "Kalendoriaus iššokantis langas",
-    "hideButtons": "Slėpti mygtukus",
-    "titleHelper": {
-      "compactView": "Rodyti kompaktišką vaizdą",
-      "showBackground": "Rodyti foną",
-      "timeFormat": "Nustatyti laiko formatą (12 ar 24-valandos)",
-      "mileUnit": "Išjungus bus naudojami kilometrai",
-      "yTicks": "Rodyti Y-ašies žymes",
-      "xTicks": "Rodyti X-ašies žymes",
-      "showTime": "Rodyti teka/leidžiasi laiko žymes",
-      "showCurrent": "Rodyti dabartinę mėnulio padėtį",
-      "showLegend": "Rodyti legendą",
-      "showHighest": "Rodyti aukščiausią mėnulio padėtį",
-      "calendarModal": "Kalendorius bus rodomas iššokančiame lange",
-      "hideButtons": "Antraštės mygtukai bus paslėpti",
-      "useDefault": "Naudoti sistemos platumą ir ilgumą",
-      "useEntity": "Naudoti subjekto platumą ir ilgumą",
-      "useCustom": "Naudoti pasirinktą platumą ir ilgumą",
-      "hideLabel": "Paslėpti etiketę kompaktiniame vaizde"
-    },
-    "placeHolder": {
-      "latitude": "Įveskite platumą",
-      "longitude": "Įveskite ilgumą",
-      "customBackground": "URL arba kelias iki paveiksliuko",
-      "language": "Pasirinkite kalbą",
-      "moonPosition": "Pasirinkite mėnulio padėtį kortelėje",
-      "defaultCard": "Pasirinkite numatytąją kortelę",
-      "yTicksPosition": "Y-ašies žymių padėtis",
-      "legendPosition": "Legendos padėtis",
-      "legendAlign": "Legenda lygiavimas",
-      "graphType": "Grafiko tipas",
-      "compactMode": "Kompaktiškas režimas",
-      "themeMode": "Temos režimas"
-    }
-  }
 }

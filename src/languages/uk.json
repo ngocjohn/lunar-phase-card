@@ -1,0 +1,178 @@
+{
+    "name": "Ukrainian",
+    "nativeName": "Українська",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Перша чверть",
+            "fullMoon": "Повний місяць",
+            "thirdQuarterMoon": "Остання чверть",
+            "newMoon": "Молодик",
+            "waxingCrescentMoon": "Зростаючий серп",
+            "waxingGibbousMoon": "Зростаючий опуклий",
+            "waningCrescentMoon": "Спадаючий серп",
+            "waningGibbousMoon": "Спадаючий опуклий"
+        },
+        "illumination": "Освітленість",
+        "illuminated": "Освітлено",
+        "moonRise": "Схід місяця",
+        "moonSet": "Захід місяця",
+        "moonHigh": "Найвище положення",
+        "moonAge": "Вік місяця",
+        "distance": "Відстань",
+        "azimuth": "Азимут",
+        "altitude": "Висота",
+        "fullMoon": "Повний місяць",
+        "newMoon": "Молодик",
+        "relativeTime": {
+            "days": "дн.",
+            "justNow": "щойно",
+            "minutesAgo": "{0} хв тому",
+            "hoursAgo": "{0} год тому",
+            "inMinutes": "через {0} хв",
+            "inHours": "через {0} год"
+        },
+        "position": "Положення",
+        "direction": "Напрямок",
+        "nextPhase": "Наступна фаза Місяця",
+        "cardinalShort": {
+            "N": "Пн",
+            "NNE": "ПнПнСх",
+            "NE": "ПнСх",
+            "ENE": "СхПнСх",
+            "E": "Сх",
+            "ESE": "СхПдСх",
+            "SE": "ПдСх",
+            "SSE": "ПдПдСх",
+            "S": "Пд",
+            "SSW": "ПдПдЗх",
+            "SW": "ПдЗх",
+            "WSW": "ЗхПдЗх",
+            "W": "Зх",
+            "WNW": "ЗхПнЗх",
+            "NW": "ПнЗх",
+            "NNW": "ПнПнЗх"
+        },
+        "underHorizon": "Місяць під горизонтом",
+        "overHorizon": "Місяць над горизонтом",
+        "horizonTitle": "Сьогоднішній Місяць",
+        "currentTime": "Поточний час",
+        "common": {
+            "now": "Зараз"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "Мова та режим відображення",
+            "description": "Налаштуйте мову та фон картки",
+            "customBackground": {
+                "title": "Фон",
+                "description": "Налаштуйте власний фон картки"
+            },
+            "theme": {
+                "title": "Тема (необов’язково)",
+                "description": "Оберіть тему для картки"
+            },
+            "layout": {
+                "title": "Параметри макету",
+                "description": "Змініть розташування елементів картки"
+            }
+        },
+        "baseConfig": {
+            "title": "Широта та довгота",
+            "description": "Вкажіть координати місцеположення"
+        },
+        "optionsConfig": {
+            "useDefault": "Використати системні",
+            "useEntity": "Використати сутність",
+            "useCustom": "Використати власні"
+        },
+        "fontOptions": {
+            "title": "Налаштування шрифтів",
+            "description": "Встановіть розмір та колір шрифтів",
+            "hideLabel": "Приховати підписи",
+            "headerFontConfig": {
+                "title": "Шрифт заголовку",
+                "description": "Налаштуйте шрифт заголовку"
+            },
+            "labelFontConfig": {
+                "title": "Шрифт підписів",
+                "description": "Налаштуйте шрифт підписів"
+            },
+            "headerFontSize": "Розмір шрифту заголовку",
+            "headerFontColor": "Колір шрифту заголовку",
+            "headerFontStyle": "Стиль шрифту заголовку",
+            "labelFontSize": "Розмір шрифту підписів",
+            "labelFontColor": "Колір шрифту підписів",
+            "labelFontStyle": "Стиль шрифту підписів",
+            "valueFontSize": "Розмір шрифту значень"
+        },
+        "graphConfig": {
+            "title": "Налаштування графіка",
+            "description": "Параметри відображення графіка",
+            "type": {
+                "title": "Тип графіка",
+                "description": "Оберіть тип графіка"
+            },
+            "visibility": {
+                "title": "Параметри видимості",
+                "description": "Приховати або показати елементи"
+            },
+            "customization": {
+                "title": "Додаткові параметри",
+                "description": "Налаштування вигляду графіка"
+            }
+        },
+        "layoutConfig": {
+            "title": "Налаштування розташування",
+            "description": "Змініть макет картки",
+            "hiddenItems": {
+                "title": "Приховані елементи",
+                "description": "Оберіть елементи для приховування"
+            }
+        },
+        "compactView": "Компактний режим",
+        "showBackground": "Показати фон",
+        "timeFormat": "12-годинний формат часу",
+        "mileUnit": "Одиниця — милі",
+        "yTicks": "Поділки по осі Y",
+        "xTicks": "Поділки по осі X",
+        "showTime": "Позначки сходу/заходу",
+        "showCurrent": "Поточне положення місяця",
+        "showLegend": "Показати легенду",
+        "showHighest": "Найвище положення місяця",
+        "calendarModal": "Календар у спливаючому вікні",
+        "hideButtons": "Приховати кнопки заголовку",
+        "titleHelper": {
+            "compactView": "Показати компактний вигляд",
+            "showBackground": "Показати фон",
+            "timeFormat": "Увімкнути 12-годинний формат часу",
+            "mileUnit": "Якщо вимкнено — використовуються кілометри",
+            "yTicks": "Показати поділки по осі Y",
+            "xTicks": "Показати поділки по осі X",
+            "showTime": "Показати позначки сходу/заходу",
+            "showCurrent": "Показати поточне положення місяця",
+            "showLegend": "Показати легенду",
+            "showHighest": "Показати найвище положення",
+            "calendarModal": "Відкрити календар у вікні",
+            "hideButtons": "Приховати кнопки заголовку",
+            "useDefault": "Використати системні координати",
+            "useEntity": "Використати координати сутності",
+            "useCustom": "Використати власні координати",
+            "hideLabel": "Приховати підписи в компактному режимі"
+        },
+        "placeHolder": {
+            "latitude": "Введіть широту",
+            "longitude": "Введіть довготу",
+            "customBackground": "URL або шлях до зображення",
+            "language": "Оберіть мову",
+            "moonPosition": "Положення місяця на картці",
+            "defaultCard": "Картка за замовчуванням",
+            "yTicksPosition": "Положення поділок осі Y",
+            "legendPosition": "Положення легенди",
+            "legendAlign": "Вирівнювання легенди",
+            "graphType": "Тип графіка",
+            "compactMode": "Компактний режим",
+            "themeMode": "Режим теми"
+        }
+    }
+}

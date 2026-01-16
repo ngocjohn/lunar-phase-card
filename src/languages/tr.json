@@ -33,6 +33,7 @@
         },
         "position": "Konum",
         "direction": "Yön",
+        "nextPhase": "Sonraki Ay evresi",
         "cardinalShort": {
             "N": "K",
             "NNE": "KKD",

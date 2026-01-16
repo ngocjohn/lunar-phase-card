@@ -1,29 +1,7 @@
-import { HA, LunarPhaseCardConfig, defaultConfig } from '../types';
+import { HomeAssistant } from '../ha';
 import { applyThemesOnElement } from './apply-theme';
 
-export const generateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfig => {
-  const defaultConf = defaultConfig;
-  const { y_ticks, x_ticks } = config;
-  if (y_ticks !== undefined && x_ticks !== undefined) {
-    defaultConf.graph_config = {
-      ...defaultConf.graph_config,
-      y_ticks,
-      x_ticks,
-    };
-    config = { ...config, y_ticks: undefined, x_ticks: undefined };
-  }
-
-  const conf = {
-    ...defaultConf,
-    ...config,
-    font_customize: { ...defaultConf.font_customize, ...config.font_customize },
-    graph_config: { ...defaultConf.graph_config, ...config.graph_config },
-  };
-
-  return conf;
-};
-
-export const applyTheme = (element: any, hass: HA, theme: string, mode?: string): void => {
+export const applyTheme = (element: any, hass: HomeAssistant, theme: string, mode?: string): void => {
   if (!element) return;
   // console.log('applyTheme', theme, mode);
   const themeData = hass.themes.themes[theme];
@@ -31,10 +9,13 @@ export const applyTheme = (element: any, hass: HA, theme: string, mode?: string)
     // Filter out only top-level properties for CSS variables and the modes property
     const filteredThemeData = Object.keys(themeData)
       .filter((key) => key !== 'modes')
-      .reduce((obj, key) => {
-        obj[key] = themeData[key];
-        return obj;
-      }, {} as Record<string, string>);
+      .reduce(
+        (obj, key) => {
+          obj[key] = themeData[key];
+          return obj;
+        },
+        {} as Record<string, string>
+      );
 
     if (!mode || mode === 'auto') {
       mode = hass.themes.darkMode ? 'dark' : 'light';

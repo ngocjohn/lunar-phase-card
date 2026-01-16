@@ -33,6 +33,7 @@
         },
         "position": "位置",
         "direction": "方向",
+        "nextPhase": "下一个月相",
         "cardinalShort": {
             "N": "N",
             "NNE": "NNE",

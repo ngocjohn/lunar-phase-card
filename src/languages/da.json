@@ -1,177 +1,178 @@
 {
-  "name": "Danish",
-  "nativeName": "Dansk",
-  "card": {
-    "phase": {
-      "firstQuarterMoon": "Tiltagende Måne",
-      "fullMoon": "Fuldmåne",
-      "thirdQuarterMoon": "Aftagende måne",
-      "newMoon": "Nymåne",
-      "waxingCrescentMoon": "Tiltagende halvmåne",
-      "waxingGibbousMoon": "Tiltagende måne",
-      "waningCrescentMoon": "Aftagende halvmåne",
-      "waningGibbousMoon": "Aftagende måne"
+    "name": "Danish",
+    "nativeName": "Dansk",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Tiltagende Måne",
+            "fullMoon": "Fuldmåne",
+            "thirdQuarterMoon": "Aftagende måne",
+            "newMoon": "Nymåne",
+            "waxingCrescentMoon": "Tiltagende halvmåne",
+            "waxingGibbousMoon": "Tiltagende måne",
+            "waningCrescentMoon": "Aftagende halvmåne",
+            "waningGibbousMoon": "Aftagende måne"
+        },
+        "illumination": "Belysning",
+        "illuminated": "Oplyst",
+        "moonRise": "Måneopgang",
+        "moonSet": "Månenedgang",
+        "moonHigh": "Månen højest",
+        "moonAge": "Månealderen",
+        "distance": "Afstand",
+        "azimuth": "Azimuth",
+        "altitude": "Højde",
+        "fullMoon": "Fuldmåne",
+        "newMoon": "Nymåne",
+        "relativeTime": {
+            "days": "dage",
+            "justNow": "lige nu",
+            "minutesAgo": "{0} minutter siden",
+            "hoursAgo": "{0} timer siden",
+            "inMinutes": "in {0} minutter",
+            "inHours": "in {0} timer"
+        },
+        "position": "Position",
+        "direction": "Retning",
+        "nextPhase": "Næste månefase",
+        "cardinalShort": {
+            "N": "N",
+            "NNE": "NNØ",
+            "NE": "NØ",
+            "ENE": "ØNØ",
+            "E": "Ø",
+            "ESE": "ØSØ",
+            "SE": "SØ",
+            "SSE": "SSØ",
+            "S": "S",
+            "SSW": "SSV",
+            "SW": "SV",
+            "WSW": "VSV",
+            "W": "V",
+            "WNW": "VNV",
+            "NW": "NV",
+            "NNW": "NNV"
+        },
+        "underHorizon": "Månen under horisonten",
+        "overHorizon": "Månen over horisonten",
+        "horizonTitle": "Dagens Måne",
+        "currentTime": "Nuværende tid",
+        "common": {
+            "now": "Nu"
+        }
     },
-    "illumination": "Belysning",
-    "illuminated": "Oplyst",
-    "moonRise": "Måneopgang",
-    "moonSet": "Månenedgang",
-    "moonHigh": "Månen højest",
-    "moonAge": "Månealderen",
-    "distance": "Afstand",
-    "azimuth": "Azimuth",
-    "altitude": "Højde",
-    "fullMoon": "Fuldmåne",
-    "newMoon": "Nymåne",
-    "relativeTime": {
-      "days": "dage",
-      "justNow": "lige nu",
-      "minutesAgo": "{0} minutter siden",
-      "hoursAgo": "{0} timer siden",
-      "inMinutes": "in {0} minutter",
-      "inHours": "in {0} timer"
-    },
-    "position": "Position",
-    "direction": "Retning",
-    "cardinalShort": {
-      "N": "N",
-      "NNE": "NNØ",
-      "NE": "NØ",
-      "ENE": "ØNØ",
-      "E": "Ø",
-      "ESE": "ØSØ",
-      "SE": "SØ",
-      "SSE": "SSØ",
-      "S": "S",
-      "SSW": "SSV",
-      "SW": "SV",
-      "WSW": "VSV",
-      "W": "V",
-      "WNW": "VNV",
-      "NW": "NV",
-      "NNW": "NNV"
-    },
-    "underHorizon": "Månen under horisonten",
-    "overHorizon": "Månen over horisonten",
-    "horizonTitle": "Dagens Måne",
-    "currentTime": "Nuværende tid",
-    "common": {
-      "now": "Nu"
+    "editor": {
+        "viewConfig": {
+            "title": "Sprog og visningstilstand",
+            "description": "Indstil en konfiguration for sprog og baggrund",
+            "customBackground": {
+                "title": "Brugerdefineret baggrund",
+                "description": "Indstil en konfiguration for brugerdefineret baggrund"
+            },
+            "theme": {
+                "title": "Tema (valgfrit)",
+                "description": "Vælg et tema til kortet"
+            },
+            "layout": {
+                "title": "Indstillinger for layout",
+                "description": "Ændre kortets layout"
+            }
+        },
+        "baseConfig": {
+            "title": "Bredde og længdegrad",
+            "description": "Indstil en konfiguration for breddegrad og længdegrad"
+        },
+        "optionsConfig": {
+            "useDefault": "Brug systemet",
+            "useEntity": "Brug enhed",
+            "useCustom": "Brug brugerdefineret"
+        },
+        "fontOptions": {
+            "title": "Fonttilpasning",
+            "description": "Indstil en konfiguration for skriftstørrelse og farve",
+            "hideLabel": "Skjul etiket",
+            "headerFontConfig": {
+                "title": "Header font",
+                "description": "Indstil en konfiguration for header font"
+            },
+            "labelFontConfig": {
+                "title": "Etiket skrifttype",
+                "description": "Indstil en konfiguration for etiket skrifttype"
+            },
+            "headerFontSize": "Header skriftstørrelse",
+            "headerFontColor": "Header skriftfarve",
+            "headerFontStyle": "Header skrifttype",
+            "labelFontSize": "Etiket skriftstørrelse",
+            "labelFontColor": "Etiket skriftfarve",
+            "labelFontStyle": "Etiket skrifttype",
+            "valueFontSize": "Værdi skriftstørrelse"
+        },
+        "graphConfig": {
+            "title": "Graf tilpasning",
+            "description": "Indstil en konfiguration for grafen",
+            "type": {
+                "title": "Graftype",
+                "description": "Vælg en graftype"
+            },
+            "visibility": {
+                "title": "Synlighedsindstillinger",
+                "description": "Skjul eller vis specifikke elementer"
+            },
+            "customization": {
+                "title": "Tilpasningsmuligheder",
+                "description": "Tilpas grafen"
+            }
+        },
+        "layoutConfig": {
+            "title": "Tilpasning af layout",
+            "description": "Ændre kortets layout",
+            "hiddenItems": {
+                "title": "Skjulte genstande",
+                "description": "Vælg elementer, der skal skjules i datavisning"
+            }
+        },
+        "compactView": "Kompakt udsigt",
+        "showBackground": "Vis baggrund",
+        "timeFormat": "12-timers tidsformat",
+        "mileUnit": "Milenhed",
+        "yTicks": "Y-axis ticks",
+        "xTicks": "X-axis ticks",
+        "showTime": "Markører for opgang/nedgang",
+        "showCurrent": "Nuværende måneposition",
+        "showLegend": "Vis legend",
+        "showHighest": "Vis højeste Måneposition",
+        "calendarModal": "Kalender popup",
+        "hideButtons": "Skjul knapper",
+        "titleHelper": {
+            "compactView": "Vis en kompakt visning",
+            "showBackground": "Vis en baggrund",
+            "timeFormat": "Indstil et tidsformat (12-timers eller 24-timers)",
+            "mileUnit": "Kilometer vil blive brugt, hvis deaktiveret",
+            "yTicks": "Vis Y-akse ticks",
+            "xTicks": "Vis X-akse ticks",
+            "showTime": "Vis tidspunkter for opgang/nedgang",
+            "showCurrent": "Vis nuværende måneposition",
+            "showLegend": "Vis en forklaring",
+            "showHighest": "Vis højeste måneposition",
+            "calendarModal": "Kalenderen vises i en popup",
+            "hideButtons": "Headerknapperne bliver skjult",
+            "useDefault": "Brug systemets bredde og længde",
+            "useEntity": "Brug enheds bredde og længde",
+            "useCustom": "Brug tilpasset bredde og længde",
+            "hideLabel": "Skjul etiket i kompakt visning"
+        },
+        "placeHolder": {
+            "latitude": "Indtast breddegrad",
+            "longitude": "Indtast længdegrad",
+            "customBackground": "URL eller sti til billede",
+            "language": "Vælg sprog",
+            "moonPosition": "Vælg måneposition på kortet",
+            "defaultCard": "Vælg standardkort",
+            "yTicksPosition": "Position for Y-akse markeringer",
+            "legendPosition": "Position for legenden",
+            "legendAlign": "Justering af legenden",
+            "graphType": "Graftype",
+            "compactMode": "Kompakt tilstand",
+            "themeMode": "Tema-tilstand"
+        }
     }
-  },
-  "editor": {
-    "viewConfig": {
-      "title": "Sprog og visningstilstand",
-      "description": "Indstil en konfiguration for sprog og baggrund",
-      "customBackground": {
-        "title": "Brugerdefineret baggrund",
-        "description": "Indstil en konfiguration for brugerdefineret baggrund"
-      },
-      "theme": {
-        "title": "Tema (valgfrit)",
-        "description": "Vælg et tema til kortet"
-      },
-      "layout": {
-        "title": "Indstillinger for layout",
-        "description": "Ændre kortets layout"
-      }
-    },
-    "baseConfig": {
-      "title": "Bredde og længdegrad",
-      "description": "Indstil en konfiguration for breddegrad og længdegrad"
-    },
-    "optionsConfig": {
-      "useDefault": "Brug systemet",
-      "useEntity": "Brug enhed",
-      "useCustom": "Brug brugerdefineret"
-    },
-    "fontOptions": {
-      "title": "Fonttilpasning",
-      "description": "Indstil en konfiguration for skriftstørrelse og farve",
-      "hideLabel": "Skjul etiket",
-      "headerFontConfig": {
-        "title": "Header font",
-        "description": "Indstil en konfiguration for header font"
-      },
-      "labelFontConfig": {
-        "title": "Etiket skrifttype",
-        "description": "Indstil en konfiguration for etiket skrifttype"
-      },
-      "headerFontSize": "Header skriftstørrelse",
-      "headerFontColor": "Header skriftfarve",
-      "headerFontStyle": "Header skrifttype",
-      "labelFontSize": "Etiket skriftstørrelse",
-      "labelFontColor": "Etiket skriftfarve",
-      "labelFontStyle": "Etiket skrifttype",
-      "valueFontSize": "Værdi skriftstørrelse"
-    },
-    "graphConfig": {
-      "title": "Graf tilpasning",
-      "description": "Indstil en konfiguration for grafen",
-      "type": {
-        "title": "Graftype",
-        "description": "Vælg en graftype"
-      },
-      "visibility": {
-        "title": "Synlighedsindstillinger",
-        "description": "Skjul eller vis specifikke elementer"
-      },
-      "customization": {
-        "title": "Tilpasningsmuligheder",
-        "description": "Tilpas grafen"
-      }
-    },
-    "layoutConfig": {
-      "title": "Tilpasning af layout",
-      "description": "Ændre kortets layout",
-      "hiddenItems": {
-        "title": "Skjulte genstande",
-        "description": "Vælg elementer, der skal skjules i datavisning"
-      }
-    },
-    "compactView": "Kompakt udsigt",
-    "showBackground": "Vis baggrund",
-    "timeFormat": "12-timers tidsformat",
-    "mileUnit": "Milenhed",
-    "yTicks": "Y-axis ticks",
-    "xTicks": "X-axis ticks",
-    "showTime": "Markører for opgang/nedgang",
-    "showCurrent": "Nuværende måneposition",
-    "showLegend": "Vis legend",
-    "showHighest": "Vis højeste Måneposition",
-    "calendarModal": "Kalender popup",
-    "hideButtons": "Skjul knapper",
-    "titleHelper": {
-      "compactView": "Vis en kompakt visning",
-      "showBackground": "Vis en baggrund",
-      "timeFormat": "Indstil et tidsformat (12-timers eller 24-timers)",
-      "mileUnit": "Kilometer vil blive brugt, hvis deaktiveret",
-      "yTicks": "Vis Y-akse ticks",
-      "xTicks": "Vis X-akse ticks",
-      "showTime": "Vis tidspunkter for opgang/nedgang",
-      "showCurrent": "Vis nuværende måneposition",
-      "showLegend": "Vis en forklaring",
-      "showHighest": "Vis højeste måneposition",
-      "calendarModal": "Kalenderen vises i en popup",
-      "hideButtons": "Headerknapperne bliver skjult",
-      "useDefault": "Brug systemets bredde og længde",
-      "useEntity": "Brug enheds bredde og længde",
-      "useCustom": "Brug tilpasset bredde og længde",
-      "hideLabel": "Skjul etiket i kompakt visning"
-    },
-    "placeHolder": {
-      "latitude": "Indtast breddegrad",
-      "longitude": "Indtast længdegrad",
-      "customBackground": "URL eller sti til billede",
-      "language": "Vælg sprog",
-      "moonPosition": "Vælg måneposition på kortet",
-      "defaultCard": "Vælg standardkort",
-      "yTicksPosition": "Position for Y-akse markeringer",
-      "legendPosition": "Position for legenden",
-      "legendAlign": "Justering af legenden",
-      "graphType": "Graftype",
-      "compactMode": "Kompakt tilstand",
-      "themeMode": "Tema-tilstand"
-    }
-  }
 }
