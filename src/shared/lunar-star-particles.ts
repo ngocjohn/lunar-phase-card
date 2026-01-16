@@ -303,3 +303,9 @@ export class LunarStarParticles extends LitElement {
     return html`<div id="${this._id}" class="lunar-particles"></div>`;
   }
 }
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'lunar-star-particles': LunarStarParticles;
+  }
+}

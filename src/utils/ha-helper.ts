@@ -1,29 +1,5 @@
 import { HomeAssistant } from '../ha';
-import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
-import { defaultConfig } from '../types/legacy-card-config/default-config';
 import { applyThemesOnElement } from './apply-theme';
-
-export const generateConfig = (config: LunarPhaseCardConfig): LunarPhaseCardConfig => {
-  const defaultConf = defaultConfig;
-  const { y_ticks, x_ticks } = config;
-  if (y_ticks !== undefined && x_ticks !== undefined) {
-    defaultConf.graph_config = {
-      ...defaultConf.graph_config,
-      y_ticks,
-      x_ticks,
-    };
-    config = { ...config, y_ticks: undefined, x_ticks: undefined };
-  }
-
-  const conf = {
-    ...defaultConf,
-    ...config,
-    font_customize: { ...defaultConf.font_customize, ...config.font_customize },
-    graph_config: { ...defaultConf.graph_config, ...config.graph_config },
-  };
-
-  return conf;
-};
 
 export const applyTheme = (element: any, hass: HomeAssistant, theme: string, mode?: string): void => {
   if (!element) return;

@@ -130,12 +130,12 @@ export class Moon {
     new Date(date).toLocaleDateString(this.lang, { weekday: 'short', month: 'short', day: 'numeric' });
 
   get moonImage(): MoonImage {
-    const phaseIndex = Math.round(this._moonData.illumination.phaseValue * 31) % 31;
-    const moonFraction = Math.round(this._moonData.illumination.fraction * 100);
+    const { phaseValue, fraction } = this._moonData.illumination;
+    const phaseIndex = Math.round(phaseValue * 31) % 31;
+    const moonFraction = Math.round(fraction * 100);
+    const moonUrl = MOON_PIC_URL(phaseIndex);
     const { zenithAngle, parallacticAngle } = this._moonData;
     const rotateDeg = (zenithAngle - parallacticAngle) * (180 / Math.PI);
-    const moonUrl = MOON_PIC_URL(phaseIndex);
-
     return {
       moonPic: moonUrl,
       rotateDeg: rotateDeg,
