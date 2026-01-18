@@ -25,7 +25,6 @@
     "@tsparticles/preset-stars": "^3.2.0",
     "@vibrant/color": "^3.2.1-alpha.1",
     "chart.js": "^4.4.7",
-    "consola": "^3.4.2",
     "custom-card-helpers": "^1.9.0",
     "dotenv": "^16.4.7",
     "home-assistant-js-websocket": "^9.5.0",
@@ -34,7 +33,6 @@
     "lit": "^3.3.1",
     "luxon": "^3.5.0",
     "node-vibrant": "^3.2.1-alpha.1",
-    "nvn-tabs": "^1.0.1",
     "shadow-dom-selector": "^5.0.1",
     "swiper": "^11.2.0",
     "tinycolor2": "^1.6.0"
