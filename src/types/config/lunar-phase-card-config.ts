@@ -1,4 +1,4 @@
-import { PageType, SECTION } from '../../const';
+import { SECTION } from '../../const';
 import { LovelaceCardConfig } from '../../ha';
 import { FontCustomStyles } from './font-config';
 import { GraphConfig } from './graph-config';
@@ -170,7 +170,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   /**
    * @deprecated use `default_section` instead
    */
-  default_card?: PageType.BASE | PageType.CALENDAR | PageType.HORIZON;
+  default_card?: 'calendar' | 'base' | 'horizon';
 
   /**
    * @deprecated use `location_source` instead

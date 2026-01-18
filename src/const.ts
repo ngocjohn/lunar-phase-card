@@ -13,46 +13,20 @@ import {
 } from '@mdi/js';
 
 import { version } from '../package.json';
-import blueBackground from './images/blue-bg.png';
-import { FontSizeOptions, FontTextTransformOptions } from './types/config/font-config';
 
-const VERSION_TAG = '1.7.3';
-const PIC_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${VERSION_TAG}/background/`;
-export const BACKGROUND_URL = (index: number) => `${PIC_URL}moon_bg_${index}.png`;
-export const CUSTOM_BG = [blueBackground, BACKGROUND_URL(1), BACKGROUND_URL(2), BACKGROUND_URL(3)];
+const BG_VERSION_TAG = '1.7.3';
+const BACKGROUND_IMAGE_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${BG_VERSION_TAG}/background/`;
+const BACKGROUND_URL = (index: number) => `${BACKGROUND_IMAGE_URL}moon_bg_${index}.png`;
 
 export const EDITOR_CUSTOM_BG = [BACKGROUND_URL(0), BACKGROUND_URL(1), BACKGROUND_URL(2), BACKGROUND_URL(3)];
 
-const MOON_URL = 'https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/refs/heads/main/moon_pic/';
+// updload moon pic in v1.14.0 to reduce size of initial package
+const MOON_PIC_TAG = '1.14.0';
+const MOON_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${MOON_PIC_TAG}/moon_pic/`;
 export const MOON_PIC_URL = (index: number) => `${MOON_URL}${index}_moon.png`;
 
 export const CARD_VERSION = `v${version}`;
-
-export const BLUE_BG = blueBackground;
-export const DEFAULT_BG = BACKGROUND_URL(0);
-
-export const FONTSIZES: FontSizeOptions[] = ['small', 'medium', 'large', 'x-large', 'xx-large'];
-export const FONTSTYLES: FontTextTransformOptions[] = ['none', 'capitalize', 'uppercase', 'lowercase'];
-
-export const FONTCOLORS: string[] = [
-  'white',
-  'black',
-  'red',
-  'green',
-  'blue',
-  'yellow',
-  'orange',
-  'purple',
-  'pink',
-  'brown',
-  'gray',
-];
-
-export const enum PageType {
-  CALENDAR = 'calendar',
-  BASE = 'base',
-  HORIZON = 'horizon',
-}
+export const BLUE_BG = BACKGROUND_URL(0);
 
 export const enum MoonState {
   READY = 'ready',
@@ -79,10 +53,6 @@ export const enum CHART_DATA {
   BORDER_WIDTH_BOLD = 1.2,
   BORDER_WIDTH_LIGHT = 1,
 }
-// TODAY_FILL = '#316474', // green bg
-// NEXTDAY_FILL = '#044258', // green bg
-// TODAY_FILL = '#47546b', // Original
-// NEXTDAY_FILL = '#3d4b63', // Original
 
 export const enum CHART_COLOR {
   TODAY_FILL = '#47546b', // Original
