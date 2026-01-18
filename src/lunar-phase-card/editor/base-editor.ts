@@ -7,7 +7,7 @@ import { fireEvent } from '../../ha';
 import { Store } from '../../model/store';
 import { ConfigFieldOrder, LunarPhaseCardConfig } from '../../types/config/lunar-phase-card-config';
 import { cardNeedsMigration, migrateConfig } from '../../types/utils';
-import { getObjectDifferences } from '../../utils/object-differences';
+import { getObjectDifferences, hasObjectDifferences, logChangedValues } from '../../utils/object-differences';
 import { orderProperties } from '../../utils/order-properties';
 import { editorStyle } from '../css/card-styles';
 import { createEditorMenuItems, EditorArea, EditorMenuItems } from './editor-area-config';
@@ -98,11 +98,7 @@ export class BaseEditor extends LitElement {
     const { key, subKey } = ev.target as any;
     // console.debug('Form changes:', { key, subKey, value });
     // console.debug({ currentConfig, incoming: value });
-    let changedValues: any = {};
-    changedValues = getObjectDifferences(currentConfig, { ...currentConfig, ...value });
-    let hasChanges = Boolean(changedValues && Object.keys(changedValues).length > 0);
-
-    if (!hasChanges) {
+    if (!hasObjectDifferences(currentConfig, { ...currentConfig, ...value })) {
       return;
     }
 
@@ -121,23 +117,11 @@ export class BaseEditor extends LitElement {
       ...this.config,
       ...updates,
     };
-
-    changedValues = getObjectDifferences(this.config, newConfig);
-    hasChanges = Boolean(changedValues && Object.keys(changedValues).length > 0);
-    // console.debug('Detected config changes:', { hasChanges, changedValues });
-    if (hasChanges) {
+    const changedValues = getObjectDifferences(this.config, newConfig);
+    console.debug({ changedValues });
+    if (Boolean(changedValues && Object.keys(changedValues).length > 0)) {
       console.group('Config change from:', this._editorArea);
-      Object.entries(changedValues).forEach(([k, v]) => {
-        if (!Array.isArray(v)) {
-          Object.entries(v as Record<string, unknown>).forEach(([subK, subV]) => {
-            const [oldValue, newValue] = subV as [any, any];
-            console.log(`%c${k}.${subK}`, 'color: #2196F3; font-weight: bold;', oldValue, '→', newValue);
-          });
-          return;
-        }
-        const [oldValue, newValue] = v;
-        console.log(`%c${k}`, 'color: #2196F3; font-weight: bold;', oldValue, '→', newValue);
-      });
+      logChangedValues(changedValues!);
       console.groupEnd();
       newConfig = orderProperties(newConfig, ConfigFieldOrder);
       fireEvent(this, 'config-changed', { config: newConfig });

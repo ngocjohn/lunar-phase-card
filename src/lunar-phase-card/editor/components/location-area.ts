@@ -8,7 +8,7 @@ import {
   LocationConfigKeys,
   LunarPhaseCardConfig,
 } from '../../../types/config/lunar-phase-card-config';
-import { getObjectDifferences } from '../../../utils/object-differences';
+import { getObjectDifferences, logChangedValues } from '../../../utils/object-differences';
 import { BaseEditor } from '../base-editor';
 import { EditorArea } from '../editor-area-config';
 import { LOCATION_FORM_SCHEMA } from '../forms';
@@ -91,11 +91,8 @@ export class LocationArea extends BaseEditor {
       incoming.location_source === 'custom' ? { ...baseConfig, location: latLonConfig } : { ...locationConfig };
 
     // console.debug('Comparing configs:', { configToCompare, incoming });
-    let changedValues = {};
-    changedValues = getObjectDifferences(configToCompare, incoming);
-
-    let hasChanges = Boolean(changedValues && Object.keys(changedValues).length > 0);
-    if (!hasChanges) {
+    const changedValues = getObjectDifferences(configToCompare, incoming);
+    if (Boolean(!changedValues || Object.keys(changedValues).length === 0)) {
       return;
     }
 
@@ -163,14 +160,10 @@ export class LocationArea extends BaseEditor {
     }
     // final updates
     const newConfig = { ...incoming, ...updates };
-    let changeValues = {};
-    changeValues = getObjectDifferences(locationConfig, newConfig);
+    const changeValues = getObjectDifferences(locationConfig, newConfig);
     if (changeValues && Object.keys(changeValues).length > 0) {
       console.group('Config changes in', this._editorArea);
-      for (const [k, v] of Object.entries(changeValues)) {
-        const [oldVal, newVal] = v as [any, any];
-        console.log(`%c${k}:`, 'color: #2196F3; font-weight: bold;', oldVal, '→', newVal);
-      }
+      logChangedValues(changeValues, true);
       console.groupEnd();
       this.configChanged(newConfig as Partial<LunarPhaseCardConfig>);
       this.requestUpdate();
