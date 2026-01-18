@@ -47,6 +47,8 @@ const SELECT: Record<DropdownItemType, HaFormBaseSchemaExtended> = {
   },
   header_font_size: {
     name: 'header_font_size',
+    custom_value: true,
+    default: 'x-large',
     options: FontSizes as readonly string[],
   },
   header_font_style: {
@@ -55,6 +57,8 @@ const SELECT: Record<DropdownItemType, HaFormBaseSchemaExtended> = {
   },
   label_font_size: {
     name: 'label_font_size',
+    custom_value: true,
+    default: 'medium',
     options: FontSizes as readonly string[],
   },
   label_font_style: {
@@ -79,7 +83,7 @@ const computeFontSchema = (type: 'header' | 'label') => {
               return {
                 name: key,
                 required: false,
-                type: 'string',
+                selector: { ui_color: { default_color: 'primary-text' } },
               };
             } else {
               return computeSelectorSchema(SELECT[key]);

@@ -140,7 +140,7 @@ export class LunarHeader extends LunarBaseCard {
           margin-inline-end: auto;
         }
 
-        .header:not([compact]) .title[button-hidden] {
+        .title[button-hidden] {
           place-self: center;
           margin-inline-start: initial;
         }

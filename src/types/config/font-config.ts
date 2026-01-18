@@ -5,13 +5,13 @@ export const FontTextTransforms = ['none', 'capitalize', 'uppercase', 'lowercase
 export type FontTextTransformOptions = (typeof FontTextTransforms)[number];
 
 export interface HeaderFontConfig {
-  header_font_size?: FontSizeOptions;
+  header_font_size?: FontSizeOptions | string;
   header_font_style?: FontTextTransformOptions;
   header_font_color?: string;
 }
 
 export interface LabelFontConfig {
-  label_font_size?: FontSizeOptions;
+  label_font_size?: FontSizeOptions | string;
   label_font_style?: FontTextTransformOptions;
   label_font_color?: string;
 }

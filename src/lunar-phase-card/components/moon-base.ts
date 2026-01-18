@@ -114,7 +114,7 @@ export class LunarMoonBase extends LunarBaseCard {
         .info {
           display: inline-grid;
           grid-template-rows: auto auto;
-          align-content: space-evenly;
+          align-content: center;
           width: 100%;
         }
         .content.--compact-view .info {
