@@ -12,7 +12,7 @@ export type LocationSource = (typeof LOC_SOURCE)[number];
 export const COMPACT_MODE = ['default', 'minimal'] as const;
 export type CompactMode = (typeof COMPACT_MODE)[number];
 
-export const MOON_POSITION = ['left', 'right'] as const;
+export const MOON_POSITION = ['left', 'right', 'center'] as const;
 export type MoonPosition = (typeof MOON_POSITION)[number];
 
 export const THEME_MODE = ['auto', 'light', 'dark'] as const;

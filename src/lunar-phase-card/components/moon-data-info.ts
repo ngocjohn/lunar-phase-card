@@ -185,6 +185,9 @@ export class LunarMoonDataInfo extends LunarBaseCard {
           padding-block: 3px;
           width: 100%;
           /* justify-content: space-between; */
+          color: var(--lpc-label-font-color, var(--primary-text-color));
+          font-size: var(--lpc-label-font-size, auto);
+          text-transform: var(--lpc-label-font-style, none);
         }
 
         .moon-data-item:last-child {
@@ -194,15 +197,15 @@ export class LunarMoonDataInfo extends LunarBaseCard {
 
         .moon-data-item span.label {
           display: inline-flex;
-          color: var(--lpc-label-font-color, var(--primary-text-color));
-          font-size: var(--lpc-label-font-size, auto);
+          /* color: var(--lpc-label-font-color, var(--primary-text-color));
+          font-size: var(--lpc-label-font-size, auto); */
           white-space: nowrap;
           margin-inline: 0 auto;
         }
 
         .moon-data-item .value {
           display: inline-flex;
-          color: var(--lpc-label-font-color, var(--primary-text-color));
+          /* color: var(--lpc-label-font-color, var(--primary-text-color)); */
           white-space: nowrap !important;
           align-items: center;
           font-weight: 500;
@@ -211,8 +214,8 @@ export class LunarMoonDataInfo extends LunarBaseCard {
         }
 
         .value span {
+          /* font-size: var(--ha-font-size-s, 12px); */
           font-weight: var(--ha-font-weight-normal, 400);
-          font-size: var(--ha-font-size-s, 12px);
           line-height: 1;
           place-self: auto;
         }
