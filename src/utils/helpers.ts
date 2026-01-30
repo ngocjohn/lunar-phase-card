@@ -1,5 +1,5 @@
-import { FrontendLocaleData, TimeFormat, HomeAssistant } from '../ha';
-import { LocationAddress, LunarPhaseCardConfig, SearchResults } from '../types/config/lunar-phase-card-config';
+import { FrontendLocaleData, TimeFormat } from '../ha';
+import { LocationAddress, SearchResults } from '../types/config/lunar-phase-card-config';
 
 export const useAmPm = (locale: FrontendLocaleData): boolean => {
   if (locale.time_format === TimeFormat.language || locale.time_format === TimeFormat.system) {
@@ -15,38 +15,6 @@ export const convertKmToMiles = (km: number, useMiles: boolean): number => {
   return useMiles ? km / 1.609344 : km;
 };
 
-export function getDefaultConfig(hass: HomeAssistant) {
-  console.log('getDefaultConfig');
-  const {
-    latitude,
-    longitude,
-    unit_system: { length },
-  } = hass.config;
-  const selected_language = hass.language;
-  const timeFormat = useAmPm(hass.locale);
-  const mile_unit = length !== 'km';
-  console.log(
-    'default config',
-    'latitude:',
-    latitude,
-    'longitude:',
-    longitude,
-    'selected_language:',
-    selected_language,
-    'timeFormat:',
-    timeFormat,
-    'mile_unit:',
-    mile_unit
-  );
-  return {
-    latitude,
-    longitude,
-    selected_language,
-    '12hr_format': timeFormat,
-    mile_unit,
-  };
-}
-
 // Compare time to show
 export const compareTime = (time: Date): boolean => {
   const date = new Date(time);
@@ -58,61 +26,6 @@ export const compareTime = (time: Date): boolean => {
   // if time is between 24ago and 24h from now
   return hoursDifference >= -24 && hoursDifference <= 24;
 };
-
-// eslint-disable-next-line unused-imports/no-unused-vars
-function compareChanges(oldConfig: LunarPhaseCardConfig, newConfig: Partial<LunarPhaseCardConfig>) {
-  const changes: Record<string, any> = {};
-
-  for (const key of Object.keys(newConfig)) {
-    if (newConfig[key] instanceof Object && key in oldConfig) {
-      const nestedChanges = compareChanges(oldConfig[key], newConfig[key]);
-      // Only add nested changes if there are actual differences
-      if (nestedChanges && Object.keys(nestedChanges).length > 0) {
-        changes[key] = nestedChanges;
-      }
-    } else if (oldConfig[key] !== newConfig[key]) {
-      // Only add the key if the values are different
-      changes[key] = {
-        oldValue: oldConfig[key],
-        newValue: newConfig[key],
-      };
-    }
-  }
-
-  // Log the changes with old vs. new, only if there are changes
-  if (Object.keys(changes).length > 0) {
-    console.group('Configuration Changes');
-    Object.entries(changes).forEach(([key, value]) => {
-      if (typeof value === 'object' && value.oldValue !== undefined && value.newValue !== undefined) {
-        console.log(`%c${key}:`, 'color: #1e88e5', 'Old:', value.oldValue, 'New:', value.newValue);
-      } else {
-        console.log(`%c${key}:`, 'color: #1e88e5', value);
-      }
-    });
-    console.groupEnd();
-  }
-
-  return changes; // Ensure we return the changes object
-}
-
-export function compareConfig(refObj: any, configObj: any): boolean {
-  let isValid = true;
-  for (const key in refObj) {
-    if (typeof refObj[key] === 'object' && refObj[key] !== null) {
-      if (!(key in configObj)) {
-        isValid = false;
-      } else if (!compareConfig(refObj[key], configObj[key])) {
-        isValid = false; // If any nested object is invalid
-      }
-    } else {
-      // Check if the property exists in configObj
-      if (!(key in configObj)) {
-        isValid = false;
-      }
-    }
-  }
-  return isValid;
-}
 
 export async function getAddressFromOpenStreet(lat: number, lon: number): Promise<LocationAddress> {
   // console.log('getAddressFromOpenStreet', lat, lon);

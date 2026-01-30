@@ -32,7 +32,6 @@ export class GeneralArea extends BaseEditor {
     const isDefault = !value || value === EditorArea.DEFAULT;
     const selected = options[value as EditorArea];
     const menuIcon = this._open ? 'mdi:close' : 'mdi:menu';
-
     return html`
       <div class="config-menu-wrapper">
         <div class="left-icons">
@@ -41,30 +40,30 @@ export class GeneralArea extends BaseEditor {
                 <div class="menu-icon-inner"><ha-icon icon="mdi:home"></ha-icon></div>
               </div>`
             : nothing}
-          <ha-button-menu
-            .fullWidth=${true}
-            .fixed=${true}
-            .activatable=${true}
-            .naturalMenuWidth=${true}
-            @closed=${(ev: Event) => {
+          <ha-dropdown
+            placement="bottom-end"
+            @wa-select=${this._handleItemClick}
+            @wa-hide=${(ev: Event) => {
               ev.stopPropagation();
               this._open = false;
             }}
-            @opened=${(ev: Event) => {
+            @wa-show=${(ev: Event) => {
               ev.stopPropagation();
               this._open = true;
             }}
-            @action=${this._handleItemClick}
           >
             <div id="menu-trigger" class="menu-icon click-shrink" slot="trigger">
               <div class="menu-icon-inner"><ha-icon .icon=${menuIcon}></ha-icon></div>
             </div>
             ${Object.entries(this.tipsItems).map(
               ([key, item]) => html`
-                <ha-list-item .value=${key} .activated=${this.value === key}> ${item.title} </ha-list-item>
+                <ha-dropdown-item .value=${key}>
+                  <ha-icon .icon=${item.icon} slot="icon"></ha-icon>
+                  ${item.title}
+                </ha-dropdown-item>
               `
             )}
-          </ha-button-menu>
+          </ha-dropdown>
         </div>
         <div class="menu-label">
           <span class="primary">${selected?.title}</span>
@@ -74,6 +73,7 @@ export class GeneralArea extends BaseEditor {
       ${isDefault ? this._renderTips() : nothing}
     `;
   }
+
   private _renderTips(): TemplateResult {
     const options = Object.entries(this.tipsItems);
     return html`
@@ -81,7 +81,7 @@ export class GeneralArea extends BaseEditor {
         ${options.map(([key, { title, description, icon }]) => {
           return html`
             <div class="tip-item" @click=${() => this._handleItemClick(key)} role="button" tabindex="0">
-              <ha-icon icon=${icon}></ha-icon>
+              <ha-icon .icon=${icon!}></ha-icon>
               <div>
                 <div class="tip-title">${title}</div>
                 <span>${description}</span>
@@ -95,8 +95,7 @@ export class GeneralArea extends BaseEditor {
   }
 
   private _handleItemClick(ev: CustomEvent | string): void {
-    const menuKeys = Object.keys(this.tipsItems);
-    const value = typeof ev === 'string' ? ev : menuKeys[ev.detail.index];
+    const value = typeof ev === 'string' ? ev : (ev.detail as any).item.value;
     fireEvent(this, 'area-changed', { area: value });
   }
 

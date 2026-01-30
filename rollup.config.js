@@ -1,3 +1,4 @@
+import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 import serve from 'rollup-plugin-serve';
 import filesize from 'rollup-plugin-filesize';
@@ -43,13 +44,12 @@ export default [
         sourcemap: dev ? true : false,
         inlineDynamicImports: true,
         banner: custombanner,
-        sourcemapIgnoreList: (relativeSourcePath, sourcemapPath) => {
-          // will ignore-list all files with node_modules in their paths
-          return relativeSourcePath.includes('node_modules');
-        },
       },
     ],
-    plugins: [replace(replaceOpts), ...defaultPlugins, ...plugins],
+    watch: {
+      exclude: 'node_modules/**',
+    },
+    plugins: [replace(replaceOpts), typescript({}), ...defaultPlugins, ...plugins],
     moduleContext: (id) => {
       const thisAsWindowForModules = [
         'node_modules/@formatjs/intl-utils/lib/src/diff.js',
@@ -66,9 +66,6 @@ export default [
       }
       // Use default warning behavior for everything else
       warn(warning);
-    },
-    watch: {
-      exclude: 'node_modules/**',
     },
   },
 ];

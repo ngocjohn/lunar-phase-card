@@ -1,4 +1,4 @@
-import { PageType, SECTION } from '../../const';
+import { SECTION } from '../../const';
 import { LovelaceCardConfig } from '../../ha';
 import { FontCustomStyles } from './font-config';
 import { GraphConfig } from './graph-config';
@@ -12,7 +12,7 @@ export type LocationSource = (typeof LOC_SOURCE)[number];
 export const COMPACT_MODE = ['default', 'minimal'] as const;
 export type CompactMode = (typeof COMPACT_MODE)[number];
 
-export const MOON_POSITION = ['left', 'right'] as const;
+export const MOON_POSITION = ['left', 'right', 'center'] as const;
 export type MoonPosition = (typeof MOON_POSITION)[number];
 
 export const THEME_MODE = ['auto', 'light', 'dark'] as const;
@@ -170,7 +170,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   /**
    * @deprecated use `default_section` instead
    */
-  default_card?: PageType.BASE | PageType.CALENDAR | PageType.HORIZON;
+  default_card?: 'calendar' | 'base' | 'horizon';
 
   /**
    * @deprecated use `location_source` instead

@@ -36,13 +36,15 @@ export class LunarMoonBase extends LunarBaseCard {
   }
 
   protected render(): TemplateResult {
+    const { moon_position } = this.appearance || {};
     return html`
       <div
         class=${classMap({
           content: true,
           '--compact-view': this._isCompactView,
-          '--vertical': this.activePage === SECTION.CALENDAR,
-          '--reverse': this.appearance?.moon_position === 'right',
+          '--vertical': this.activePage === SECTION.CALENDAR || moon_position === 'center',
+          '--calendar-page': this.activePage === SECTION.CALENDAR,
+          '--reverse': moon_position === 'right',
         })}
       >
         <div class="moon-pic" style=${this._computeMoonPicStyle()}>
@@ -58,7 +60,7 @@ export class LunarMoonBase extends LunarBaseCard {
 
   private _computeMoonPicStyle() {
     if (this._isCompactView) {
-      return;
+      return {};
     }
 
     const width = this._cardWidth;
@@ -89,10 +91,11 @@ export class LunarMoonBase extends LunarBaseCard {
         .content.--reverse {
           flex-direction: row-reverse;
         }
-
+        .content.--calendar-page {
+          padding: 0px !important;
+        }
         .content.--vertical {
           display: grid;
-          padding: 0px !important;
           align-items: end;
           justify-items: center;
           gap: calc(var(--lunar-card-gutter) * 0.5);
@@ -114,7 +117,7 @@ export class LunarMoonBase extends LunarBaseCard {
         .info {
           display: inline-grid;
           grid-template-rows: auto auto;
-          align-content: space-evenly;
+          align-content: center;
           width: 100%;
         }
         .content.--compact-view .info {

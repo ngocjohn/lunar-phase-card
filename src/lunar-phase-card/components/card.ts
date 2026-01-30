@@ -19,7 +19,8 @@ export class Card extends LunarBaseCard {
 
   protected willUpdate(_changedProperties: PropertyValues): void {
     if (_changedProperties.has('cardWidth') || _changedProperties.has('cardHeight')) {
-      if (this.appearance.compact_view === true) {
+      const { compact_view, hide_buttons } = this.appearance || {};
+      if (compact_view === true || hide_buttons === true) {
         return;
       }
       const hasTopMargin = this.appearance.hide_buttons !== true;

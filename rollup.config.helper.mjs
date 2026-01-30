@@ -1,4 +1,3 @@
-import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { babel } from '@rollup/plugin-babel';
@@ -72,8 +71,9 @@ export function logCardInfo(version) {
 }
 
 export const defaultPlugins = [
-  typescript(),
-  nodeResolve(),
+  nodeResolve({
+    preferBuiltins: false,
+  }),
   json(),
   commonjs(),
   image(),

@@ -9,6 +9,7 @@ export const computeSelectorSchema = <T extends HaFormBaseSchemaExtended>(select
       selector: {
         select: {
           mode: selector.mode || 'dropdown',
+          custom_value: selector.custom_value || false,
           options: selector.options!.map((option: any) => ({
             value: option,
             label: formatLabelUppercase(option),

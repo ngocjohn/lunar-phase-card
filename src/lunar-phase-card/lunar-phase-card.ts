@@ -13,6 +13,7 @@ import { Store } from '../model/store';
 import { filterItemFromMoonData, MoonData } from '../types/config/chart-config';
 import { CSS_FONT_SIZE } from '../types/config/font-config';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
+import { computeCssColor } from '../utils/compute-color';
 import { computeStubConfig } from '../utils/compute-stub-config';
 import { registerCustomCard } from '../utils/custom-card-register';
 import { debounce } from '../utils/debounce';
@@ -291,7 +292,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     `;
   }
 
-  public _renderHeader(slot?: string, title?: string, force: boolean = false): TemplateResult {
+  public _renderHeader(slot: string, title?: string, force: boolean = false): TemplateResult {
     const appearance = this._configAppearance;
     if (appearance.hide_buttons === true && !force) {
       return html``;
@@ -365,7 +366,11 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     Object.entries({ ..._configHeaderStyles, ..._configLabelStyles }).forEach(([key, value]) => {
       // only set style if value is valid, not undefined, not empty, and not 'auto' or 'none'
       if (Boolean(value !== undefined && value !== '' && !['auto', 'none'].includes(value as string))) {
-        styles[`--lpc-${key.replace(/_/g, '-')}`] = CSS_FONT_SIZE[value] || value;
+        styles[`--lpc-${key.replace(/_/g, '-')}`] = key.includes('font_size')
+          ? CSS_FONT_SIZE[value] || value
+          : key.includes('font_color')
+            ? computeCssColor(value)
+            : value;
       }
     });
 
