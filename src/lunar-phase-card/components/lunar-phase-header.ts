@@ -52,9 +52,10 @@ export class LunarHeader extends LunarBaseCard {
           return html`
             <ha-icon-button
               .path=${SECTION_ICON[section]}
-              @click=${() => this._handleChangeSection(section)}
+              @click=${this._handleChangeSection}
               ?active=${isActive}
               .title=${section}
+              .value=${section}
               ?disabled=${this._buttonDisabled}
             ></ha-icon-button>
           `;
@@ -65,41 +66,35 @@ export class LunarHeader extends LunarBaseCard {
   private _renderButtonMenu(activePage: SECTION): TemplateResult {
     return html`
       <div class="menu-actions">
-        <ha-button-menu
-          .corner=${'TOP_START'}
-          .menuCorner=${'END'}
-          .naturalMenuWidth=${true}
-          .fullWidth=${true}
-          .activatable=${true}
-          @closed=${(ev: Event) => {
+        <ha-dropdown
+          placement="bottom-end"
+          @wa-hide=${(ev: Event) => {
             ev.stopPropagation();
             this._open = false;
           }}
-          @opened=${(ev: Event) => {
+          @wa-show=${(ev: Event) => {
             ev.stopPropagation();
             this._open = true;
           }}
+          @wa-select=${this._handleChangeSection.bind(this)}
         >
           <ha-icon-button slot="trigger" class="trigger-icon" .path=${SECTION_ICON[activePage]}></ha-icon-button>
           ${SectionsList.filter((section) => section !== activePage).map((section) => {
             return html`
-              <ha-list-item
-                graphic="icon"
-                .action=${section}
-                @click=${this._handleChangeSection.bind(this, section)}
-                .disabled=${this._buttonDisabled}
-              >
-                <ha-svg-icon .path=${SECTION_ICON[section]} slot="graphic"></ha-svg-icon>
+              <ha-dropdown-item .value=${section} .disabled=${this._buttonDisabled}>
+                <ha-svg-icon .path=${SECTION_ICON[section]} slot="icon"></ha-svg-icon>
                 ${section.toUpperCase()}
-              </ha-list-item>
+              </ha-dropdown-item>
             `;
           })}
-        </ha-button-menu>
+        </ha-dropdown>
       </div>
     `;
   }
 
-  private _handleChangeSection(section: SECTION) {
+  private _handleChangeSection(ev: CustomEvent): void {
+    ev.stopPropagation();
+    const section: SECTION = (ev.detail as any).item?.value || (ev.target as any).value;
     if (section === this.activePage) {
       return;
     }
@@ -136,25 +131,28 @@ export class LunarHeader extends LunarBaseCard {
           text-transform: var(--lpc-header-font-style, none);
           font-size: var(--lpc-header-font-size, var(--ha-font-size-xl, 20px));
           white-space: nowrap;
-          margin-inline-start: var(--lunar-card-padding);
+          margin-inline-start: var(--lunar-card-gutter, 8px);
           margin-inline-end: auto;
+          line-height: normal;
         }
 
         .title[button-hidden] {
           place-self: center;
           margin-inline-start: initial;
         }
-
-        .actions {
-          display: flex;
+        .actions,
+        .menu-actions {
+          --lpc-icon-color: var(--lpc-header-font-color, var(--secondary-text-color));
           flex-grow: 0;
           flex-shrink: 0;
+        }
+        .actions {
+          display: flex;
         }
         .menu-actions {
           display: block;
-          flex-grow: 0;
-          flex-shrink: 0;
         }
+
         ha-list {
           height: fit-content !important;
           z-index: 10;
