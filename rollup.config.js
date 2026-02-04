@@ -25,6 +25,7 @@ const terserOpt = {
   compress: {
     drop_console: ['log', 'error'],
     module: false,
+    drop_debugger: true,
   },
 };
 const replaceOpts = {
