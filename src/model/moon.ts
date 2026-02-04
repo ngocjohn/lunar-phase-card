@@ -107,7 +107,7 @@ export class Moon {
 
   get moonImage(): MoonImage {
     const { phaseValue, fraction } = this._moonData.illumination;
-    const phaseIndex = Math.round(phaseValue * 29.53) % 31;
+    const phaseIndex = Math.round(phaseValue * 30) % 31;
     const moonFraction = Math.round(fraction * 100);
     const moonUrl = MOON_PIC_WEBP(phaseIndex);
     const { zenithAngle, parallacticAngle } = this._moonData;

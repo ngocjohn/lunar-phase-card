@@ -8,7 +8,7 @@ import { CardArea } from '../../types/card-area';
 import { MoonData } from '../../types/config/chart-config';
 import './moon-calendar-tooltip';
 import { LunarBaseCard } from '../base-card';
-import { LunarPhaseNewCard } from '../lunar-phase-card';
+import { LunarPhaseCard } from '../lunar-phase-card';
 
 declare global {
   interface HASSDomEvents {
@@ -24,7 +24,7 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
   constructor() {
     super(CardArea.POPUP);
   }
-  @property({ attribute: false }) public card!: LunarPhaseNewCard;
+  @property({ attribute: false }) public card!: LunarPhaseCard;
   @property({ attribute: false }) public moonData!: MoonData;
   @property({ type: Boolean, reflect: true, attribute: 'tooltip-active' }) public tooltipActive = false;
 

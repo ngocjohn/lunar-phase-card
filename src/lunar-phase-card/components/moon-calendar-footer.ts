@@ -8,7 +8,7 @@ import { CardArea } from '../../types/card-area';
 import { MoonData } from '../../types/config/chart-config';
 import { dayFormatter } from '../../utils/helpers';
 import { LunarBaseCard } from '../base-card';
-import { LunarPhaseNewCard } from '../lunar-phase-card';
+import { LunarPhaseCard } from '../lunar-phase-card';
 
 declare global {
   interface HASSDomEvents {
@@ -22,7 +22,7 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
     super(CardArea.FOOTER);
   }
   @property({ attribute: false }) public moonData!: MoonData;
-  @property({ attribute: false }) private card!: LunarPhaseNewCard;
+  @property({ attribute: false }) private card!: LunarPhaseCard;
   @property({ type: Boolean }) public _footerActive = false;
 
   protected render(): TemplateResult {

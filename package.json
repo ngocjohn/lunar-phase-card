@@ -16,7 +16,7 @@
     "url": "https://github.com/ngocjohn/lunar-phase-card",
     "repo": "ngocjohn/lunar-phase-card"
   },
-  "module": "lunar-phase-card.js",
+  "module": "dist/lunar-phase-card.js",
   "license": "MIT",
   "dependencies": {
     "@dotenvx/dotenvx": "^1.32.0",

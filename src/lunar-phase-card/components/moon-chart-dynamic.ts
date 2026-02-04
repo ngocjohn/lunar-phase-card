@@ -280,7 +280,7 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
         },
 
         label: function (tooltipItem) {
-          const itemIndex = tooltipItem.parsed.x!;
+          const itemIndex = tooltipItem.parsed.x ?? 0;
           const directionValue = direction[itemIndex];
           const value = Math.round(tooltipItem.parsed.y!);
           const azimuth = `${azimuthLabel}: ${directionValue}`;

@@ -30,7 +30,7 @@ import { LUNAR_PHASE_CARD_EDITOR_NAME, LUNAR_PHASE_CARD_NAME } from './const';
 import { DEFAULT_BG_URL } from './css/card-styles';
 
 @customElement(LUNAR_PHASE_CARD_NAME)
-export class LunarPhaseNewCard extends LunarBaseCard {
+export class LunarPhaseCard extends LunarBaseCard {
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     await import('./editor/lunar-phase-card-editor');
     return document.createElement(LUNAR_PHASE_CARD_EDITOR_NAME) as LovelaceCardEditor;
@@ -64,7 +64,7 @@ export class LunarPhaseNewCard extends LunarBaseCard {
 
   public connectedCallback(): void {
     super.connectedCallback();
-    window.LunarCard = this;
+    window.LunarCard = this as LunarPhaseCard;
     this.updateComplete.then(() => this._attachObserver());
   }
 
@@ -417,6 +417,6 @@ export class LunarPhaseNewCard extends LunarBaseCard {
 
 declare global {
   interface Window {
-    LunarCard: LunarPhaseNewCard;
+    LunarCard: LunarPhaseCard;
   }
 }

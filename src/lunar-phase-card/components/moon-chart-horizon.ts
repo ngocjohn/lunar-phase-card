@@ -18,7 +18,7 @@ import { CardArea } from '../../types/card-area';
 import { ChartColors } from '../../types/config/chart-config';
 import { CHART_FILL_COLORS } from '../../types/config/graph-config';
 import { LunarBaseCard } from '../base-card';
-import { LunarPhaseNewCard } from '../lunar-phase-card';
+import { LunarPhaseCard } from '../lunar-phase-card';
 
 const HOVER_TIMEOUT = 150;
 
@@ -28,7 +28,7 @@ export class LunarMoonChartHorizon extends LunarBaseCard {
     super(CardArea.HORIZON);
   }
   @property({ attribute: false }) public cardWidth!: number;
-  @state() private card!: LunarPhaseNewCard;
+  @state() private card!: LunarPhaseCard;
   @state() private _chart!: Chart;
   @state() private moreInfo: boolean = false;
   @state() private hoverOnChart: boolean = false;
@@ -162,7 +162,7 @@ export class LunarMoonChartHorizon extends LunarBaseCard {
     ctx.addEventListener('touchend', this._onChartTouchEnd.bind(this));
   }
   protected render(): TemplateResult {
-    this.card = this.store.card as LunarPhaseNewCard;
+    this.card = this.store.card as LunarPhaseCard;
     let height = this.cardWidth * 0.5 - 43;
     height = this._configAppearance?.hide_buttons ? height : height - 43;
     this.cardHeight = height;
@@ -228,7 +228,7 @@ export class LunarMoonChartHorizon extends LunarBaseCard {
       tension: 0.2,
       segment: {
         borderColor: (ctx: ScriptableLineSegmentContext) =>
-          ctx.p0.parsed.y! >= -0.001 && ctx.p1.parsed.y! >= -0.001 ? primaryTextColor : fillBelowLineColor,
+          (ctx.p0.parsed.y ?? 0) >= -0.001 && (ctx.p1.parsed.y ?? 0) >= -0.001 ? primaryTextColor : fillBelowLineColor,
         borderWidth: (ctx: ScriptableLineSegmentContext) =>
           ctx.p0.parsed.y! >= -0.001 && ctx.p1.parsed.y! >= -0.001 ? 1.2 : 1,
       },

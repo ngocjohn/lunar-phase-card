@@ -35,12 +35,7 @@ export const formatNumber = (
 ): string => {
   const locale = localeOptions ? numberFormatToLocale(localeOptions) : undefined;
 
-  // Polyfill for Number.isNaN, which is more reliable than the global isNaN()
-  Number.isNaN =
-    Number.isNaN ||
-    function isNaN(input) {
-      return typeof input === 'number' && isNaN(input);
-    };
+  // Removed unnecessary polyfill for Number.isNaN as it is supported in all modern browsers
 
   if (localeOptions?.number_format !== NumberFormat.none && !Number.isNaN(Number(num))) {
     return new Intl.NumberFormat(locale, getDefaultFormatOptions(num, options)).format(Number(num));
