@@ -3,12 +3,10 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import { SECTION } from '../../const';
-import { CardAppearance } from '../../types/config/lunar-phase-card-config';
 import { LunarBaseCard } from '../base-card';
 
 @customElement('lunar-card')
 export class Card extends LunarBaseCard {
-  @property({ attribute: false }) public appearance!: CardAppearance;
   @property({ type: Number }) public cardWidth = 0;
   @property({ type: Number }) public cardHeight = 0;
   @property({ type: Boolean }) public calendarPopup = false;
@@ -19,11 +17,11 @@ export class Card extends LunarBaseCard {
 
   protected willUpdate(_changedProperties: PropertyValues): void {
     if (_changedProperties.has('cardWidth') || _changedProperties.has('cardHeight')) {
-      const { compact_view, hide_buttons } = this.appearance || {};
+      const { compact_view, hide_buttons } = this._configAppearance || {};
       if (compact_view === true || hide_buttons === true) {
         return;
       }
-      const hasTopMargin = this.appearance.hide_buttons !== true;
+      const hasTopMargin = this._configAppearance.hide_buttons !== true;
       const idealContentHeight = this.cardWidth * 0.5 - (hasTopMargin ? 44 : 0);
       const minHeight = Math.max(180, idealContentHeight);
       this._contentMinHeight = `${minHeight}px`;
@@ -40,12 +38,12 @@ export class Card extends LunarBaseCard {
     `;
   }
 
-  private _computeClasses({ appearance } = this) {
+  private _computeClasses({ _configAppearance } = this) {
     const hasPopup = this.calendarPopup;
-    const isCompact = appearance?.compact_view === true;
-    const isCompactMinimal = isCompact && appearance?.compact_mode === 'minimal';
+    const isCompact = _configAppearance?.compact_view === true;
+    const isCompactMinimal = isCompact && _configAppearance?.compact_mode === 'minimal';
     const compactAndBase = isCompact && this.activePage === SECTION.BASE;
-    const noHeader = appearance?.hide_buttons === true;
+    const noHeader = _configAppearance?.hide_buttons === true;
     const isChartPage = this.activePage === SECTION.HORIZON;
     const classes = {
       container: true,

@@ -4,7 +4,6 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { ICON, SECTION } from '../../const';
 import { fireEvent } from '../../ha';
 import { CardArea } from '../../types/card-area';
-import { CardAppearance } from '../../types/config/lunar-phase-card-config';
 import { LunarBaseCard } from '../base-card';
 
 const SectionsList = [SECTION.BASE, SECTION.CALENDAR, SECTION.HORIZON];
@@ -19,7 +18,6 @@ const SECTION_ICON: Record<SECTION, string> = {
 export class LunarHeader extends LunarBaseCard {
   constructor() {
     super(CardArea.HEADER);
-    window.LunarHeader = this;
   }
   @property({ attribute: false }) public moonName?: string;
   @property({ type: Boolean, reflect: true, attribute: 'hide-buttons' }) public hideButtons?: boolean;
@@ -28,7 +26,7 @@ export class LunarHeader extends LunarBaseCard {
   @state() _open = false;
 
   protected render(): TemplateResult {
-    const appearance: CardAppearance = this._configAppearance || {};
+    const appearance = this._configAppearance || {};
     const activePage = this.activePage || SECTION.BASE;
     const isCompact =
       (appearance?.compact_view === true && activePage === SECTION.BASE) || appearance?.compact_menu_button === true;
@@ -63,7 +61,7 @@ export class LunarHeader extends LunarBaseCard {
       </div>
     `;
   }
-  private _renderButtonMenu(activePage: SECTION): TemplateResult {
+  private _renderButtonMenu(activePage: SECTION) {
     return html`
       <div class="menu-actions">
         <ha-dropdown
@@ -171,5 +169,8 @@ export class LunarHeader extends LunarBaseCard {
 declare global {
   interface HASSDomEvents {
     'change-section': { section: SECTION };
+  }
+  interface HTMLElementTagNameMap {
+    'lunar-phase-header': LunarHeader;
   }
 }

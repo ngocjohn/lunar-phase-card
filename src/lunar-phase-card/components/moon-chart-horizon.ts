@@ -1,3 +1,5 @@
+import type { ChartDataset } from 'chart.js/auto';
+
 import {
   Chart,
   ChartData,
@@ -7,7 +9,6 @@ import {
   Plugin,
   ScaleChartOptions,
 } from 'chart.js/auto';
-import { formatDateTime } from 'custom-card-helpers';
 import { html, CSSResultGroup, TemplateResult, css, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
@@ -19,15 +20,12 @@ import { CHART_FILL_COLORS } from '../../types/config/graph-config';
 import { LunarBaseCard } from '../base-card';
 import { LunarPhaseNewCard } from '../lunar-phase-card';
 
-import type { ChartDataset } from 'chart.js/auto';
-
 const HOVER_TIMEOUT = 150;
 
 @customElement('lunar-moon-chart-horizon')
 export class LunarMoonChartHorizon extends LunarBaseCard {
   constructor() {
     super(CardArea.HORIZON);
-    window.LunarChartHorizon = this;
   }
   @property({ attribute: false }) public cardWidth!: number;
   @state() private card!: LunarPhaseNewCard;
@@ -179,7 +177,7 @@ export class LunarMoonChartHorizon extends LunarBaseCard {
     return html`
       <div class="moon-data-header">
         ${this.card._selectedDate !== undefined
-          ? formatDateTime(this.card._selectedDate, this._locale)
+          ? this._formatDateTime(this.card._selectedDate)
           : this.renderTimeClock()}
         <ha-icon-button
           .path=${ICON.CHEVRON_DOWN}
@@ -230,9 +228,9 @@ export class LunarMoonChartHorizon extends LunarBaseCard {
       tension: 0.2,
       segment: {
         borderColor: (ctx: ScriptableLineSegmentContext) =>
-          ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? primaryTextColor : fillBelowLineColor,
+          ctx.p0.parsed.y! >= -0.001 && ctx.p1.parsed.y! >= -0.001 ? primaryTextColor : fillBelowLineColor,
         borderWidth: (ctx: ScriptableLineSegmentContext) =>
-          ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? 1.2 : 1,
+          ctx.p0.parsed.y! >= -0.001 && ctx.p1.parsed.y! >= -0.001 ? 1.2 : 1,
       },
       // radius: () => (this.hoverOnChart ? 1.2 : 0),
       pointHoverRadius: 4,

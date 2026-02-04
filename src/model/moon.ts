@@ -1,13 +1,13 @@
 import * as SunCalc from '@noim/suncalc3';
-import { FrontendLocaleData, formatNumber, relativeTime, formatTime } from 'custom-card-helpers';
 import { DateTime, WeekdayNumbers } from 'luxon';
 
-import { CHART_DATA, MOON_PIC_URL } from '../const';
-import { LocalizeFunc } from '../ha';
+import { CHART_DATA, MOON_PIC_WEBP } from '../const';
+import { LocalizeFunc, FrontendLocaleData } from '../ha';
+import { formatNumber } from '../ha/common/number/format_number';
 import setupTranslation from '../localize/translate';
 import { MoonData, MoonDataItem, MoonImage, DynamicChartData } from '../types/config/chart-config';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
-import { convertKmToMiles, compareTime } from '../utils/helpers';
+import { convertKmToMiles, compareTime, useAmPm } from '../utils/helpers';
 
 type Location = {
   latitude: number;
@@ -36,7 +36,9 @@ export class Moon {
   }
 
   formatTime = (time: number | Date): string => {
-    return formatTime(new Date(time), this.locale);
+    const dateObj = this.computeDateTime(new Date(time));
+    const timeFormat = useAmPm(this.locale) ? 't' : 'T';
+    return dateObj.toFormat(timeFormat);
   };
 
   private convertKmToMiles = (km: number): number => {
@@ -47,6 +49,10 @@ export class Moon {
     const decimal = this.config.number_decimals;
     const numberValue = num.toFixed(decimal);
     return formatNumber(numberValue, this.locale);
+  };
+
+  private computeDateTime = (date: Date): DateTime => {
+    return DateTime.fromJSDate(date).setLocale(this.lang);
   };
 
   public get _dynamicDate(): Date {
@@ -88,7 +94,7 @@ export class Moon {
     } else {
       phaseName = this.localize(`card.phase.${type}Moon`);
     }
-    const _relativeTime = relativeTime(new Date(date), this.locale);
+    const _relativeTime = this.computeDateTime(new Date(date)).toRelative();
     return {
       label: 'Next phase',
       value: `${phaseName} (${_relativeTime})`,
@@ -98,6 +104,22 @@ export class Moon {
   get _moonTimeFromNow(): SunCalc.IMoonTimes {
     return SunCalc.getMoonTimes(this._dynamicDate, this.location.latitude, this.location.longitude);
   }
+
+  get moonImage(): MoonImage {
+    const { phaseValue, fraction } = this._moonData.illumination;
+    const phaseIndex = Math.round(phaseValue * 29.53) % 31;
+    const moonFraction = Math.round(fraction * 100);
+    const moonUrl = MOON_PIC_WEBP(phaseIndex);
+    const { zenithAngle, parallacticAngle } = this._moonData;
+    const rotateDeg = (zenithAngle - parallacticAngle) * (180 / Math.PI);
+    return {
+      moonPic: moonUrl,
+      rotateDeg: rotateDeg,
+      southernHemisphere: this.config.southern_hemisphere || false,
+      fraction: moonFraction,
+    };
+  }
+
   blankBeforeUnit = (unit: string): string => {
     if (unit === '°') {
       return '';
@@ -120,28 +142,15 @@ export class Moon {
 
   createMoonTime = (key: string, time: number | Date): MoonDataItem => {
     const timeString = this.formatTime(time);
-    const secondValue = compareTime(new Date(time)) ? relativeTime(new Date(time), this.locale) : '';
+    const secondValue = compareTime(new Date(time))
+      ? (this.computeDateTime(new Date(time)).toRelative() as string)
+      : '';
     return this.createItem(key, timeString, '', secondValue);
   };
 
   // Helper function to format date as short time string
   shortTime = (date: number | Date) =>
     new Date(date).toLocaleDateString(this.lang, { weekday: 'short', month: 'short', day: 'numeric' });
-
-  get moonImage(): MoonImage {
-    const { phaseValue, fraction } = this._moonData.illumination;
-    const phaseIndex = Math.round(phaseValue * 31) % 31;
-    const moonFraction = Math.round(fraction * 100);
-    const moonUrl = MOON_PIC_URL(phaseIndex);
-    const { zenithAngle, parallacticAngle } = this._moonData;
-    const rotateDeg = (zenithAngle - parallacticAngle) * (180 / Math.PI);
-    return {
-      moonPic: moonUrl,
-      rotateDeg: rotateDeg,
-      southernHemisphere: this.config.southern_hemisphere || false,
-      fraction: moonFraction,
-    };
-  }
 
   _getMoonRotation() {
     const { zenithAngle, parallacticAngle } = this._moonData;
@@ -429,7 +438,7 @@ export class Moon {
     return times
       .filter((time: number) => inrange(time))
       .map((time: number) => ({
-        time: formatTime(new Date(time), this.locale),
+        time: this.formatTime(time),
         index: timeLabels.indexOf(closestTime(time)),
         opacity: isPast(time) ? 0.5 : 1,
         originalTime: time,

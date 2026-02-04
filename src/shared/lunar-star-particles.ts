@@ -1,7 +1,7 @@
-import { html, css, LitElement, PropertyValues, TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-
 import type { Container } from '@tsparticles/engine';
+
+import { html, css, LitElement, PropertyValues } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('lunar-star-particles')
 export class LunarStarParticles extends LitElement {
@@ -278,28 +278,25 @@ export class LunarStarParticles extends LitElement {
     // console.log(`Particles loaded for container: ${this._id}`);
   }
 
-  static get styles() {
-    return [
-      css`
-        :host {
-          display: block;
-          position: relative;
-          width: 100%;
-          height: 100%;
-        }
-        .lunar-particles {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-          z-index: -1;
-        }
-      `,
-    ];
-  }
-  protected render(): TemplateResult {
+  static styles = css`
+    :host {
+      display: block;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .lunar-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+  `;
+
+  protected render() {
     return html`<div id="${this._id}" class="lunar-particles"></div>`;
   }
 }

@@ -1,5 +1,6 @@
-import { Palette } from '@vibrant/color';
-import Vibrant from 'node-vibrant/dist/vibrant';
+import type { Palette } from '@vibrant/color';
+
+import { Vibrant } from 'node-vibrant/browser';
 import tinycolor from 'tinycolor2';
 
 import { FILL_COLORS } from '../types/config/chart-config';
@@ -21,7 +22,5 @@ const extractColorData = (palette: Palette): FILL_COLORS => {
 
 export default async (picture: string): Promise<FILL_COLORS> => {
   const vibrant = new Vibrant(picture, { colorCount: 250 });
-  const palette = await vibrant.getPalette();
-  const colorData = extractColorData(palette);
-  return colorData;
+  return vibrant.getPalette().then((palette) => extractColorData(palette));
 };

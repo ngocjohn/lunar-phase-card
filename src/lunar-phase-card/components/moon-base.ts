@@ -11,7 +11,6 @@ import { LunarBaseCard } from '../base-card';
 export class LunarMoonBase extends LunarBaseCard {
   constructor() {
     super(CardArea.BASE);
-    window.LunarMoonBase = this;
   }
 
   @property({ type: String, reflect: true }) public activePage?: SECTION;
@@ -20,7 +19,7 @@ export class LunarMoonBase extends LunarBaseCard {
   @state() private _cardHeight = 0;
 
   private get _isCompactView(): boolean {
-    return this.appearance?.compact_view === true;
+    return this._configAppearance?.compact_view === true;
   }
 
   protected firstUpdated(): void {
@@ -36,7 +35,7 @@ export class LunarMoonBase extends LunarBaseCard {
   }
 
   protected render(): TemplateResult {
-    const { moon_position } = this.appearance || {};
+    const { moon_position } = this._configAppearance || {};
     return html`
       <div
         class=${classMap({

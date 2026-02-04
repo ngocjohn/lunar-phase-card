@@ -1,4 +1,3 @@
-import { formatDate } from 'custom-card-helpers';
 import { html, TemplateResult, CSSResultGroup, css, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
@@ -21,7 +20,6 @@ declare global {
 export class LunarMoonCalendarFooter extends LunarBaseCard {
   constructor() {
     super(CardArea.FOOTER);
-    window.LunarCalendarFooter = this;
   }
   @property({ attribute: false }) public moonData!: MoonData;
   @property({ attribute: false }) private card!: LunarPhaseNewCard;
@@ -44,7 +42,7 @@ export class LunarMoonCalendarFooter extends LunarBaseCard {
           <ha-icon-button .path=${ICON.LEFT} @click=${() => this.updateDate('prev')}> </ha-icon-button>
         </div>
         <div class="date-name">
-          ${formatDate(this.card._date, this._locale)} ${isToday ? html`<span>${todayToLocale}</span>` : nothing}
+          ${this._formatDate(this.card._date)} ${isToday ? html`<span>${todayToLocale}</span>` : nothing}
         </div>
 
         <div class="inline-btns">

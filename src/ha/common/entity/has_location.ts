@@ -1,6 +1,8 @@
 import type { HassEntity } from 'home-assistant-js-websocket';
-import { isLatLngEntityExpression, parseLatLngEntityExpression } from '../../../types/config/types';
+
 import type { LatLon } from '../../../types/config/types';
+
+import { isLatLngEntityExpression, parseLatLngEntityExpression } from '../../../types/config/types';
 
 export const hasLocation = (stateObj: HassEntity) =>
   'latitude' in stateObj.attributes && 'longitude' in stateObj.attributes;

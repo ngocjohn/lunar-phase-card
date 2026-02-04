@@ -1,13 +1,21 @@
 import { css, CSSResultGroup, html, nothing, PropertyValues, TemplateResult } from 'lit';
-import { customElement, property, query, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { choose } from 'lit/directives/choose.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 import { MoonState, SECTION } from '../const';
-import './components';
+import './components/card';
+import './components/moon-compact-view';
+import './components/moon-base';
+import './components/moon-data-info';
+import './components/moon-calendar-popup';
+import './components/moon-calendar-footer';
+import './components/moon-chart-dynamic';
+import './components/moon-chart-horizon';
+import './components/lunar-phase-header';
 import '../shared/lunar-star-particles';
-import { HomeAssistant, LovelaceCard, LovelaceCardEditor } from '../ha';
+import { HomeAssistant, LovelaceCardEditor } from '../ha';
 import { Moon } from '../model/moon';
 import { Store } from '../model/store';
 import { filterItemFromMoonData, MoonData } from '../types/config/chart-config';
@@ -15,22 +23,14 @@ import { CSS_FONT_SIZE } from '../types/config/font-config';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
 import { computeCssColor } from '../utils/compute-color';
 import { computeStubConfig } from '../utils/compute-stub-config';
-import { registerCustomCard } from '../utils/custom-card-register';
 import { debounce } from '../utils/debounce';
 import { applyTheme } from '../utils/ha-helper';
 import { LunarBaseCard } from './base-card';
-import { LunarMoonCalendarFooter } from './components';
-import { COMPONENT, LUNAR_PHASE_CARD_EDITOR_NAME, LUNAR_PHASE_CARD_NAME } from './const';
+import { LUNAR_PHASE_CARD_EDITOR_NAME, LUNAR_PHASE_CARD_NAME } from './const';
 import { DEFAULT_BG_URL } from './css/card-styles';
 
-registerCustomCard({
-  type: LUNAR_PHASE_CARD_NAME,
-  name: 'Lunar Phase Card',
-  description: 'A card to display lunar phases and related information.',
-});
-
 @customElement(LUNAR_PHASE_CARD_NAME)
-export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
+export class LunarPhaseNewCard extends LunarBaseCard {
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     await import('./editor/lunar-phase-card-editor');
     return document.createElement(LUNAR_PHASE_CARD_EDITOR_NAME) as LovelaceCardEditor;
@@ -52,7 +52,6 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
   @property() public _selectedDate?: Date;
 
   @state() _calendarPopup: boolean = false;
-  @query(COMPONENT.CALENDAR) _elCalendar!: LunarMoonCalendarFooter;
 
   private _resizeObserver?: ResizeObserver;
 
@@ -171,7 +170,7 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     `;
   }
 
-  private _renderBaseSection(): TemplateResult {
+  private _renderBaseSection() {
     const appearance = this._configAppearance;
     const configLayout = this._configLayout;
     const moonData = this._filteredData;
@@ -257,10 +256,6 @@ export class LunarPhaseNewCard extends LunarBaseCard implements LovelaceCard {
     } else if (action === 'date-select' && ev.detail.date) {
       this._selectedDate = ev.detail.date;
       this._calendarPopup = false;
-      // toggle calendar footer active
-      setTimeout(() => {
-        this._elCalendar?._toggleFooter();
-      }, 100);
     }
   }
 

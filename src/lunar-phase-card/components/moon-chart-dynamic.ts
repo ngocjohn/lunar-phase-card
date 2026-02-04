@@ -1,6 +1,5 @@
 // Chart.js
 import { Chart, ChartData, ChartOptions, Plugin, ScriptableLineSegmentContext } from 'chart.js/auto';
-import { formatDateShort, formatTime } from 'custom-card-helpers';
 import { html, CSSResultGroup, TemplateResult, css, PropertyValues, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { DateTime } from 'luxon';
@@ -19,7 +18,6 @@ import { LunarBaseCard } from '../base-card';
 export class LunarMoonChartDynamic extends LunarBaseCard {
   constructor() {
     super(CardArea.DYNAMIC);
-    window.LunarChartDynamic = this;
   }
 
   @property({ attribute: false }) public cardWidth!: number;
@@ -177,7 +175,7 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
       LIGHT: isBackground ? fillBelowLineColor : SECONDARY_TEXT,
     };
     const chartData = this.todayData.chartData;
-    const labels = chartData.map((data) => formatTime(new Date(data.timeLabel), this._locale));
+    const labels = chartData.map((data) => this._formatTime(data.timeLabel));
     const moonData = chartData.map((data) => data.moon.altitude);
     const moonDataset = {
       label: 'Moon',
@@ -189,9 +187,9 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
       },
       segment: {
         borderColor: (ctx: ScriptableLineSegmentContext) =>
-          ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001 ? BORDER_COLORS.BOLD : BORDER_COLORS.LIGHT,
+          ctx.p0.parsed.y! >= -0.001 && ctx.p1.parsed.y! >= -0.001 ? BORDER_COLORS.BOLD : BORDER_COLORS.LIGHT,
         borderWidth: (ctx: ScriptableLineSegmentContext) =>
-          ctx.p0.parsed.y >= -0.001 && ctx.p1.parsed.y >= -0.001
+          ctx.p0.parsed.y! >= -0.001 && ctx.p1.parsed.y! >= -0.001
             ? CHART_DATA.BORDER_WIDTH_BOLD
             : CHART_DATA.BORDER_WIDTH_LIGHT,
       },
@@ -210,7 +208,7 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
     const azimuthLabel = this.store.translate('card.azimuth');
     const { DEFAULT_PRIMARY_COLOR } = this.CSS_COLOR;
     const formatedTitle = (time: number) => {
-      const dateStr = formatDateShort(new Date(time), this._locale);
+      const dateStr = this._formatDateShort(new Date(time));
       return `${dateStr}`;
     };
     const chartData = this.todayData.chartData;
@@ -282,9 +280,9 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
         },
 
         label: function (tooltipItem) {
-          const itemIndex = tooltipItem.parsed.x;
+          const itemIndex = tooltipItem.parsed.x!;
           const directionValue = direction[itemIndex];
-          const value = Math.round(tooltipItem.parsed.y);
+          const value = Math.round(tooltipItem.parsed.y!);
           const azimuth = `${azimuthLabel}: ${directionValue}`;
           const elevation = `${elevationLabel}: ${value}°`;
           const body = [elevation, azimuth];
@@ -326,7 +324,7 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
         );
 
         const index = timeLabels.indexOf(closestTime);
-        let nowText = `${this.store.translate('card.common.now')} ${formatTime(now, this._locale)} `; // Update the text with current time
+        let nowText = `${this.store.translate('card.common.now')} ${this._formatTime(now)} `; // Update the text with current time
         const {
           ctx,
           chartArea: { bottom },
@@ -405,8 +403,8 @@ export class LunarMoonChartDynamic extends LunarBaseCard {
     }
 
     const labels = {
-      today: formatDateShort(todayLabel, this._locale),
-      nextDay: formatDateShort(todayMidnight, this._locale),
+      today: this._formatDateShort(todayLabel),
+      nextDay: this._formatDateShort(todayMidnight),
     };
 
     const fillColor = {

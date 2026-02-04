@@ -19,7 +19,6 @@ export class LunarMoonDataInfo extends LunarBaseCard {
 
   constructor() {
     super(CardArea.DATABOX);
-    window.LunarDataBox = this;
   }
 
   protected firstUpdated(): void {

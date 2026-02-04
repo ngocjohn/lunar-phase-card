@@ -1,4 +1,3 @@
-import { formatDate } from 'custom-card-helpers';
 import { html, TemplateResult, CSSResultGroup, css } from 'lit';
 import { customElement, property, queryAll, state } from 'lit/decorators.js';
 import { DateTime, WeekdayNumbers } from 'luxon';
@@ -24,7 +23,6 @@ declare global {
 export class LunarMoonCalendarPopup extends LunarBaseCard {
   constructor() {
     super(CardArea.POPUP);
-    window.LunarPopup = this;
   }
   @property({ attribute: false }) public card!: LunarPhaseNewCard;
   @property({ attribute: false }) public moonData!: MoonData;
@@ -128,7 +126,7 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
       return html``;
     }
     return html`<lunar-moon-calendar-tooltip .dateBoxRect=${this._dateBoxRect} @closing=${this._handleTooltipClosing}>
-      <div slot="moon-header">${formatDate(this._tooltipDate!, this._locale)}</div>
+      <div slot="moon-header">${this._formatDate(this._tooltipDate!)}</div>
       <span slot="phase-name">${this.moon.phaseName}</span>
       ${this.renderMoonImage()}
       <lunar-moon-data-info slot="moon-info" .moonData=${this.moonData}></lunar-moon-data-info>

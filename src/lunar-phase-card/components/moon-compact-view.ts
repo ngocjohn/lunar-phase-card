@@ -14,10 +14,9 @@ export class LunarMoonCompactView extends LunarBaseCard {
 
   constructor() {
     super(CardArea.COMPACT);
-    window.LunarCompactView = this;
   }
   protected render(): TemplateResult {
-    if (this.appearance.compact_mode === 'minimal') {
+    if (this._configAppearance.compact_mode === 'minimal') {
       return this._renderMinimalCompactView();
     }
     // default to standard
@@ -41,12 +40,12 @@ export class LunarMoonCompactView extends LunarBaseCard {
             <ha-icon .icon=${icon}></ha-icon>
             ${value}
           </div>
-          ${this.appearance?.hide_compact_label ? html`` : html` <span class="value">${label}</span>`}
+          ${this._configAppearance?.hide_compact_label ? html`` : html` <span class="value">${label}</span>`}
         </div>
       `;
     };
     return html`
-      <lunar-moon-base .appearance=${this.appearance} id="compact-main">
+      <lunar-moon-base id="compact-main">
         <div slot="moon-pic" @click=${this._toggleMinimalData} class="pic-con">${this.renderMoonImage()}</div>
         ${this.header}
 

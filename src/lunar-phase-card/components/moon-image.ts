@@ -1,12 +1,12 @@
-import { html, css, TemplateResult } from 'lit';
+import { html, css, TemplateResult, LitElement } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import { MoonImage } from '../../types/config/chart-config';
-import { LunarBaseElement } from '../base-element';
+// import { LunarBaseElement } from '../base-element';
 
 @customElement('lunar-moon-image')
-export class LunarMoonImage extends LunarBaseElement {
+export class LunarMoonImage extends LitElement {
   @property({ attribute: false }) public imageData!: MoonImage;
 
   @query('.moon-image img') private _imgElement!: HTMLImageElement;

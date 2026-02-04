@@ -34,7 +34,6 @@ import { LunarBaseElement } from './base-element';
 export class LunarBaseCard extends LunarBaseElement {
   @property({ attribute: false }) protected store!: Store;
   @property({ attribute: false }) protected moon!: Moon;
-  @property({ attribute: false }) public appearance!: CardAppearance;
   @state() protected config!: LunarPhaseCardConfig;
   @property({ attribute: 'south', type: Boolean, reflect: true }) public south = false;
   protected _cardArea?: CardArea;
@@ -51,6 +50,26 @@ export class LunarBaseCard extends LunarBaseElement {
     }
   }
 
+  protected _dynamicDateTime(date: Date): DateTime {
+    return DateTime.fromJSDate(date).setLocale(this._configLanguage);
+  }
+
+  protected _formatDateTime(date: Date): string {
+    return this._dynamicDateTime(date).toLocaleString(DateTime.DATETIME_MED);
+  }
+
+  protected _formatDate(date: Date): string {
+    return this._dynamicDateTime(date).toLocaleString(DateTime.DATE_MED);
+  }
+
+  protected _formatDateShort(date: Date): string {
+    return this._dynamicDateTime(date).toFormat('LLL dd');
+  }
+
+  protected _formatTime(date: number | Date): string {
+    const dt = new Date(date);
+    return this._dynamicDateTime(dt).toLocaleString(DateTime.TIME_SIMPLE);
+  }
   get _nowDateTime(): DateTime {
     return DateTime.local().setLocale(this._configLanguage);
   }

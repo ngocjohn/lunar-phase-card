@@ -25,6 +25,11 @@ const MOON_PIC_TAG = '1.14.0';
 const MOON_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${MOON_PIC_TAG}/moon_pic/`;
 export const MOON_PIC_URL = (index: number) => `${MOON_URL}${index}_moon.png`;
 
+// moon pic webp format tag
+const MOON_WEBP_TAG = '1.4.1';
+const MOON_WEBP_URL = `https://cdn.jsdelivr.net/gh/ngocjohn/lunar-phase-card@${MOON_WEBP_TAG}/static/moon_pic/`;
+export const MOON_PIC_WEBP = (index: number) => `${MOON_WEBP_URL}${index}_moon.webp`;
+
 export const CARD_VERSION = `v${version}`;
 export const BLUE_BG = BACKGROUND_URL(0);
 

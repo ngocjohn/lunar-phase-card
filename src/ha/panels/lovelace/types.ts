@@ -2,9 +2,16 @@ import { LovelaceBadgeConfig, LovelaceCardConfig, LovelaceConfig } from '../../d
 import { FrontendLocaleData } from '../../data/translation';
 import { Constructor, HomeAssistant } from '../../types';
 
+export interface ConfigChangedEvent<T extends object = object> {
+  config: T;
+  error?: string;
+  guiModeAvailable?: boolean;
+}
+
 declare global {
   interface HASSDomEvents {
     'll-badge-rebuild': Record<string, unknown>;
+    'config-changed': ConfigChangedEvent;
   }
 }
 

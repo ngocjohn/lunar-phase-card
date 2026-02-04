@@ -48,6 +48,7 @@ export default [
     ],
     watch: {
       exclude: 'node_modules/**',
+      include: 'src/**/*.ts',
     },
     plugins: [replace(replaceOpts), typescript({}), ...defaultPlugins, ...plugins],
     moduleContext: (id) => {

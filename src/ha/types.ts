@@ -1,7 +1,3 @@
-import type { LocalizeFunc } from './common/translations/localize';
-import type { FrontendLocaleData, TranslationCategory } from './data/translation';
-import type { Themes } from './data/ws-themes';
-
 import type {
   Auth,
   Connection,
@@ -12,6 +8,10 @@ import type {
   HassServiceTarget,
   MessageBase,
 } from 'home-assistant-js-websocket';
+
+import type { LocalizeFunc } from './common/translations/localize';
+import type { FrontendLocaleData, TranslationCategory } from './data/translation';
+import type { Themes } from './data/ws-themes';
 
 declare global {
   var __DEV__: boolean;
