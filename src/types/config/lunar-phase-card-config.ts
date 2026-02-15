@@ -76,7 +76,7 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   compact_mode?: CompactMode;
   /*
   Size of the moon image in compact view (only applicable for 'moon-only' compact mode)
-  Default is 50 (representing 50% of the original size)
+  Default is 100 (representing 100% of the original size)
   */
   moon_size?: number;
   /*
