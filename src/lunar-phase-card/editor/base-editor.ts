@@ -77,8 +77,7 @@ export class BaseEditor extends LitElement {
   protected createLpcForm(data: any, schema: any, key?: string | number, subKey?: string | number): TemplateResult {
     const currentConfig = { ...(this.config || {}) };
     return html`<lpc-form-editor
-      ._hass=${this._hass}
-      .config=${this.config}
+      .hass=${this.hass}
       .store=${this.store}
       .data=${data}
       .schema=${schema}

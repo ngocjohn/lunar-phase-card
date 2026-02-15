@@ -18,6 +18,16 @@ export class LunarMoonCompactView extends LunarBaseCard {
   protected render(): TemplateResult {
     if (this._configAppearance.compact_mode === 'minimal') {
       return this._renderMinimalCompactView();
+    } else if (this._configAppearance.compact_mode === 'moon-only') {
+      return html`<div
+          id="compact-main"
+          class="moon-only-container"
+          style=${this._computeMoonOnlyStyle()}
+          @click=${this._toggleMinimalData}
+        >
+          ${this.renderMoonImage()}
+        </div>
+        ${this._renderDataMinial()}`;
     }
     // default to standard
     return this._renderStandardCompactView();
@@ -45,7 +55,13 @@ export class LunarMoonCompactView extends LunarBaseCard {
       `;
     };
     return html`
-      <lunar-moon-base id="compact-main">
+      <lunar-moon-base
+        id="compact-main"
+        .moon=${this.moon}
+        .store=${this.store}
+        .config=${this.config}
+        .hass=${this.hass}
+      >
         <div slot="moon-pic" @click=${this._toggleMinimalData} class="pic-con">${this.renderMoonImage()}</div>
         ${this.header}
 
@@ -137,6 +153,13 @@ export class LunarMoonCompactView extends LunarBaseCard {
     }
   }
 
+  private _computeMoonOnlyStyle() {
+    const moonSize = this._configAppearance.moon_size || 100;
+    const position = this._configAppearance.moon_position || 'center';
+    const justifyContent = position === 'left' ? 'flex-start' : position === 'right' ? 'flex-end' : 'center';
+    return `--moon-justify-content: ${justifyContent}; --moon-size: ${moonSize}%`;
+  }
+
   static get styles(): CSSResultGroup {
     return [
       super.styles,
@@ -148,6 +171,7 @@ export class LunarMoonCompactView extends LunarBaseCard {
         .pic-con {
           user-select: all;
           cursor: pointer;
+          padding: calc(var(--lunar-card-gutter, 8px) / 2);
         }
 
         .compact-view-container {
@@ -287,6 +311,16 @@ export class LunarMoonCompactView extends LunarBaseCard {
           text-transform: var(--lunar-card-header-text-transform, capitalize);
           color: var(--lunar-card-header-font-color, var(--primary-text-color));
           white-space: nowrap;
+        }
+        .moon-only-container {
+          display: flex;
+          justify-content: var(--moon-justify-content, center);
+          align-items: center;
+        }
+        .moon-only-container > lunar-moon-image {
+          width: var(--moon-size, 100%);
+          height: auto;
+          padding: var(--lunar-card-gutter, 8px);
         }
       `,
     ];

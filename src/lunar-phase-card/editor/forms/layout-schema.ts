@@ -83,6 +83,7 @@ const computeFontSchema = (type: 'header' | 'label') => {
               return {
                 name: key,
                 required: false,
+                default: 'primary-text',
                 selector: { ui_color: { default_color: 'primary-text' } },
               };
             } else {

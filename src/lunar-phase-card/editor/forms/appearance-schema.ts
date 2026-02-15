@@ -34,8 +34,29 @@ const COMPACT_MODE_SCHEMA = [
     schema: [computeBooleanItem('hide_compact_label'), ...computeSelectorSchema(SELECTOR_OPTIONS['compact_mode'])],
   },
 ] as const;
+const COMPACT_MOON_SIZE_SCHEMA = [
+  {
+    type: 'grid',
+    flatten: true,
+    schema: [
+      ...computeSelectorSchema(SELECTOR_OPTIONS['compact_mode']),
+      {
+        name: 'moon_size',
+        default: 100,
+        selector: {
+          number: {
+            min: 0,
+            max: 100,
+            mode: 'box',
+            unit_of_measurement: '%',
+          },
+        },
+      },
+    ],
+  },
+] as const;
 
-const ADDITIONAL_APPEARANCE_SCHEMA = (isCompact = false, isMinimal = false, title: string) =>
+const ADDITIONAL_APPEARANCE_SCHEMA = (isCompact = false, isMinimal = false, title: string, isMoonOnly = false) =>
   [
     {
       title,
@@ -50,9 +71,11 @@ const ADDITIONAL_APPEARANCE_SCHEMA = (isCompact = false, isMinimal = false, titl
         },
         ...(isMinimal
           ? COMPACT_MODE_SCHEMA
-          : isCompact
-            ? [...computeSelectorSchema(SELECTOR_OPTIONS['moon_position']), ...COMPACT_MODE_SCHEMA]
-            : computeSelectorSchema(SELECTOR_OPTIONS['moon_position'])),
+          : isMoonOnly
+            ? [...COMPACT_MOON_SIZE_SCHEMA, ...computeSelectorSchema(SELECTOR_OPTIONS['moon_position'])]
+            : isCompact
+              ? [...computeSelectorSchema(SELECTOR_OPTIONS['moon_position']), ...COMPACT_MODE_SCHEMA]
+              : computeSelectorSchema(SELECTOR_OPTIONS['moon_position'])),
       ],
     },
   ] as const;
@@ -60,11 +83,12 @@ const ADDITIONAL_APPEARANCE_SCHEMA = (isCompact = false, isMinimal = false, titl
 export const APPEARANCE_FORM_SCHEMA = (data: AppearanceLayoutConfig, customLocalize: LocalizeFunc) => {
   const isCompact = data?.compact_view === true;
   const isMinimal = isCompact && data?.compact_mode === 'minimal';
+  const isMoonOnly = isCompact && data?.compact_mode === 'moon-only';
 
   const getTitle = (key: string) => customLocalize(`editor.viewConfig.${key}.title`);
 
   return [
     ...computeSelectorSchema(SELECTOR_OPTIONS['default_section']),
-    ...ADDITIONAL_APPEARANCE_SCHEMA(isCompact, isMinimal, getTitle('layout')),
+    ...ADDITIONAL_APPEARANCE_SCHEMA(isCompact, isMinimal, getTitle('layout'), isMoonOnly),
   ];
 };

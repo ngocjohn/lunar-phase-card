@@ -9,7 +9,7 @@ export const LOC_SOURCE = ['default', 'entity', 'custom'] as const;
 
 export type LocationSource = (typeof LOC_SOURCE)[number];
 
-export const COMPACT_MODE = ['default', 'minimal'] as const;
+export const COMPACT_MODE = ['default', 'minimal', 'moon-only'] as const;
 export type CompactMode = (typeof COMPACT_MODE)[number];
 
 export const MOON_POSITION = ['left', 'right', 'center'] as const;
@@ -74,6 +74,11 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
 	*/
   compact_view?: boolean;
   compact_mode?: CompactMode;
+  /*
+  Size of the moon image in compact view (only applicable for 'moon-only' compact mode)
+  Default is 100 (representing 100% of the original size)
+  */
+  moon_size?: number;
   /*
    * Position of the moon phase image on base section
    */
@@ -216,6 +221,7 @@ export const AppearanceLayoutKeys = [
   'default_section',
   'compact_view',
   'compact_mode',
+  'moon_size',
   'moon_position',
   'hide_buttons',
   'compact_menu_button',
