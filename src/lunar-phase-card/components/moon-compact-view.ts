@@ -55,7 +55,13 @@ export class LunarMoonCompactView extends LunarBaseCard {
       `;
     };
     return html`
-      <lunar-moon-base id="compact-main">
+      <lunar-moon-base
+        id="compact-main"
+        .moon=${this.moon}
+        .store=${this.store}
+        .config=${this.config}
+        .hass=${this.hass}
+      >
         <div slot="moon-pic" @click=${this._toggleMinimalData} class="pic-con">${this.renderMoonImage()}</div>
         ${this.header}
 
