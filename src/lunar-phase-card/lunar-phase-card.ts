@@ -201,7 +201,6 @@ export class LunarPhaseCard extends LunarBaseCard {
             .hass=${this.hass}
             .activePage=${this._activePage}
             .appearance=${appearance}
-            .store=${this.store}
           >
             ${moonImage} ${isButtonHidden ? this._renderHeader('moon-header', undefined, true) : nothing}
             <lunar-moon-data-info
