@@ -3,6 +3,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import { SECTION } from '../../const';
+import { CardAppearance } from '../../types/config/lunar-phase-card-config';
 import { LunarBaseCard } from '../base-card';
 
 @customElement('lunar-card')
@@ -11,17 +12,18 @@ export class Card extends LunarBaseCard {
   @property({ type: Number }) public cardHeight = 0;
   @property({ type: Boolean }) public calendarPopup = false;
   @property({ type: String }) public activePage?: SECTION;
+  @property({ attribute: false }) private appearance!: CardAppearance;
   @property({ type: Boolean, reflect: true }) public changingContent = false;
 
   @state() private _contentMinHeight = 'initial';
 
   protected willUpdate(_changedProperties: PropertyValues): void {
     if (_changedProperties.has('cardWidth') || _changedProperties.has('cardHeight')) {
-      const { compact_view, hide_buttons } = this._configAppearance || {};
+      const { compact_view, hide_buttons } = this.appearance || {};
       if (compact_view === true || hide_buttons === true) {
         return;
       }
-      const hasTopMargin = this._configAppearance.hide_buttons !== true;
+      const hasTopMargin = this.appearance.hide_buttons !== true;
       const idealContentHeight = this.cardWidth * 0.5 - (hasTopMargin ? 44 : 0);
       const minHeight = Math.max(180, idealContentHeight);
       this._contentMinHeight = `${minHeight}px`;
@@ -38,7 +40,8 @@ export class Card extends LunarBaseCard {
     `;
   }
 
-  private _computeClasses({ _configAppearance } = this) {
+  private _computeClasses() {
+    const _configAppearance = this.appearance;
     const hasPopup = this.calendarPopup;
     const isCompact = _configAppearance?.compact_view === true;
     const isCompactMinimal = isCompact && _configAppearance?.compact_mode === 'minimal';
@@ -98,7 +101,7 @@ export class Card extends LunarBaseCard {
         .container.--has-popup > ::slotted([slot='header']) {
           display: none;
         }
-
+        /* .container.--compact > ::slotted([slot='content']), */
         .container.--no-header > ::slotted([slot='content']),
         .container.--has-popup > ::slotted([slot='content']) {
           margin-top: 0 !important;
@@ -110,11 +113,6 @@ export class Card extends LunarBaseCard {
           width: 100%;
           margin-top: var(--lunar-card-header-height);
           flex: 1;
-          /* display: flex; */
-          /* justify-content: center; */
-          /* height: 100%; */
-          /* z-index: 1; */
-          /* padding-inline: var(--lunar-card-padding); */
         }
 
         .container.--changing-content > ::slotted([slot='content']) {
