@@ -1,3 +1,20 @@
+<a id="v1.15.0"></a>
+# [v1.15.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.15.0) - 2026-02-15
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.15.0 -->
+
+## What's Changed
+### New Features 🎉
+* feat(compact-view): add moon-only compact mode by [@ngocjohn](https://github.com/ngocjohn) in [#87](https://github.com/ngocjohn/lunar-phase-card/pull/87)
+  Introduce a new compact mode specifically for displaying a moon image in the lunar phase card. This mode allows customization of the moon's size and position, enhancing the visual presentation in compact view. 
+  
+  ![2026-02-15 16 47 28](https://github.com/user-attachments/assets/d2a960ca-8f99-46ef-ad2d-d798ea4fb3e8)
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.14.1...v1.15.0
+
+[Changes][v1.15.0]
+
+
 <a id="v1.14.1"></a>
 # [v1.14.1](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.14.1) - 2026-02-04
 
@@ -464,6 +481,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.15.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.14.1...v1.15.0
 [v1.14.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.14.0...v1.14.1
 [v1.14.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.13.0...v1.14.0
 [v1.13.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.12.0...v1.13.0
