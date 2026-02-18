@@ -97,7 +97,8 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
       const dateObj = date.toJSDate();
       const isToday = Boolean(date.toISODate() === DateTime.local().toISODate());
 
-      const { emoji, phaseName, isNewMoonOrFullMoon } = this.moon._getDataByDate(dateObj);
+      const { emoji, phaseName, isNewMoonOrFullMoon, phaseId } = this.moon._getDataByDate(dateObj);
+      const emojiReplace = phaseId === 'fullMoon' ? '🌕' : phaseId === 'newMoon' ? '🌑' : emoji;
       return html`
         <div
           id="calendar-day-${day}"
@@ -108,7 +109,7 @@ export class LunarMoonCalendarPopup extends LunarBaseCard {
           @click=${this._handleDayClick}
         >
           <span>${date.day}</span>
-          <span class="day-symbol">${emoji}</span>
+          <span class="day-symbol">${emojiReplace}</span>
         </div>
         <ha-tooltip .for=${`calendar-day-${day}`}>${phaseName}</ha-tooltip>
       `;
