@@ -1,3 +1,20 @@
+<a id="v1.16.0"></a>
+# [v1.16.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.16.0) - 2026-02-18
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.16.0 -->
+
+## What's Changed
+### Translations 🌍
+* Update Indonesian translation by [@sayaivan](https://github.com/sayaivan) in [#90](https://github.com/ngocjohn/lunar-phase-card/pull/90)
+
+## New Contributors
+* [@sayaivan](https://github.com/sayaivan) made their first contribution in [#90](https://github.com/ngocjohn/lunar-phase-card/pull/90)
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.15.0...v1.16.0
+
+[Changes][v1.16.0]
+
+
 <a id="v1.15.0"></a>
 # [v1.15.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.15.0) - 2026-02-15
 
@@ -481,6 +498,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.16.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.15.0...v1.16.0
 [v1.15.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.14.1...v1.15.0
 [v1.14.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.14.0...v1.14.1
 [v1.14.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.13.0...v1.14.0
