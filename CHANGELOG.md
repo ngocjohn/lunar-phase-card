@@ -1,3 +1,20 @@
+<a id="v1.16.1"></a>
+# [v1.16.1](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.16.1) - 2026-02-20
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.16.1 -->
+
+## What's Changed
+### Fixes 🐛
+* Fix CZ translation for waxing crescent moon by [@m-klecka](https://github.com/m-klecka) in [#91](https://github.com/ngocjohn/lunar-phase-card/pull/91)
+
+## New Contributors
+* [@m-klecka](https://github.com/m-klecka) made their first contribution in [#91](https://github.com/ngocjohn/lunar-phase-card/pull/91)
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.16.0...v1.16.1
+
+[Changes][v1.16.1]
+
+
 <a id="v1.16.0"></a>
 # [v1.16.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.16.0) - 2026-02-18
 
@@ -498,6 +515,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.16.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.16.0...v1.16.1
 [v1.16.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.15.0...v1.16.0
 [v1.15.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.14.1...v1.15.0
 [v1.14.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.14.0...v1.14.1
