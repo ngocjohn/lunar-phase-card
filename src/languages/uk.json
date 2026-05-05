@@ -16,7 +16,7 @@
         "illuminated": "Освітлено",
         "moonRise": "Схід місяця",
         "moonSet": "Захід місяця",
-        "moonHigh": "Найвище положення",
+        "moonHigh": "Пік",
         "moonAge": "Вік місяця",
         "distance": "Відстань",
         "azimuth": "Азимут",
@@ -33,7 +33,7 @@
         },
         "position": "Положення",
         "direction": "Напрямок",
-        "nextPhase": "Наступна фаза Місяця",
+        "nextPhase": "Наступна фаза",
         "cardinalShort": {
             "N": "Пн",
             "NNE": "ПнПнСх",
@@ -52,8 +52,8 @@
             "NW": "ПнЗх",
             "NNW": "ПнПнЗх"
         },
-        "underHorizon": "Місяць під горизонтом",
-        "overHorizon": "Місяць над горизонтом",
+        "underHorizon": "Під горизонтом",
+        "overHorizon": "Над горизонтом",
         "horizonTitle": "Сьогоднішній Місяць",
         "currentTime": "Поточний час",
         "common": {
