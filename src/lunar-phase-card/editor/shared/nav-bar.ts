@@ -26,10 +26,10 @@ export const createSecondaryCodeLabel = (yamlMode: boolean, button: boolean = fa
   const icon = yamlMode ? 'mdi:table-edit' : 'mdi:code-json';
   const buttonLabel = yamlMode ? 'Close Editor' : 'Edit YAML';
   if (!button) {
-    return html` <ha-button size="small" variant=${variant} appearance="filled"> ${buttonLabel} </ha-button> `;
+    return html` <ha-button size="s" variant=${variant} appearance="filled"> ${buttonLabel} </ha-button> `;
   }
   return html`
-    <ha-button size="small" variant=${variant} appearance="filled"><ha-icon .icon=${icon}></ha-icon></ha-button>
+    <ha-button size="s" variant=${variant} appearance="filled"><ha-icon .icon=${icon}></ha-icon></ha-button>
   `;
 };
 
@@ -84,7 +84,7 @@ export class NavBar extends LitElement {
                     ${this.secondaryAction
                       ? this.secondaryAction
                       : html`
-                          <ha-button size="small" variant="neutral" appearance="filled">
+                          <ha-button size="s" variant="neutral" appearance="filled">
                             ${this.secondaryLabel}
                           </ha-button>
                         `}
