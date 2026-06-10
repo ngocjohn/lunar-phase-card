@@ -25,6 +25,7 @@ export const style = css`
     --lunar-card-gutter: 8px;
     --mdc-icon-button-size: var(--lpc-unit);
     --mdc-icon-size: calc(var(--lpc-unit) * 0.6);
+    --ha-button-height: var(--lpc-unit) !important;
     --swiper-pagination-bullet-inactive-color: var(--secondary-text-color);
     --swiper-pagination-bottom: 0;
     --vic-gutter-gap: 8px;
@@ -53,6 +54,7 @@ export const style = css`
 
   ha-icon-button,
   .mdc-icon-button {
+    --ha-button-height: var(--lpc-unit) !important;
     width: var(--lpc-unit) !important;
     height: var(--lpc-unit) !important;
     color: var(--lpc-icon-color, var(--secondary-text-color));
