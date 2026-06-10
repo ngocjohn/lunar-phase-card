@@ -16,6 +16,7 @@ import './components/moon-chart-horizon';
 import './components/lunar-phase-header';
 import '../shared/lunar-star-particles';
 import { HomeAssistant, LovelaceCardEditor } from '../ha';
+import { hasEntityLocation } from '../ha/common/entity/has_location';
 import { Moon } from '../model/moon';
 import { Store } from '../model/store';
 import { filterItemFromMoonData, MoonData } from '../types/config/chart-config';
@@ -426,3 +427,27 @@ declare global {
     LunarCard: LunarPhaseCard;
   }
 }
+
+(window as any).customCards = (window as any).customCards || [];
+(window as any).customCards.push({
+  type: 'lunar-phase-card',
+  name: 'Lunar Phase Card',
+  description: 'A card to display lunar phases and related information.',
+  preview: true,
+  documentationURL: 'https://github.com/ngocjohn/lunar-phase-card',
+  getEntitySuggestion: (hass: HomeAssistant, entityId: string) => {
+    if (hasEntityLocation(hass.states[entityId])) {
+      return {
+        config: {
+          type: 'custom:lunar-phase-card',
+          ...computeStubConfig(hass),
+          location_source: 'entity',
+          entity: entityId,
+        },
+      };
+    }
+    return {
+      config: { type: 'custom:lunar-phase-card', ...computeStubConfig(hass) },
+    };
+  },
+});
