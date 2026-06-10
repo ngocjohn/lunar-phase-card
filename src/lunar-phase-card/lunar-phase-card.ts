@@ -327,7 +327,10 @@ export class LunarPhaseCard extends LunarBaseCard {
   private createMoon() {
     const initData = {
       date: this._date,
-      config: this.config,
+      config: {
+        ...this.config,
+        ...this._configLatLong,
+      },
       locale: this._configLocale,
     };
     this.moon = new Moon(initData);
