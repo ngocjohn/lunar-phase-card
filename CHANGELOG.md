@@ -1,3 +1,24 @@
+<a id="v1.17.0"></a>
+# [v1.17.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.17.0) - 2026-06-10
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.17.0 -->
+
+## What's Changed
+### New Features 🎉
+* Enhance lunar phase card with entity suggestion based on location by [@ngocjohn](https://github.com/ngocjohn) in [#99](https://github.com/ngocjohn/lunar-phase-card/pull/99)
+### Other Changes
+* Update Ukrainian translations for moon-related terms by [@rodion981](https://github.com/rodion981) in [#94](https://github.com/ngocjohn/lunar-phase-card/pull/94)
+* Replace deprecated ha-button small size value by [@xianzuyang9-blip](https://github.com/xianzuyang9-blip) in [#97](https://github.com/ngocjohn/lunar-phase-card/pull/97)
+* fix: handling of location latitude and longitude from entity by [@ngocjohn](https://github.com/ngocjohn) in [#98](https://github.com/ngocjohn/lunar-phase-card/pull/98)
+
+## New Contributors
+* [@xianzuyang9-blip](https://github.com/xianzuyang9-blip) made their first contribution in [#97](https://github.com/ngocjohn/lunar-phase-card/pull/97)
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.16.1...v1.17.0
+
+[Changes][v1.17.0]
+
+
 <a id="v1.16.1"></a>
 # [v1.16.1](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.16.1) - 2026-02-20
 
@@ -515,6 +536,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.17.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.16.1...v1.17.0
 [v1.16.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.16.0...v1.16.1
 [v1.16.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.15.0...v1.16.0
 [v1.15.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.14.1...v1.15.0
