@@ -14,6 +14,17 @@ type Location = {
   longitude: number;
 };
 
+export const PHASE_MDI: Record<SunCalc.IPhaseObj['id'], string> = {
+  newMoon: 'mdi:moon-new',
+  waxingCrescentMoon: 'mdi:moon-waxing-crescent',
+  firstQuarterMoon: 'mdi:moon-first-quarter',
+  waxingGibbousMoon: 'mdi:moon-waxing-gibbous',
+  fullMoon: 'mdi:moon-full',
+  waningGibbousMoon: 'mdi:moon-waning-gibbous',
+  thirdQuarterMoon: 'mdi:moon-last-quarter',
+  waningCrescentMoon: 'mdi:moon-waning-crescent',
+};
+
 // Moon class
 export class Moon {
   readonly _date: Date;
@@ -106,7 +117,7 @@ export class Moon {
   }
 
   get moonImage(): MoonImage {
-    const { phaseValue, fraction } = this._moonData.illumination;
+    const { phaseValue, fraction, phase } = this._moonData.illumination;
     const phaseIndex = Math.round(phaseValue * 30) % 31;
     const moonFraction = Math.round(fraction * 100);
     const moonUrl = MOON_PIC_WEBP(phaseIndex);
@@ -117,6 +128,9 @@ export class Moon {
       rotateDeg: rotateDeg,
       southernHemisphere: this.config.southern_hemisphere || false,
       fraction: moonFraction,
+      phase,
+      phaseMdi: PHASE_MDI[phase.id],
+      emoji: phase.emoji,
     };
   }
 

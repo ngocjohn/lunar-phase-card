@@ -1,4 +1,5 @@
 import { LocalizeFunc } from '../../../ha';
+import { TITLE_PATH } from '../../../shared/translate-const';
 import {
   FontSizes,
   FontTextTransforms,
@@ -15,8 +16,7 @@ import {
   GraphConfigNumberKeys,
   GraphConfigDropdownKeys,
 } from '../../../types/config/graph-config';
-import { HIDDEN_ITEMS, HiddenItem, DataVisualConfig } from '../../../types/config/lunar-phase-card-config';
-import { TITLE_PATH } from '../translate-const';
+import { MOON_DATA_KEYS, HiddenItem, DataVisualConfig } from '../../../types/config/lunar-phase-card-config';
 import { computeBooleanItem, computeSelectorSchema } from './helper';
 import { HaFormBaseSchemaExtended } from './types';
 
@@ -153,7 +153,7 @@ const LAYOUT_BASE_SCHEMA = (localize: LocalizeFunc) =>
               name: 'hide_items',
               required: false,
               type: 'multi_select',
-              options: HIDDEN_ITEMS.map((item) => [item, localize(`card.${HIDDEN_LABEL[item]}`)] as const),
+              options: MOON_DATA_KEYS.map((item) => [item, localize(`card.${HIDDEN_LABEL[item]}`)] as const),
             },
           ],
         },

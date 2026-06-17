@@ -95,3 +95,5 @@ export const enum SECTION {
   CALENDAR = 'calendar',
   FULL_CALENDAR = 'full_calendar',
 }
+
+export const STRINGS_SEPARATOR_DOT = ' · ';

@@ -14,6 +14,7 @@ import {
   LabelFontConfig,
   LabelFontConfigKeys,
 } from '../types/config/font-config';
+import { LocationConfigKeys } from '../types/config/location-source-config';
 import {
   CardAppearanceLayoutKeys,
   CardAppearance,
@@ -21,12 +22,11 @@ import {
   DataVisualConfig,
   DataVisualKeys,
   LocationConfig,
-  LocationConfigKeys,
   LunarPhaseCardConfig,
 } from '../types/config/lunar-phase-card-config';
-import { FrontendLocaleDataExtended, LatLon } from '../types/config/types';
 import './components/moon-image';
 import '../shared/moon-clock-time';
+import { FrontendLocaleDataExtended, LatLon } from '../types/config/types';
 import { migrateConfig } from '../types/utils';
 import { orderProperties } from '../utils/order-properties';
 import { LunarBaseElement } from './base-element';
@@ -70,9 +70,11 @@ export class LunarBaseCard extends LunarBaseElement {
     const dt = new Date(date);
     return this._dynamicDateTime(dt).toLocaleString(DateTime.TIME_SIMPLE);
   }
+
   get _nowDateTime(): DateTime {
     return DateTime.local().setLocale(this._configLanguage);
   }
+
   get _configLanguage(): string {
     return this.config?.language || this.hass.selectedLanguage || this.hass.config.language;
   }

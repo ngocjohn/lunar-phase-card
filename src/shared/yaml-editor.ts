@@ -1,15 +1,8 @@
+import { HomeAssistantStylesManager } from 'home-assistant-styles-manager';
 import { css, CSSResultGroup, html, LitElement, nothing, PropertyValues, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 
-import { fireEvent } from '../../../ha';
-import { BaseEditor } from '../base-editor';
-
-declare global {
-  interface HASSDomEvents {
-    'yaml-value-changed': { value: any };
-    'yaml-editor-closed': undefined;
-  }
-}
+import { fireEvent, HomeAssistant } from '../ha';
 
 const YAML_ACTION_STYLE = css`
   .card-actions {
@@ -20,13 +13,22 @@ const YAML_ACTION_STYLE = css`
 `.toString();
 
 @customElement('lpc-yaml-editor')
-export class YamlEditor extends BaseEditor {
+export class YamlEditor extends LitElement {
+  @property({ attribute: false }) _hass!: HomeAssistant;
   @property({ attribute: false }) public configDefault: any;
   @property({ type: Boolean, attribute: 'has-extra-actions' }) public hasExtraActions = false;
   @property() _yamlChanged!: (ev: CustomEvent) => void;
 
   @query('ha-yaml-editor', true) private _yamlEditor?: LitElement;
+  @property({ attribute: false }) private _stylesManager: HomeAssistantStylesManager;
 
+  constructor() {
+    super();
+    this._stylesManager = new HomeAssistantStylesManager({
+      prefix: 'lpc-editor',
+      throwWarnings: true,
+    });
+  }
   protected render(): TemplateResult | typeof nothing {
     if (!this._hass) {
       return nothing;
@@ -88,5 +90,15 @@ export class YamlEditor extends BaseEditor {
         align-items: center !important;
       }
     `;
+  }
+}
+
+declare global {
+  interface HASSDomEvents {
+    'yaml-value-changed': { value: any };
+    'yaml-editor-closed': undefined;
+  }
+  interface HTMLElementTagNameMap {
+    'lpc-yaml-editor': YamlEditor;
   }
 }

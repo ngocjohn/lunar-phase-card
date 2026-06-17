@@ -97,8 +97,10 @@ export interface ShowViewConfig {
 }
 
 export interface LovelaceBadgeConfig {
-  type?: string;
+  type: string;
   [key: string]: any;
+  visibility?: Record<string, unknown>[];
+  disabled?: boolean;
 }
 
 export interface LovelaceCardConfig {

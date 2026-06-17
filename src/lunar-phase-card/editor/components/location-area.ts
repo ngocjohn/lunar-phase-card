@@ -3,11 +3,8 @@ import { css, CSSResultGroup, TemplateResult, PropertyValues, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
 import { getLatLonFromEntity, hasEntityLocation } from '../../../ha/common/entity/has_location';
-import {
-  LocationConfig,
-  LocationConfigKeys,
-  LunarPhaseCardConfig,
-} from '../../../types/config/lunar-phase-card-config';
+import { LocationConfigKeys } from '../../../types/config/location-source-config';
+import { LocationConfig, LunarPhaseCardConfig } from '../../../types/config/lunar-phase-card-config';
 import { getObjectDifferences, logChangedValues } from '../../../utils/object-differences';
 import { BaseEditor } from '../base-editor';
 import { EditorArea } from '../editor-area-config';

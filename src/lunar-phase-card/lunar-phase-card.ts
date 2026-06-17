@@ -325,6 +325,7 @@ export class LunarPhaseCard extends LunarBaseCard {
     }
     this.store = new Store(this.hass, this.config, this);
   }
+
   private createMoon() {
     const initData = {
       date: this._date,
