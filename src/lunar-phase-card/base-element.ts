@@ -2,7 +2,7 @@ import { css, CSSResultGroup, LitElement, PropertyValues } from 'lit';
 import { property } from 'lit/decorators.js';
 
 import { HomeAssistant } from '../ha';
-import { style } from './css/card-styles';
+import { style } from '../shared/css/styles';
 
 export function computeDarkMode(hass?: HomeAssistant): boolean {
   if (!hass) return false;

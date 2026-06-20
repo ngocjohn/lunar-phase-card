@@ -4,7 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import { STRINGS_SEPARATOR_DOT } from '../const';
-import { FrontendLocaleData, HomeAssistant, LovelaceBadge, TimeFormat } from '../ha';
+import { FrontendLocaleData, HomeAssistant, LovelaceBadge, LovelaceBadgeEditor, TimeFormat } from '../ha';
 import { getLatLonFromEntity, hasEntityLocation } from '../ha/common/entity/has_location';
 import { Moon } from '../model/moon';
 import { LocationConfigKeys } from '../types/config/location-source-config';
@@ -21,6 +21,10 @@ const DEFAULT_CONFIG: LunarPhaseBadgeConfig = {
 };
 @customElement('lunar-phase-badge')
 export class LunarPhaseBadge extends LitElement implements LovelaceBadge {
+  public static async getConfigElement(): Promise<LovelaceBadgeEditor> {
+    await import('./editor/lunar-phase-badge-editor');
+    return document.createElement('lunar-phase-badge-editor') as LovelaceBadgeEditor;
+  }
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) protected moon!: Moon;
   @state() protected config!: LunarPhaseBadgeConfig;

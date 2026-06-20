@@ -22,3 +22,9 @@ export const getLatLonFromEntity = (stateObj: HassEntity): LatLon => {
         longitude: stateObj.attributes.longitude,
       };
 };
+
+export const getEntitiesWithLocation = (entities: Record<string, HassEntity>): string[] => {
+  return Object.values(entities)
+    .filter((stateObj) => hasEntityLocation(stateObj))
+    .map((stateObj) => stateObj.entity_id);
+};
