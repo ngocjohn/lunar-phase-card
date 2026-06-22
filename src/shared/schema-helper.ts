@@ -1,5 +1,5 @@
-import { formatLabelUppercase } from '../../../utils/string-helper';
-import { HaFormBaseSchemaExtended, BooleanItem } from './types';
+import { HaFormBaseSchemaExtended, BooleanItem } from '../lunar-phase-card/editor/forms/types';
+import { formatLabelUppercase } from '../utils/string-helper';
 export const computeSelectorSchema = <T extends HaFormBaseSchemaExtended>(selector: T) => {
   return [
     {

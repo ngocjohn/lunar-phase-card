@@ -1,4 +1,5 @@
 import { LocalizeFunc } from '../../../ha';
+import { computeBooleanItem, computeSelectorSchema } from '../../../shared/schema-helper';
 import { TITLE_PATH } from '../../../shared/translate-const';
 import {
   FontSizes,
@@ -17,7 +18,6 @@ import {
   GraphConfigDropdownKeys,
 } from '../../../types/config/graph-config';
 import { MOON_DATA_KEYS, HiddenItem, DataVisualConfig } from '../../../types/config/lunar-phase-card-config';
-import { computeBooleanItem, computeSelectorSchema } from './helper';
 import { HaFormBaseSchemaExtended } from './types';
 
 type GraphDropdownProperty = (typeof GraphConfigDropdownKeys)[number];

@@ -3,6 +3,8 @@ import { LocationConfigKeys, LocationSource } from './location-source-config';
 import { MOON_DATA_KEYS } from './lunar-phase-card-config';
 
 export const BADGE_ICON_TYPE = ['image', 'emoji', 'icon'] as const;
+export const APPEARANCE_CONFIG_KEYS = ['language', 'number_decimals', 'mile_unit', '12hr_format', 'icon_type'] as const;
+
 export type BadgeIconType = (typeof BADGE_ICON_TYPE)[number];
 export type MoonDataItem = (typeof MOON_DATA_KEYS | 'phaseName')[number];
 
@@ -68,3 +70,4 @@ export interface LunarPhaseBadgeConfig extends LovelaceBadgeConfig {
 }
 
 export type LocationBadgeConfig = Pick<LovelaceBadgeConfig, (typeof LocationConfigKeys)[number]>;
+export type AppearanceBadgeConfig = Pick<LunarPhaseBadgeConfig, (typeof APPEARANCE_CONFIG_KEYS)[number]>;

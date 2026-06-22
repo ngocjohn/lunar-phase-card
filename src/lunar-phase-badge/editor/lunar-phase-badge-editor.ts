@@ -4,6 +4,7 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { HomeAssistant, LovelaceBadgeEditor } from '../../ha';
 import { BaseBadgeEditor } from './base-badge-editor';
 import './badge-location-editor';
+import './badge-content-editor';
 
 const tabs = ['location', 'content'] as const;
 
@@ -48,7 +49,10 @@ export class LunarPhaseBadgeEditor extends BaseBadgeEditor implements LovelaceBa
         ></lpc-badge-location-editor>`;
         break;
       case 'content':
-        content = html`<div>Content Editor</div>`;
+        content = html`<lpc-badge-content-editor
+          .config=${this.config}
+          ._hass=${this._hass}
+        ></lpc-badge-content-editor>`;
         break;
     }
 

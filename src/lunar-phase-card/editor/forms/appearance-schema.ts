@@ -1,6 +1,6 @@
 import { LocalizeFunc } from '../../../ha';
+import { computeBooleanItem, computeSelectorSchema } from '../../../shared/schema-helper';
 import { AppearanceLayoutConfig, COMPACT_MODE, MOON_POSITION } from '../../../types/config/lunar-phase-card-config';
-import { computeBooleanItem, computeSelectorSchema } from './helper';
 import { HaFormBaseSchemaExtended } from './types';
 
 const SECTIONS = ['base', 'calendar', 'full_calendar', 'horizon'] as const;

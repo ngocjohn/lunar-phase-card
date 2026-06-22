@@ -1,7 +1,7 @@
 import type { LocationConfig } from '../../../types/config/lunar-phase-card-config';
 
 import { LOC_SOURCE } from '../../../types/config/location-source-config';
-import { computeBooleanItem, computeSelectorSchema } from './helper';
+import { computeBooleanItem, computeSelectorSchema } from '../../../shared/schema-helper';
 
 const COORDINATES_SCHEMA = [
   {
