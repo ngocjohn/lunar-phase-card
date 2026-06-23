@@ -1,7 +1,9 @@
 import { LocalizeFunc } from '../../ha';
 import { langKeys } from '../../localize/languageImports';
+import { MOON_PHASE_FIELD_NAMES } from '../../lunar-phase-card/editor/forms';
 import { computeBooleanItem, computeSelectorSchema } from '../../shared/schema-helper';
-import { BADGE_ICON_TYPE } from '../../types/config/lunar-phase-badge-config';
+import { BADGE_ICON_TYPE, ContentBadgeConfig } from '../../types/config/lunar-phase-badge-config';
+import { MOON_DATA_KEYS } from '../../types/config/lunar-phase-card-config';
 
 const LANGUAGE_SCHEMA = [
   {
@@ -43,6 +45,59 @@ export const BADGE_APPEARANCE_SCHEMA = (localize: LocalizeFunc) =>
             }),
           ],
         },
+      ],
+    },
+  ] as const;
+
+const BADGE_NAME_SCHEMA = (localize: LocalizeFunc, customName: boolean = false) => {
+  return [
+    computeBooleanItem('custom_name'),
+    ...(customName
+      ? [
+          {
+            name: 'name',
+            required: false,
+            selector: { text: { type: 'text', placeholder: 'Lunar Phase' } },
+          },
+        ]
+      : [
+          ...computeSelectorSchema({
+            name: 'name',
+            options: [...MOON_DATA_KEYS, 'phaseName'].map((item) => ({
+              value: item,
+              label: localize(`card.${MOON_PHASE_FIELD_NAMES[item]}`),
+            })),
+          }),
+        ]),
+  ] as const;
+};
+
+export const BADGE_CONTENT_SCHEMA = (localize: LocalizeFunc, data: ContentBadgeConfig) =>
+  [
+    {
+      title: 'Content',
+      type: 'expandable',
+      icon: 'mdi:format-list-bulleted',
+      flatten: true,
+      schema: [
+        ...BADGE_NAME_SCHEMA(localize, data?.custom_name),
+        {
+          type: 'grid',
+          flatten: true,
+          schema: [...['show_name', 'show_icon', 'show_state'].map((prop) => computeBooleanItem(prop))],
+        },
+        ...computeSelectorSchema({
+          name: 'state_content',
+          label: 'State Content',
+          default: 'phaseName',
+          multiple: true,
+          reorder: true,
+          mode: 'dropdown',
+          options: [...MOON_DATA_KEYS, 'phaseName'].map((item) => ({
+            value: item,
+            label: localize(`card.${MOON_PHASE_FIELD_NAMES[item]}`),
+          })),
+        }),
       ],
     },
   ] as const;

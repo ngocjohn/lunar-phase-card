@@ -2,9 +2,9 @@ import { css, CSSResultGroup, html, nothing, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 
 import { HomeAssistant, LovelaceBadgeEditor } from '../../ha';
-import { BaseBadgeEditor } from './base-badge-editor';
 import './badge-location-editor';
 import './badge-content-editor';
+import { BaseBadgeEditor } from './base-badge-editor';
 
 const tabs = ['location', 'content'] as const;
 
@@ -64,6 +64,7 @@ export class LunarPhaseBadgeEditor extends BaseBadgeEditor implements LovelaceBa
           `
         )}
       </ha-tab-group>
+
       ${content}
     `;
   }

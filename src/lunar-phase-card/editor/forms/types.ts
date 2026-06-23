@@ -4,6 +4,9 @@ import { HaFormBaseSchema } from '../../../ha/panels/ha-form/types';
 export interface HaFormBaseSchemaExtended extends HaFormBaseSchema {
   mode?: 'list' | 'dropdown' | 'box';
   custom_value?: boolean;
+  multiple?: boolean;
+  reorder?: boolean;
+  label?: string;
   options?: readonly string[] | readonly SelectOption[];
 }
 export type HaFormSchemaItem = Record<string, HaFormBaseSchemaExtended>;

@@ -108,7 +108,7 @@ const FONT_CONFIG_SCHEMA = (localize: LocalizeFunc) =>
     },
   ] as const;
 
-const HIDDEN_LABEL: Record<HiddenItem, string> = {
+export const MOON_PHASE_FIELD_NAMES: Record<HiddenItem | string, string> = {
   moonAge: 'moonAge',
   moonFraction: 'illumination',
   azimuthDegress: 'azimuth',
@@ -121,6 +121,7 @@ const HIDDEN_LABEL: Record<HiddenItem, string> = {
   nextFullMoon: 'fullMoon',
   nextNewMoon: 'newMoon',
   nextPhase: 'nextPhase',
+  phaseName: 'phaseName',
 };
 
 const LAYOUT_BASE_SCHEMA = (localize: LocalizeFunc) =>
@@ -153,7 +154,7 @@ const LAYOUT_BASE_SCHEMA = (localize: LocalizeFunc) =>
               name: 'hide_items',
               required: false,
               type: 'multi_select',
-              options: MOON_DATA_KEYS.map((item) => [item, localize(`card.${HIDDEN_LABEL[item]}`)] as const),
+              options: MOON_DATA_KEYS.map((item) => [item, localize(`card.${MOON_PHASE_FIELD_NAMES[item]}`)] as const),
             },
           ],
         },

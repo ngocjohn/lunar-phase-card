@@ -4,6 +4,14 @@ import { MOON_DATA_KEYS } from './lunar-phase-card-config';
 
 export const BADGE_ICON_TYPE = ['image', 'emoji', 'icon'] as const;
 export const APPEARANCE_CONFIG_KEYS = ['language', 'number_decimals', 'mile_unit', '12hr_format', 'icon_type'] as const;
+export const CONTENT_CONFIG_KEYS = [
+  'custom_name',
+  'name',
+  'state_content',
+  'show_name',
+  'show_icon',
+  'show_state',
+] as const;
 
 export type BadgeIconType = (typeof BADGE_ICON_TYPE)[number];
 export type MoonDataItem = (typeof MOON_DATA_KEYS | 'phaseName')[number];
@@ -51,15 +59,16 @@ export interface LunarPhaseBadgeConfig extends LovelaceBadgeConfig {
    */
   '12hr_format'?: boolean;
   /**
-   * Use custom name instead of current phase name.
-   */
-  custom_name?: boolean;
-  name?: string | MoonDataItem;
-  /**
    * Type of icon to display on the badge
    * Defaults to 'image'.
    */
   icon_type?: BadgeIconType;
+  /**
+   * Use custom name instead of current phase name.
+   */
+  custom_name?: boolean;
+  name?: string | MoonDataItem;
+
   /**
    * State content to display
    */
@@ -71,3 +80,4 @@ export interface LunarPhaseBadgeConfig extends LovelaceBadgeConfig {
 
 export type LocationBadgeConfig = Pick<LovelaceBadgeConfig, (typeof LocationConfigKeys)[number]>;
 export type AppearanceBadgeConfig = Pick<LunarPhaseBadgeConfig, (typeof APPEARANCE_CONFIG_KEYS)[number]>;
+export type ContentBadgeConfig = Pick<LunarPhaseBadgeConfig, (typeof CONTENT_CONFIG_KEYS)[number]>;

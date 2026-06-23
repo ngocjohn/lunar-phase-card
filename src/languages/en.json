@@ -34,6 +34,7 @@
         "position": "Position",
         "direction": "Direction",
         "nextPhase": "Next phase",
+        "phaseName": "Phase name",
         "cardinalShort": {
             "N": "N",
             "NNE": "NNE",

@@ -18,6 +18,7 @@ const DEFAULT_CONFIG: LunarPhaseBadgeConfig = {
   show_name: false,
   show_icon: true,
   show_state: true,
+  icon_type: 'image',
 };
 @customElement('lunar-phase-badge')
 export class LunarPhaseBadge extends LitElement implements LovelaceBadge {
