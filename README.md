@@ -399,8 +399,8 @@ If you like the card, consider supporting the developer
 [card-config-editor]:https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-config-editor.gif
 [compact-mode-minimal]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact-minimal.gif
 <!--BADGE-IMAGES-->
-[lunar-badge-light]: /assets/lunar-badge-light.png
-[lunar-badge-dark]: /assets/lunar-badge-dark.png
+[lunar-badge-light]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-badge-light.png
+[lunar-badge-dark]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-badge-dark.png
 <!--BADGES-->
 [hacs-default]: https://img.shields.io/badge/HACS-Default-blue?style=flat&logo=homeassistantcommunitystore&logoSize=auto
 [hacs-default-link]: https://my.home-assistant.io/redirect/hacs_repository/?owner=ngocjohn&repository=lunar-phase-card&category=plugin
