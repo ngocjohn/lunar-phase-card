@@ -1,3 +1,21 @@
+<a id="v1.18.0"></a>
+# [v1.18.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.18.0) - 2026-07-03
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.18.0 -->
+
+## What's Changed
+### New Features 🎉
+* Add lunar phase badge features by [@ngocjohn](https://github.com/ngocjohn) in [#102](https://github.com/ngocjohn/lunar-phase-card/pull/102)
+
+
+<img width="1286" height="116" alt="lunar-badge-dark" src="https://github.com/user-attachments/assets/e6a80dcd-bf29-4fc6-aecc-fda869b714c7" />
+<img width="1286" height="116" alt="lunar-badge-light" src="https://github.com/user-attachments/assets/d72a69fc-f71f-424c-bea3-5e195d93c801" />
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.17.0...v1.18.0
+
+[Changes][v1.18.0]
+
+
 <a id="v1.17.0"></a>
 # [v1.17.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.17.0) - 2026-06-10
 
@@ -536,6 +554,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.18.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.17.0...v1.18.0
 [v1.17.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.16.1...v1.17.0
 [v1.16.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.16.0...v1.16.1
 [v1.16.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.15.0...v1.16.0
