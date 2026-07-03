@@ -1,9 +1,48 @@
-import { LocalizeFunc } from '../../ha';
+import { LocalizeFunc, UiAction } from '../../ha';
 import { langKeys } from '../../localize/languageImports';
 import { MOON_PHASE_FIELD_NAMES } from '../../lunar-phase-card/editor/forms';
 import { computeBooleanItem, computeSelectorSchema } from '../../shared/schema-helper';
 import { BADGE_ICON_TYPE, ContentBadgeConfig } from '../../types/config/lunar-phase-badge-config';
 import { MOON_DATA_KEYS } from '../../types/config/lunar-phase-card-config';
+
+export const DEFAULT_ACTIONS: UiAction[] = [
+  'more-info',
+  'toggle',
+  'navigate',
+  'url',
+  'perform-action',
+  'assist',
+  'none',
+];
+
+export const computeOptionalActionSchema = () => {
+  return [
+    {
+      name: 'tap_action',
+      label: 'Tap Action',
+      selector: {
+        ui_action: {
+          actions: DEFAULT_ACTIONS,
+          default_action: 'none' as const,
+        },
+      },
+    },
+    {
+      name: '',
+      type: 'optional_actions',
+      flatten: true,
+      schema: (['hold_action', 'double_tap_action'] as const).map((action) => ({
+        name: action,
+        selector: {
+          ui_action: {
+            actions: DEFAULT_ACTIONS,
+            default_action: 'none' as const,
+          },
+        },
+      })),
+    },
+  ] as const;
+};
 
 const LANGUAGE_SCHEMA = [
   {
@@ -101,3 +140,12 @@ export const BADGE_CONTENT_SCHEMA = (localize: LocalizeFunc, data: ContentBadgeC
       ],
     },
   ] as const;
+
+export const BADGE_ACTIONS_SCHEMA = [
+  {
+    title: 'Interactions',
+    type: 'expandable',
+    icon: 'mdi:gesture-tap',
+    schema: [...computeOptionalActionSchema()],
+  },
+] as const;

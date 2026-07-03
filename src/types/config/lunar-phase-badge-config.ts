@@ -1,4 +1,4 @@
-import { LovelaceBadgeConfig } from '../../ha';
+import { ActionConfig, LovelaceBadgeConfig } from '../../ha';
 import { LocationConfigKeys, LocationSource } from './location-source-config';
 import { MOON_DATA_KEYS } from './lunar-phase-card-config';
 
@@ -76,8 +76,28 @@ export interface LunarPhaseBadgeConfig extends LovelaceBadgeConfig {
   show_name?: boolean;
   show_icon?: boolean;
   show_state?: boolean;
+  tap_action?: ActionConfig;
+  hold_action?: ActionConfig;
+  double_tap_action?: ActionConfig;
 }
 
 export type LocationBadgeConfig = Pick<LovelaceBadgeConfig, (typeof LocationConfigKeys)[number]>;
 export type AppearanceBadgeConfig = Pick<LunarPhaseBadgeConfig, (typeof APPEARANCE_CONFIG_KEYS)[number]>;
 export type ContentBadgeConfig = Pick<LunarPhaseBadgeConfig, (typeof CONTENT_CONFIG_KEYS)[number]>;
+export type InteractionBadgeConfig = Pick<
+  LunarPhaseBadgeConfig,
+  'entity' | 'tap_action' | 'hold_action' | 'double_tap_action'
+>;
+
+export function hasAction(config?: ActionConfig): boolean {
+  return !!(config?.action && config.action !== 'none');
+}
+
+export function hasInteraction(config?: InteractionBadgeConfig): boolean {
+  return (
+    config !== undefined &&
+    Object.keys(config)
+      .filter((key) => key !== 'entity')
+      .some((action) => hasAction(config[action]))
+  );
+}

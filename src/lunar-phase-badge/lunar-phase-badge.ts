@@ -4,12 +4,27 @@ import { customElement, property, state } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 
 import { STRINGS_SEPARATOR_DOT } from '../const';
-import { FrontendLocaleData, HomeAssistant, LovelaceBadge, LovelaceBadgeEditor, TimeFormat } from '../ha';
+import {
+  ActionHandlerEvent,
+  FrontendLocaleData,
+  handleAction,
+  HomeAssistant,
+  LovelaceBadge,
+  LovelaceBadgeEditor,
+  TimeFormat,
+} from '../ha';
 import { getLatLonFromEntity, hasEntityLocation } from '../ha/common/entity/has_location';
 import { Moon } from '../model/moon';
 import { LocationConfigKeys } from '../types/config/location-source-config';
-import { LocationBadgeConfig, LunarPhaseBadgeConfig } from '../types/config/lunar-phase-badge-config';
+import {
+  hasAction,
+  hasInteraction,
+  InteractionBadgeConfig,
+  LocationBadgeConfig,
+  LunarPhaseBadgeConfig,
+} from '../types/config/lunar-phase-badge-config';
 import { FrontendLocaleDataExtended, LatLon } from '../types/config/types';
+import { actionHandler } from '../utils/action-handler';
 import { ensureArray } from '../utils/chunk-object';
 import { computeStubConfig } from '../utils/compute-stub-config';
 
@@ -104,6 +119,13 @@ export class LunarPhaseBadge extends LitElement implements LovelaceBadge {
     } as LocationBadgeConfig;
   }
 
+  get _actionConfig(): InteractionBadgeConfig {
+    const picked = pick(this.config, ['entity', 'tap_action', 'hold_action', 'double_tap_action']);
+    return {
+      ...picked,
+    } as InteractionBadgeConfig;
+  }
+
   get _date(): Date {
     return this._selectedDate ? new Date(this._selectedDate) : new Date();
   }
@@ -122,8 +144,19 @@ export class LunarPhaseBadge extends LitElement implements LovelaceBadge {
 
     const label = showState && showName ? name : undefined;
     const content = showState ? stateDisplay : showName ? name : undefined;
+    const isAction = hasInteraction(this._actionConfig);
 
-    return html` <ha-badge .label=${label}> ${showIcon ? this._renderMoonImage() : nothing} ${content}</ha-badge>`;
+    return html` <ha-badge
+      .type=${isAction ? 'button' : 'badge'}
+      .actionHandler=${actionHandler({
+        hasHold: true,
+        hasDoubleClick: true,
+      })}
+      @action=${this._handleAction}
+      .label=${label}
+    >
+      ${showIcon ? this._renderMoonImage() : nothing} ${content}</ha-badge
+    >`;
   }
 
   private _renderMoonImage(): TemplateResult {
@@ -189,6 +222,26 @@ export class LunarPhaseBadge extends LitElement implements LovelaceBadge {
     }
     const moonData = { ...this.moon.moonData, phaseName: { label: 'Lunar Phase', value: this.moon.phaseName } };
     return this.config.name ? moonData[this.config.name]?.label || this.moon.phaseName : this.moon.phaseName;
+  }
+
+  private _handleAction(ev: ActionHandlerEvent): void {
+    ev.stopPropagation();
+
+    const action = ev.detail.action;
+    const config = this._actionConfig;
+
+    if (action === 'tap') {
+      if (hasAction(config?.tap_action)) {
+        handleAction(this, this.hass, config, 'tap');
+      }
+      return;
+    }
+    if (action === 'hold' || action === 'double_tap') {
+      if (hasAction(config[`${action}_action`])) {
+        handleAction(this, this.hass, config, action);
+      }
+      return;
+    }
   }
 
   private updateDate(action?: 'next' | 'prev') {
