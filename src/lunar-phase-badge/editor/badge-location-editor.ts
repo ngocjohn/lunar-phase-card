@@ -2,33 +2,25 @@ import { omit, pick } from 'es-toolkit';
 import { css, CSSResultGroup, TemplateResult, PropertyValues, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 
-import {
-  getEntitiesWithLocation,
-  getLatLonFromEntity,
-  hasEntityLocation,
-} from '../../../ha/common/entity/has_location';
-import { LocationConfigKeys } from '../../../types/config/location-source-config';
-import { LocationConfig, LunarPhaseCardConfig } from '../../../types/config/lunar-phase-card-config';
-import { getObjectDifferences, logChangedValues } from '../../../utils/object-differences';
-import { BaseEditor } from '../base-editor';
-import { EditorArea } from '../editor-area-config';
-import { LOCATION_FORM_SCHEMA } from '../forms';
-import { createSecondaryCodeLabel } from '../shared/nav-bar';
+import { getEntitiesWithLocation, getLatLonFromEntity, hasEntityLocation } from '../../ha/common/entity/has_location';
+import { LOCATION_FORM_SCHEMA } from '../../lunar-phase-card/editor/forms';
+import { LocationConfigKeys } from '../../types/config/location-source-config';
+import { LocationBadgeConfig, LunarPhaseBadgeConfig } from '../../types/config/lunar-phase-badge-config';
+import { getObjectDifferences, logChangedValues } from '../../utils/object-differences';
+import { BaseBadgeEditor } from './base-badge-editor';
 
-@customElement('lpc-location-area')
-export class LocationArea extends BaseEditor {
+@customElement('lpc-badge-location-editor')
+export class BadgeLocationEditor extends BaseBadgeEditor {
   constructor() {
-    super(EditorArea.LOCATION);
-    window.LunarLocationArea = this;
+    super();
   }
 
-  @state() private _locationConfig?: LocationConfig;
-  @state() private _yamlActive: boolean = false;
+  @state() private _locationConfig?: LocationBadgeConfig;
 
   protected willUpdate(_changedProperties: PropertyValues): void {
     super.willUpdate(_changedProperties);
     if (_changedProperties.has('config') && this.config) {
-      this._locationConfig = pick(this.config, [...LocationConfigKeys]);
+      this._locationConfig = pick(this.config, [...LocationConfigKeys]) as LocationBadgeConfig;
     }
   }
 
@@ -46,16 +38,7 @@ export class LocationArea extends BaseEditor {
     const hasLocationEntities = getEntitiesWithLocation(this.hass.states);
     const SCHEMA = LOCATION_FORM_SCHEMA(DATA, hasLocationEntities);
     const locForm = this.createLpcForm(DATA, SCHEMA, source);
-    return html`
-      ${this._yamlActive ? this.createYamlEditor(configData) : locForm}
-      <lpc-nav-bar
-        hide-primary
-        .secondaryAction=${createSecondaryCodeLabel(this._yamlActive)}
-        @secondary-action=${() => {
-          this._yamlActive = !this._yamlActive;
-        }}
-      ></lpc-nav-bar>
-    `;
+    return html`${locForm}`;
   }
 
   protected override _onValueChanged(ev: CustomEvent): void {
@@ -68,7 +51,7 @@ export class LocationArea extends BaseEditor {
     };
 
     const incoming = { ...ev.detail.value } as Partial<
-      LocationConfig & { location?: { latitude: number; longitude: number } }
+      LocationBadgeConfig & { location?: { latitude: number; longitude: number } }
     >;
 
     if (JSON.stringify(locationConfig) === JSON.stringify(incoming)) {
@@ -85,7 +68,7 @@ export class LocationArea extends BaseEditor {
       return;
     }
 
-    const changedMap = new Map(Object.entries(changedValues)) as Map<keyof LunarPhaseCardConfig, [old: any, new: any]>;
+    const changedMap = new Map(Object.entries(changedValues)) as Map<keyof LocationBadgeConfig, [old: any, new: any]>;
 
     const hasLocationSourceChanged =
       changedMap.has('location_source') &&
@@ -93,7 +76,7 @@ export class LocationArea extends BaseEditor {
 
     const hasEntityChanged = changedMap.has('entity') && changedMap.get('entity')![0] !== changedMap.get('entity')![1];
 
-    const updates: Partial<LunarPhaseCardConfig> = {};
+    const updates: Partial<LunarPhaseBadgeConfig> = {};
     // handle location object if present
     if (incoming.location) {
       updates.latitude = incoming.location.latitude;
@@ -151,14 +134,12 @@ export class LocationArea extends BaseEditor {
     const newConfig = { ...incoming, ...updates };
     const changeValues = getObjectDifferences(locationConfig, newConfig);
     if (changeValues && Object.keys(changeValues).length > 0) {
-      console.group('Config changes in', this._editorArea);
       logChangedValues(changeValues, true);
       console.groupEnd();
-      this.configChanged(newConfig as Partial<LunarPhaseCardConfig>);
+      this.configChanged(newConfig as Partial<LunarPhaseBadgeConfig>);
       this.requestUpdate();
     }
   }
-
   static get styles(): CSSResultGroup {
     return [super.styles, css``];
   }
@@ -166,6 +147,6 @@ export class LocationArea extends BaseEditor {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'lpc-location-area': LocationArea;
+    'lpc-badge-location-editor': BadgeLocationEditor;
   }
 }

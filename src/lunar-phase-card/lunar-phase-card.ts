@@ -19,6 +19,7 @@ import { HomeAssistant, LovelaceCardEditor } from '../ha';
 import { hasEntityLocation } from '../ha/common/entity/has_location';
 import { Moon } from '../model/moon';
 import { Store } from '../model/store';
+import { DEFAULT_BG_URL } from '../shared/css/styles';
 import { filterItemFromMoonData, MoonData } from '../types/config/chart-config';
 import { CSS_FONT_SIZE } from '../types/config/font-config';
 import { LunarPhaseCardConfig } from '../types/config/lunar-phase-card-config';
@@ -28,7 +29,6 @@ import { debounce } from '../utils/debounce';
 import { applyTheme } from '../utils/ha-helper';
 import { LunarBaseCard } from './base-card';
 import { LUNAR_PHASE_CARD_EDITOR_NAME, LUNAR_PHASE_CARD_NAME } from './const';
-import { DEFAULT_BG_URL } from './css/card-styles';
 
 @customElement(LUNAR_PHASE_CARD_NAME)
 export class LunarPhaseCard extends LunarBaseCard {
@@ -325,6 +325,7 @@ export class LunarPhaseCard extends LunarBaseCard {
     }
     this.store = new Store(this.hass, this.config, this);
   }
+
   private createMoon() {
     const initData = {
       date: this._date,

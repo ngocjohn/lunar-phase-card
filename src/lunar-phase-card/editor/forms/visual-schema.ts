@@ -1,8 +1,8 @@
 import { EDITOR_CUSTOM_BG } from '../../../const';
 import { LocalizeFunc } from '../../../ha';
 import { langKeys } from '../../../localize/languageImports';
+import { computeBooleanItem, computeSelectorSchema } from '../../../shared/schema-helper';
 import { THEME_MODE, VisualBackgroundConfig } from '../../../types/config/lunar-phase-card-config';
-import { computeBooleanItem, computeSelectorSchema } from './helper';
 import { HaFormBaseSchemaExtended } from './types';
 
 const backgroundBooleans = ['hide_background', 'hide_starfield'] as const;

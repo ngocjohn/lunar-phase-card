@@ -1,6 +1,6 @@
 import { Connection, getCollection, HassEventBase, HassServiceTarget } from 'home-assistant-js-websocket';
 
-import { HASSDomEvent } from '../common/dom/fire_event';
+import { fireEvent, HASSDomEvent } from '../common/dom/fire_event';
 import { Lovelace, LovelaceCard } from '../panels/lovelace/types';
 import { HomeAssistant } from '../types';
 
@@ -97,8 +97,10 @@ export interface ShowViewConfig {
 }
 
 export interface LovelaceBadgeConfig {
-  type?: string;
+  type: string;
   [key: string]: any;
+  visibility?: Record<string, unknown>[];
+  disabled?: boolean;
 }
 
 export interface LovelaceCardConfig {
@@ -323,3 +325,31 @@ export interface ActionHandlerDetail {
 }
 
 export type ActionHandlerEvent = HASSDomEvent<ActionHandlerDetail>;
+
+export type ActionConfigParams = {
+  entity?: string;
+  camera_image?: string;
+  hold_action?: ActionConfig;
+  tap_action?: ActionConfig;
+  double_tap_action?: ActionConfig;
+  icon_tap_action?: ActionConfig;
+  icon_hold_action?: ActionConfig;
+  icon_double_tap_action?: ActionConfig;
+};
+
+export const handleAction = async (
+  node: HTMLElement,
+  _hass: HomeAssistant,
+  config: ActionConfigParams,
+  action: string
+): Promise<void> => {
+  fireEvent(node, 'hass-action', { config, action });
+};
+
+type ActionParams = { config: ActionConfigParams; action: string };
+
+declare global {
+  interface HASSDomEvents {
+    'hass-action': ActionParams;
+  }
+}

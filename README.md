@@ -21,7 +21,8 @@
 - [Installation](#installation)
   - [HACS Installation](#hacs-installation)
   - [Manual Installation](#manual-installation)
-- [Configuration](#configuration)
+- [Card Configuration](#card-configuration)
+- [Badge Configuration](#badge-configuration)
 
 </details>
 
@@ -70,10 +71,15 @@
 <!--LOCALIZATION-CONTENT-END-->
 
 ### View options
-* Default view
+* Card view
 
 ![Default card][header-default-card]
 ![Default no header][no-header-default-card]
+
+* Badge view
+
+![Lunar Badge Dark][lunar-badge-dark]
+![Lunar Badge light][lunar-badge-light]
 
 * Calendar card
 
@@ -134,7 +140,7 @@ or
 
 <p style="text-align: justify;">All options can be configured in the GUI editor. To configure the Lunar Phase Card, you can use the following parameters in your Lovelace configuration:</p>
 
-## Card Configuration
+# Card Configuration
 
 ![Card config editor][card-config-editor]
 
@@ -259,8 +265,108 @@ graph_chart_config:
   show_legend: true
   legend_position: top
   legend_align: center
+```
 
+# Badge Configuration
 
+![Lunar Badge Dark][lunar-badge-dark]
+![Lunar Badge light][lunar-badge-light]
+<p style="text-align: justify;">To configure the Lunar Phase Badge, use the following parameters in your Lovelace badge configuration:</p>
+
+---
+
+## 🌍 Location Configuration
+
+| Name | Type | Requirement | Description |
+| ---- | ---- | ----------- | ----------- |
+| `type` | string | Required | Badge type: `custom:lunar-phase-badge`. |
+| `location_source` | string | Optional | Source of location data. Options: `default`, `entity`, `custom`. Defaults to `default`. |
+| `entity` | string | Optional | Entity used as a location source when `location_source: entity`. Latitude and longitude are read from entity attributes. |
+| `southern_hemisphere` | boolean | Optional | Adjusts moon orientation for southern hemisphere users. Defaults to `false`. |
+| `latitude` | number | Optional | Custom latitude (used when `location_source: custom`). |
+| `longitude` | number | Optional | Custom longitude (used when `location_source: custom`). |
+
+---
+
+## 🎨 Appearance & Behavior
+
+| Name | Type | Requirement | Description |
+| ---- | ---- | ----------- | ----------- |
+| `language` | string | Optional | Language ISO code. If not set, the Home Assistant language is used. |
+| `number_decimals` | number | Optional | Number of decimals shown for numeric values. Editor range is `0` to `5`. |
+| `mile_unit` | boolean | Optional | Use miles instead of kilometers for distance values. |
+| `12hr_format` | boolean | Optional | Use 12-hour time format instead of 24-hour. |
+| `icon_type` | string | Optional | Moon icon style. Options: `image`, `emoji`, `icon`. Defaults to `image`. |
+
+---
+
+## 📄 Content Configuration
+
+| Name | Type | Requirement | Description |
+| ---- | ---- | ----------- | ----------- |
+| `custom_name` | boolean | Optional | Enable custom badge name text. |
+| `name` | string | Optional | Badge name. If `custom_name: true`, this is free text. Otherwise use one moon field key to display a built-in label. |
+| `state_content` | string \| string[] | Optional | Field(s) to display as badge state. Can be one or many values. If not set, current phase name is shown. |
+| `show_name` | boolean | Optional | Show badge name text. Defaults to `false`. |
+| `show_icon` | boolean | Optional | Show moon icon. Defaults to `true`. |
+| `show_state` | boolean | Optional | Show badge state text. Defaults to `true`. |
+
+### Available moon field keys
+
+Use these values with `name` (when `custom_name: false`) and `state_content`:
+
+- `phaseName`
+- `moonAge`
+- `moonFraction`
+- `azimuthDegress`
+- `altitudeDegrees`
+- `distance`
+- `position`
+- `moonRise`
+- `moonSet`
+- `moonHighest`
+- `nextFullMoon`
+- `nextNewMoon`
+- `nextPhase`
+
+---
+
+## 🤏 Interactions
+
+| Name | Type | Requirement | Description |
+| ---- | ---- | ----------- | ----------- |
+| `tap_action` | object | Optional | Action on tap. |
+| `hold_action` | object | Optional | Action on hold. |
+| `double_tap_action` | object | Optional | Action on double tap. |
+
+Supported action types are: `more-info`, `toggle`, `navigate`, `url`, `perform-action`, `assist`, `none`.
+
+### Example Badge Configuration
+
+```yaml
+type: custom:lunar-phase-badge
+location_source: default
+entity: sensor.lunar_phase
+southern_hemisphere: false
+language: en
+number_decimals: 2
+mile_unit: false
+12hr_format: true
+icon_type: image
+custom_name: false
+name: phaseName
+show_name: false
+show_icon: true
+show_state: true
+state_content:
+  - phaseName
+  - moonFraction
+tap_action:
+  action: more-info
+hold_action:
+  action: none
+double_tap_action:
+  action: none
 ```
 
 ## Contribution Guidelines
@@ -292,7 +398,9 @@ If you like the card, consider supporting the developer
 [no-header-compact-card]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/no_header_compact.png
 [card-config-editor]:https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-config-editor.gif
 [compact-mode-minimal]: https://raw.githubusercontent.com/ngocjohn/lunar-phase-card/main/assets/lunar-compact-minimal.gif
-
+<!--BADGE-IMAGES-->
+[lunar-badge-light]: /assets/lunar-badge-light.png
+[lunar-badge-dark]: /assets/lunar-badge-dark.png
 <!--BADGES-->
 [hacs-default]: https://img.shields.io/badge/HACS-Default-blue?style=flat&logo=homeassistantcommunitystore&logoSize=auto
 [hacs-default-link]: https://my.home-assistant.io/redirect/hacs_repository/?owner=ngocjohn&repository=lunar-phase-card&category=plugin

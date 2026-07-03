@@ -2,12 +2,9 @@ import { SECTION } from '../../const';
 import { LovelaceCardConfig } from '../../ha';
 import { FontCustomStyles } from './font-config';
 import { GraphConfig } from './graph-config';
+import { LocationConfigKeys, LocationSource } from './location-source-config';
 
 export type Section = SECTION.BASE | SECTION.CALENDAR | SECTION.HORIZON | SECTION.FULL_CALENDAR;
-
-export const LOC_SOURCE = ['default', 'entity', 'custom'] as const;
-
-export type LocationSource = (typeof LOC_SOURCE)[number];
 
 export const COMPACT_MODE = ['default', 'minimal', 'moon-only'] as const;
 export type CompactMode = (typeof COMPACT_MODE)[number];
@@ -18,7 +15,7 @@ export type MoonPosition = (typeof MOON_POSITION)[number];
 export const THEME_MODE = ['auto', 'light', 'dark'] as const;
 export type ThemeMode = (typeof THEME_MODE)[number];
 
-export const HIDDEN_ITEMS = [
+export const MOON_DATA_KEYS = [
   'moonAge',
   'moonFraction',
   'azimuthDegress',
@@ -33,7 +30,7 @@ export const HIDDEN_ITEMS = [
   'nextPhase',
 ] as const;
 
-export type HiddenItem = (typeof HIDDEN_ITEMS)[number];
+export type HiddenItem = (typeof MOON_DATA_KEYS)[number];
 
 export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   /**
@@ -195,14 +192,6 @@ export interface LunarPhaseCardConfig extends LovelaceCardConfig {
   location?: LocationAddress;
   cardId?: string;
 }
-
-export const LocationConfigKeys = [
-  'location_source',
-  'entity',
-  'southern_hemisphere',
-  'latitude',
-  'longitude',
-] as const;
 
 export type LocationConfig = Pick<LunarPhaseCardConfig, (typeof LocationConfigKeys)[number]>;
 

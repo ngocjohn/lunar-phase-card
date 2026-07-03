@@ -1,12 +1,13 @@
 import { capitalize } from 'es-toolkit';
-import { css, CSSResultGroup, html, PropertyValues, TemplateResult } from 'lit';
+import { HomeAssistantStylesManager } from 'home-assistant-styles-manager';
+import { css, CSSResultGroup, html, LitElement, PropertyValues, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 
-import { HaFormElement } from '../../../ha/panels/ha-form/types';
-import { selectTree } from '../../../utils/helpers-dom';
-import { BaseEditor } from '../base-editor';
-import { ELEMENT } from '../editor-const';
-import { APPEARANCE_LABELS, LABEL_PATH, LabelPathType } from '../translate-const';
+import { HomeAssistant, LocalizeFunc } from '../ha';
+import { HaFormElement } from '../ha/panels/ha-form/types';
+import { selectTree } from '../utils/helpers-dom';
+import { ELEMENT } from './editor-const';
+import { APPEARANCE_LABELS, LABEL_PATH, LabelPathType } from './translate-const';
 
 const HA_FORM_STYLE = css`
   .root > :not([own-margin]):not(:last-child) {
@@ -24,13 +25,23 @@ const HA_FORM_STYLE = css`
 `.toString();
 
 @customElement('lpc-form-editor')
-export class FormEditor extends BaseEditor {
+export class FormEditor extends LitElement {
+  @property({ attribute: false }) _hass!: HomeAssistant;
   @property({ attribute: false }) data!: unknown;
   @property({ attribute: false }) schema!: unknown;
   @property() changed!: (ev: CustomEvent) => void;
-
   @query('#haForm') _haForm!: HaFormElement;
+  @property({ attribute: false }) localize!: LocalizeFunc;
 
+  @property({ attribute: false }) private _stylesManager: HomeAssistantStylesManager;
+
+  constructor() {
+    super();
+    this._stylesManager = new HomeAssistantStylesManager({
+      prefix: 'lpc-editor',
+      throwWarnings: true,
+    });
+  }
   protected async firstUpdated(_changedProperties: PropertyValues) {
     super.firstUpdated(_changedProperties);
     await this.updateComplete;
@@ -58,7 +69,7 @@ export class FormEditor extends BaseEditor {
       return undefined;
     }
     if (['hide_compact_label', ...APPEARANCE_LABELS].includes(schema.name)) {
-      return this.store.translate(`editor.${LABEL_PATH[schema.name as LabelPathType]}`);
+      return this.localize(`editor.${LABEL_PATH[schema.name as LabelPathType]}`);
     }
     const label = schema.label || schema.name || schema.title || '';
     return capitalize(label.replace(/_/g, ' '));
@@ -66,10 +77,10 @@ export class FormEditor extends BaseEditor {
 
   private computeHelper = (schema: any): string | TemplateResult | undefined => {
     if (APPEARANCE_LABELS.includes(schema.name)) {
-      return this.store.translate(`editor.titleHelper.${LABEL_PATH[schema.name as LabelPathType]}`);
+      return this.localize(`editor.titleHelper.${LABEL_PATH[schema.name as LabelPathType]}`);
     }
     if (schema.name === 'hide_compact_label') {
-      return this.store.translate(`editor.titleHelper.hideLabel`);
+      return this.localize(`editor.titleHelper.hideLabel`);
     }
     return schema.helper || undefined;
   };

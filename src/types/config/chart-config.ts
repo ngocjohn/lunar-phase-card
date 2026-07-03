@@ -10,6 +10,9 @@ export type MoonImage = {
   rotateDeg: number;
   southernHemisphere?: boolean;
   fraction?: number;
+  phase?: IMoonIllumination['phase'];
+  phaseMdi?: string;
+  emoji?: string;
 };
 
 export const MoonDataKeys = [

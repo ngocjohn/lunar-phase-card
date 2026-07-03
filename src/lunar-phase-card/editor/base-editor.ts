@@ -1,16 +1,17 @@
-import { HomeAssistantStylesManager } from 'home-assistant-styles-manager';
 import { css, CSSResultGroup, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
 import { HomeAssistant } from '../../ha';
 import { fireEvent } from '../../ha';
 import { Store } from '../../model/store';
+import { editorStyle } from '../../shared/css/styles';
 import { ConfigFieldOrder, LunarPhaseCardConfig } from '../../types/config/lunar-phase-card-config';
 import { cardNeedsMigration, migrateConfig } from '../../types/utils';
 import { getObjectDifferences, hasObjectDifferences, logChangedValues } from '../../utils/object-differences';
 import { orderProperties } from '../../utils/order-properties';
-import { editorStyle } from '../css/card-styles';
 import { createEditorMenuItems, EditorArea, EditorMenuItems } from './editor-area-config';
+import '../../shared/yaml-editor';
+import '../../shared/form-editor';
 
 export class BaseEditor extends LitElement {
   @property({ attribute: false }) _hass!: HomeAssistant;
@@ -19,16 +20,11 @@ export class BaseEditor extends LitElement {
 
   @state() private _legacyConfig?: LunarPhaseCardConfig;
 
-  protected _stylesManager: HomeAssistantStylesManager;
-
   protected _editorArea?: EditorArea;
 
   constructor(area?: EditorArea) {
     super();
-    this._stylesManager = new HomeAssistantStylesManager({
-      prefix: 'lpc-editor',
-      throwWarnings: true,
-    });
+
     if (area) {
       this._editorArea = area;
     }
@@ -77,13 +73,13 @@ export class BaseEditor extends LitElement {
   protected createLpcForm(data: any, schema: any, key?: string | number, subKey?: string | number): TemplateResult {
     const currentConfig = { ...(this.config || {}) };
     return html`<lpc-form-editor
-      .hass=${this.hass}
-      .store=${this.store}
+      ._hass=${this.hass}
       .data=${data}
       .schema=${schema}
       .currentConfig=${currentConfig}
       .key=${key}
       .subKey=${subKey}
+      .localize=${this.store.translate}
       @value-changed=${this._onValueChanged}
     ></lpc-form-editor>`;
   }

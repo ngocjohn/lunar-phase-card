@@ -1,4 +1,6 @@
 import { LocalizeFunc } from '../../../ha';
+import { computeBooleanItem, computeSelectorSchema } from '../../../shared/schema-helper';
+import { TITLE_PATH } from '../../../shared/translate-const';
 import {
   FontSizes,
   FontTextTransforms,
@@ -15,9 +17,7 @@ import {
   GraphConfigNumberKeys,
   GraphConfigDropdownKeys,
 } from '../../../types/config/graph-config';
-import { HIDDEN_ITEMS, HiddenItem, DataVisualConfig } from '../../../types/config/lunar-phase-card-config';
-import { TITLE_PATH } from '../translate-const';
-import { computeBooleanItem, computeSelectorSchema } from './helper';
+import { MOON_DATA_KEYS, HiddenItem, DataVisualConfig } from '../../../types/config/lunar-phase-card-config';
 import { HaFormBaseSchemaExtended } from './types';
 
 type GraphDropdownProperty = (typeof GraphConfigDropdownKeys)[number];
@@ -108,7 +108,7 @@ const FONT_CONFIG_SCHEMA = (localize: LocalizeFunc) =>
     },
   ] as const;
 
-const HIDDEN_LABEL: Record<HiddenItem, string> = {
+export const MOON_PHASE_FIELD_NAMES: Record<HiddenItem | string, string> = {
   moonAge: 'moonAge',
   moonFraction: 'illumination',
   azimuthDegress: 'azimuth',
@@ -121,6 +121,7 @@ const HIDDEN_LABEL: Record<HiddenItem, string> = {
   nextFullMoon: 'fullMoon',
   nextNewMoon: 'newMoon',
   nextPhase: 'nextPhase',
+  phaseName: 'phaseName',
 };
 
 const LAYOUT_BASE_SCHEMA = (localize: LocalizeFunc) =>
@@ -153,7 +154,7 @@ const LAYOUT_BASE_SCHEMA = (localize: LocalizeFunc) =>
               name: 'hide_items',
               required: false,
               type: 'multi_select',
-              options: HIDDEN_ITEMS.map((item) => [item, localize(`card.${HIDDEN_LABEL[item]}`)] as const),
+              options: MOON_DATA_KEYS.map((item) => [item, localize(`card.${MOON_PHASE_FIELD_NAMES[item]}`)] as const),
             },
           ],
         },
