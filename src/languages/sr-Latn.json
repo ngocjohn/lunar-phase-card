@@ -1,0 +1,179 @@
+{
+    "name": "Serbian",
+    "nativeName": "Srpski",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Prva četvrt",
+            "fullMoon": "Pun mesec",
+            "thirdQuarterMoon": "Poslednja četvrt",
+            "newMoon": "Mlad mesec",
+            "waxingCrescentMoon": "Prva četvrt (u porastu)",
+            "waxingGibbousMoon": "Izbočeni mesec (u porastu)",
+            "waningCrescentMoon": "Poslednja četvrt (u opadanju)",
+            "waningGibbousMoon": "Izbočeni mesec (u opadanju)"
+        },
+        "illumination": "Osvetljenost",
+        "illuminated": "Osvetljeno",
+        "moonRise": "Izlazak meseca",
+        "moonSet": "Zalazak meseca",
+        "moonHigh": "Najviša tačka meseca",
+        "moonAge": "Starost meseca",
+        "distance": "Udaljenost",
+        "azimuth": "Azimut",
+        "altitude": "Altituda (Visina)",
+        "fullMoon": "Pun mesec",
+        "newMoon": "Mlad mesec",
+        "relativeTime": {
+            "days": "dana",
+            "justNow": "upravo sada",
+            "minutesAgo": "pre {0} min",
+            "hoursAgo": "pre {0} h",
+            "inMinutes": "za {0} min",
+            "inHours": "za {0} h"
+        },
+        "position": "Pozicija",
+        "direction": "Smer",
+        "nextPhase": "Sledeća mena",
+        "phaseName": "Naziv mene",
+        "cardinalShort": {
+            "N": "S",
+            "NNE": "SSI",
+            "NE": "SI",
+            "ENE": "ISI",
+            "E": "I",
+            "ESE": "IJI",
+            "SE": "JI",
+            "SSE": "JJI",
+            "S": "J",
+            "SSW": "JJZ",
+            "SW": "JZ",
+            "WSW": "ZJZ",
+            "W": "Z",
+            "WNW": "ZSZ",
+            "NW": "SZ",
+            "NNW": "SSZ"
+        },
+        "underHorizon": "Mesec je ispod horizonta",
+        "overHorizon": "Mesec je iznad horizonta",
+        "horizonTitle": "Današnji Mesec",
+        "currentTime": "Trenutno vreme",
+        "common": {
+            "now": "Sada"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "Jezik i režim prikaza",
+            "description": "Podesite jezik i pozadinu",
+            "customBackground": {
+                "title": "Pozadina",
+                "description": "Podesite prilagođenu pozadinu"
+            },
+            "theme": {
+                "title": "Tema (opciono)",
+                "description": "Izaberite temu za karticu"
+            },
+            "layout": {
+                "title": "Opcije rasporeda",
+                "description": "Izmenite raspored kartice"
+            }
+        },
+        "baseConfig": {
+            "title": "Geografska širina i dužina",
+            "description": "Podesite geografsku širinu i dužinu"
+        },
+        "optionsConfig": {
+            "useDefault": "Koristi sistem",
+            "useEntity": "Koristi entitet",
+            "useCustom": "Koristi prilagođeno"
+        },
+        "fontOptions": {
+            "title": "Prilagođavanje fonta",
+            "description": "Podesite veličinu i boju fonta",
+            "hideLabel": "Sakrij oznaku",
+            "headerFontConfig": {
+                "title": "Font zaglavlja",
+                "description": "Podesite font zaglavlja"
+            },
+            "labelFontConfig": {
+                "title": "Font oznake",
+                "description": "Podesite font oznake"
+            },
+            "headerFontSize": "Veličina fonta zaglavlja",
+            "headerFontColor": "Boja fonta zaglavlja",
+            "headerFontStyle": "Stil fonta zaglavlja",
+            "labelFontSize": "Veličina fonta oznake",
+            "labelFontColor": "Boja fonta oznake",
+            "labelFontStyle": "Stil fonta oznake",
+            "valueFontSize": "Veličina fonta vrednosti"
+        },
+        "graphConfig": {
+            "title": "Prilagođavanje grafikona",
+            "description": "Podesite grafikon",
+            "type": {
+                "title": "Tip grafikona",
+                "description": "Izaberite tip grafikona"
+            },
+            "visibility": {
+                "title": "Opcije vidljivosti",
+                "description": "Prikažite ili sakrijte određene elemente"
+            },
+            "customization": {
+                "title": "Opcije prilagođavanja",
+                "description": "Prilagodite grafikon"
+            }
+        },
+        "layoutConfig": {
+            "title": "Prilagođavanje rasporeda",
+            "description": "Izmenite raspored kartice",
+            "hiddenItems": {
+                "title": "Sakrivene stavke",
+                "description": "Izaberite stavke koje želite da sakrijete u prikazu podataka"
+            }
+        },
+        "compactView": "Kompaktan prikaz",
+        "showBackground": "Prikaži pozadinu",
+        "timeFormat": "12-časovni format vremena",
+        "mileUnit": "Jedinica milja",
+        "yTicks": "Podeoci Y ose",
+        "xTicks": "Podeoci X ose",
+        "showTime": "Oznake izlaska/zalaska",
+        "showCurrent": "Trenutni položaj Meseca",
+        "showLegend": "Prikaži legendu",
+        "showHighest": "Prikaži najviši položaj Meseca",
+        "calendarModal": "Iskačući kalendar",
+        "hideButtons": "Sakrij dugmad",
+        "titleHelper": {
+            "compactView": "Prikaži kompaktan prikaz",
+            "showBackground": "Prikaži pozadinu",
+            "timeFormat": "Podesite format vremena (12 ili 24 časa)",
+            "mileUnit": "Ako je onemogućeno, koristiće se kilometri",
+            "yTicks": "Prikaži podeoke Y ose",
+            "xTicks": "Prikaži podeoke X ose",
+            "showTime": "Prikaži oznake izlaska/zalaska",
+            "showCurrent": "Prikaži trenutni položaj Meseca",
+            "showLegend": "Prikaži legendu",
+            "showHighest": "Prikaži najviši položaj Meseca",
+            "calendarModal": "Kalendar će biti prikazan u iskačućem prozoru",
+            "hideButtons": "Dugmad u zaglavlju će biti sakrivena",
+            "useDefault": "Koristi sistemsku geografsku širinu i dužinu",
+            "useEntity": "Koristi geografsku širinu i dužinu entiteta",
+            "useCustom": "Koristi prilagođenu geografsku širinu i dužinu",
+            "hideLabel": "Sakrij oznaku u kompaktnom prikazu"
+        },
+        "placeHolder": {
+            "latitude": "Unesite geografsku širinu",
+            "longitude": "Unesite geografsku dužinu",
+            "customBackground": "URL ili putanja do slike",
+            "language": "Izaberite jezik",
+            "moonPosition": "Izaberite položaj Meseca na kartici",
+            "defaultCard": "Izaberite podrazumevanu karticu",
+            "yTicksPosition": "Položaj podeoka Y ose",
+            "legendPosition": "Položaj legende",
+            "legendAlign": "Poravnanje legende",
+            "graphType": "Tip grafikona",
+            "compactMode": "Kompaktan režim",
+            "themeMode": "Režim teme"
+        }
+    }
+}
