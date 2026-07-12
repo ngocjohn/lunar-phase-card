@@ -1,3 +1,18 @@
+<a id="v1.19.0"></a>
+# [v1.19.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.19.0) - 2026-07-12
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.19.0 -->
+
+## What's Changed
+### Translations 🌍
+* Add Serbian (Latin) language support  by [@ngocjohn](https://github.com/ngocjohn) in [#104](https://github.com/ngocjohn/lunar-phase-card/pull/104)
+
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.18.0...v1.19.0
+
+[Changes][v1.19.0]
+
+
 <a id="v1.18.0"></a>
 # [v1.18.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.18.0) - 2026-07-03
 
@@ -8,8 +23,10 @@
 * Add lunar phase badge features by [@ngocjohn](https://github.com/ngocjohn) in [#102](https://github.com/ngocjohn/lunar-phase-card/pull/102)
 
 
-<img width="1286" height="116" alt="lunar-badge-dark" src="https://github.com/user-attachments/assets/e6a80dcd-bf29-4fc6-aecc-fda869b714c7" />
-<img width="1286" height="116" alt="lunar-badge-light" src="https://github.com/user-attachments/assets/d72a69fc-f71f-424c-bea3-5e195d93c801" />
+<img  alt="lunar-badge-dark" src="https://github.com/user-attachments/assets/e6a80dcd-bf29-4fc6-aecc-fda869b714c7" />
+<img alt="lunar-badge-light" src="https://github.com/user-attachments/assets/d72a69fc-f71f-424c-bea3-5e195d93c801" />
+
+If you enjoy the card and find it useful, please consider giving the repository a ⭐ on GitHub. It really helps with visibility and continued development! **Thank you to everyone**!
 
 **Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.17.0...v1.18.0
 
@@ -554,6 +571,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.19.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.18.0...v1.19.0
 [v1.18.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.17.0...v1.18.0
 [v1.17.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.16.1...v1.17.0
 [v1.16.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.16.0...v1.16.1
