@@ -16,6 +16,7 @@ import * as pl from '../languages/pl.json';
 import * as pt from '../languages/pt.json';
 import * as ru from '../languages/ru.json';
 import * as sk from '../languages/sk.json';
+import * as sr_Latn from '../languages/sr-Latn.json';
 import * as sv from '../languages/sv.json';
 import * as tr from '../languages/tr.json';
 import * as uk from '../languages/uk.json';
@@ -39,6 +40,7 @@ const languages: any = {
   pt: pt,
   ru: ru,
   sk: sk,
+  'sr-Latn': sr_Latn,
   sv: sv,
   tr: tr,
   uk: uk,
@@ -63,6 +65,7 @@ export const languageOptions = [
   { key: 'pt', name: pt.name, nativeName: pt.nativeName },
   { key: 'ru', name: ru.name, nativeName: ru.nativeName },
   { key: 'sk', name: sk.name, nativeName: sk.nativeName },
+  { key: 'sr-Latn', name: sr_Latn.name, nativeName: sr_Latn.nativeName },
   { key: 'sv', name: sv.name, nativeName: sv.nativeName },
   { key: 'tr', name: tr.name, nativeName: tr.nativeName },
   { key: 'uk', name: uk.name, nativeName: uk.nativeName },
@@ -87,6 +90,7 @@ export const langFiles: Record<string, unknown> = {
   pt,
   ru,
   sk,
+  'sr-Latn': sr_Latn,
   sv,
   tr,
   uk,
@@ -94,6 +98,6 @@ export const langFiles: Record<string, unknown> = {
   'zh-Hans': zh_Hans,
 };
 
-export const langKeys = ['ca', 'cs', 'da', 'de', 'en', 'es', 'fr', 'id', 'it', 'ko', 'lt', 'nl', 'pl', 'pt', 'ru', 'sk', 'sv', 'tr', 'uk', 'vi', 'zh-Hans'] as const;
+export const langKeys = ['ca', 'cs', 'da', 'de', 'en', 'es', 'fr', 'id', 'it', 'ko', 'lt', 'nl', 'pl', 'pt', 'ru', 'sk', 'sr-Latn', 'sv', 'tr', 'uk', 'vi', 'zh-Hans'] as const;
 
 export { languages };
