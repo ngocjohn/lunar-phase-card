@@ -23,6 +23,7 @@
         "altitude": "Altitude",
         "fullMoon": "Full moon",
         "newMoon": "New moon",
+        "phaseName": "Phase name",
         "relativeTime": {
             "days": "days",
             "justNow": "just now",

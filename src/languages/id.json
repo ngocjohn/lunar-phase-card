@@ -1,178 +1,179 @@
 {
-    "name": "Indonesian",
-    "nativeName": "Bahasa Indonesia",
-    "card": {
-        "phase": {
-            "firstQuarterMoon": "Perbani awal",
-            "fullMoon": "Purnama",
-            "thirdQuarterMoon": "Perbani akhir",
-            "newMoon": "Bulan baru",
-            "waxingCrescentMoon": "Sabit muda",
-            "waxingGibbousMoon": "Cembung muda",
-            "waningCrescentMoon": "Sabit tua",
-            "waningGibbousMoon": "Cembung tua"
-        },
-        "illumination": "Iluminasi",
-        "illuminated": "Tersinari",
-        "moonRise": "Terbit",
-        "moonSet": "Terbenam",
-        "moonHigh": "Puncak",
-        "moonAge": "Umur",
-        "distance": "Jarak",
-        "azimuth": "Azimut",
-        "altitude": "Ketinggian",
-        "fullMoon": "Purnama",
-        "newMoon": "Bulan baru",
-        "relativeTime": {
-            "days": "hari",
-            "justNow": "baru saja",
-            "minutesAgo": "{0} menit lalu",
-            "hoursAgo": "{0} jam lalu",
-            "inMinutes": "dalam {0} menit",
-            "inHours": "dalam {0} jam"
-        },
-        "position": "Posisi",
-        "direction": "Arah",
-        "nextPhase": "Fase berikutnya",
-        "cardinalShort": {
-            "N": "U",
-            "NNE": "UTL",
-            "NE": "TL",
-            "ENE": "TTL",
-            "E": "T",
-            "ESE": "TTG",
-            "SE": "TG",
-            "SSE": "STG",
-            "S": "S",
-            "SSW": "SBD",
-            "SW": "BD",
-            "WSW": "BBD",
-            "W": "B",
-            "WNW": "BBL",
-            "NW": "BL",
-            "NNW": "UBL"
-        },
-        "underHorizon": "Di bawah horizon",
-        "overHorizon": "Di atas horizon",
-        "horizonTitle": "Bulan Hari Ini",
-        "currentTime": "Waktu saat ini",
-        "common": {
-            "now": "Sekarang"
-        }
+  "name": "Indonesian",
+  "nativeName": "Bahasa Indonesia",
+  "card": {
+    "phase": {
+      "firstQuarterMoon": "Perbani awal",
+      "fullMoon": "Purnama",
+      "thirdQuarterMoon": "Perbani akhir",
+      "newMoon": "Bulan baru",
+      "waxingCrescentMoon": "Sabit muda",
+      "waxingGibbousMoon": "Cembung muda",
+      "waningCrescentMoon": "Sabit tua",
+      "waningGibbousMoon": "Cembung tua"
     },
-    "editor": {
-        "viewConfig": {
-            "title": "Bahasa dan mode tampilan",
-            "description": "Atur bahasa dan latar belakang",
-            "customBackground": {
-                "title": "Latar belakang",
-                "description": "Atur latar belakang khusus"
-            },
-            "theme": {
-                "title": "Tema (opsional)",
-                "description": "Pilih tema kartu"
-            },
-            "layout": {
-                "title": "Opsi tata letak",
-                "description": "Ubah tata letak kartu"
-            }
-        },
-        "baseConfig": {
-            "title": "Lintang dan bujur",
-            "description": "Atur lintang dan bujur"
-        },
-        "optionsConfig": {
-            "useDefault": "Gunakan sistem",
-            "useEntity": "Gunakan entitas",
-            "useCustom": "Gunakan kustom"
-        },
-        "fontOptions": {
-            "title": "Kustomisasi jenis huruf",
-            "description": "Atur ukuran dan warna",
-            "hideLabel": "Sembunyikan label",
-            "headerFontConfig": {
-                "title": "Jenis huruf judul",
-                "description": "Atur jenis huruf judul"
-            },
-            "labelFontConfig": {
-                "title": "Jenis huruf label",
-                "description": "Atur jenis huruf label"
-            },
-            "headerFontSize": "Ukuran huruf judul",
-            "headerFontColor": "Warna huruf judul",
-            "headerFontStyle": "Gaya huruf judul",
-            "labelFontSize": "Ukuran huruf label",
-            "labelFontColor": "Warna huruf label",
-            "labelFontStyle": "Gaya huruf label",
-            "valueFontSize": "Ukuran huruf nilai"
-        },
-        "graphConfig": {
-            "title": "Kustomisasi grafik",
-            "description": "Atur grafik",
-            "type": {
-                "title": "Jenis grafik",
-                "description": "Pilih jenis grafik"
-            },
-            "visibility": {
-                "title": "Opsi visibilitas",
-                "description": "Tampilkan atau sembunyikan elemen tertentu"
-            },
-            "customization": {
-                "title": "Opsi kustomisasi",
-                "description": "Sesuaikan grafik"
-            }
-        },
-        "layoutConfig": {
-            "title": "Kustomisasi tata letak",
-            "description": "Ubah tata letak kartu",
-            "hiddenItems": {
-                "title": "Item tersembunyi",
-                "description": "Pilih item yang disembunyikan pada tampilan data"
-            }
-        },
-        "compactView": "Tampilan ringkas",
-        "showBackground": "Tampilkan latar belakang",
-        "timeFormat": "Format waktu 12 jam",
-        "mileUnit": "Satuan mil",
-        "yTicks": "Penanda sumbu Y",
-        "xTicks": "Penanda sumbu X",
-        "showTime": "Penanda waktu terbit/terbenam",
-        "showCurrent": "Posisi Bulan saat ini",
-        "showLegend": "Tampilkan legenda",
-        "showHighest": "Tampilkan posisi Bulan tertinggi",
-        "calendarModal": "Popup kalender",
-        "hideButtons": "Sembunyikan tombol",
-        "titleHelper": {
-            "compactView": "Tampilkan tampilan ringkas",
-            "showBackground": "Tampilkan latar belakang",
-            "timeFormat": "Atur format waktu (12 atau 24 jam)",
-            "mileUnit": "Kilometer digunakan jika dinonaktifkan",
-            "yTicks": "Tampilkan penanda sumbu Y",
-            "xTicks": "Tampilkan penanda sumbu X",
-            "showTime": "Tampilkan penanda waktu terbit/terbenam",
-            "showCurrent": "Tampilkan posisi Bulan saat ini",
-            "showLegend": "Tampilkan legenda",
-            "showHighest": "Tampilkan posisi Bulan tertinggi",
-            "calendarModal": "Kalender ditampilkan dalam popup",
-            "hideButtons": "Tombol header disembunyikan",
-            "useDefault": "Gunakan lintang dan bujur sistem",
-            "useEntity": "Gunakan lintang dan bujur entitas",
-            "useCustom": "Gunakan lintang dan bujur kustom",
-            "hideLabel": "Sembunyikan label pada tampilan ringkas"
-        },
-        "placeHolder": {
-            "latitude": "Masukkan lintang",
-            "longitude": "Masukkan bujur",
-            "customBackground": "URL atau lokasi gambar",
-            "language": "Pilih bahasa",
-            "moonPosition": "Pilih posisi Bulan pada kartu",
-            "defaultCard": "Pilih kartu default",
-            "yTicksPosition": "Posisi penanda sumbu Y",
-            "legendPosition": "Posisi legenda",
-            "legendAlign": "Perataan legenda",
-            "graphType": "Jenis grafik",
-            "compactMode": "Mode ringkas",
-            "themeMode": "Mode tema"
-        }
+    "illumination": "Iluminasi",
+    "illuminated": "Tersinari",
+    "moonRise": "Terbit",
+    "moonSet": "Terbenam",
+    "moonHigh": "Puncak",
+    "moonAge": "Umur",
+    "distance": "Jarak",
+    "azimuth": "Azimut",
+    "altitude": "Ketinggian",
+    "fullMoon": "Purnama",
+    "newMoon": "Bulan baru",
+    "phaseName": "Nama fase bulan",
+    "relativeTime": {
+      "days": "hari",
+      "justNow": "baru saja",
+      "minutesAgo": "{0} menit lalu",
+      "hoursAgo": "{0} jam lalu",
+      "inMinutes": "dalam {0} menit",
+      "inHours": "dalam {0} jam"
+    },
+    "position": "Posisi",
+    "direction": "Arah",
+    "nextPhase": "Fase berikutnya",
+    "cardinalShort": {
+      "N": "U",
+      "NNE": "UTL",
+      "NE": "TL",
+      "ENE": "TTL",
+      "E": "T",
+      "ESE": "TTG",
+      "SE": "TG",
+      "SSE": "STG",
+      "S": "S",
+      "SSW": "SBD",
+      "SW": "BD",
+      "WSW": "BBD",
+      "W": "B",
+      "WNW": "BBL",
+      "NW": "BL",
+      "NNW": "UBL"
+    },
+    "underHorizon": "Di bawah horizon",
+    "overHorizon": "Di atas horizon",
+    "horizonTitle": "Bulan Hari Ini",
+    "currentTime": "Waktu saat ini",
+    "common": {
+      "now": "Sekarang"
     }
+  },
+  "editor": {
+    "viewConfig": {
+      "title": "Bahasa dan mode tampilan",
+      "description": "Atur bahasa dan latar belakang",
+      "customBackground": {
+        "title": "Latar belakang",
+        "description": "Atur latar belakang khusus"
+      },
+      "theme": {
+        "title": "Tema (opsional)",
+        "description": "Pilih tema kartu"
+      },
+      "layout": {
+        "title": "Opsi tata letak",
+        "description": "Ubah tata letak kartu"
+      }
+    },
+    "baseConfig": {
+      "title": "Lintang dan bujur",
+      "description": "Atur lintang dan bujur"
+    },
+    "optionsConfig": {
+      "useDefault": "Gunakan sistem",
+      "useEntity": "Gunakan entitas",
+      "useCustom": "Gunakan kustom"
+    },
+    "fontOptions": {
+      "title": "Kustomisasi jenis huruf",
+      "description": "Atur ukuran dan warna",
+      "hideLabel": "Sembunyikan label",
+      "headerFontConfig": {
+        "title": "Jenis huruf judul",
+        "description": "Atur jenis huruf judul"
+      },
+      "labelFontConfig": {
+        "title": "Jenis huruf label",
+        "description": "Atur jenis huruf label"
+      },
+      "headerFontSize": "Ukuran huruf judul",
+      "headerFontColor": "Warna huruf judul",
+      "headerFontStyle": "Gaya huruf judul",
+      "labelFontSize": "Ukuran huruf label",
+      "labelFontColor": "Warna huruf label",
+      "labelFontStyle": "Gaya huruf label",
+      "valueFontSize": "Ukuran huruf nilai"
+    },
+    "graphConfig": {
+      "title": "Kustomisasi grafik",
+      "description": "Atur grafik",
+      "type": {
+        "title": "Jenis grafik",
+        "description": "Pilih jenis grafik"
+      },
+      "visibility": {
+        "title": "Opsi visibilitas",
+        "description": "Tampilkan atau sembunyikan elemen tertentu"
+      },
+      "customization": {
+        "title": "Opsi kustomisasi",
+        "description": "Sesuaikan grafik"
+      }
+    },
+    "layoutConfig": {
+      "title": "Kustomisasi tata letak",
+      "description": "Ubah tata letak kartu",
+      "hiddenItems": {
+        "title": "Item tersembunyi",
+        "description": "Pilih item yang disembunyikan pada tampilan data"
+      }
+    },
+    "compactView": "Tampilan ringkas",
+    "showBackground": "Tampilkan latar belakang",
+    "timeFormat": "Format waktu 12 jam",
+    "mileUnit": "Satuan mil",
+    "yTicks": "Penanda sumbu Y",
+    "xTicks": "Penanda sumbu X",
+    "showTime": "Penanda waktu terbit/terbenam",
+    "showCurrent": "Posisi Bulan saat ini",
+    "showLegend": "Tampilkan legenda",
+    "showHighest": "Tampilkan posisi Bulan tertinggi",
+    "calendarModal": "Popup kalender",
+    "hideButtons": "Sembunyikan tombol",
+    "titleHelper": {
+      "compactView": "Tampilkan tampilan ringkas",
+      "showBackground": "Tampilkan latar belakang",
+      "timeFormat": "Atur format waktu (12 atau 24 jam)",
+      "mileUnit": "Kilometer digunakan jika dinonaktifkan",
+      "yTicks": "Tampilkan penanda sumbu Y",
+      "xTicks": "Tampilkan penanda sumbu X",
+      "showTime": "Tampilkan penanda waktu terbit/terbenam",
+      "showCurrent": "Tampilkan posisi Bulan saat ini",
+      "showLegend": "Tampilkan legenda",
+      "showHighest": "Tampilkan posisi Bulan tertinggi",
+      "calendarModal": "Kalender ditampilkan dalam popup",
+      "hideButtons": "Tombol header disembunyikan",
+      "useDefault": "Gunakan lintang dan bujur sistem",
+      "useEntity": "Gunakan lintang dan bujur entitas",
+      "useCustom": "Gunakan lintang dan bujur kustom",
+      "hideLabel": "Sembunyikan label pada tampilan ringkas"
+    },
+    "placeHolder": {
+      "latitude": "Masukkan lintang",
+      "longitude": "Masukkan bujur",
+      "customBackground": "URL atau lokasi gambar",
+      "language": "Pilih bahasa",
+      "moonPosition": "Pilih posisi Bulan pada kartu",
+      "defaultCard": "Pilih kartu default",
+      "yTicksPosition": "Posisi penanda sumbu Y",
+      "legendPosition": "Posisi legenda",
+      "legendAlign": "Perataan legenda",
+      "graphType": "Jenis grafik",
+      "compactMode": "Mode ringkas",
+      "themeMode": "Mode tema"
+    }
+  }
 }
