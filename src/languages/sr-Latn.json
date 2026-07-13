@@ -7,20 +7,20 @@
             "fullMoon": "Pun mesec",
             "thirdQuarterMoon": "Poslednja četvrt",
             "newMoon": "Mlad mesec",
-            "waxingCrescentMoon": "Prva četvrt (u porastu)",
-            "waxingGibbousMoon": "Izbočeni mesec (u porastu)",
-            "waningCrescentMoon": "Poslednja četvrt (u opadanju)",
-            "waningGibbousMoon": "Izbočeni mesec (u opadanju)"
+            "waxingCrescentMoon": "Rastući srp",
+            "waxingGibbousMoon": "Rastući mesec",
+            "waningCrescentMoon": "Opadajući srp",
+            "waningGibbousMoon": "Opadajući mesec"
         },
         "illumination": "Osvetljenost",
         "illuminated": "Osvetljeno",
-        "moonRise": "Izlazak meseca",
-        "moonSet": "Zalazak meseca",
-        "moonHigh": "Najviša tačka meseca",
-        "moonAge": "Starost meseca",
+        "moonRise": "Izlazak",
+        "moonSet": "Zalazak",
+        "moonHigh": "Zenit",
+        "moonAge": "Starost",
         "distance": "Udaljenost",
         "azimuth": "Azimut",
-        "altitude": "Altituda (Visina)",
+        "altitude": "Visina",
         "fullMoon": "Pun mesec",
         "newMoon": "Mlad mesec",
         "relativeTime": {
@@ -53,10 +53,10 @@
             "NW": "SZ",
             "NNW": "SSZ"
         },
-        "underHorizon": "Mesec je ispod horizonta",
-        "overHorizon": "Mesec je iznad horizonta",
-        "horizonTitle": "Današnji Mesec",
-        "currentTime": "Trenutno vreme",
+        "underHorizon": "Ispod horizonta",
+        "overHorizon": "Iznad horizonta",
+        "horizonTitle": "Položaj Mesec",
+        "currentTime": "Trenutno",
         "common": {
             "now": "Sada"
         }
@@ -162,12 +162,12 @@
             "hideLabel": "Sakrij oznaku u kompaktnom prikazu"
         },
         "placeHolder": {
-            "latitude": "Unesite geografsku širinu",
-            "longitude": "Unesite geografsku dužinu",
+            "latitude": "Geografska širina",
+            "longitude": "Geografska dužina",
             "customBackground": "URL ili putanja do slike",
             "language": "Izaberite jezik",
-            "moonPosition": "Izaberite položaj Meseca na kartici",
-            "defaultCard": "Izaberite podrazumevanu karticu",
+            "moonPosition": "Pozicija Meseca",
+            "defaultCard": "Podrazumevana kartica",
             "yTicksPosition": "Položaj podeoka Y ose",
             "legendPosition": "Položaj legende",
             "legendAlign": "Poravnanje legende",
