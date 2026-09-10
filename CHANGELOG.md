@@ -1,3 +1,20 @@
+<a id="v1.19.1"></a>
+# [v1.19.1](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.19.1) - 2026-09-10
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.19.1 -->
+
+## What's Changed
+### Other Changes
+* Fix fullMoon in portuguese by [@marcio-af-oliveira](https://github.com/marcio-af-oliveira) in [#108](https://github.com/ngocjohn/lunar-phase-card/pull/108)
+
+## New Contributors
+* [@marcio-af-oliveira](https://github.com/marcio-af-oliveira) made their first contribution in [#108](https://github.com/ngocjohn/lunar-phase-card/pull/108)
+
+**Full Changelog**: https://github.com/ngocjohn/lunar-phase-card/compare/v1.19.0...v1.19.1
+
+[Changes][v1.19.1]
+
+
 <a id="v1.19.0"></a>
 # [v1.19.0](https://github.com/ngocjohn/lunar-phase-card/releases/tag/v1.19.0) - 2026-07-12
 
@@ -571,6 +588,7 @@ We welcome contributions and are grateful for your support in improving this pro
 [Changes][v1.0.0]
 
 
+[v1.19.1]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.19.0...v1.19.1
 [v1.19.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.18.0...v1.19.0
 [v1.18.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.17.0...v1.18.0
 [v1.17.0]: https://github.com/ngocjohn/lunar-phase-card/compare/v1.16.1...v1.17.0
