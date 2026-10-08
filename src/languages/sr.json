@@ -1,0 +1,179 @@
+{
+    "name": "Serbian",
+    "nativeName": "Српски",
+    "card": {
+        "phase": {
+            "firstQuarterMoon": "Прва четврт",
+            "fullMoon": "Пун",
+            "thirdQuarterMoon": "Задња четврт",
+            "newMoon": "Млад",
+            "waxingCrescentMoon": "Растући срп",
+            "waxingGibbousMoon": "Растући гибус",
+            "waningCrescentMoon": "Опадајући срп",
+            "waningGibbousMoon": "Опадајући гибус"
+        },
+        "illumination": "Осветљеност",
+        "illuminated": "Осветљено",
+        "moonRise": "Изазак",
+        "moonSet": "Залазак",
+        "moonHigh": "Зенит",
+        "moonAge": "Старост",
+        "distance": "Удаљеност",
+        "azimuth": "Азимут",
+        "altitude": "Висина",
+        "fullMoon": "Пун месец",
+        "newMoon": "Млад месец",
+        "relativeTime": {
+            "days": "дана",
+            "justNow": "управо сада",
+            "minutesAgo": "пре {0} мин",
+            "hoursAgo": "пре {0} h",
+            "inMinutes": "за {0} min",
+            "inHours": "за {0} h"
+        },
+        "position": "Позиција",
+        "direction": "Смер",
+        "nextPhase": "Следећи",
+        "phaseName": "Назив мене",
+        "cardinalShort": {
+            "N": "С",
+            "NNE": "ССИ",
+            "NE": "СИ",
+            "ENE": "ИСИ",
+            "E": "И",
+            "ESE": "ИЈИ",
+            "SE": "ЈИ",
+            "SSE": "ЈЈИ",
+            "S": "Ј",
+            "SSW": "ЈЈЗ",
+            "SW": "ЈЗ",
+            "WSW": "ЗЈЗ",
+            "W": "З",
+            "WNW": "ЗСЗ",
+            "NW": "СЗ",
+            "NNW": "ССЗ"
+        },
+        "underHorizon": "Испод хоризонта",
+        "overHorizon": "Изнад хоризонта",
+        "horizonTitle": "Положај",
+        "currentTime": "Тренутно",
+        "common": {
+            "now": "Сада"
+        }
+    },
+    "editor": {
+        "viewConfig": {
+            "title": "Језик и режим приказа",
+            "description": "Подесите језик и позадину",
+            "customBackground": {
+                "title": "Позадина",
+                "description": "Подесите прилагођену позадину"
+            },
+            "theme": {
+                "title": "Тема (опционо)",
+                "description": "Изаберите тему за картицу"
+            },
+            "layout": {
+                "title": "Опције распореда",
+                "description": "Измените распоред картице"
+            }
+        },
+        "baseConfig": {
+            "title": "Географска ширина и дужина",
+            "description": "Подесите географску ширину и дужину"
+        },
+        "optionsConfig": {
+            "useDefault": "Користи систем",
+            "useEntity": "Користи ентитет",
+            "useCustom": "Користи прилагођено"
+        },
+        "fontOptions": {
+            "title": "Прилагођавање фонта",
+            "description": "Подесите величину и боју фонта",
+            "hideLabel": "Сакриј ознаку",
+            "headerFontConfig": {
+                "title": "Фонт заглавља",
+                "description": "Подесите фонт заглавља"
+            },
+            "labelFontConfig": {
+                "title": "Фонт ознаке",
+                "description": "Подесите font ознаке"
+            },
+            "headerFontSize": "Величина фонта заглавља",
+            "headerFontColor": "Боја фонта заглавља",
+            "headerFontStyle": "Стил фонта заглавља",
+            "labelFontSize": "Величина фонта ознаке",
+            "labelFontColor": "Боја fonta ознаке",
+            "labelFontStyle": "Стил фонта oznake",
+            "valueFontSize": "Величина фонта вредности"
+        },
+        "graphConfig": {
+            "title": "Прилагођавање графикона",
+            "description": "Подесите графикон",
+            "type": {
+                "title": "Тип графикона",
+                "description": "Изаберите тип графикона"
+            },
+            "visibility": {
+                "title": "Опције видљивости",
+                "description": "Прикажите или сакријте одређене елементе"
+            },
+            "customization": {
+                "title": "Опције прилагођавања",
+                "description": "Прилагодите графикон"
+            }
+        },
+        "layoutConfig": {
+            "title": "Прилагођавање распореда",
+            "description": "Измените распоред картице",
+            "hiddenItems": {
+                "title": "Сакривене ставке",
+                "description": "Изаберите ставке које желите да сакријете у приказу података"
+            }
+        },
+        "compactView": "Компактан приказ",
+        "showBackground": "Прикажи позадину",
+        "timeFormat": "12-часовни формат времена",
+        "mileUnit": "Јединица миља",
+        "yTicks": "Подеоци Y осе",
+        "xTicks": "Подеоци X осе",
+        "showTime": "Ознаке изласка/заласка",
+        "showCurrent": "Тренутни положај Месеца",
+        "showLegend": "Прикажи легенду",
+        "showHighest": "Прикажи највиши положај Месеца",
+        "calendarModal": "Искачући календар",
+        "hideButtons": "Сакриј дугмад",
+        "titleHelper": {
+            "compactView": "Прикажи компактан приказ",
+            "showBackground": "Прикажи позадину",
+            "timeFormat": "Подесите формат времена (12 или 24 часа)",
+            "mileUnit": "Ако је онемогућено, користиће се километри",
+            "yTicks": "Прикажи подеоке Y осе",
+            "xTicks": "Прикажи подеоке X осе",
+            "showTime": "Прикажи ознаке изласка/заласка",
+            "showCurrent": "Прикажи тренутни положај",
+            "showLegend": "Прикажи легенду",
+            "showHighest": "Прикажи највиши положај",
+            "calendarModal": "Календар ће бити приказан у искачућем прозору",
+            "hideButtons": "Дугмад у заглављу ће бити сакривена",
+            "useDefault": "Користи системску географску ширину и дужину",
+            "useEntity": "Користи географску ширину и дужину ентитета",
+            "useCustom": "Користи прилагођену географску ширину и дужину",
+            "hideLabel": "Сакриј ознаку у компактном приказу"
+        },
+        "placeHolder": {
+            "latitude": "Географска ширина",
+            "longitude": "Географска дужина",
+            "customBackground": "URL или путања до слике",
+            "language": "Изаберите језик",
+            "moonPosition": "Позиција",
+            "defaultCard": "Подразумевана картица",
+            "yTicksPosition": "Положај подеока Y осе",
+            "legendPosition": "Положај легенде",
+            "legendAlign": "Поравнање легенде",
+            "graphType": "Тип графикона",
+            "compactMode": "Компактан режим",
+            "themeMode": "Режим теме"
+        }
+    }
+}
