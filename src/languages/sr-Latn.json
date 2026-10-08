@@ -4,13 +4,13 @@
     "card": {
         "phase": {
             "firstQuarterMoon": "Prva četvrt",
-            "fullMoon": "Pun mesec",
-            "thirdQuarterMoon": "Poslednja četvrt",
-            "newMoon": "Mlad mesec",
+            "fullMoon": "Pun",
+            "thirdQuarterMoon": "Zadnja četvrt",
+            "newMoon": "Mlad",
             "waxingCrescentMoon": "Rastući srp",
-            "waxingGibbousMoon": "Rastući mesec",
+            "waxingGibbousMoon": "Rastući gibus",
             "waningCrescentMoon": "Opadajući srp",
-            "waningGibbousMoon": "Opadajući mesec"
+            "waningGibbousMoon": "Opadajući gibus"
         },
         "illumination": "Osvetljenost",
         "illuminated": "Osvetljeno",
@@ -33,7 +33,7 @@
         },
         "position": "Pozicija",
         "direction": "Smer",
-        "nextPhase": "Sledeća mena",
+        "nextPhase": "Sledeći",
         "phaseName": "Naziv mene",
         "cardinalShort": {
             "N": "S",
@@ -55,7 +55,7 @@
         },
         "underHorizon": "Ispod horizonta",
         "overHorizon": "Iznad horizonta",
-        "horizonTitle": "Položaj Mesec",
+        "horizonTitle": "Položaj",
         "currentTime": "Trenutno",
         "common": {
             "now": "Sada"
@@ -151,9 +151,9 @@
             "yTicks": "Prikaži podeoke Y ose",
             "xTicks": "Prikaži podeoke X ose",
             "showTime": "Prikaži oznake izlaska/zalaska",
-            "showCurrent": "Prikaži trenutni položaj Meseca",
+            "showCurrent": "Prikaži trenutni položaj",
             "showLegend": "Prikaži legendu",
-            "showHighest": "Prikaži najviši položaj Meseca",
+            "showHighest": "Prikaži najviši položaj",
             "calendarModal": "Kalendar će biti prikazan u iskačućem prozoru",
             "hideButtons": "Dugmad u zaglavlju će biti sakrivena",
             "useDefault": "Koristi sistemsku geografsku širinu i dužinu",
@@ -166,7 +166,7 @@
             "longitude": "Geografska dužina",
             "customBackground": "URL ili putanja do slike",
             "language": "Izaberite jezik",
-            "moonPosition": "Pozicija Meseca",
+            "moonPosition": "Pozicija",
             "defaultCard": "Podrazumevana kartica",
             "yTicksPosition": "Položaj podeoka Y ose",
             "legendPosition": "Položaj legende",
