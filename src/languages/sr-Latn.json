@@ -4,23 +4,23 @@
     "card": {
         "phase": {
             "firstQuarterMoon": "Prva četvrt",
-            "fullMoon": "Pun mesec",
-            "thirdQuarterMoon": "Poslednja četvrt",
-            "newMoon": "Mlad mesec",
-            "waxingCrescentMoon": "Prva četvrt (u porastu)",
-            "waxingGibbousMoon": "Izbočeni mesec (u porastu)",
-            "waningCrescentMoon": "Poslednja četvrt (u opadanju)",
-            "waningGibbousMoon": "Izbočeni mesec (u opadanju)"
+            "fullMoon": "Pun",
+            "thirdQuarterMoon": "Zadnja četvrt",
+            "newMoon": "Mlad",
+            "waxingCrescentMoon": "Rastući srp",
+            "waxingGibbousMoon": "Rastući gibus",
+            "waningCrescentMoon": "Opadajući srp",
+            "waningGibbousMoon": "Opadajući gibus"
         },
         "illumination": "Osvetljenost",
         "illuminated": "Osvetljeno",
-        "moonRise": "Izlazak meseca",
-        "moonSet": "Zalazak meseca",
-        "moonHigh": "Najviša tačka meseca",
-        "moonAge": "Starost meseca",
+        "moonRise": "Izlazak",
+        "moonSet": "Zalazak",
+        "moonHigh": "Zenit",
+        "moonAge": "Starost",
         "distance": "Udaljenost",
         "azimuth": "Azimut",
-        "altitude": "Altituda (Visina)",
+        "altitude": "Visina",
         "fullMoon": "Pun mesec",
         "newMoon": "Mlad mesec",
         "relativeTime": {
@@ -33,7 +33,7 @@
         },
         "position": "Pozicija",
         "direction": "Smer",
-        "nextPhase": "Sledeća mena",
+        "nextPhase": "Sledeći",
         "phaseName": "Naziv mene",
         "cardinalShort": {
             "N": "S",
@@ -53,10 +53,10 @@
             "NW": "SZ",
             "NNW": "SSZ"
         },
-        "underHorizon": "Mesec je ispod horizonta",
-        "overHorizon": "Mesec je iznad horizonta",
-        "horizonTitle": "Današnji Mesec",
-        "currentTime": "Trenutno vreme",
+        "underHorizon": "Ispod horizonta",
+        "overHorizon": "Iznad horizonta",
+        "horizonTitle": "Položaj",
+        "currentTime": "Trenutno",
         "common": {
             "now": "Sada"
         }
@@ -151,9 +151,9 @@
             "yTicks": "Prikaži podeoke Y ose",
             "xTicks": "Prikaži podeoke X ose",
             "showTime": "Prikaži oznake izlaska/zalaska",
-            "showCurrent": "Prikaži trenutni položaj Meseca",
+            "showCurrent": "Prikaži trenutni položaj",
             "showLegend": "Prikaži legendu",
-            "showHighest": "Prikaži najviši položaj Meseca",
+            "showHighest": "Prikaži najviši položaj",
             "calendarModal": "Kalendar će biti prikazan u iskačućem prozoru",
             "hideButtons": "Dugmad u zaglavlju će biti sakrivena",
             "useDefault": "Koristi sistemsku geografsku širinu i dužinu",
@@ -162,12 +162,12 @@
             "hideLabel": "Sakrij oznaku u kompaktnom prikazu"
         },
         "placeHolder": {
-            "latitude": "Unesite geografsku širinu",
-            "longitude": "Unesite geografsku dužinu",
+            "latitude": "Geografska širina",
+            "longitude": "Geografska dužina",
             "customBackground": "URL ili putanja do slike",
             "language": "Izaberite jezik",
-            "moonPosition": "Izaberite položaj Meseca na kartici",
-            "defaultCard": "Izaberite podrazumevanu karticu",
+            "moonPosition": "Pozicija",
+            "defaultCard": "Podrazumevana kartica",
             "yTicksPosition": "Položaj podeoka Y ose",
             "legendPosition": "Položaj legende",
             "legendAlign": "Poravnanje legende",
