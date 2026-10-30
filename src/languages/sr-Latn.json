@@ -4,13 +4,13 @@
     "card": {
         "phase": {
             "firstQuarterMoon": "Prva četvrt",
-            "fullMoon": "Pun",
-            "thirdQuarterMoon": "Zadnja četvrt",
-            "newMoon": "Mlad",
+            "fullMoon": "Pun mesec",
+            "thirdQuarterMoon": "Poslednja četvrt",
+            "newMoon": "Mlad mesec",
             "waxingCrescentMoon": "Rastući srp",
-            "waxingGibbousMoon": "Rastući gibus",
+            "waxingGibbousMoon": "Rastući mesec",
             "waningCrescentMoon": "Opadajući srp",
-            "waningGibbousMoon": "Opadajući gibus"
+            "waningGibbousMoon": "Opadajući mesec"
         },
         "illumination": "Osvetljenost",
         "illuminated": "Osvetljeno",
