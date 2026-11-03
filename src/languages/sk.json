@@ -3,14 +3,14 @@
   "nativeName": "Slovenčina",
   "card": {
     "phase": {
-      "firstQuarterMoon": "Prvá štvrtina",
-      "fullMoon": "Úplnok",
-      "thirdQuarterMoon": "Posledná štvrtina",
+      "firstQuarterMoon": "Prvá štvrť",
+      "fullMoon": "Spln",
+      "thirdQuarterMoon": "Posledná štvrť",
       "newMoon": "Nov",
-      "waxingCrescentMoon": "Dorastajúci kosáčik",
-      "waxingGibbousMoon": "Dorastajúci mesiac",
-      "waningCrescentMoon": "Ubúdajúci kosáčik",
-      "waningGibbousMoon": "Ubúdajúci mesiac"
+      "waxingCrescentMoon": "Prvý kosák",
+      "waxingGibbousMoon": "Dorastajúci Mesiac",
+      "waningCrescentMoon": "Cúvajúci Mesiac",
+      "waningGibbousMoon": "Posledný kosák"
     },
     "illumination": "Osvetlenie",
     "illuminated": "Osvetlené",
@@ -21,7 +21,7 @@
     "distance": "Vzdialenosť",
     "azimuth": "Azimut",
     "altitude": "Nadmorská výška",
-    "fullMoon": "Úplnok",
+    "fullMoon": "Spln",
     "newMoon": "Nov",
     "phaseName": "Názov fázy Mesiaca",
     "relativeTime": {
@@ -109,10 +109,10 @@
     },
     "graphConfig": {
       "title": "Prispôsobenie grafu",
-      "description": "Nastavte konfiguráciu pre graf",
+      "description": "Konfigurácia grafu",
       "type": {
         "title": "Typ grafu",
-        "description": "Vyberte typ grafu"
+        "description": "Výber typu grafu"
       },
       "visibility": {
         "title": "Možnosti viditeľnosti",
@@ -120,7 +120,7 @@
       },
       "customization": {
         "title": "Možnosti prispôsobenia",
-        "description": "Prispôsobte graf"
+        "description": "Prispôsobenie grafu"
       }
     },
     "layoutConfig": {
@@ -141,12 +141,12 @@
     "showCurrent": "Aktuálna poloha Mesiaca",
     "showLegend": "Zobraziť legendu",
     "showHighest": "Zobraziť najvyššiu polohu Mesiaca",
-    "calendarModal": "Kalendárové popup",
+    "calendarModal": "Vyskakovacie okno kalendára",
     "hideButtons": "Skryť tlačidlá",
     "titleHelper": {
       "compactView": "Zobraziť kompaktný režim",
       "showBackground": "Zobraziť pozadie",
-      "timeFormat": "Nastaviť formát času (12-hodinový alebo 24-hodinový)",
+      "timeFormat": "Nastaviť formát času (12 alebo 24 hodín)",
       "mileUnit": "Kilometre sa použijú, ak je zakázané",
       "yTicks": "Zobraziť značky na osi Y",
       "xTicks": "Zobraziť značky na osi X",
@@ -164,7 +164,7 @@
     "placeHolder": {
       "latitude": "Zadajte zemepisnú šírku",
       "longitude": "Zadajte zemepisnú dĺžku",
-      "customBackground": "URL alebo cesta k obrázku",
+      "customBackground": "URL adresa alebo cesta k obrázku",
       "language": "Vyberte jazyk",
       "moonPosition": "Vyberte polohu Mesiaca na karte",
       "defaultCard": "Vyberte predvolenú kartu",
